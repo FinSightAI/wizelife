@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — Wize Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #050810; --bg2: #0d1117; --bg3: #161b27;
+    --border: rgba(255,255,255,0.08); --text: #f0f4ff; --muted: #8892a4;
+    --accent: #6366f1; --accent2: #8b5cf6;
+    --money: #10b981; --travel: #3b82f6; --tax: #f59e0b;
+    --health: #ec4899; --deal: #8b5cf6;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(5,8,16,0.9);
+    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+  }
+  .logo { font-size: 1.2rem; font-weight: 800; text-decoration: none; color: var(--text); }
+  .logo span { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .user-name { color: var(--muted); font-size: 0.88rem; }
+  .btn-sm {
+    padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); background: var(--bg3);
+    color: var(--text); text-decoration: none; transition: background 0.2s;
+  }
+  .btn-sm:hover { background: var(--border); }
+  .btn-upgrade {
+    padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; text-decoration: none; transition: opacity 0.2s;
+  }
+  .btn-upgrade:hover { opacity: 0.85; }
+
+  main { padding: 100px 40px 60px; max-width: 1000px; margin: 0 auto; }
+
+  /* PLAN BANNER */
+  .plan-banner {
+    border-radius: 16px; padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    margin-bottom: 40px; flex-wrap: wrap;
+  }
+  .plan-banner.free { background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1)); border: 1px solid rgba(99,102,241,0.25); }
+  .plan-banner.pro  { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.1)); border: 1px solid rgba(16,185,129,0.3); }
+  .plan-info h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+  .plan-info p { color: var(--muted); font-size: 0.88rem; }
+  .plan-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    margin-right: 8px;
+  }
+  .badge-free { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+  .badge-pro  { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+
+  /* SECTION */
+  h3 { font-size: 1rem; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+
+  /* TOOLS GRID */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .tool-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px; text-decoration: none; color: var(--text);
+    transition: transform 0.2s, border-color 0.2s; position: relative; overflow: hidden;
+  }
+  .tool-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--c);
+  }
+  .tool-card:hover { transform: translateY(-3px); border-color: var(--c); }
+  .tool-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .tool-sub { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; color: var(--c); margin-bottom: 4px; }
+  .tool-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+  .tool-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+  .tool-pro-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;
+  }
+
+  /* ACCOUNT SECTION */
+  .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .account-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .account-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; }
+  .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--muted); }
+  .info-value { font-weight: 600; }
+  .btn-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #f87171; padding: 8px 16px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-danger:hover { background: rgba(239,68,68,0.2); }
+
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
+    main { padding: 90px 20px 40px; }
+    .account-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Wize<span>Life</span></a>
+  <div class="nav-right">
+    <span class="user-name" id="navUserName">Loading…</span>
+    <a class="btn-upgrade" id="navUpgradeBtn" href="#" style="display:none;">Upgrade to Pro</a>
+    <button class="btn-sm" onclick="signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Plan Banner -->
+  <div class="plan-banner free" id="planBanner">
+    <div class="plan-info">
+      <h2 id="planTitle">Loading your plan…</h2>
+      <p id="planDesc"></p>
+    </div>
+    <div id="planAction"></div>
+  </div>
+
+  <!-- Tools -->
+  <h3>Your Tools</h3>
+  <div class="tools-grid">
+
+    <a class="tool-card" href="https://finsightai.github.io/finsight/" target="_blank" style="--c: var(--money)">
+      <div class="tool-icon">💰</div>
+      <div class="tool-sub">WizeMoney</div>
+      <div class="tool-name">FinSight</div>
+      <div class="tool-desc">Full personal finance dashboard — bank, stocks, goals, AI insights.</div>
+    </a>
+
+    <a class="tool-card" href="https://mastermove.vercel.app/advisor" target="_blank" style="--c: var(--tax)">
+      <div class="tool-icon">🧾</div>
+      <div class="tool-sub">WizeTax</div>
+      <div class="tool-name">Tax Master</div>
+      <div class="tool-desc">AI-powered tax relocation advisor — compare countries, plan your move.</div>
+      <div class="tool-pro-badge" id="badge-tax" style="display:none;">Pro</div>
+    </a>
+
+    <a class="tool-card" href="https://nodedai.streamlit.app/" target="_blank" style="--c: var(--travel)">
+      <div class="tool-icon">🌍</div>
+      <div class="tool-sub">WizeTravel</div>
+      <div class="tool-name">Mega Traveller</div>
+      <div class="tool-desc">AI travel planner — routes, tips, cost breakdown for every destination.</div>
+      <div class="tool-pro-badge" id="badge-travel" style="display:none;">Pro</div>
+    </a>
+
+    <a class="tool-card" href="https://vitara.onrender.com/" target="_blank" style="--c: var(--health)">
+      <div class="tool-icon">❤️</div>
+      <div class="tool-sub">WizeHealth</div>
+      <div class="tool-name">Vitara</div>
+      <div class="tool-desc">Health & wellness tracker — understand your body, master your wellbeing.</div>
+      <div class="tool-pro-badge" id="badge-health" style="display:none;">Pro</div>
+    </a>
+
+    <a class="tool-card" href="https://check-deal.vercel.app/" target="_blank" style="--c: var(--deal)">
+      <div class="tool-icon">🏠</div>
+      <div class="tool-sub">WizeDeal</div>
+      <div class="tool-name">Check Deal</div>
+      <div class="tool-desc">Real estate investment analyzer — evaluate any property deal in seconds.</div>
+      <div class="tool-pro-badge" id="badge-deal" style="display:none;">Pro</div>
+    </a>
+
+  </div>
+
+  <!-- Account -->
+  <h3>Account</h3>
+  <div class="account-grid">
+    <div class="account-card">
+      <h4>Profile</h4>
+      <div class="info-row"><span class="info-label">Name</span>    <span class="info-value" id="acctName">—</span></div>
+      <div class="info-row"><span class="info-label">Email</span>   <span class="info-value" id="acctEmail">—</span></div>
+      <div class="info-row"><span class="info-label">Member since</span><span class="info-value" id="acctSince">—</span></div>
+      <div class="info-row"><span class="info-label">Plan</span>    <span class="info-value" id="acctPlan">—</span></div>
+    </div>
+    <div class="account-card">
+      <h4>Subscription</h4>
+      <div id="subContent"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="js/wizelife-auth.js"></script>
+<script>
+const STRIPE_LINK = "https://buy.stripe.com/REPLACE_WITH_YOUR_LINK"; // TODO
+
+requireAuth("auth.html").then(async (user) => {
+    // Nav
+    document.getElementById("navUserName").textContent = user.displayName || user.email;
+
+    // Account info
+    document.getElementById("acctName").textContent  = user.displayName || "—";
+    document.getElementById("acctEmail").textContent = user.email;
+    const since = user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString("en-GB", { month: "short", year: "numeric" }) : "—";
+    document.getElementById("acctSince").textContent = since;
+
+    // Plan
+    const plan = await getUserPlan(user.uid);
+    renderPlan(plan, user);
+});
+
+function renderPlan(plan, user) {
+    const isPro = plan === "pro";
+    const banner = document.getElementById("planBanner");
+    banner.className = `plan-banner ${isPro ? "pro" : "free"}`;
+
+    document.getElementById("planTitle").innerHTML =
+        `<span class="plan-badge ${isPro ? "badge-pro" : "badge-free"}">${isPro ? "PRO" : "FREE"}</span>${isPro ? "You're on Pro" : "Free Plan"}`;
+    document.getElementById("planDesc").textContent = isPro
+        ? "All tools and features unlocked. Thank you for supporting WizeLife!"
+        : "Upgrade to unlock all 5 tools fully — Tax Master, Mega Traveller, Vitara, Check Deal + all Pro features in FinSight.";
+
+    document.getElementById("acctPlan").innerHTML =
+        `<span class="plan-badge ${isPro ? "badge-pro" : "badge-free"}">${isPro ? "Pro" : "Free"}</span>`;
+
+    if (!isPro) {
+        // Show upgrade button in nav + banner
+        const navBtn = document.getElementById("navUpgradeBtn");
+        navBtn.style.display = "";
+        navBtn.href = stripeUrl(user.uid);
+
+        document.getElementById("planAction").innerHTML =
+            `<a class="btn-upgrade" href="${stripeUrl(user.uid)}" target="_blank">Upgrade to Pro — $9.90/mo</a>`;
+
+        // Show Pro badges on tools
+        ["badge-tax","badge-travel","badge-health","badge-deal"].forEach(id => {
+            document.getElementById(id).style.display = "";
+        });
+
+        document.getElementById("subContent").innerHTML = `
+            <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Unlock all 5 tools for one flat monthly fee.</p>
+            <a class="btn-upgrade" href="${stripeUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;">
+                Upgrade to Pro — $9.90/mo
+            </a>`;
+    } else {
+        document.getElementById("planAction").innerHTML =
+            `<span style="color:#6ee7b7;font-size:0.9rem;font-weight:600;">✓ All features active</span>`;
+
+        document.getElementById("subContent").innerHTML = `
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#6ee7b7;">Active</span></div>
+            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">Pro — $9.90/mo</span></div>
+            <div style="margin-top:16px;">
+                <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
+            </div>`;
+    }
+}
+
+function stripeUrl(uid) {
+    return `${STRIPE_LINK}?client_reference_id=${encodeURIComponent(uid)}`;
+}
+
+function manageSubscription() {
+    // TODO: redirect to Stripe Customer Portal
+    alert("To cancel, please email support@wizelife.ai and we'll process it within 24 hours.");
+}
+
+function signOut() {
+    wlAuth.signOut().then(() => window.location.href = "index.html");
+}
+</script>
+</body>
+</html>
