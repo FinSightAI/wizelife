@@ -134,16 +134,16 @@
 
   <!-- Tools -->
   <h3>Your Tools</h3>
-  <div class="tools-grid">
+  <div class="tools-grid" id="toolsGrid">
 
-    <a class="tool-card" href="https://finsightai.github.io/finsight/" target="_blank" style="--c: var(--money)">
+    <a class="tool-card" id="tool-finsight" href="https://finsightai.github.io/finsight/" target="_blank" style="--c: var(--money)">
       <div class="tool-icon">💰</div>
       <div class="tool-sub">WizeMoney</div>
       <div class="tool-name">FinSight</div>
       <div class="tool-desc">Full personal finance dashboard — bank, stocks, goals, AI insights.</div>
     </a>
 
-    <a class="tool-card" href="https://mastermove.vercel.app/advisor" target="_blank" style="--c: var(--tax)">
+    <a class="tool-card" id="tool-tax" href="https://mastermove.vercel.app/advisor" target="_blank" style="--c: var(--tax)">
       <div class="tool-icon">🧾</div>
       <div class="tool-sub">WizeTax</div>
       <div class="tool-name">Tax Master</div>
@@ -151,7 +151,7 @@
       <div class="tool-pro-badge" id="badge-tax" style="display:none;">Pro</div>
     </a>
 
-    <a class="tool-card" href="https://nodedai.streamlit.app/" target="_blank" style="--c: var(--travel)">
+    <a class="tool-card" id="tool-travel" href="https://nodedai.streamlit.app/" target="_blank" style="--c: var(--travel)">
       <div class="tool-icon">🌍</div>
       <div class="tool-sub">WizeTravel</div>
       <div class="tool-name">Mega Traveller</div>
@@ -159,7 +159,7 @@
       <div class="tool-pro-badge" id="badge-travel" style="display:none;">Pro</div>
     </a>
 
-    <a class="tool-card" href="https://vitara.onrender.com/" target="_blank" style="--c: var(--health)">
+    <a class="tool-card" id="tool-health" href="https://vitara.onrender.com/" target="_blank" style="--c: var(--health)">
       <div class="tool-icon">❤️</div>
       <div class="tool-sub">WizeHealth</div>
       <div class="tool-name">Vitara</div>
@@ -167,7 +167,7 @@
       <div class="tool-pro-badge" id="badge-health" style="display:none;">Pro</div>
     </a>
 
-    <a class="tool-card" href="https://check-deal.vercel.app/" target="_blank" style="--c: var(--deal)">
+    <a class="tool-card" id="tool-deal" href="https://check-deal.vercel.app/" target="_blank" style="--c: var(--deal)">
       <div class="tool-icon">🏠</div>
       <div class="tool-sub">WizeDeal</div>
       <div class="tool-name">Check Deal</div>
@@ -317,6 +317,30 @@ function manageSubscription() {
 function signOut() {
     wlAuth.signOut().then(() => window.location.href = "index.html");
 }
+
+// Append Firebase token to tool links so backends can identify Pro users
+async function attachTokensToTools() {
+    try {
+        const user = wlAuth.currentUser;
+        if (!user) return;
+        const token = await user.getIdToken();
+        const tools = [
+            { id: "tool-tax",    base: "https://mastermove.vercel.app/advisor" },
+            { id: "tool-health", base: "https://vitara.onrender.com/" },
+            { id: "tool-deal",   base: "https://check-deal.vercel.app/" },
+        ];
+        tools.forEach(({ id, base }) => {
+            const el = document.getElementById(id);
+            if (el) el.href = `${base}?wl_token=${encodeURIComponent(token)}`;
+        });
+    } catch (e) {
+        // fail silently — tools still work without token (free tier)
+    }
+}
+
+wlAuth.onAuthStateChanged(user => {
+    if (user) attachTokensToTools();
+});
 </script>
 </body>
 </html>
