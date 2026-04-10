@@ -109,7 +109,7 @@
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input type="password" id="signupPassword" placeholder="Min. 6 characters" autocomplete="new-password">
+      <input type="password" id="signupPassword" placeholder="Min. 8 chars, uppercase &amp; special char" autocomplete="new-password">
     </div>
     <button class="btn-primary" id="signupBtn" onclick="emailSignup()">Create Account</button>
     <div class="error" id="signupError"></div>
@@ -159,11 +159,25 @@
     }
   }
 
+  function validatePassword(pass) {
+    if (pass.length < 8)             return "Password must be at least 8 characters.";
+    if (!/[A-Z]/.test(pass))         return "Password must contain at least one uppercase letter.";
+    if (!/[^A-Za-z0-9]/.test(pass))  return "Password must contain at least one special character (!@#$% etc.).";
+    return null;
+  }
+
   async function emailSignup() {
     const name  = document.getElementById("signupName").value.trim();
     const email = document.getElementById("signupEmail").value.trim();
     const pass  = document.getElementById("signupPassword").value;
     document.getElementById("signupError").textContent = "";
+
+    const passError = validatePassword(pass);
+    if (passError) {
+      document.getElementById("signupError").textContent = passError;
+      return;
+    }
+
     setLoading("signupBtn", true);
     try {
       const cred = await wlAuth.createUserWithEmailAndPassword(email, pass);
@@ -195,7 +209,7 @@
       "auth/wrong-password":      "Wrong password.",
       "auth/invalid-email":       "Invalid email address.",
       "auth/email-already-in-use":"This email is already registered. Try signing in.",
-      "auth/weak-password":       "Password must be at least 6 characters.",
+      "auth/weak-password":       "Password must be at least 8 characters with uppercase and special character.",
       "auth/too-many-requests":   "Too many attempts. Try again later.",
       "auth/popup-closed-by-user":"Sign-in cancelled.",
     };
