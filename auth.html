@@ -185,7 +185,8 @@
       await wlDb.collection("users").doc(cred.user.uid).set({ plan: "free", createdAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
       window.location.href = "dashboard.html";
     } catch (e) {
-      document.getElementById("signupError").textContent = friendlyError(e.code);
+      console.error("Signup error:", e.code, e.message);
+      document.getElementById("signupError").textContent = friendlyError(e.code) + (e.code ? ` (${e.code})` : "");
       setLoading("signupBtn", false);
     }
   }
