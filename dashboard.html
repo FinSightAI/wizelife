@@ -96,6 +96,12 @@
   .info-value { font-weight: 600; }
   .btn-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #f87171; padding: 8px 16px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
   .btn-danger:hover { background: rgba(239,68,68,0.2); }
+  .code-row { display: flex; gap: 8px; margin-top: 16px; }
+  .code-input { flex: 1; padding: 10px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.88rem; font-family: monospace; }
+  .code-input:focus { outline: none; border-color: var(--accent); }
+  .code-btn { padding: 10px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .code-btn:hover { background: var(--border); }
+  .code-msg { font-size: 0.82rem; margin-top: 8px; min-height: 18px; }
 
   @media (max-width: 640px) {
     nav { padding: 14px 20px; }
@@ -244,7 +250,12 @@ function renderPlan(plan, user) {
             <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Unlock all 5 tools for one flat monthly fee.</p>
             <a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;">
                 Upgrade to Pro — $9.90/mo
-            </a>`;
+            </a>
+            <div class="code-row">
+                <input class="code-input" id="accessCodeInput" placeholder="Have an access code?" />
+                <button class="code-btn" onclick="applyCode('${user.uid}')">Apply</button>
+            </div>
+            <div class="code-msg" id="codeMsg"></div>`;
     } else {
         document.getElementById("planAction").innerHTML =
             `<span style="color:#6ee7b7;font-size:0.9rem;font-weight:600;">✓ All features active</span>`;
@@ -255,6 +266,41 @@ function renderPlan(plan, user) {
             <div style="margin-top:16px;">
                 <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
             </div>`;
+    }
+}
+
+const ACCESS_CODES = new Set([
+    "BKU3-7TCCBW", "3QRT-4QF27K", "LZWY-ALHXD7",
+    "WZBD-UD7WC7",  "7ELJ-L29T4K", "ZYUO-67D4C7",
+]);
+
+async function applyCode(uid) {
+    const input = document.getElementById("accessCodeInput");
+    const msg   = document.getElementById("codeMsg");
+    const code  = input.value.trim().toUpperCase();
+
+    if (!code) return;
+
+    if (!ACCESS_CODES.has(code)) {
+        msg.style.color = "#f87171";
+        msg.textContent = "Invalid access code.";
+        return;
+    }
+
+    msg.style.color = "#8892a4";
+    msg.textContent = "Activating…";
+
+    try {
+        await wlDb.collection("users").doc(uid).set(
+            { plan: "pro", planActivatedAt: firebase.firestore.FieldValue.serverTimestamp() },
+            { merge: true }
+        );
+        msg.style.color = "#6ee7b7";
+        msg.textContent = "✓ Pro activated! Reloading…";
+        setTimeout(() => window.location.reload(), 1200);
+    } catch (e) {
+        msg.style.color = "#f87171";
+        msg.textContent = "Error activating. Please try again.";
     }
 }
 
