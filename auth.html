@@ -68,6 +68,20 @@
   .back { text-align: center; margin-top: 24px; }
   .back a { color: var(--muted); font-size: 0.85rem; text-decoration: none; }
   .back a:hover { color: var(--text); }
+
+  .pw-wrap { position: relative; }
+  .pw-wrap input { padding-right: 42px; }
+  .pw-toggle {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--muted);
+    font-size: 1rem; line-height: 1; padding: 4px;
+    transition: color 0.15s;
+  }
+  .pw-toggle:hover { color: var(--text); }
+
+  .forgot { text-align: right; margin-top: 6px; }
+  .forgot a { color: var(--muted); font-size: 0.8rem; text-decoration: none; }
+  .forgot a:hover { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -91,8 +105,12 @@
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+      <div class="pw-wrap">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+        <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
+      </div>
     </div>
+    <div class="forgot"><a href="#" onclick="forgotPassword(); return false;">Forgot password?</a></div>
     <button class="btn-primary" id="loginBtn" onclick="emailLogin()">Sign In</button>
     <div class="error" id="loginError"></div>
   </div>
@@ -109,7 +127,10 @@
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input type="password" id="signupPassword" placeholder="Min. 8 chars, uppercase &amp; special char" autocomplete="new-password">
+      <div class="pw-wrap">
+        <input type="password" id="signupPassword" placeholder="Min. 8 chars, uppercase &amp; special char" autocomplete="new-password">
+        <button type="button" class="pw-toggle" onclick="togglePw('signupPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
+      </div>
     </div>
     <button class="btn-primary" id="signupBtn" onclick="emailSignup()">Create Account</button>
     <div class="error" id="signupError"></div>
@@ -215,6 +236,30 @@
       "auth/popup-closed-by-user":"Sign-in cancelled.",
     };
     return map[code] || "Something went wrong. Please try again.";
+  }
+
+  function togglePw(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const show = input.type === "password";
+    input.type = show ? "text" : "password";
+    btn.textContent = show ? "🙈" : "👁";
+  }
+
+  async function forgotPassword() {
+    const email = document.getElementById("loginEmail").value.trim();
+    if (!email) {
+      document.getElementById("loginError").textContent = "Enter your email above first.";
+      document.getElementById("loginEmail").focus();
+      return;
+    }
+    try {
+      await wlAuth.sendPasswordResetEmail(email);
+      document.getElementById("loginError").style.color = "#34d399";
+      document.getElementById("loginError").textContent = "Reset email sent — check your inbox.";
+    } catch (e) {
+      document.getElementById("loginError").style.color = "";
+      document.getElementById("loginError").textContent = friendlyError(e.code);
+    }
   }
 
   // Allow Enter key
