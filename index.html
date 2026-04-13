@@ -223,11 +223,109 @@
   }
   footer .logo { font-size: 1.1rem; margin-bottom: 12px; display: block; }
 
+  /* ── ANIMATIONS ── */
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  h1 .gradient {
+    background: linear-gradient(135deg, #6366f1, #a78bfa, #ec4899, #6366f1);
+    background-size: 300% 300%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 5s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.6); }
+  }
+  .badge-dot { animation: pulse 2s ease-in-out infinite; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; }
+  .fade-up.visible { animation: fadeUp 0.6s ease forwards; }
+  .fade-up:nth-child(2).visible { animation-delay: 0.1s; }
+  .fade-up:nth-child(3).visible { animation-delay: 0.2s; }
+  .fade-up:nth-child(4).visible { animation-delay: 0.3s; }
+  .fade-up:nth-child(5).visible { animation-delay: 0.4s; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex; justify-content: center; gap: 0;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .stat-item {
+    flex: 1; max-width: 220px; text-align: center;
+    padding: 28px 20px; border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-size: 2rem; font-weight: 900; letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    text-align: center; padding: 100px 24px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.08) 100%);
+    border-top: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; }
+  .cta-section p { color: var(--muted); font-size: 1rem; margin-bottom: 40px; max-width: 440px; margin-left: auto; margin-right: auto; }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--text); border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-nav {
+    display: none; flex-direction: column;
+    position: fixed; top: 61px; left: 0; right: 0; z-index: 99;
+    background: rgba(5,8,16,0.97); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 28px; gap: 4px;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    color: var(--muted); text-decoration: none; font-size: 1rem;
+    font-weight: 500; padding: 12px 0; border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+  .mobile-nav a:last-child { border-bottom: none; }
+  .mobile-nav a:hover { color: var(--text); }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
     .nav-links { display: none; }
+    .hamburger { display: flex; }
     section { padding: 70px 20px; }
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item { flex: 1 1 45%; border-bottom: 1px solid var(--border); }
   }
 </style>
 </head>
@@ -242,6 +340,15 @@
     <a href="#faq">FAQ</a>
   </div>
   <a href="auth.html" class="nav-cta" style="text-decoration:none;">Get Started Free</a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#products" onclick="toggleMenu()">Products</a>
+  <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="#faq" onclick="toggleMenu()">FAQ</a>
+  <a href="auth.html" style="color:var(--accent);font-weight:700;">Get Started Free →</a>
 </nav>
 
 <!-- HERO -->
@@ -255,6 +362,26 @@
   </div>
 </section>
 
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item fade-up">
+    <div class="stat-num">5</div>
+    <div class="stat-label">AI Tools in one suite</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">$0</div>
+    <div class="stat-label">To get started</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">40</div>
+    <div class="stat-label">AI answers/day on YOLO</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">2</div>
+    <div class="stat-label">Languages — EN & Hebrew</div>
+  </div>
+</div>
+
 <!-- PRODUCTS -->
 <section id="products">
   <div class="container">
@@ -264,7 +391,7 @@
 
     <div class="products-grid">
 
-      <a href="https://finsightai.github.io/finsight/" target="_blank" class="product-card" style="--card-color: #10b981">
+      <a href="https://finsightai.github.io/finsight/" target="_blank" class="product-card fade-up" style="--card-color: #10b981">
         <span class="product-icon">💰</span>
         <div class="product-name"><span>Wize</span>Money</div>
         <p class="product-desc">Your complete personal finance dashboard. Track accounts, investments, goals and credit cards — all in one place, in Hebrew and English.</p>
@@ -276,7 +403,7 @@
         <div class="product-link">Open app →</div>
       </a>
 
-      <a href="https://nodedai.onrender.com" target="_blank" class="product-card" style="--card-color: #3b82f6">
+      <a href="https://nodedai.onrender.com" target="_blank" class="product-card fade-up" style="--card-color: #3b82f6">
         <span class="product-icon">🌍</span>
         <div class="product-name"><span>Wize</span>Travel</div>
         <p class="product-desc">AI-powered flight price monitor. Finds hidden city tickets, virtual interlining and positioning routes that Google Flights misses.</p>
@@ -288,7 +415,7 @@
         <div class="product-link">Open app →</div>
       </a>
 
-      <a href="https://mastermove.vercel.app/advisor" target="_blank" class="product-card" style="--card-color: #f59e0b">
+      <a href="https://mastermove.vercel.app/advisor" target="_blank" class="product-card fade-up" style="--card-color: #f59e0b">
         <span class="product-icon">🧾</span>
         <div class="product-name"><span>Wize</span>Tax</div>
         <p class="product-desc">Global tax advisor for relocation and exit planning. Covers 26 countries with AI-powered scenarios, exit tax calculations and letter generator.</p>
@@ -300,7 +427,7 @@
         <div class="product-link">Open app →</div>
       </a>
 
-      <a href="https://vitara.onrender.com/" target="_blank" class="product-card" style="--card-color: #ec4899">
+      <a href="https://vitara.onrender.com/" target="_blank" class="product-card fade-up" style="--card-color: #ec4899">
         <span class="product-icon">❤️</span>
         <div class="product-name"><span>Wize</span>Health</div>
         <p class="product-desc">Your personal AI health advisor. Specialized in cardiology, microbiome, nutrition and endocrinology — powered by Groq for instant answers.</p>
@@ -312,7 +439,7 @@
         <div class="product-link">Open app →</div>
       </a>
 
-      <a href="https://check-deal.vercel.app/" target="_blank" class="product-card" style="--card-color: #8b5cf6">
+      <a href="https://check-deal.vercel.app/" target="_blank" class="product-card fade-up" style="--card-color: #8b5cf6">
         <span class="product-icon">🏠</span>
         <div class="product-name"><span>Wize</span>Deal</div>
         <p class="product-desc">AI-powered real estate investment analyzer for Brazilian market. Complete ROI calculations, tax analysis and market comparisons in seconds.</p>
@@ -481,7 +608,44 @@
     const items = document.querySelectorAll('.faq-item');
     items[i].classList.toggle('open');
   }
+
+  // ── Scroll fade-in ──────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── Hamburger menu ──────────────────────────────
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
+  // Close mobile nav on outside click
+  document.addEventListener('click', (e) => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.classList.remove('open');
+    }
+  });
 </script>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="badge fade-up" style="display:inline-flex;margin-bottom:24px;"><span class="badge-dot"></span> Free to start — no credit card needed</div>
+  <h2 class="fade-up">Ready to live <span class="gradient">smarter</span>?</h2>
+  <p class="fade-up">Join WizeLife and get 5 AI tools in one place. Start free, upgrade when you want more.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;" class="fade-up">
+    <a href="auth.html" class="btn-primary" style="font-size:1.05rem;padding:16px 36px;">Get Started Free →</a>
+    <a href="#pricing" class="btn-secondary" style="font-size:1.05rem;padding:16px 36px;">See Pricing</a>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>
