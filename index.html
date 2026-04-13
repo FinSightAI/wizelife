@@ -239,6 +239,7 @@
   <div class="nav-links">
     <a href="#products">Products</a>
     <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
   </div>
   <a href="auth.html" class="nav-cta" style="text-decoration:none;">Get Started Free</a>
 </nav>
@@ -334,40 +335,149 @@
     <h2 class="section-title">Simple, honest pricing.</h2>
     <p class="section-sub">Start free. Upgrade when you need more. Cancel anytime.</p>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr);max-width:860px;">
 
       <div class="price-card">
         <div class="plan-name">Free</div>
         <div class="plan-price">$0 <span>/month</span></div>
-        <p class="plan-desc">Try any tool, no credit card needed.</p>
+        <p class="plan-desc">Try any tool. No credit card needed.</p>
         <ul class="plan-features">
-          <li>WizeMoney — basic dashboard</li>
-          <li>WizeTax — 2 free AI questions</li>
-          <li>WizeTravel — limited access</li>
-          <li>WizeHealth — limited access</li>
-          <li>WizeDeal — limited access</li>
+          <li>2 AI questions/day per tool</li>
+          <li>Basic dashboard</li>
+          <li>Up to 50 transactions</li>
+          <li>Savings goals</li>
         </ul>
         <a href="auth.html" class="plan-btn" style="text-decoration:none;display:block;text-align:center;">Get started free</a>
       </div>
 
       <div class="price-card featured">
-        <div class="featured-badge">⭐ All Tools</div>
+        <div class="featured-badge">⭐ Most Popular</div>
         <div class="plan-name">Pro</div>
         <div class="plan-price">$4.90 <span>/month</span></div>
         <p class="plan-desc">All 5 tools, fully unlocked.</p>
         <ul class="plan-features">
-          <li>WizeMoney — AI chat + export + stocks</li>
-          <li>WizeTax — 20 AI questions/day</li>
-          <li>WizeTravel — full access</li>
-          <li>WizeHealth — full access</li>
-          <li>WizeDeal — full access</li>
+          <li>20 AI questions/day per tool</li>
+          <li>AI Story & Chat</li>
+          <li>Export CSV & PDF</li>
+          <li>Stocks, reports, tax optimizer</li>
+          <li>Unlimited transactions & goals</li>
         </ul>
         <a href="auth.html" class="plan-btn primary" style="text-decoration:none;display:block;text-align:center;">Upgrade to Pro</a>
+      </div>
+
+      <div class="price-card" style="border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.04);">
+        <div class="featured-badge" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡ Power User</div>
+        <div class="plan-name" style="color:#f59e0b;">YOLO</div>
+        <div class="plan-price">$9.90 <span>/month</span></div>
+        <p class="plan-desc">For users who want it all, now.</p>
+        <ul class="plan-features">
+          <li>40 AI questions/day per tool</li>
+          <li>Everything in Pro</li>
+          <li>Priority support</li>
+          <li>Early access to new features</li>
+        </ul>
+        <a href="auth.html" class="plan-btn" style="text-decoration:none;display:block;text-align:center;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border:none;">Go YOLO ⚡</a>
       </div>
 
     </div>
   </div>
 </section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container" style="max-width:720px;">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions.</h2>
+    <p class="section-sub">Everything you need to know before getting started.</p>
+
+    <div id="faqList" style="margin-top:40px;display:flex;flex-direction:column;gap:12px;"></div>
+  </div>
+</section>
+
+<style>
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg2);
+    transition: border-color 0.2s;
+  }
+  .faq-item.open { border-color: rgba(99,102,241,0.4); }
+  .faq-q {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 22px; background: none; border: none; color: var(--text);
+    font-size: 0.95rem; font-weight: 600; cursor: pointer; text-align: left;
+    font-family: inherit; gap: 12px;
+  }
+  .faq-q:hover { color: #a5b4fc; }
+  .faq-icon { font-size: 1.1rem; transition: transform 0.25s; flex-shrink:0; color: var(--accent); }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.2s;
+    padding: 0 22px; color: var(--muted); font-size: 0.9rem; line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 22px 18px; }
+</style>
+
+<script>
+  const FAQS = [
+    {
+      q: "What is WizeLife?",
+      a: "WizeLife is a suite of 5 AI-powered tools — WizeMoney (personal finance), WizeTax (tax advisor), WizeTravel (flight deals), WizeHealth (medical analysis) and WizeDeal (real estate) — all under one account."
+    },
+    {
+      q: "What's the difference between Pro and YOLO?",
+      a: "Both unlock all features. The difference is volume: Pro gives you 20 AI questions per day per tool, YOLO gives you 40. YOLO is for power users who rely on AI daily. Most users are happy with Pro."
+    },
+    {
+      q: "Can I use just one tool, or do I need all 5?",
+      a: "You can use any tool independently. One subscription unlocks all 5 — there's no per-tool pricing."
+    },
+    {
+      q: "Is my financial and health data safe?",
+      a: "Yes. Your data is stored in your own Firebase account and never shared with third parties. AI queries are processed by Google Gemini, which does not use your data for model training."
+    },
+    {
+      q: "How does the AI know my personal data?",
+      a: "Each tool is connected to your data within the app. WizeMoney reads your transactions and balances. WizeTax reads your profile. The AI never guesses — it answers based on what you've actually entered."
+    },
+    {
+      q: "Can I cancel anytime?",
+      a: "Yes. Cancel anytime from your PayPal subscription settings. Your Pro access remains active until the end of the billing period."
+    },
+    {
+      q: "What payment methods do you accept?",
+      a: "PayPal — credit cards, debit cards, and PayPal balance. No other payment methods at this time."
+    },
+    {
+      q: "Is there a free trial?",
+      a: "The Free plan is your trial — no time limit. Use it as long as you want, and upgrade when you're ready."
+    },
+    {
+      q: "Do the tools work in Hebrew?",
+      a: "Yes. WizeMoney and WizeHealth support Hebrew fully. The AI responds in the language you write in."
+    },
+  ];
+
+  const list = document.getElementById('faqList');
+  FAQS.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'faq-item';
+    el.innerHTML = `
+      <button class="faq-q" onclick="toggleFaq(${i})">
+        <span>${item.q}</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">${item.a}</div>`;
+    list.appendChild(el);
+  });
+
+  function toggleFaq(i) {
+    const items = document.querySelectorAll('.faq-item');
+    items[i].classList.toggle('open');
+  }
+</script>
 
 <!-- FOOTER -->
 <footer>
