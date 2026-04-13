@@ -132,43 +132,115 @@
     max-width: 500px; margin: 0 auto 60px;
   }
 
+  /* ── NEURAL BACKGROUND ── */
+  .neural-bg {
+    position: relative;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(99,102,241,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(139,92,246,0.06) 0%, transparent 50%),
+      var(--bg);
+  }
+  .neural-bg::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ── BRAIN HUB ── */
+  .brain-hub {
+    display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 60px; position: relative;
+  }
+  .brain-icon {
+    font-size: 4rem; margin-bottom: 20px;
+    filter: drop-shadow(0 0 24px rgba(99,102,241,0.5));
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+  .brain-lines {
+    display: flex; gap: 12px; margin-top: 16px;
+  }
+  .brain-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); opacity: 0.5;
+    animation: blink 2s ease-in-out infinite;
+  }
+  .brain-dot:nth-child(2) { animation-delay: 0.3s; background: var(--accent2); }
+  .brain-dot:nth-child(3) { animation-delay: 0.6s; background: var(--money); }
+  .brain-dot:nth-child(4) { animation-delay: 0.9s; background: #ec4899; }
+  .brain-dot:nth-child(5) { animation-delay: 1.2s; background: #3b82f6; }
+  @keyframes blink {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50%       { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* ── THOUGHT CARDS ── */
   .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    gap: 24px;
   }
   .product-card {
     background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 16px; padding: 32px;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 28px; padding: 32px;
+    transition: transform 0.25s, box-shadow 0.25s;
     text-decoration: none; color: inherit; display: block;
     position: relative; overflow: hidden;
+    box-shadow: 0 0 0 0 var(--card-color, var(--accent));
   }
+  /* colored glow blob behind each card */
   .product-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 140px; height: 140px; border-radius: 50%;
     background: var(--card-color, var(--accent));
-    border-radius: 16px 16px 0 0;
+    opacity: 0.07; filter: blur(30px);
+    transition: opacity 0.3s;
+  }
+  /* thought bubble dots in bottom-left corner */
+  .product-card::after {
+    content: '';
+    position: absolute; bottom: 18px; left: 22px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--card-color, var(--accent));
+    opacity: 0.35;
+    box-shadow:
+      -11px 0 0 -1px var(--card-color, var(--accent)),
+      -20px -4px 0 -3px var(--card-color, var(--accent));
   }
   .product-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.15);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px -10px color-mix(in srgb, var(--card-color, var(--accent)) 40%, transparent);
   }
-  .product-icon { font-size: 2.5rem; margin-bottom: 16px; display: block; }
-  .product-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+  .product-card:hover::before { opacity: 0.14; }
+
+  .product-icon {
+    font-size: 2.2rem; margin-bottom: 16px; display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 56px; height: 56px; border-radius: 16px;
+    background: color-mix(in srgb, var(--card-color, var(--accent)) 15%, transparent);
+  }
+  .product-name { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
   .product-name span { color: var(--card-color); }
-  .product-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; }
+  .product-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.65; margin-bottom: 22px; }
   .product-tags { display: flex; flex-wrap: wrap; gap: 8px; }
   .tag {
-    background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--card-color, var(--accent)) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--card-color, var(--accent)) 25%, transparent);
     padding: 4px 12px; border-radius: 100px; font-size: 0.75rem;
-    color: var(--muted); font-weight: 500;
+    color: color-mix(in srgb, var(--card-color, var(--accent)) 80%, white);
+    font-weight: 600;
   }
   .product-link {
     display: inline-flex; align-items: center; gap: 6px;
-    color: var(--card-color); font-size: 0.85rem; font-weight: 600;
-    margin-top: 20px;
+    color: var(--card-color); font-size: 0.85rem; font-weight: 700;
+    margin-top: 22px;
   }
 
   /* ── PRICING ── */
@@ -383,11 +455,21 @@
 </div>
 
 <!-- PRODUCTS -->
-<section id="products">
+<section id="products" class="neural-bg">
   <div class="container">
-    <div class="section-label">The Suite</div>
-    <h2 class="section-title">Five tools. One mission.</h2>
-    <p class="section-sub">Each tool is built with AI to help you make better decisions in the areas that matter most.</p>
+    <div class="brain-hub fade-up">
+      <div class="brain-icon">🧠</div>
+      <div class="section-label" style="margin-bottom:12px;">The Suite</div>
+      <h2 class="section-title" style="margin-bottom:12px;">One mind. Five capabilities.</h2>
+      <p class="section-sub" style="margin-bottom:0;">Each tool is a thought — AI built to help you decide smarter in money, travel, tax, health, and real estate.</p>
+      <div class="brain-lines">
+        <div class="brain-dot"></div>
+        <div class="brain-dot"></div>
+        <div class="brain-dot"></div>
+        <div class="brain-dot"></div>
+        <div class="brain-dot"></div>
+      </div>
+    </div>
 
     <div class="products-grid">
 
