@@ -2,11 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- GA with consent mode (GDPR) — starts denied, updated on accept -->
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied'});
+gtag('js',new Date());
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPRTN6CJ9K"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MPRTN6CJ9K');</script>
+<script>gtag('config','G-MPRTN6CJ9K');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="WizeLife — AI tools for money, travel, tax, health and real estate. Live smarter, every day.">
 <title>WizeLife — Live Smarter. Every Day.</title>
+<!-- Open Graph -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://wizelife.ai/">
+<meta property="og:title"       content="WizeLife — Live Smarter. Every Day.">
+<meta property="og:description" content="Five AI tools for money, travel, tax, health and real estate. Free to start.">
+<meta property="og:image"       content="https://wizelife.ai/og-image.png">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="WizeLife — Live Smarter. Every Day.">
+<meta name="twitter:description" content="Five AI tools for money, travel, tax, health and real estate.">
+<meta name="twitter:image"      content="https://wizelife.ai/og-image.png">
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236366f1'/><stop offset='1' stop-color='%238b5cf6'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23g)'/><text x='50' y='72' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='58' fill='white'>W</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -786,6 +805,8 @@ footer{
           <h4>Info</h4>
           <a href="#faq">FAQ</a>
           <a href="mailto:hi@wizelife.ai">Contact</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
         </div>
       </div>
     </div>
@@ -841,6 +862,44 @@ window.addEventListener('scroll',()=>{
   document.querySelector('nav').style.background=
     window.scrollY>30?'rgba(3,5,14,0.95)':'rgba(3,5,14,0.7)';
 });
+
+// Cookie consent
+(function(){
+  const STORAGE_KEY='wl_cookie_consent';
+  const val=localStorage.getItem(STORAGE_KEY);
+  if(val==='accepted') gtag('consent','update',{analytics_storage:'granted'});
+  if(val) return; // already decided
+  const banner=document.createElement('div');
+  banner.id='cookie-banner';
+  banner.innerHTML=`
+<div class="cb-inner">
+  <p>We use cookies to understand how WizeLife is used and to improve your experience. See our <a href="privacy.html">Privacy Policy</a>.</p>
+  <div class="cb-btns">
+    <button class="cb-decline" onclick="cookieChoice(false)">Decline</button>
+    <button class="cb-accept" onclick="cookieChoice(true)">Accept</button>
+  </div>
+</div>`;
+  const style=document.createElement('style');
+  style.textContent=`
+#cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;padding:0 16px 16px;}
+.cb-inner{background:#0e1424;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:860px;margin:0 auto;box-shadow:0 -4px 40px rgba(0,0,0,0.5);}
+.cb-inner p{color:#8892a4;font-size:.85rem;line-height:1.5;flex:1;}
+.cb-inner a{color:#818cf8;text-decoration:underline;}
+.cb-btns{display:flex;gap:10px;flex-shrink:0;}
+.cb-decline{padding:9px 18px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#8892a4;font-size:.85rem;cursor:pointer;}
+.cb-accept{padding:9px 18px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:8px;color:#fff;font-size:.85rem;font-weight:600;cursor:pointer;}
+@media(max-width:600px){.cb-inner{flex-direction:column;gap:14px;}.cb-btns{width:100%;}.cb-decline,.cb-accept{flex:1;}}`;
+  document.head.appendChild(style);
+  document.body.appendChild(banner);
+})();
+
+function cookieChoice(accepted){
+  const STORAGE_KEY='wl_cookie_consent';
+  localStorage.setItem(STORAGE_KEY, accepted ? 'accepted' : 'declined');
+  if(accepted) gtag('consent','update',{analytics_storage:'granted',ad_storage:'granted'});
+  const b=document.getElementById('cookie-banner');
+  if(b) b.remove();
+}
 </script>
 </body>
 </html>
