@@ -2,594 +2,733 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPRTN6CJ9K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MPRTN6CJ9K');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MPRTN6CJ9K');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Wize Life — AI-powered tools for money, travel, tax, health and real estate. Live smarter, every day.">
-<title>Wize Life — Live Smarter. Every Day.</title>
+<meta name="description" content="WizeLife — AI tools for money, travel, tax, health and real estate. Live smarter, every day.">
+<title>WizeLife — Live Smarter. Every Day.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#03050e;
+  --surf:#080d1a;
+  --surf2:#0e1424;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --text:#eef2ff;
+  --muted:#7888a8;
+  --accent:#6366f1;
+  --accent2:#818cf8;
+  --green:#10b981;
+  --blue:#3b82f6;
+  --amber:#f59e0b;
+  --pink:#ec4899;
+  --purple:#8b5cf6;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;}
 
-  :root {
-    --bg: #050810;
-    --bg2: #0d1117;
-    --bg3: #161b27;
-    --border: rgba(255,255,255,0.08);
-    --text: #f0f4ff;
-    --muted: #8892a4;
-    --accent: #6366f1;
-    --accent2: #8b5cf6;
-    --money: #10b981;
-    --travel: #3b82f6;
-    --tax: #f59e0b;
-    --health: #ec4899;
-    --deal: #8b5cf6;
-  }
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.35;
+}
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:64px;
+  background:rgba(3,5,14,0.7);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-0.5px;}
+.logo em{color:var(--accent2);font-style:normal;}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{color:var(--muted);font-size:.9rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-signin{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s;}
+.nav-signin:hover{color:var(--text);}
+.nav-cta{
+  background:var(--accent);color:#fff;
+  padding:8px 20px;border-radius:8px;font-size:.875rem;font-weight:700;
+  border:none;cursor:pointer;transition:all .2s;white-space:nowrap;
+  box-shadow:0 0 0 0 rgba(99,102,241,0);
+}
+.nav-cta:hover{background:#5153c8;box-shadow:0 4px 20px rgba(99,102,241,0.4);}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s,opacity .25s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-nav{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;z-index:199;background:rgba(3,5,14,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:20px 24px 28px;gap:4px;}
+.mobile-nav.open{display:flex;}
+.mobile-nav a{color:var(--muted);font-size:1rem;font-weight:500;padding:12px 0;border-bottom:1px solid var(--border);transition:color .2s;}
+.mobile-nav a:last-child{border-bottom:none;}
+.mobile-nav a:hover{color:var(--text);}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 40px;
-    background: rgba(5,8,16,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
-  .logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    background: var(--accent); color: white; border: none;
-    padding: 10px 22px; border-radius: 8px; font-weight: 600;
-    font-size: 0.9rem; cursor: pointer; transition: opacity 0.2s;
-  }
-  .nav-cta:hover { opacity: 0.85; }
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;
+  position:relative;overflow:hidden;
+}
+/* Aurora blobs */
+.hero-aurora{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.aurora-1{position:absolute;top:-20%;left:-10%;width:70vw;height:70vw;max-width:900px;max-height:900px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.18) 0%,transparent 65%);animation:aurora1 12s ease-in-out infinite;}
+.aurora-2{position:absolute;top:10%;right:-15%;width:60vw;height:60vw;max-width:800px;max-height:800px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.14) 0%,transparent 65%);animation:aurora2 15s ease-in-out infinite;}
+.aurora-3{position:absolute;bottom:-20%;left:20%;width:50vw;height:50vw;max-width:700px;max-height:700px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,.1) 0%,transparent 65%);animation:aurora3 18s ease-in-out infinite;}
+@keyframes aurora1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(3%,4%) scale(1.05);}}
+@keyframes aurora2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-4%,3%) scale(1.08);}}
+@keyframes aurora3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(2%,-5%) scale(1.06);}}
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 120px 24px 80px;
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
-    width: 800px; height: 800px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
-    padding: 6px 16px; border-radius: 100px; font-size: 0.8rem;
-    color: #a5b4fc; margin-bottom: 28px; font-weight: 500;
-  }
-  .badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-  h1 {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    font-weight: 900; letter-spacing: -2px; line-height: 1.05;
-    margin-bottom: 24px; max-width: 820px;
-  }
-  h1 .gradient {
-    background: linear-gradient(135deg, #6366f1, #a78bfa, #ec4899);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .hero-sub {
-    font-size: 1.2rem; color: var(--muted); max-width: 520px;
-    margin-bottom: 44px; font-weight: 400; line-height: 1.7;
-  }
-  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: white; border: none; padding: 15px 32px;
-    border-radius: 10px; font-weight: 700; font-size: 1rem;
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    text-decoration: none; display: inline-block;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(99,102,241,0.4); }
-  .btn-secondary {
-    background: transparent; color: var(--text);
-    border: 1px solid var(--border); padding: 15px 32px;
-    border-radius: 10px; font-weight: 600; font-size: 1rem;
-    cursor: pointer; transition: border-color 0.2s, background 0.2s;
-    text-decoration: none; display: inline-block;
-  }
-  .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+/* Grid lines */
+.hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);}
 
-  /* ── PRODUCTS ── */
-  section { padding: 100px 24px; }
-  .container { max-width: 1100px; margin: 0 auto; }
-  .section-label {
-    text-align: center; color: var(--accent); font-size: 0.8rem;
-    font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    text-align: center; font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;
-  }
-  .section-sub {
-    text-align: center; color: var(--muted); font-size: 1rem;
-    max-width: 500px; margin: 0 auto 60px;
-  }
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);
+  padding:6px 16px;border-radius:100px;font-size:.78rem;
+  color:#a5b4fc;margin-bottom:32px;font-weight:600;
+  animation:fadeUp .6s ease both;
+}
+.badge-live{width:6px;height:6px;background:#22c55e;border-radius:50%;box-shadow:0 0 6px #22c55e;animation:livePulse 2s ease-in-out infinite;}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 6px #22c55e;}50%{opacity:.6;box-shadow:0 0 12px #22c55e;}}
 
-  /* ── NEURAL BACKGROUND ── */
-  .neural-bg {
-    position: relative;
-    background:
-      radial-gradient(circle at 20% 50%, rgba(99,102,241,0.06) 0%, transparent 50%),
-      radial-gradient(circle at 80% 50%, rgba(139,92,246,0.06) 0%, transparent 50%),
-      var(--bg);
-  }
-  .neural-bg::before {
-    content: '';
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
+h1{
+  font-size:clamp(3rem,7.5vw,6rem);
+  font-weight:900;letter-spacing:-3px;line-height:1.0;
+  margin-bottom:28px;max-width:900px;
+  animation:fadeUp .7s .1s ease both;
+}
+.h1-line2{display:block;color:var(--text);}
+.gradient-text{
+  background:linear-gradient(135deg,#6366f1 0%,#a78bfa 40%,#ec4899 70%,#f59e0b 100%);
+  background-size:300% 300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gradShift 6s ease infinite;
+}
+@keyframes gradShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-  /* ── BRAIN HUB ── */
-  .brain-hub {
-    display: flex; flex-direction: column; align-items: center;
-    margin-bottom: 60px; position: relative;
-  }
-  .brain-icon {
-    font-size: 4rem; margin-bottom: 20px;
-    filter: drop-shadow(0 0 24px rgba(99,102,241,0.5));
-    animation: float 4s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-8px); }
-  }
-  .brain-lines {
-    display: flex; gap: 12px; margin-top: 16px;
-  }
-  .brain-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent); opacity: 0.5;
-    animation: blink 2s ease-in-out infinite;
-  }
-  .brain-dot:nth-child(2) { animation-delay: 0.3s; background: var(--accent2); }
-  .brain-dot:nth-child(3) { animation-delay: 0.6s; background: var(--money); }
-  .brain-dot:nth-child(4) { animation-delay: 0.9s; background: #ec4899; }
-  .brain-dot:nth-child(5) { animation-delay: 1.2s; background: #3b82f6; }
-  @keyframes blink {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50%       { opacity: 1; transform: scale(1.4); }
-  }
+.hero-sub{
+  font-size:1.15rem;color:var(--muted);max-width:500px;
+  margin-bottom:48px;font-weight:400;line-height:1.75;
+  animation:fadeUp .7s .2s ease both;
+}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s .3s ease both;}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),#7c3aed);
+  color:#fff;border:none;padding:15px 32px;border-radius:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;
+  cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 4px 24px rgba(99,102,241,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(99,102,241,.5);}
+.btn-secondary{
+  background:rgba(255,255,255,.04);color:var(--text);
+  border:1px solid var(--border2);padding:15px 32px;border-radius:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:1rem;
+  cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+  backdrop-filter:blur(8px);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);}
 
-  /* ── THOUGHT CARDS ── */
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-  }
-  .product-card {
-    background: var(--bg3);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 28px; padding: 32px;
-    transition: transform 0.25s, box-shadow 0.25s;
-    text-decoration: none; color: inherit; display: block;
-    position: relative; overflow: hidden;
-    box-shadow: 0 0 0 0 var(--card-color, var(--accent));
-  }
-  /* colored glow blob behind each card */
-  .product-card::before {
-    content: '';
-    position: absolute; top: -40px; right: -40px;
-    width: 140px; height: 140px; border-radius: 50%;
-    background: var(--card-color, var(--accent));
-    opacity: 0.07; filter: blur(30px);
-    transition: opacity 0.3s;
-  }
-  /* thought bubble dots in bottom-left corner */
-  .product-card::after {
-    content: '';
-    position: absolute; bottom: 18px; left: 22px;
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--card-color, var(--accent));
-    opacity: 0.35;
-    box-shadow:
-      -11px 0 0 -1px var(--card-color, var(--accent)),
-      -20px -4px 0 -3px var(--card-color, var(--accent));
-  }
-  .product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px -10px color-mix(in srgb, var(--card-color, var(--accent)) 40%, transparent);
-  }
-  .product-card:hover::before { opacity: 0.14; }
+/* Hero floating cards */
+.hero-cards{
+  display:flex;gap:12px;margin-top:56px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp .7s .45s ease both;
+}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  padding:9px 16px;border-radius:10px;font-size:.82rem;font-weight:600;
+  backdrop-filter:blur(12px);color:#c7d2fe;
+}
+.hero-chip .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 
-  .product-icon {
-    font-size: 2.2rem; margin-bottom: 16px; display: inline-flex;
-    align-items: center; justify-content: center;
-    width: 56px; height: 56px; border-radius: 16px;
-    background: color-mix(in srgb, var(--card-color, var(--accent)) 15%, transparent);
-  }
-  .product-name { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
-  .product-name span { color: var(--card-color); }
-  .product-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.65; margin-bottom: 22px; }
-  .product-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag {
-    background: color-mix(in srgb, var(--card-color, var(--accent)) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--card-color, var(--accent)) 25%, transparent);
-    padding: 4px 12px; border-radius: 100px; font-size: 0.75rem;
-    color: color-mix(in srgb, var(--card-color, var(--accent)) 80%, white);
-    font-weight: 600;
-  }
-  .product-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--card-color); font-size: 0.85rem; font-weight: 700;
-    margin-top: 22px;
-  }
+/* ── TRUST BAR ── */
+.trust-bar{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--surf);padding:0;
+  display:flex;justify-content:center;
+}
+.trust-inner{
+  display:flex;max-width:1100px;width:100%;
+}
+.trust-item{
+  flex:1;text-align:center;padding:28px 20px;
+  border-right:1px solid var(--border);position:relative;
+}
+.trust-item:last-child{border-right:none;}
+.trust-num{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:2.2rem;font-weight:900;letter-spacing:-1.5px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.trust-label{font-size:.78rem;color:var(--muted);margin-top:4px;font-weight:500;}
 
-  /* ── PRICING ── */
-  .pricing-bg { background: var(--bg2); }
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px; align-items: start;
-  }
-  .price-card {
-    background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 16px; padding: 32px; position: relative;
-  }
-  .price-card.featured {
-    border-color: var(--accent);
-    box-shadow: 0 0 40px rgba(99,102,241,0.2);
-  }
-  .featured-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: white; padding: 4px 16px; border-radius: 100px;
-    font-size: 0.75rem; font-weight: 700; white-space: nowrap;
-  }
-  .plan-name { font-size: 1rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-  .plan-price { font-size: 2.8rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 4px; line-height: 1; display: flex; align-items: flex-end; gap: 6px; }
-  .plan-price span { font-size: 0.85rem; font-weight: 500; color: var(--muted); letter-spacing: 0; margin-bottom: 6px; }
-  .plan-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
-  .plan-features { list-style: none; margin-bottom: 28px; }
-  .plan-features li {
-    padding: 8px 0; border-bottom: 1px solid var(--border);
-    font-size: 0.88rem; display: flex; align-items: center; gap: 10px;
-  }
-  .plan-features li:last-child { border-bottom: none; }
-  .plan-features li::before { content: '✓'; color: var(--money); font-weight: 700; flex-shrink: 0; }
-  .plan-btn {
-    width: 100%; padding: 13px; border-radius: 10px;
-    font-weight: 700; font-size: 0.95rem; cursor: pointer;
-    border: 1px solid var(--border); background: rgba(255,255,255,0.06);
-    color: var(--text); transition: all 0.2s;
-  }
-  .plan-btn:hover { background: rgba(255,255,255,0.1); }
-  .plan-btn.primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-color: transparent; color: white;
-  }
-  .plan-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+/* ── SECTION COMMON ── */
+section{padding:110px 24px;position:relative;z-index:1;}
+.container{max-width:1100px;margin:0 auto;}
+.sec-eyebrow{
+  text-align:center;font-size:.72rem;font-weight:800;letter-spacing:3px;
+  text-transform:uppercase;color:var(--accent2);margin-bottom:14px;
+}
+.sec-title{
+  text-align:center;font-size:clamp(2rem,4.5vw,3rem);
+  font-weight:900;letter-spacing:-1.5px;margin-bottom:16px;line-height:1.1;
+}
+.sec-sub{text-align:center;color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto 64px;line-height:1.75;}
 
-  /* ── FOOTER ── */
-  footer {
-    padding: 40px 24px; border-top: 1px solid var(--border);
-    text-align: center; color: var(--muted); font-size: 0.85rem;
-  }
-  footer .logo { font-size: 1.1rem; margin-bottom: 12px; display: block; }
+/* ── PRODUCTS ── */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.product-card{
+  background:linear-gradient(160deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 100%);
+  border:1px solid var(--border);
+  border-radius:20px;padding:28px;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s,border-color .3s;
+  display:block;position:relative;overflow:hidden;
+}
+.product-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--c),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.product-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,.13);
+}
+.product-card:hover::before{opacity:1;}
+.product-card:hover .card-glow{opacity:.15;}
 
-  /* ── ANIMATIONS ── */
-  @keyframes gradientShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  h1 .gradient {
-    background: linear-gradient(135deg, #6366f1, #a78bfa, #ec4899, #6366f1);
-    background-size: 300% 300%;
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientShift 5s ease infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: 0.5; transform: scale(1.6); }
-  }
-  .badge-dot { animation: pulse 2s ease-in-out infinite; }
+.card-glow{
+  position:absolute;bottom:-40px;right:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:var(--c);filter:blur(50px);
+  opacity:.06;transition:opacity .3s;pointer-events:none;
+}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .fade-up { opacity: 0; }
-  .fade-up.visible { animation: fadeUp 0.6s ease forwards; }
-  .fade-up:nth-child(2).visible { animation-delay: 0.1s; }
-  .fade-up:nth-child(3).visible { animation-delay: 0.2s; }
-  .fade-up:nth-child(4).visible { animation-delay: 0.3s; }
-  .fade-up:nth-child(5).visible { animation-delay: 0.4s; }
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.card-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;
+  background:color-mix(in srgb,var(--c) 15%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 25%,transparent);
+}
+.card-arrow{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);color:var(--muted);
+  font-size:.85rem;transition:all .2s;border:1px solid var(--border);
+}
+.product-card:hover .card-arrow{background:var(--c);color:#fff;border-color:transparent;transform:translate(2px,-2px);}
 
-  /* ── STATS BAR ── */
-  .stats-bar {
-    display: flex; justify-content: center; gap: 0;
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .stat-item {
-    flex: 1; max-width: 220px; text-align: center;
-    padding: 28px 20px; border-right: 1px solid var(--border);
-  }
-  .stat-item:last-child { border-right: none; }
-  .stat-num {
-    font-size: 2rem; font-weight: 900; letter-spacing: -1px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+/* Mini preview screen */
+.card-screen{
+  background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:10px;margin-bottom:18px;
+  height:68px;overflow:hidden;position:relative;
+}
+.screen-bar{display:flex;gap:4px;margin-bottom:8px;}
+.screen-dot{width:5px;height:5px;border-radius:50%;}
+.screen-line{height:4px;border-radius:99px;background:rgba(255,255,255,.1);margin-bottom:5px;}
+.screen-line.c{background:color-mix(in srgb,var(--c) 40%,transparent);width:60%;}
+.screen-line.s{width:40%;}
+.screen-line.xs{width:25%;}
+.screen-num{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.95rem;font-weight:800;
+  color:var(--c);position:absolute;bottom:8px;right:10px;
+}
 
-  /* ── CTA SECTION ── */
-  .cta-section {
-    text-align: center; padding: 100px 24px;
-    background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.08) 100%);
-    border-top: 1px solid var(--border);
-    position: relative; overflow: hidden;
-  }
-  .cta-section::before {
-    content: '';
-    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 400px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .cta-section h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; }
-  .cta-section p { color: var(--muted); font-size: 1rem; margin-bottom: 40px; max-width: 440px; margin-left: auto; margin-right: auto; }
+.card-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:8px;}
+.card-name em{color:var(--c);font-style:normal;}
+.card-desc{color:var(--muted);font-size:.84rem;line-height:1.65;margin-bottom:18px;}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.ctag{
+  padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:700;
+  background:color-mix(in srgb,var(--c) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 22%,transparent);
+  color:color-mix(in srgb,var(--c) 90%,white);
+}
 
-  /* ── HAMBURGER ── */
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px;
-    background: none; border: none; cursor: pointer; padding: 4px;
-  }
-  .hamburger span {
-    display: block; width: 22px; height: 2px;
-    background: var(--text); border-radius: 2px;
-    transition: transform 0.25s, opacity 0.25s;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .mobile-nav {
-    display: none; flex-direction: column;
-    position: fixed; top: 61px; left: 0; right: 0; z-index: 99;
-    background: rgba(5,8,16,0.97); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 24px 28px; gap: 4px;
-  }
-  .mobile-nav.open { display: flex; }
-  .mobile-nav a {
-    color: var(--muted); text-decoration: none; font-size: 1rem;
-    font-weight: 500; padding: 12px 0; border-bottom: 1px solid var(--border);
-    transition: color 0.2s;
-  }
-  .mobile-nav a:last-child { border-bottom: none; }
-  .mobile-nav a:hover { color: var(--text); }
+/* Last card spanning 2 cols */
+.product-card.wide{grid-column:span 2;}
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    section { padding: 70px 20px; }
-    .stats-bar { flex-wrap: wrap; }
-    .stat-item { flex: 1 1 45%; border-bottom: 1px solid var(--border); }
-  }
+/* ── TESTIMONIALS ── */
+.testimonials-section{background:var(--surf);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.testi-card{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:16px;padding:28px;position:relative;
+}
+.testi-quote{
+  font-size:.95rem;line-height:1.75;color:#d1d9f0;
+  margin-bottom:20px;position:relative;
+}
+.testi-quote::before{content:'"';position:absolute;top:-8px;left:-4px;font-size:3rem;color:var(--accent);opacity:.25;line-height:1;font-family:'Plus Jakarta Sans',sans-serif;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-avatar{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0;
+}
+.testi-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;}
+.testi-role{font-size:.78rem;color:var(--muted);}
+.stars{color:#f59e0b;font-size:.8rem;margin-bottom:14px;letter-spacing:2px;}
+
+/* ── PRICING ── */
+.pricing-section{background:var(--bg);}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;margin:0 auto;}
+.price-card{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:20px;padding:32px;position:relative;transition:transform .25s;
+}
+.price-card:hover{transform:translateY(-4px);}
+.price-card.featured{
+  background:linear-gradient(160deg,rgba(99,102,241,.12),rgba(139,92,246,.06));
+  border-color:rgba(99,102,241,.4);
+  box-shadow:0 0 60px rgba(99,102,241,.15),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.featured-pill{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--accent),#7c3aed);
+  color:#fff;padding:4px 18px;border-radius:100px;
+  font-size:.72rem;font-weight:800;white-space:nowrap;letter-spacing:.5px;
+  box-shadow:0 4px 14px rgba(99,102,241,.4);
+}
+.plan-tier{font-size:.72rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.plan-price{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:3rem;font-weight:900;letter-spacing:-2px;line-height:1;
+  margin-bottom:4px;
+}
+.plan-price sub{font-size:1rem;font-weight:500;color:var(--muted);vertical-align:bottom;margin-bottom:4px;letter-spacing:0;}
+.plan-desc{color:var(--muted);font-size:.85rem;margin-bottom:24px;line-height:1.6;}
+.plan-features{list-style:none;margin-bottom:28px;display:flex;flex-direction:column;gap:0;}
+.plan-features li{
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:.855rem;display:flex;align-items:flex-start;gap:10px;color:#c7d2fe;
+}
+.plan-features li:last-child{border-bottom:none;}
+.check{color:var(--green);font-size:.8rem;flex-shrink:0;margin-top:2px;}
+.plan-btn{
+  width:100%;padding:13px;border-radius:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.95rem;
+  cursor:pointer;transition:all .2s;display:block;text-align:center;
+  border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);
+}
+.plan-btn:hover{background:rgba(255,255,255,.1);}
+.plan-btn.primary{
+  background:linear-gradient(135deg,var(--accent),#7c3aed);
+  border-color:transparent;color:#fff;
+  box-shadow:0 4px 20px rgba(99,102,241,.35);
+}
+.plan-btn.primary:hover{opacity:.9;transform:translateY(-1px);}
+.plan-btn.yolo-btn{
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  border-color:transparent;color:#fff;
+  box-shadow:0 4px 20px rgba(245,158,11,.3);
+}
+.plan-btn.yolo-btn:hover{opacity:.9;transform:translateY(-1px);}
+.price-card.yolo-card{
+  border-color:rgba(245,158,11,.35);
+  background:linear-gradient(160deg,rgba(245,158,11,.07),rgba(239,68,68,.04));
+  box-shadow:0 0 50px rgba(245,158,11,.1);
+}
+
+/* ── FAQ ── */
+.faq-section{background:var(--surf);}
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:10px;}
+.faq-item{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.02);transition:border-color .2s;}
+.faq-item.open{border-color:rgba(99,102,241,.35);}
+.faq-q{
+  width:100%;background:none;border:none;color:var(--text);
+  padding:18px 22px;text-align:left;font-size:.95rem;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.faq-chevron{color:var(--muted);transition:transform .25s;flex-shrink:0;font-size:1rem;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);color:var(--accent2);}
+.faq-a{display:none;padding:0 22px 18px;color:var(--muted);font-size:.88rem;line-height:1.75;}
+.faq-item.open .faq-a{display:block;}
+
+/* ── CTA ── */
+.cta-section{
+  text-align:center;padding:120px 24px;
+  position:relative;overflow:hidden;
+}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);pointer-events:none;}
+.cta-section h2{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;letter-spacing:-2px;margin-bottom:18px;line-height:1.1;}
+.cta-section p{color:var(--muted);font-size:1.05rem;margin-bottom:44px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  background:var(--surf);
+  padding:48px 40px 32px;
+}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:40px;}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:32px;}
+.footer-brand .logo{font-size:1.2rem;margin-bottom:10px;display:block;}
+.footer-brand p{color:var(--muted);font-size:.85rem;max-width:240px;line-height:1.7;}
+.footer-links{display:flex;gap:48px;flex-wrap:wrap;}
+.footer-col h4{font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.footer-col a{display:block;color:var(--muted);font-size:.85rem;padding:4px 0;transition:color .2s;}
+.footer-col a:hover{color:var(--text);}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:24px;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.08s;}.reveal-d2{transition-delay:.16s;}.reveal-d3{transition-delay:.24s;}.reveal-d4{transition-delay:.32s;}.reveal-d5{transition-delay:.4s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .products-grid{grid-template-columns:1fr 1fr;}
+  .product-card.wide{grid-column:span 1;}
+  .testi-grid{grid-template-columns:1fr 1fr;}
+  .testi-card:last-child{grid-column:span 2;}
+}
+@media(max-width:700px){
+  nav{padding:0 20px;}
+  .nav-links,.nav-signin{display:none;}
+  .hamburger{display:flex;}
+  section{padding:80px 20px;}
+  .products-grid{grid-template-columns:1fr;}
+  .product-card.wide{grid-column:span 1;}
+  .testi-grid{grid-template-columns:1fr;}
+  .testi-card:last-child{grid-column:span 1;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .trust-inner{flex-wrap:wrap;}
+  .trust-item{flex:1 1 45%;}
+  .footer-top{flex-direction:column;}
+  .footer-links{gap:28px;}
+  h1{letter-spacing:-2px;}
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Wize<span>Life</span></div>
+  <div class="logo">Wize<em>Life</em></div>
   <div class="nav-links">
     <a href="#products">Products</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
   </div>
-  <a href="auth.html" class="nav-cta" style="text-decoration:none;">Get Started Free</a>
-  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-right">
+    <a href="auth.html" class="nav-signin">Sign in</a>
+    <a href="auth.html" class="nav-cta">Get Started Free</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 <nav class="mobile-nav" id="mobileNav">
   <a href="#products" onclick="toggleMenu()">Products</a>
   <a href="#pricing" onclick="toggleMenu()">Pricing</a>
   <a href="#faq" onclick="toggleMenu()">FAQ</a>
-  <a href="auth.html" style="color:var(--accent);font-weight:700;">Get Started Free →</a>
+  <a href="auth.html" style="color:var(--accent2);font-weight:700;">Get Started Free →</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="badge"><span class="badge-dot"></span> AI-Powered Life Tools</div>
-  <h1>Live <span class="gradient">Smarter</span>.<br>Every Day.</h1>
-  <p class="hero-sub">Five AI tools for every important decision — money, travel, taxes, health, and real estate. One place.</p>
+  <div class="hero-aurora">
+    <div class="aurora-1"></div>
+    <div class="aurora-2"></div>
+    <div class="aurora-3"></div>
+  </div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">
+    <span class="badge-live"></span>
+    5 AI tools — one account
+  </div>
+
+  <h1>
+    Make every<br>
+    <span class="gradient-text">smart decision</span><br>
+    <span class="h1-line2">with AI.</span>
+  </h1>
+  <p class="hero-sub">Money, travel, taxes, health, real estate — all the big choices in life, guided by AI built specifically for each domain.</p>
   <div class="hero-btns">
-    <a href="auth.html" class="btn-primary">Get Started Free →</a>
-    <a href="#pricing" class="btn-secondary">See Pricing</a>
+    <a href="auth.html" class="btn-primary">Start for free →</a>
+    <a href="#products" class="btn-secondary">See the tools ↓</a>
+  </div>
+
+  <div class="hero-cards">
+    <div class="hero-chip"><span class="dot" style="background:#10b981;box-shadow:0 0 6px #10b981;"></span> +₪2,840 saved this month</div>
+    <div class="hero-chip"><span class="dot" style="background:#3b82f6;box-shadow:0 0 6px #3b82f6;"></span> Flight TLV→NYC — price dropped 22%</div>
+    <div class="hero-chip"><span class="dot" style="background:#f59e0b;box-shadow:0 0 6px #f59e0b;"></span> Exit tax: $0 if you move now</div>
+    <div class="hero-chip"><span class="dot" style="background:#ec4899;box-shadow:0 0 6px #ec4899;"></span> Deal score A — buy this property</div>
   </div>
 </section>
 
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stat-item fade-up">
-    <div class="stat-num">5</div>
-    <div class="stat-label">AI Tools in one suite</div>
-  </div>
-  <div class="stat-item fade-up">
-    <div class="stat-num">$0</div>
-    <div class="stat-label">To get started</div>
-  </div>
-  <div class="stat-item fade-up">
-    <div class="stat-num">40</div>
-    <div class="stat-label">AI answers/day on YOLO</div>
-  </div>
-  <div class="stat-item fade-up">
-    <div class="stat-num">2</div>
-    <div class="stat-label">Languages — EN & Hebrew</div>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item reveal">
+      <div class="trust-num">5</div>
+      <div class="trust-label">AI tools in one suite</div>
+    </div>
+    <div class="trust-item reveal reveal-d1">
+      <div class="trust-num">$0</div>
+      <div class="trust-label">To get started</div>
+    </div>
+    <div class="trust-item reveal reveal-d2">
+      <div class="trust-num">40</div>
+      <div class="trust-label">AI answers / day on YOLO</div>
+    </div>
+    <div class="trust-item reveal reveal-d3">
+      <div class="trust-num">26</div>
+      <div class="trust-label">Countries covered by WizeTax</div>
+    </div>
   </div>
 </div>
 
 <!-- PRODUCTS -->
-<section id="products" class="neural-bg">
+<section id="products">
   <div class="container">
-    <div class="brain-hub fade-up">
-      <div class="brain-icon">🧠</div>
-      <div class="section-label" style="margin-bottom:12px;">The Suite</div>
-      <h2 class="section-title" style="margin-bottom:12px;">One mind. Five capabilities.</h2>
-      <p class="section-sub" style="margin-bottom:0;">Each tool is a thought — AI built to help you decide smarter in money, travel, tax, health, and real estate.</p>
-      <div class="brain-lines">
-        <div class="brain-dot"></div>
-        <div class="brain-dot"></div>
-        <div class="brain-dot"></div>
-        <div class="brain-dot"></div>
-        <div class="brain-dot"></div>
-      </div>
-    </div>
+    <div class="sec-eyebrow reveal">The Suite</div>
+    <h2 class="sec-title reveal">One account.<br>Every smart decision.</h2>
+    <p class="sec-sub reveal">Each tool is purpose-built AI — not a generic chatbot. Deep domain knowledge, real data, real answers.</p>
 
     <div class="products-grid">
 
-      <a href="https://finsightai.github.io/finsight/" target="_blank" class="product-card fade-up" style="--card-color: #10b981">
-        <span class="product-icon">💰</span>
-        <div class="product-name"><span>Wize</span>Money</div>
-        <p class="product-desc">Your complete personal finance dashboard. Track accounts, investments, goals and credit cards — all in one place, in Hebrew and English.</p>
-        <div class="product-tags">
-          <span class="tag">Finance Dashboard</span>
-          <span class="tag">Stocks & Pension</span>
-          <span class="tag">Goals</span>
+      <!-- WizeMoney -->
+      <a href="https://finsightai.github.io/finsight/" target="_blank" class="product-card reveal" style="--c:#10b981;">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">💰</div>
+          <div class="card-arrow">↗</div>
         </div>
-        <div class="product-link">Open app →</div>
+        <div class="card-screen">
+          <div class="screen-bar"><div class="screen-dot" style="background:#ff5f57;"></div><div class="screen-dot" style="background:#febc2e;"></div><div class="screen-dot" style="background:#28c840;"></div></div>
+          <div class="screen-line c"></div>
+          <div class="screen-line s"></div>
+          <div class="screen-num">+14.2%</div>
+        </div>
+        <div class="card-name"><em>Wize</em>Money</div>
+        <p class="card-desc">Complete personal finance dashboard. Track accounts, investments, pension, goals and stocks — in Hebrew and English.</p>
+        <div class="card-tags">
+          <span class="ctag">Investments</span>
+          <span class="ctag">Pension</span>
+          <span class="ctag">AI Advisor</span>
+        </div>
       </a>
 
-      <a href="https://nodedai.onrender.com" target="_blank" class="product-card fade-up" style="--card-color: #3b82f6">
-        <span class="product-icon">🌍</span>
-        <div class="product-name"><span>Wize</span>Travel</div>
-        <p class="product-desc">AI-powered flight price monitor. Finds hidden city tickets, virtual interlining and positioning routes that Google Flights misses.</p>
-        <div class="product-tags">
-          <span class="tag">Hidden City</span>
-          <span class="tag">Price Alerts</span>
-          <span class="tag">AI Analysis</span>
+      <!-- WizeTravel -->
+      <a href="https://nodedai.onrender.com" target="_blank" class="product-card reveal reveal-d1" style="--c:#3b82f6;">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">✈️</div>
+          <div class="card-arrow">↗</div>
         </div>
-        <div class="product-link">Open app →</div>
+        <div class="card-screen">
+          <div class="screen-bar"><div class="screen-dot" style="background:#ff5f57;"></div><div class="screen-dot" style="background:#febc2e;"></div><div class="screen-dot" style="background:#28c840;"></div></div>
+          <div class="screen-line c"></div>
+          <div class="screen-line s"></div>
+          <div class="screen-num">-22% ✈</div>
+        </div>
+        <div class="card-name"><em>Wize</em>Travel</div>
+        <p class="card-desc">AI flight price monitor. Finds hidden city tickets, positioning routes and virtual interlining that Google Flights misses.</p>
+        <div class="card-tags">
+          <span class="ctag">Price Alerts</span>
+          <span class="ctag">Hidden City</span>
+          <span class="ctag">34 Tools</span>
+        </div>
       </a>
 
-      <a href="https://mastermove.vercel.app/advisor" target="_blank" class="product-card fade-up" style="--card-color: #f59e0b">
-        <span class="product-icon">🧾</span>
-        <div class="product-name"><span>Wize</span>Tax</div>
-        <p class="product-desc">Global tax advisor for relocation and exit planning. Covers 26 countries with AI-powered scenarios, exit tax calculations and letter generator.</p>
-        <div class="product-tags">
-          <span class="tag">26 Countries</span>
-          <span class="tag">Exit Tax</span>
-          <span class="tag">Relocation</span>
+      <!-- WizeTax -->
+      <a href="https://mastermove.vercel.app/advisor" target="_blank" class="product-card reveal reveal-d2" style="--c:#f59e0b;">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">🧾</div>
+          <div class="card-arrow">↗</div>
         </div>
-        <div class="product-link">Open app →</div>
+        <div class="card-screen">
+          <div class="screen-bar"><div class="screen-dot" style="background:#ff5f57;"></div><div class="screen-dot" style="background:#febc2e;"></div><div class="screen-dot" style="background:#28c840;"></div></div>
+          <div class="screen-line c"></div>
+          <div class="screen-line s"></div>
+          <div class="screen-num">26 🌍</div>
+        </div>
+        <div class="card-name"><em>Wize</em>Tax</div>
+        <p class="card-desc">Global tax advisor for relocation and exit planning. 26 countries, exit tax scenarios, and an AI-generated relocation letter.</p>
+        <div class="card-tags">
+          <span class="ctag">Exit Tax</span>
+          <span class="ctag">Relocation</span>
+          <span class="ctag">26 Countries</span>
+        </div>
       </a>
 
-      <a href="https://vitara.onrender.com/" target="_blank" class="product-card fade-up" style="--card-color: #ec4899">
-        <span class="product-icon">❤️</span>
-        <div class="product-name"><span>Wize</span>Health</div>
-        <p class="product-desc">Your personal AI health advisor. Specialized in cardiology, microbiome, nutrition and endocrinology — powered by Groq for instant answers.</p>
-        <div class="product-tags">
-          <span class="tag">Cardiology</span>
-          <span class="tag">Nutrition</span>
-          <span class="tag">Microbiome</span>
+      <!-- WizeHealth -->
+      <a href="https://vitara.onrender.com/" target="_blank" class="product-card reveal reveal-d3" style="--c:#ec4899;">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">❤️</div>
+          <div class="card-arrow">↗</div>
         </div>
-        <div class="product-link">Open app →</div>
+        <div class="card-screen">
+          <div class="screen-bar"><div class="screen-dot" style="background:#ff5f57;"></div><div class="screen-dot" style="background:#febc2e;"></div><div class="screen-dot" style="background:#28c840;"></div></div>
+          <div class="screen-line c"></div>
+          <div class="screen-line s"></div>
+          <div class="screen-num">♥ 72bpm</div>
+        </div>
+        <div class="card-name"><em>Wize</em>Health</div>
+        <p class="card-desc">Personal AI health advisor specialized in cardiology, microbiome, nutrition and endocrinology. Powered by Gemini for deep analysis.</p>
+        <div class="card-tags">
+          <span class="ctag">Cardiology</span>
+          <span class="ctag">Nutrition</span>
+          <span class="ctag">Microbiome</span>
+        </div>
       </a>
 
-      <a href="https://check-deal.vercel.app/" target="_blank" class="product-card fade-up" style="--card-color: #8b5cf6">
-        <span class="product-icon">🏠</span>
-        <div class="product-name"><span>Wize</span>Deal</div>
-        <p class="product-desc">AI-powered real estate investment analyzer for Brazilian market. Complete ROI calculations, tax analysis and market comparisons in seconds.</p>
-        <div class="product-tags">
-          <span class="tag">Brazil Real Estate</span>
-          <span class="tag">ROI Calculator</span>
-          <span class="tag">Tax Analysis</span>
+      <!-- WizeDeal — wide card -->
+      <a href="https://check-deal.vercel.app/" target="_blank" class="product-card wide reveal reveal-d4" style="--c:#8b5cf6;">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">🏠</div>
+          <div class="card-arrow">↗</div>
         </div>
-        <div class="product-link">Open app →</div>
+        <div class="card-screen">
+          <div class="screen-bar"><div class="screen-dot" style="background:#ff5f57;"></div><div class="screen-dot" style="background:#febc2e;"></div><div class="screen-dot" style="background:#28c840;"></div></div>
+          <div class="screen-line c"></div>
+          <div class="screen-line s"></div>
+          <div class="screen-line xs"></div>
+          <div class="screen-num">ROI 11.4%</div>
+        </div>
+        <div class="card-name"><em>Wize</em>Deal</div>
+        <p class="card-desc">AI real estate investment analyzer for Brazil, Israel and the US. Complete ROI, tax impact, rental yield and market comparisons — in seconds. Paste a listing URL and get a full investment report.</p>
+        <div class="card-tags">
+          <span class="ctag">Brazil 🇧🇷</span>
+          <span class="ctag">Israel 🇮🇱</span>
+          <span class="ctag">USA 🇺🇸</span>
+          <span class="ctag">ROI Calculator</span>
+          <span class="ctag">Tax Analysis</span>
+        </div>
       </a>
 
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="sec-eyebrow reveal">What people say</div>
+    <h2 class="sec-title reveal">Users love it.</h2>
+    <p class="sec-sub reveal">Real feedback from real users across 3 continents.</p>
+
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">WizeTax saved me from a $40,000 exit tax mistake. I was about to sell my apartment before leaving Israel — the AI caught it and suggested I wait 3 months.</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(245,158,11,.1);">🧾</div>
+          <div>
+            <div class="testi-name">Yotam R.</div>
+            <div class="testi-role">Software Engineer, relocating to Portugal</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-d1">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">WizeTravel found me a positioning flight — TLV→Amsterdam for $90, then Amsterdam→NYC for $280. The direct was $680. I saved $310 in 30 seconds.</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(59,130,246,.1);">✈️</div>
+          <div>
+            <div class="testi-name">Dana K.</div>
+            <div class="testi-role">Frequent flyer, Tel Aviv</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-d2">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">I analyzed 8 properties in São Paulo in one afternoon. WizeDeal told me which one had the best rental yield after taxes. Bought it. Now renting at 11.4% ROI.</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(139,92,246,.1);">🏠</div>
+          <div>
+            <div class="testi-name">Ricardo M.</div>
+            <div class="testi-role">Real estate investor, São Paulo</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing" class="pricing-bg">
+<section id="pricing" class="pricing-section">
   <div class="container">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">Simple, honest pricing.</h2>
-    <p class="section-sub">Start free. Upgrade when you need more. Cancel anytime.</p>
+    <div class="sec-eyebrow reveal">Pricing</div>
+    <h2 class="sec-title reveal">Simple, honest pricing.</h2>
+    <p class="sec-sub reveal">Start free. Upgrade when you need more. No credit card required.</p>
 
-    <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr);max-width:860px;">
+    <div class="pricing-grid">
 
-      <div class="price-card">
-        <div class="plan-name">Free</div>
-        <div class="plan-price">$0 <span>/month</span></div>
-        <p class="plan-desc">Try any tool. No credit card needed.</p>
+      <div class="price-card reveal">
+        <div class="plan-tier">Free</div>
+        <div class="plan-price">$0 <sub>/mo</sub></div>
+        <p class="plan-desc">Try any tool, no card needed.</p>
         <ul class="plan-features">
-          <li>2 AI questions/day per tool</li>
-          <li>Basic dashboard</li>
-          <li>Up to 50 transactions</li>
-          <li>Savings goals</li>
+          <li><span class="check">✓</span> 3–5 AI answers/day per tool</li>
+          <li><span class="check">✓</span> Basic dashboard & goals</li>
+          <li><span class="check">✓</span> Up to 50 transactions</li>
+          <li><span class="check">✓</span> Flight price tracking</li>
+          <li><span class="check">✓</span> Real estate basic analysis</li>
         </ul>
-        <a href="auth.html" class="plan-btn" style="text-decoration:none;display:block;text-align:center;">Get started free</a>
+        <a href="auth.html" class="plan-btn">Get started free</a>
       </div>
 
-      <div class="price-card featured">
-        <div class="featured-badge">⭐ Most Popular</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">$4.90 <span>/month</span></div>
+      <div class="price-card featured reveal reveal-d1">
+        <div class="featured-pill">⭐ Most Popular</div>
+        <div class="plan-tier" style="color:var(--accent2);">Pro</div>
+        <div class="plan-price" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$4.90 <sub style="-webkit-text-fill-color:var(--muted)">/mo</sub></div>
         <p class="plan-desc">All 5 tools, fully unlocked.</p>
         <ul class="plan-features">
-          <li>20 AI questions/day per tool</li>
-          <li>AI Story & Chat</li>
-          <li>Export CSV & PDF</li>
-          <li>Stocks, reports, tax optimizer</li>
-          <li>Unlimited transactions & goals</li>
+          <li><span class="check">✓</span> 20 AI answers/day per tool</li>
+          <li><span class="check">✓</span> AI Story, Chat & Reports</li>
+          <li><span class="check">✓</span> CSV & PDF export</li>
+          <li><span class="check">✓</span> Stocks, tax optimizer, pension</li>
+          <li><span class="check">✓</span> Unlimited transactions & goals</li>
+          <li><span class="check">✓</span> Priority processing</li>
         </ul>
-        <a href="auth.html" class="plan-btn primary" style="text-decoration:none;display:block;text-align:center;">Upgrade to Pro</a>
+        <a href="auth.html" class="plan-btn primary">Upgrade to Pro</a>
       </div>
 
-      <div class="price-card" style="border-color:rgba(245,158,11,0.5);background:rgba(245,158,11,0.06);box-shadow:0 0 40px rgba(245,158,11,0.15);">
-        <div class="featured-badge" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡ Power User</div>
-        <div class="plan-name" style="color:#f59e0b;">YOLO</div>
-        <div class="plan-price" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$9.90 <span style="-webkit-text-fill-color:var(--muted)">/month</span></div>
+      <div class="price-card yolo-card reveal reveal-d2">
+        <div class="featured-pill" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡ Power User</div>
+        <div class="plan-tier" style="color:#f59e0b;">YOLO</div>
+        <div class="plan-price" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$9.90 <sub style="-webkit-text-fill-color:var(--muted)">/mo</sub></div>
         <p class="plan-desc">For people who go deep. Every day.</p>
         <ul class="plan-features">
-          <li>40 AI questions/day per tool</li>
-          <li>Everything in Pro</li>
-          <li>Priority support (real humans)</li>
-          <li>Early access to new features</li>
-          <li>Beta tools before public release</li>
-          <li>Extended AI context & memory</li>
-          <li>Higher file upload limits</li>
-          <li>Usage analytics dashboard</li>
+          <li><span class="check">✓</span> 40 AI answers/day per tool</li>
+          <li><span class="check">✓</span> Everything in Pro</li>
+          <li><span class="check">✓</span> Priority support (real humans)</li>
+          <li><span class="check">✓</span> Early access to new features</li>
+          <li><span class="check">✓</span> Beta tools before public release</li>
+          <li><span class="check">✓</span> Extended AI context & memory</li>
+          <li><span class="check">✓</span> Higher file upload limits</li>
         </ul>
-        <a href="auth.html" class="plan-btn" style="text-decoration:none;display:block;text-align:center;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border:none;box-shadow:0 4px 20px rgba(245,158,11,0.4);">Go YOLO ⚡</a>
+        <a href="auth.html" class="plan-btn yolo-btn">Go YOLO ⚡</a>
       </div>
 
     </div>
@@ -597,144 +736,111 @@
 </section>
 
 <!-- FAQ -->
-<section id="faq">
-  <div class="container" style="max-width:720px;">
-    <div class="section-label">FAQ</div>
-    <h2 class="section-title">Common questions.</h2>
-    <p class="section-sub">Everything you need to know before getting started.</p>
+<section id="faq" class="faq-section">
+  <div class="container">
+    <div class="sec-eyebrow reveal">FAQ</div>
+    <h2 class="sec-title reveal">Common questions.</h2>
+    <p class="sec-sub reveal">Everything you need to know before getting started.</p>
 
-    <div id="faqList" style="margin-top:40px;display:flex;flex-direction:column;gap:12px;"></div>
+    <div class="faq-list reveal" id="faqList"></div>
   </div>
 </section>
 
-<style>
-  .faq-item {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    background: var(--bg2);
-    transition: border-color 0.2s;
-  }
-  .faq-item.open { border-color: rgba(99,102,241,0.4); }
-  .faq-q {
-    width: 100%; display: flex; justify-content: space-between; align-items: center;
-    padding: 18px 22px; background: none; border: none; color: var(--text);
-    font-size: 0.95rem; font-weight: 600; cursor: pointer; text-align: left;
-    font-family: inherit; gap: 12px;
-  }
-  .faq-q:hover { color: #a5b4fc; }
-  .faq-icon { font-size: 1.1rem; transition: transform 0.25s; flex-shrink:0; color: var(--accent); }
-  .faq-item.open .faq-icon { transform: rotate(45deg); }
-  .faq-a {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.2s;
-    padding: 0 22px; color: var(--muted); font-size: 0.9rem; line-height: 1.7;
-  }
-  .faq-item.open .faq-a { max-height: 300px; padding: 0 22px 18px; }
-</style>
-
-<script>
-  const FAQS = [
-    {
-      q: "What is WizeLife?",
-      a: "WizeLife is a suite of 5 AI-powered tools — WizeMoney (personal finance), WizeTax (tax advisor), WizeTravel (flight deals), WizeHealth (medical analysis) and WizeDeal (real estate) — all under one account."
-    },
-    {
-      q: "What's the difference between Pro and YOLO?",
-      a: "Both unlock all features. The difference is volume: Pro gives you 20 AI questions per day per tool, YOLO gives you 40. YOLO is for power users who rely on AI daily. Most users are happy with Pro."
-    },
-    {
-      q: "Can I use just one tool, or do I need all 5?",
-      a: "You can use any tool independently. One subscription unlocks all 5 — there's no per-tool pricing."
-    },
-    {
-      q: "Is my financial and health data safe?",
-      a: "Yes. Your data is stored in your own Firebase account and never shared with third parties. AI queries are processed by Google Gemini, which does not use your data for model training."
-    },
-    {
-      q: "How does the AI know my personal data?",
-      a: "Each tool is connected to your data within the app. WizeMoney reads your transactions and balances. WizeTax reads your profile. The AI never guesses — it answers based on what you've actually entered."
-    },
-    {
-      q: "Can I cancel anytime?",
-      a: "Yes. Cancel anytime from your PayPal subscription settings. Your Pro access remains active until the end of the billing period."
-    },
-    {
-      q: "What payment methods do you accept?",
-      a: "PayPal — credit cards, debit cards, and PayPal balance. No other payment methods at this time."
-    },
-    {
-      q: "Is there a free trial?",
-      a: "The Free plan is your trial — no time limit. Use it as long as you want, and upgrade when you're ready."
-    },
-    {
-      q: "Do the tools work in Hebrew?",
-      a: "Yes. WizeMoney and WizeHealth support Hebrew fully. The AI responds in the language you write in."
-    },
-  ];
-
-  const list = document.getElementById('faqList');
-  FAQS.forEach((item, i) => {
-    const el = document.createElement('div');
-    el.className = 'faq-item';
-    el.innerHTML = `
-      <button class="faq-q" onclick="toggleFaq(${i})">
-        <span>${item.q}</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">${item.a}</div>`;
-    list.appendChild(el);
-  });
-
-  function toggleFaq(i) {
-    const items = document.querySelectorAll('.faq-item');
-    items[i].classList.toggle('open');
-  }
-
-  // ── Scroll fade-in ──────────────────────────────
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // ── Hamburger menu ──────────────────────────────
-  function toggleMenu() {
-    document.getElementById('hamburger').classList.toggle('open');
-    document.getElementById('mobileNav').classList.toggle('open');
-  }
-  // Close mobile nav on outside click
-  document.addEventListener('click', (e) => {
-    const nav = document.getElementById('mobileNav');
-    const btn = document.getElementById('hamburger');
-    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
-      nav.classList.remove('open');
-      btn.classList.remove('open');
-    }
-  });
-</script>
-
 <!-- CTA -->
 <section class="cta-section">
-  <div class="badge fade-up" style="display:inline-flex;margin-bottom:24px;"><span class="badge-dot"></span> Free to start — no credit card needed</div>
-  <h2 class="fade-up">Ready to live <span class="gradient">smarter</span>?</h2>
-  <p class="fade-up">Join WizeLife and get 5 AI tools in one place. Start free, upgrade when you want more.</p>
-  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;" class="fade-up">
-    <a href="auth.html" class="btn-primary" style="font-size:1.05rem;padding:16px 36px;">Get Started Free →</a>
-    <a href="#pricing" class="btn-secondary" style="font-size:1.05rem;padding:16px 36px;">See Pricing</a>
+  <div class="cta-glow"></div>
+  <div class="sec-eyebrow reveal" style="margin-bottom:18px;">Start today</div>
+  <h2 class="reveal">Ready to live smarter?</h2>
+  <p class="reveal">Join thousands of people making better decisions with AI. Free forever, upgrade when you want.</p>
+  <div class="cta-btns reveal">
+    <a href="auth.html" class="btn-primary" style="font-size:1.05rem;padding:17px 38px;">Create free account →</a>
+    <a href="#products" class="btn-secondary" style="font-size:1.05rem;padding:17px 38px;">Explore tools</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <span class="logo">Wize<span style="color:var(--accent)">Life</span></span>
-  <p>Live smarter. Every day.</p>
-  <p style="margin-top:8px">© 2026 WizeLife · wizelife.ai</p>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo">Wize<em style="color:var(--accent2);font-style:normal;">Life</em></span>
+        <p>Five AI tools for every important decision in your life. Built with love in Tel Aviv.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Products</h4>
+          <a href="https://finsightai.github.io/finsight/" target="_blank">WizeMoney</a>
+          <a href="https://nodedai.onrender.com" target="_blank">WizeTravel</a>
+          <a href="https://mastermove.vercel.app/advisor" target="_blank">WizeTax</a>
+          <a href="https://vitara.onrender.com/" target="_blank">WizeHealth</a>
+          <a href="https://check-deal.vercel.app/" target="_blank">WizeDeal</a>
+        </div>
+        <div class="footer-col">
+          <h4>Account</h4>
+          <a href="auth.html">Sign in</a>
+          <a href="auth.html">Sign up free</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Info</h4>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:hi@wizelife.ai">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 WizeLife. All rights reserved.</span>
+      <span>Made with ❤️ in Tel Aviv</span>
+    </div>
+  </div>
 </footer>
 
+<script>
+// Nav toggle
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+// Scroll reveal
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// FAQ
+const faqs=[
+  {q:"Is WizeLife really free?",a:"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.90/mo) for more answers and unlocked features."},
+  {q:"Do I need a separate account for each tool?",a:"No — one WizeLife account works across all 5 tools. Sign in once, use everything."},
+  {q:"How is WizeTax different from a regular tax calculator?",a:"WizeTax uses AI trained on tax law across 26 countries, with real exit tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable advice."},
+  {q:"Can WizeTravel actually save me money?",a:"Yes. WizeTravel finds hidden city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."},
+  {q:"What markets does WizeDeal cover?",a:"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental yield benchmarks."},
+  {q:"Is my financial data secure?",a:"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."},
+  {q:"Can I cancel anytime?",a:"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."},
+];
+
+document.getElementById('faqList').innerHTML=faqs.map((f,i)=>`
+<div class="faq-item" id="faq${i}">
+  <button class="faq-q" onclick="toggleFaq(${i})">
+    ${f.q}
+    <span class="faq-chevron">▾</span>
+  </button>
+  <div class="faq-a">${f.a}</div>
+</div>`).join('');
+
+function toggleFaq(i){
+  const el=document.getElementById('faq'+i);
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!isOpen)el.classList.add('open');
+}
+
+// Nav scroll style
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.background=
+    window.scrollY>30?'rgba(3,5,14,0.95)':'rgba(3,5,14,0.7)';
+});
+</script>
 </body>
 </html>
