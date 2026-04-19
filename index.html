@@ -70,6 +70,8 @@ nav.scrolled{background:rgba(5,6,15,.92);border-bottom-color:var(--border)}
 .nav-signin:hover{color:var(--text)}
 .nav-cta{background:var(--text);color:#05060f;padding:9px 18px;border-radius:999px;font-size:.85rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
 .nav-cta:hover{background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.08)}
+.lang-toggle{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border);padding:7px 13px;border-radius:99px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.lang-toggle:hover{background:rgba(255,255,255,.12);color:var(--text)}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s,opacity .25s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -408,8 +410,9 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
     <a href="#faq">FAQ</a>
   </div>
   <div class="nav-right">
-    <a href="auth.html" class="nav-signin">Sign in</a>
-    <a href="auth.html" class="nav-cta">Get Started</a>
+    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">PT</button>
+    <a href="auth.html" class="nav-signin" id="nav-signin">Sign in</a>
+    <a href="auth.html" class="nav-cta" id="nav-cta">Get Started</a>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1219,6 +1222,252 @@ const io = new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ── LANGUAGE SWITCHER (EN / PT) ──
+const WIZE_TR = {
+  en: {
+    navProducts:'Products', navPricing:'Pricing', navFaq:'FAQ',
+    navSignin:'Sign in', navCta:'Get Started',
+    heroBadge:'5 AI tools · one account · live now',
+    h1a:'Make every', h1b:'smart decision', h1c:'with AI.',
+    heroSub:'Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.',
+    heroBtn:'Start free →', heroBtn2:'Explore the suite ↓',
+    feedLabel:'Live from the suite',
+    trustLabel0:'AI tools in one suite', trustLabel1:'To get started', trustLabel2:'Countries in WizeTax', trustLabel3:'Real-estate markets',
+    suiteEye:'The suite', suiteTitle:'One account.\nEvery smart decision.', suiteSub:'Each tool is purpose-built AI — not a generic chatbot. Click any tool to see a live preview.',
+    aiEye:'Try it now', aiTitle:'Talk to WizeAI.\nLive, right here.', aiSub:'No signup. Ask anything about money, travel, tax, health or real estate — get a real answer in seconds.',
+    aiWelcome:'Hi 👋 I\'m WizeAI. Ask me about investing, a flight deal, tax moves, a blood test, or a property listing — or tap a suggestion below.',
+    aiPlaceholder:'Ask anything… e.g. \'Should I relocate to Portugal?\'',
+    aiSendBtn:'Send →',
+    calcEye:'ROI calculator', calcTitle:'How much will WizeLife save you?', calcSub:'Adjust your profile and watch your annual savings update in real time.',
+    calcEyebrow:'Estimated annual savings', calcSubResult:'Projected WizeLife value — based on typical user outcomes across the suite.',
+    compareEye:'Why WizeLife', compareTitle:'One suite vs. everything else.', compareSub:'Five domains, one login, one subscription. Compare the alternatives.',
+    testiEye:'What people say', testiTitle:'Real users. Real savings.', testiSub:'Feedback from people using WizeLife across three continents.',
+    pricingEye:'Pricing', pricingTitle:'Simple, honest pricing.', pricingSub:'Start free. Upgrade when you need more. No credit card required.',
+    faqEye:'FAQ', faqTitle:'Common questions.', faqSub:'Everything you need to know before getting started.',
+    ctaEye:'Start today', ctaTitle:'Ready to live smarter?', ctaDesc:'Join thousands making better decisions with AI. Free forever, upgrade when you want.',
+    ctaBtn:'Create free account →', ctaBtn2:'Explore tools',
+    footerDesc:'Five AI tools for every important decision in your life. Built with love, everywhere.',
+    footerProducts:'Products', footerAccount:'Account', footerInfo:'Info',
+    footerSignin:'Sign in', footerSignup:'Sign up free', footerPricing:'Pricing',
+    footerContact:'Contact', footerPrivacy:'Privacy Policy', footerTerms:'Terms of Service',
+    footerRights:'© 2026 WizeLife. All rights reserved.', footerMade:'Made with ❤️ worldwide',
+    mobileGetStarted:'Get Started Free →',
+  },
+  pt: {
+    navProducts:'Produtos', navPricing:'Preços', navFaq:'FAQ',
+    navSignin:'Entrar', navCta:'Começar Grátis',
+    heroBadge:'5 ferramentas de IA · uma conta · ao vivo agora',
+    h1a:'Tome cada', h1b:'decisão inteligente', h1c:'com IA.',
+    heroSub:'Dinheiro, viagens, impostos, saúde, imóveis — as grandes escolhas da vida, guiadas por IA desenvolvida especificamente para cada domínio.',
+    heroBtn:'Comece grátis →', heroBtn2:'Explorar a suíte ↓',
+    feedLabel:'Ao vivo na suíte',
+    trustLabel0:'Ferramentas de IA em uma suíte', trustLabel1:'Para começar', trustLabel2:'Países no WizeTax', trustLabel3:'Mercados imobiliários',
+    suiteEye:'A suíte', suiteTitle:'Uma conta.\nCada decisão inteligente.', suiteSub:'Cada ferramenta é uma IA especializada — não um chatbot genérico. Clique em qualquer ferramenta para ver uma prévia ao vivo.',
+    aiEye:'Experimente agora', aiTitle:'Fale com o WizeAI.\nAo vivo, aqui mesmo.', aiSub:'Sem cadastro. Pergunte qualquer coisa sobre dinheiro, viagens, impostos, saúde ou imóveis — obtenha uma resposta real em segundos.',
+    aiWelcome:'Olá 👋 Sou o WizeAI. Pergunte-me sobre investimentos, promoções de voos, planejamento fiscal, exames de sangue ou um imóvel — ou toque em uma sugestão abaixo.',
+    aiPlaceholder:'Pergunte qualquer coisa… ex: \'Devo me mudar para Portugal?\'',
+    aiSendBtn:'Enviar →',
+    calcEye:'Calculadora de ROI', calcTitle:'Quanto o WizeLife vai te economizar?', calcSub:'Ajuste seu perfil e veja suas economias anuais sendo atualizadas em tempo real.',
+    calcEyebrow:'Economia anual estimada', calcSubResult:'Valor projetado do WizeLife — baseado em resultados típicos de usuários em toda a suíte.',
+    compareEye:'Por que WizeLife', compareTitle:'Uma suíte vs. tudo o mais.', compareSub:'Cinco domínios, um login, uma assinatura. Compare as alternativas.',
+    testiEye:'O que dizem as pessoas', testiTitle:'Usuários reais. Economias reais.', testiSub:'Feedback de pessoas que usam o WizeLife em três continentes.',
+    pricingEye:'Preços', pricingTitle:'Preços simples e honestos.', pricingSub:'Comece de graça. Faça upgrade quando precisar. Sem cartão de crédito.',
+    faqEye:'FAQ', faqTitle:'Perguntas frequentes.', faqSub:'Tudo que você precisa saber antes de começar.',
+    ctaEye:'Comece hoje', ctaTitle:'Pronto para viver de forma mais inteligente?', ctaDesc:'Junte-se a milhares que tomam melhores decisões com IA. Grátis para sempre, faça upgrade quando quiser.',
+    ctaBtn:'Criar conta gratuita →', ctaBtn2:'Explorar ferramentas',
+    footerDesc:'Cinco ferramentas de IA para cada decisão importante da sua vida. Feito com amor, em todo o mundo.',
+    footerProducts:'Produtos', footerAccount:'Conta', footerInfo:'Informações',
+    footerSignin:'Entrar', footerSignup:'Cadastrar grátis', footerPricing:'Preços',
+    footerContact:'Contato', footerPrivacy:'Política de Privacidade', footerTerms:'Termos de Serviço',
+    footerRights:'© 2026 WizeLife. Todos os direitos reservados.', footerMade:'Feito com ❤️ em todo o mundo',
+    mobileGetStarted:'Comece Grátis →',
+  },
+};
+
+const WIZE_FAQ_PT = [
+  {q:"O WizeLife é realmente gratuito?", a:"Sim. Você obtém 3–5 respostas de IA por dia por ferramenta, para sempre gratuito. Sem cartão de crédito, sem período de teste. Faça upgrade para o Pro (R$ 24,90/mês) para mais respostas e recursos desbloqueados."},
+  {q:"Preciso de uma conta separada para cada ferramenta?", a:"Não — uma conta WizeLife funciona em todas as 5 ferramentas. Entre uma vez, use tudo."},
+  {q:"Como o WizeTax difere de uma calculadora de impostos comum?", a:"O WizeTax usa IA treinada em legislação tributária de 26 países, com cenários reais de imposto de saída, comparações de realocação e um gerador de cartas. Não são apenas números — são conselhos práticos."},
+  {q:"O WizeTravel realmente pode me economizar dinheiro?", a:"Sim. O WizeTravel encontra passagens hidden-city, rotas de posicionamento (voe por um hub mais barato) e interlining virtual entre companhias de baixo custo — rotas que sites tradicionais de reserva perdem completamente."},
+  {q:"Quais mercados o WizeDeal cobre?", a:"Brasil, Israel e EUA. Cada mercado tem conhecimento profundo de impostos locais (ITBI, taxas de transferência), produtos hipotecários e benchmarks de rentabilidade de aluguel."},
+  {q:"Meus dados estão seguros?", a:"Todos os dados são armazenados na sua conta pessoal do Firebase. Cada usuário pode ver apenas seus próprios dados. Nunca vendemos ou compartilhamos dados de usuários. HSTS e Cloudflare WAF protegem todo o tráfego."},
+  {q:"Posso cancelar a qualquer momento?", a:"Sim. Sem contratos, sem taxas de cancelamento. Cancele pelo seu painel a qualquer momento e manterá acesso Pro até o final do período de faturamento."},
+];
+
+let _wl_lang = localStorage.getItem('wl_landing_lang') || 'en';
+
+function applyLandingLang(){
+  const t = WIZE_TR[_wl_lang];
+  const isPt = _wl_lang === 'pt';
+  document.getElementById('langBtn').textContent = isPt ? 'EN' : 'PT';
+
+  // Nav
+  document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
+  document.querySelector('.nav-links a[href="#pricing"]').textContent = t.navPricing;
+  document.querySelector('.nav-links a[href="#faq"]').textContent = t.navFaq;
+  document.getElementById('nav-signin').textContent = t.navSignin;
+  document.getElementById('nav-cta').textContent = t.navCta;
+
+  // Mobile nav
+  const mna = document.querySelectorAll('.mobile-nav a');
+  if(mna[0]) mna[0].textContent = t.navProducts;
+  if(mna[1]) mna[1].textContent = t.navPricing;
+  if(mna[2]) mna[2].textContent = t.navFaq;
+  if(mna[3]) mna[3].textContent = t.mobileGetStarted;
+
+  // Hero
+  const badge = document.querySelector('.hero-badge');
+  if(badge){ badge.innerHTML = `<span class="badge-live"></span>${t.heroBadge}`; }
+  const h1el = document.querySelector('h1');
+  if(h1el) h1el.innerHTML = `${t.h1a}<br><span class="gradient-text">${t.h1b}</span><br>${t.h1c}`;
+  const heroSub = document.querySelector('.hero-sub');
+  if(heroSub) heroSub.textContent = t.heroSub;
+  const btns = document.querySelectorAll('.hero-btns a');
+  if(btns[0]) btns[0].textContent = t.heroBtn;
+  if(btns[1]) btns[1].textContent = t.heroBtn2;
+  const feedLbl = document.querySelector('.feed-label');
+  if(feedLbl) feedLbl.textContent = t.feedLabel;
+
+  // Trust bar
+  const tlabels = document.querySelectorAll('.trust-label');
+  ['trustLabel0','trustLabel1','trustLabel2','trustLabel3'].forEach((k,i)=>{ if(tlabels[i]) tlabels[i].textContent = t[k]; });
+
+  // Suite section
+  const eyes = document.querySelectorAll('.sec-eyebrow');
+  const titles = document.querySelectorAll('.sec-title');
+  const subs = document.querySelectorAll('.sec-sub');
+  // sec indices: 0=suite, 1=ai, 2=calc, 3=compare, 4=testi, 5=pricing, 6=faq
+  const secData = [
+    [t.suiteEye, t.suiteTitle.replace('\n','<br>'), t.suiteSub],
+    [t.aiEye, t.aiTitle.replace('\n','<br>'), t.aiSub],
+    [t.calcEye, t.calcTitle, t.calcSub],
+    [t.compareEye, t.compareTitle, t.compareSub],
+    [t.testiEye, t.testiTitle, t.testiSub],
+    [t.pricingEye, t.pricingTitle, t.pricingSub],
+    [t.faqEye, t.faqTitle, t.faqSub],
+  ];
+  secData.forEach(([eye,title,sub],i)=>{
+    if(eyes[i]) eyes[i].textContent = eye;
+    if(titles[i]) titles[i].innerHTML = title;
+    if(subs[i]) subs[i].textContent = sub;
+  });
+
+  // AI demo
+  const aip = document.getElementById('aiInput');
+  if(aip) aip.placeholder = t.aiPlaceholder;
+  const aisend = document.getElementById('aiSend');
+  if(aisend) aisend.textContent = t.aiSendBtn;
+  // Reset AI body to translated welcome
+  const aiB = document.getElementById('aiBody');
+  if(aiB && aiB.children.length === 1) aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
+
+  // Calculator
+  const calcEyeEl = document.querySelector('.calc-section .sec-eyebrow');
+  if(calcEyeEl) calcEyeEl.textContent = t.calcEye;
+  const calcTitleEl = document.querySelector('.calc-section .sec-title');
+  if(calcTitleEl) calcTitleEl.textContent = t.calcTitle;
+  const calcSubEl = document.querySelector('.calc-section .sec-sub');
+  if(calcSubEl) calcSubEl.textContent = t.calcSub;
+  const calcEyebrowEl = document.querySelector('.calc-eyebrow');
+  if(calcEyebrowEl) calcEyebrowEl.textContent = t.calcEyebrow;
+  const calcSubResEl = document.querySelector('.calc-sub');
+  if(calcSubResEl) calcSubResEl.textContent = t.calcSubResult;
+
+  // CTA
+  const ctaEyeEl = document.querySelector('.cta-section .sec-eyebrow');
+  if(ctaEyeEl) ctaEyeEl.textContent = t.ctaEye;
+  const ctaH2 = document.querySelector('.cta-section h2');
+  if(ctaH2) ctaH2.textContent = t.ctaTitle;
+  const ctaP = document.querySelector('.cta-section p');
+  if(ctaP) ctaP.textContent = t.ctaDesc;
+  const ctaBtns = document.querySelectorAll('.cta-section .hero-btns a');
+  if(ctaBtns[0]) ctaBtns[0].textContent = t.ctaBtn;
+  if(ctaBtns[1]) ctaBtns[1].textContent = t.ctaBtn2;
+
+  // Footer
+  const footerBrand = document.querySelector('.footer-brand p');
+  if(footerBrand) footerBrand.textContent = t.footerDesc;
+  const fcols = document.querySelectorAll('.footer-col h4');
+  if(fcols[0]) fcols[0].textContent = t.footerProducts;
+  if(fcols[1]) fcols[1].textContent = t.footerAccount;
+  if(fcols[2]) fcols[2].textContent = t.footerInfo;
+  const faLinks = document.querySelectorAll('.footer-col:nth-child(2) a');
+  if(faLinks[0]) faLinks[0].textContent = t.footerSignin;
+  if(faLinks[1]) faLinks[1].textContent = t.footerSignup;
+  if(faLinks[2]) faLinks[2].textContent = t.footerPricing;
+  if(faLinks[3]) faLinks[3].textContent = t.footerFaq || 'FAQ';
+  const fiLinks = document.querySelectorAll('.footer-col:nth-child(3) a');
+  if(fiLinks[0]) fiLinks[0].textContent = t.footerContact;
+  if(fiLinks[1]) fiLinks[1].textContent = t.footerPrivacy;
+  if(fiLinks[2]) fiLinks[2].textContent = t.footerTerms;
+  const fbottom = document.querySelectorAll('.footer-bottom span');
+  if(fbottom[0]) fbottom[0].textContent = t.footerRights;
+  if(fbottom[1]) fbottom[1].textContent = t.footerMade;
+
+  // AI suggestions
+  const suggestions_pt = [
+    "Devo me mudar para Portugal?",
+    "TLV→NYC é mais barato via hub?",
+    "Explique meu colesterol LDL de 138",
+    "Qual é uma boa rentabilidade em São Paulo?",
+    "Como rebalancear uma carteira 60/40?"
+  ];
+  const suggestions_en = [
+    "Should I relocate to Portugal?",
+    "Is TLV→NYC cheaper via a hub?",
+    "Explain my LDL cholesterol of 138",
+    "What's a good rental yield in São Paulo?",
+    "How do I rebalance a 60/40 portfolio?"
+  ];
+  const suggs = isPt ? suggestions_pt : suggestions_en;
+  const aiPromptsEl = document.getElementById('aiPrompts');
+  if(aiPromptsEl){
+    aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
+    aiPromptsEl.querySelectorAll('.ai-prompt').forEach(b=>{
+      b.addEventListener('click',()=>{ aiInput.value = b.textContent; sendAI(); });
+    });
+  }
+
+  // FAQ — re-render if pt
+  if(isPt){
+    document.getElementById('faqList').innerHTML = WIZE_FAQ_PT.map((f,i)=>`
+<div class="faq-item" data-i="${i}">
+  <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
+  <div class="faq-a">${f.a}</div>
+</div>`).join('');
+    document.querySelectorAll('.faq-item').forEach(item=>{
+      item.querySelector('.faq-q').addEventListener('click',()=>{
+        const open = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+        if(!open) item.classList.add('open');
+      });
+    });
+  } else {
+    // Re-render English FAQ
+    document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
+<div class="faq-item" data-i="${i}">
+  <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
+  <div class="faq-a">${f.a}</div>
+</div>`).join('');
+    document.querySelectorAll('.faq-item').forEach(item=>{
+      item.querySelector('.faq-q').addEventListener('click',()=>{
+        const open = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+        if(!open) item.classList.add('open');
+      });
+    });
+  }
+}
+
+function toggleLang(){
+  _wl_lang = _wl_lang === 'en' ? 'pt' : 'en';
+  localStorage.setItem('wl_landing_lang', _wl_lang);
+  applyLandingLang();
+}
+
+// Apply on load (respects saved preference)
+applyLandingLang();
 </script>
 </body>
 </html>
