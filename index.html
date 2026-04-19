@@ -1283,6 +1283,35 @@ const WIZE_TR = {
     footerRights:'© 2026 WizeLife. Todos os direitos reservados.', footerMade:'Feito com ❤️ em todo o mundo',
     mobileGetStarted:'Comece Grátis →',
   },
+  es: {
+    navProducts:'Productos', navPricing:'Precios', navFaq:'FAQ',
+    navSignin:'Iniciar sesión', navCta:'Comenzar Gratis',
+    heroBadge:'5 herramientas de IA · una cuenta · disponible ahora',
+    h1a:'Toma cada', h1b:'decisión inteligente', h1c:'con IA.',
+    heroSub:'Dinero, viajes, impuestos, salud, bienes raíces — las grandes decisiones de la vida, guiadas por IA creada específicamente para cada dominio.',
+    heroBtn:'Empieza gratis →', heroBtn2:'Explorar la suite ↓',
+    feedLabel:'En vivo desde la suite',
+    trustLabel0:'Herramientas de IA en una suite', trustLabel1:'Para comenzar', trustLabel2:'Países en WizeTax', trustLabel3:'Mercados inmobiliarios',
+    suiteEye:'La suite', suiteTitle:'Una cuenta.\nCada decisión inteligente.', suiteSub:'Cada herramienta es IA de propósito específico — no un chatbot genérico. Haz clic en cualquier herramienta para ver una vista previa en vivo.',
+    aiEye:'Pruébalo ahora', aiTitle:'Habla con WizeAI.\nEn vivo, aquí mismo.', aiSub:'Sin registro. Pregunta cualquier cosa sobre dinero, viajes, impuestos, salud o bienes raíces — obtén una respuesta real en segundos.',
+    aiWelcome:'Hola 👋 Soy WizeAI. Pregúntame sobre inversiones, ofertas de vuelos, planificación fiscal, análisis de sangre o una propiedad — o toca una sugerencia abajo.',
+    aiPlaceholder:'Pregunta cualquier cosa… ej: \'¿Debería mudarme a Portugal?\'',
+    aiSendBtn:'Enviar →',
+    calcEye:'Calculadora ROI', calcTitle:'¿Cuánto te ahorrará WizeLife?', calcSub:'Ajusta tu perfil y mira tus ahorros anuales actualizarse en tiempo real.',
+    calcEyebrow:'Ahorro anual estimado', calcSubResult:'Valor proyectado de WizeLife — basado en resultados típicos de usuarios en toda la suite.',
+    compareEye:'Por qué WizeLife', compareTitle:'Una suite vs. todo lo demás.', compareSub:'Cinco dominios, un inicio de sesión, una suscripción. Compara las alternativas.',
+    testiEye:'Lo que dicen las personas', testiTitle:'Usuarios reales. Ahorros reales.', testiSub:'Opiniones de personas que usan WizeLife en tres continentes.',
+    pricingEye:'Precios', pricingTitle:'Precios simples y honestos.', pricingSub:'Empieza gratis. Actualiza cuando necesites más. Sin tarjeta de crédito.',
+    faqEye:'FAQ', faqTitle:'Preguntas frecuentes.', faqSub:'Todo lo que necesitas saber antes de comenzar.',
+    ctaEye:'Empieza hoy', ctaTitle:'¿Listo para vivir con más inteligencia?', ctaDesc:'Únete a miles que toman mejores decisiones con IA. Gratis para siempre, actualiza cuando quieras.',
+    ctaBtn:'Crear cuenta gratuita →', ctaBtn2:'Explorar herramientas',
+    footerDesc:'Cinco herramientas de IA para cada decisión importante de tu vida. Hecho con amor, en todo el mundo.',
+    footerProducts:'Productos', footerAccount:'Cuenta', footerInfo:'Información',
+    footerSignin:'Iniciar sesión', footerSignup:'Registrarse gratis', footerPricing:'Precios',
+    footerContact:'Contacto', footerPrivacy:'Política de Privacidad', footerTerms:'Términos de Servicio',
+    footerRights:'© 2026 WizeLife. Todos los derechos reservados.', footerMade:'Hecho con ❤️ en todo el mundo',
+    mobileGetStarted:'Comenzar Gratis →',
+  },
 };
 
 const WIZE_FAQ_PT = [
@@ -1295,12 +1324,30 @@ const WIZE_FAQ_PT = [
   {q:"Posso cancelar a qualquer momento?", a:"Sim. Sem contratos, sem taxas de cancelamento. Cancele pelo seu painel a qualquer momento e manterá acesso Pro até o final do período de faturamento."},
 ];
 
-let _wl_lang = localStorage.getItem('wl_landing_lang') || 'en';
+const WIZE_FAQ_ES = [
+  {q:"¿WizeLife es realmente gratuito?", a:"Sí. Obtienes 3–5 respuestas de IA al día por herramienta, gratis para siempre. Sin tarjeta de crédito, sin período de prueba. Actualiza a Pro ($9.90/mes) para más respuestas y funciones desbloqueadas."},
+  {q:"¿Necesito una cuenta separada para cada herramienta?", a:"No — una cuenta WizeLife funciona en las 5 herramientas. Inicia sesión una vez, usa todo."},
+  {q:"¿En qué se diferencia WizeTax de una calculadora de impuestos normal?", a:"WizeTax usa IA entrenada en legislación fiscal de 26 países, con escenarios reales de impuesto de salida, comparaciones de reubicación y un generador de cartas. No son solo números — son consejos prácticos."},
+  {q:"¿WizeTravel realmente puede ahorrarme dinero?", a:"Sí. WizeTravel encuentra vuelos hidden-city, rutas de posicionamiento (vuela por un hub más barato) e interlining virtual entre aerolíneas de bajo costo — rutas que los sitios de reserva tradicionales pasan por alto."},
+  {q:"¿Qué mercados cubre WizeDeal?", a:"España, Israel y EE. UU. Cada mercado tiene conocimiento profundo de impuestos locales (ITP, tasas de transferencia), productos hipotecarios y benchmarks de rentabilidad de alquiler."},
+  {q:"¿Mis datos están seguros?", a:"Todos los datos se almacenan en tu cuenta personal de Firebase. Cada usuario solo puede ver sus propios datos. Nunca vendemos ni compartimos datos de usuarios. HSTS y Cloudflare WAF protegen todo el tráfico."},
+  {q:"¿Puedo cancelar en cualquier momento?", a:"Sí. Sin contratos, sin tarifas de cancelación. Cancela desde tu panel en cualquier momento y mantendrás acceso Pro hasta el final del período de facturación."},
+];
+
+function _detectLandingLang(){
+  const saved = localStorage.getItem('wl_landing_lang');
+  if(saved) return saved;
+  const bl = (navigator.language || 'en').toLowerCase();
+  if(bl.startsWith('pt')) return 'pt';
+  if(bl.startsWith('es')) return 'es';
+  return 'en';
+}
+let _wl_lang = _detectLandingLang();
 
 function applyLandingLang(){
   const t = WIZE_TR[_wl_lang];
-  const isPt = _wl_lang === 'pt';
-  document.getElementById('langBtn').textContent = isPt ? 'EN' : 'PT';
+  const nextLangLabel = _wl_lang === 'en' ? 'PT' : _wl_lang === 'pt' ? 'ES' : _wl_lang === 'es' ? 'EN' : 'EN';
+  document.getElementById('langBtn').textContent = nextLangLabel;
 
   // Nav
   document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
@@ -1413,6 +1460,13 @@ function applyLandingLang(){
     "Qual é uma boa rentabilidade em São Paulo?",
     "Como rebalancear uma carteira 60/40?"
   ];
+  const suggestions_es = [
+    "¿Debería mudarme a Portugal?",
+    "¿TLV→NYC es más barato vía hub?",
+    "Explica mi colesterol LDL de 138",
+    "¿Cuál es un buen rendimiento de alquiler en Madrid?",
+    "¿Cómo rebalanceo una cartera 60/40?"
+  ];
   const suggestions_en = [
     "Should I relocate to Portugal?",
     "Is TLV→NYC cheaper via a hub?",
@@ -1420,7 +1474,7 @@ function applyLandingLang(){
     "What's a good rental yield in São Paulo?",
     "How do I rebalance a 60/40 portfolio?"
   ];
-  const suggs = isPt ? suggestions_pt : suggestions_en;
+  const suggs = _wl_lang === 'pt' ? suggestions_pt : _wl_lang === 'es' ? suggestions_es : suggestions_en;
   const aiPromptsEl = document.getElementById('aiPrompts');
   if(aiPromptsEl){
     aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
@@ -1429,39 +1483,24 @@ function applyLandingLang(){
     });
   }
 
-  // FAQ — re-render if pt
-  if(isPt){
-    document.getElementById('faqList').innerHTML = WIZE_FAQ_PT.map((f,i)=>`
+  // FAQ — re-render by language
+  const faqData = _wl_lang === 'pt' ? WIZE_FAQ_PT : _wl_lang === 'es' ? WIZE_FAQ_ES : faqs;
+  document.getElementById('faqList').innerHTML = faqData.map((f,i)=>`
 <div class="faq-item" data-i="${i}">
   <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
   <div class="faq-a">${f.a}</div>
 </div>`).join('');
-    document.querySelectorAll('.faq-item').forEach(item=>{
-      item.querySelector('.faq-q').addEventListener('click',()=>{
-        const open = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
-        if(!open) item.classList.add('open');
-      });
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click',()=>{
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+      if(!open) item.classList.add('open');
     });
-  } else {
-    // Re-render English FAQ
-    document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
-<div class="faq-item" data-i="${i}">
-  <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
-  <div class="faq-a">${f.a}</div>
-</div>`).join('');
-    document.querySelectorAll('.faq-item').forEach(item=>{
-      item.querySelector('.faq-q').addEventListener('click',()=>{
-        const open = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
-        if(!open) item.classList.add('open');
-      });
-    });
-  }
+  });
 }
 
 function toggleLang(){
-  _wl_lang = _wl_lang === 'en' ? 'pt' : 'en';
+  _wl_lang = _wl_lang === 'en' ? 'pt' : _wl_lang === 'pt' ? 'es' : 'en';
   localStorage.setItem('wl_landing_lang', _wl_lang);
   applyLandingLang();
 }
