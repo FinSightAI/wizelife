@@ -1508,5 +1508,29 @@ function toggleLang(){
 // Apply on load (respects saved preference)
 applyLandingLang();
 </script>
+
+<!-- Firebase auth state — update nav if user is already logged in -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="js/wizelife-auth.js"></script>
+<script>
+wlAuth.onAuthStateChanged(function(user) {
+    const signinBtn = document.getElementById('nav-signin');
+    const ctaBtn    = document.getElementById('nav-cta');
+    if (!signinBtn || !ctaBtn) return;
+    if (user) {
+        const name = user.displayName || user.email.split('@')[0];
+        signinBtn.textContent = name;
+        signinBtn.href = 'dashboard.html';
+        ctaBtn.textContent = 'Dashboard →';
+        ctaBtn.href = 'dashboard.html';
+        // Also update hero CTAs
+        document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => {
+            a.textContent = 'Go to Dashboard →';
+            a.href = 'dashboard.html';
+        });
+    }
+});
+</script>
 </body>
 </html>
