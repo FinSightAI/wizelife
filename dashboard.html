@@ -349,6 +349,19 @@ async function attachTokensToTools() {
 wlAuth.onAuthStateChanged(user => {
     if (user) attachTokensToTools();
 });
+
+// Inject ?lang=XX into all external tool links so cross-domain apps pick up the language
+(function injectLangToToolLinks() {
+    const lang = localStorage.getItem('wl_lang');
+    if (!lang) return;
+    document.querySelectorAll('a.tool-card[href]').forEach(link => {
+        try {
+            const url = new URL(link.href);
+            url.searchParams.set('lang', lang);
+            link.href = url.toString();
+        } catch {}
+    });
+})();
 </script>
 </body>
 </html>

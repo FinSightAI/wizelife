@@ -1335,8 +1335,9 @@ const WIZE_FAQ_ES = [
 ];
 
 function _detectLandingLang(){
-  const saved = localStorage.getItem('wl_landing_lang');
-  if(saved) return saved;
+  // Shared cross-app key takes priority, then page-specific key
+  const saved = localStorage.getItem('wl_lang') || localStorage.getItem('wl_landing_lang');
+  if(saved && ['en','pt','es','he'].includes(saved)) return saved;
   const bl = (navigator.language || 'en').toLowerCase();
   if(bl.startsWith('pt')) return 'pt';
   if(bl.startsWith('es')) return 'es';
@@ -1505,6 +1506,7 @@ function applyLandingLang(){
 function toggleLang(){
   _wl_lang = _wl_lang === 'en' ? 'pt' : _wl_lang === 'pt' ? 'es' : 'en';
   localStorage.setItem('wl_landing_lang', _wl_lang);
+  localStorage.setItem('wl_lang', _wl_lang);  // shared cross-app key
   applyLandingLang();
 }
 
