@@ -1353,8 +1353,11 @@ function applyLandingLang(){
   document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
   document.querySelector('.nav-links a[href="#pricing"]').textContent = t.navPricing;
   document.querySelector('.nav-links a[href="#faq"]').textContent = t.navFaq;
-  document.getElementById('nav-signin').textContent = t.navSignin;
-  document.getElementById('nav-cta').textContent = t.navCta;
+  // Only update auth buttons if user is NOT logged in (don't overwrite username)
+  if (!window._wlLoggedIn) {
+    document.getElementById('nav-signin').textContent = t.navSignin;
+    document.getElementById('nav-cta').textContent = t.navCta;
+  }
 
   // Mobile nav
   const mna = document.querySelectorAll('.mobile-nav a');
@@ -1519,6 +1522,7 @@ wlAuth.onAuthStateChanged(function(user) {
     const ctaBtn    = document.getElementById('nav-cta');
     if (!signinBtn || !ctaBtn) return;
     if (user) {
+        window._wlLoggedIn = true;
         const name = user.displayName || user.email.split('@')[0];
         signinBtn.textContent = name;
         signinBtn.href = 'dashboard.html';
@@ -1529,6 +1533,8 @@ wlAuth.onAuthStateChanged(function(user) {
             a.textContent = 'Go to Dashboard →';
             a.href = 'dashboard.html';
         });
+    } else {
+        window._wlLoggedIn = false;
     }
 });
 </script>
