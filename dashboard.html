@@ -125,6 +125,11 @@
   <div class="nav-right">
     <span class="user-name" id="navUserName">Loading…</span>
     <a class="btn-upgrade" id="navUpgradeBtn" href="#" style="display:none;">Upgrade to Pro</a>
+    <select id="dashLangBtn" onchange="setDashLang(this.value)" class="btn-sm" style="cursor:pointer;font-family:inherit;padding:6px 10px;">
+      <option value="en">EN</option>
+      <option value="pt">PT</option>
+      <option value="es">ES</option>
+    </select>
     <button class="btn-sm" onclick="signOut()">Sign Out</button>
   </div>
 </nav>
@@ -350,9 +355,17 @@ wlAuth.onAuthStateChanged(user => {
     if (user) attachTokensToTools();
 });
 
-// Inject ?lang=XX into all external tool links so cross-domain apps pick up the language
-(function injectLangToToolLinks() {
-    const lang = localStorage.getItem('wl_lang');
+// Language selector
+function setDashLang(v) {
+    if (!['en','pt','es','he'].includes(v)) return;
+    localStorage.setItem('wl_lang', v);
+    injectLangToToolLinks(v);
+    const sel = document.getElementById('dashLangBtn');
+    if (sel) sel.value = v;
+}
+
+function injectLangToToolLinks(lang) {
+    lang = lang || localStorage.getItem('wl_lang');
     if (!lang) return;
     document.querySelectorAll('a.tool-card[href]').forEach(link => {
         try {
@@ -361,6 +374,14 @@ wlAuth.onAuthStateChanged(user => {
             link.href = url.toString();
         } catch {}
     });
+}
+
+// Init language selector value + inject into links
+(function initDashLang() {
+    const saved = localStorage.getItem('wl_lang') || 'en';
+    const sel = document.getElementById('dashLangBtn');
+    if (sel && ['en','pt','es'].includes(saved)) sel.value = saved;
+    injectLangToToolLinks(saved);
 })();
 </script>
 </body>

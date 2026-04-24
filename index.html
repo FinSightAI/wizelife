@@ -410,7 +410,11 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
     <a href="#faq">FAQ</a>
   </div>
   <div class="nav-right">
-    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">PT</button>
+    <select id="langBtn" onchange="setWlLang(this.value)" class="lang-toggle" style="cursor:pointer;font-family:inherit;">
+      <option value="en">EN</option>
+      <option value="pt">PT</option>
+      <option value="es">ES</option>
+    </select>
     <a href="auth.html" class="nav-signin" id="nav-signin">Sign in</a>
     <a href="auth.html" class="nav-cta" id="nav-cta">Get Started</a>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -1345,10 +1349,17 @@ function _detectLandingLang(){
 }
 let _wl_lang = _detectLandingLang();
 
+function setWlLang(v){
+  if(!['en','pt','es','he'].includes(v)) return;
+  _wl_lang = v;
+  localStorage.setItem('wl_landing_lang', v);
+  localStorage.setItem('wl_lang', v);
+  applyLandingLang();
+}
 function applyLandingLang(){
   const t = WIZE_TR[_wl_lang];
-  const nextLangLabel = _wl_lang === 'en' ? 'PT' : _wl_lang === 'pt' ? 'ES' : _wl_lang === 'es' ? 'EN' : 'EN';
-  document.getElementById('langBtn').textContent = nextLangLabel;
+  const lb = document.getElementById('langBtn');
+  if (lb) { if (lb.tagName === 'SELECT') lb.value = _wl_lang; else lb.textContent = _wl_lang.toUpperCase(); }
 
   // Nav
   document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
@@ -1504,9 +1515,10 @@ function applyLandingLang(){
 }
 
 function toggleLang(){
-  _wl_lang = _wl_lang === 'en' ? 'pt' : _wl_lang === 'pt' ? 'es' : 'en';
+  const langs = ['en','pt','es'];
+  _wl_lang = langs[(langs.indexOf(_wl_lang)+1) % langs.length];
   localStorage.setItem('wl_landing_lang', _wl_lang);
-  localStorage.setItem('wl_lang', _wl_lang);  // shared cross-app key
+  localStorage.setItem('wl_lang', _wl_lang);
   applyLandingLang();
 }
 
