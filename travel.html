@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WizeTravel — מכין את הטיסות שלך</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#050810;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+
+/* Animated background */
+.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.15;animation:drift 8s ease-in-out infinite;}
+.bg-orb1{width:400px;height:400px;background:#3b82f6;top:-100px;right:-100px;animation-delay:0s;}
+.bg-orb2{width:300px;height:300px;background:#6366f1;bottom:-80px;left:-80px;animation-delay:3s;}
+.bg-orb3{width:200px;height:200px;background:#06b6d4;top:50%;left:50%;animation-delay:6s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.05);}}
+
+/* Flight path animation */
+.flight-track{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
+.plane{position:absolute;font-size:20px;animation:flyAcross linear infinite;opacity:0.25;}
+.plane:nth-child(1){top:20%;animation-duration:18s;animation-delay:0s;}
+.plane:nth-child(2){top:55%;animation-duration:24s;animation-delay:7s;font-size:14px;}
+.plane:nth-child(3){top:78%;animation-duration:15s;animation-delay:3s;font-size:12px;}
+@keyframes flyAcross{from{left:-5%;opacity:0;}10%{opacity:0.25;}90%{opacity:0.25;}to{left:105%;opacity:0;}}
+
+.container{position:relative;z-index:10;text-align:center;padding:40px 24px;max-width:520px;width:100%;}
+
+/* Logo */
+.logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:32px;}
+.logo svg{filter:drop-shadow(0 0 20px rgba(59,130,246,0.4));}
+.logo-text{text-align:right;}
+.logo-brand{font-size:22px;font-weight:800;color:#eef2ff;letter-spacing:-0.5px;}
+.logo-sub{font-size:13px;color:#6b7280;margin-top:2px;}
+
+/* Main heading */
+h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;color:#eef2ff;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.25;}
+.subtitle{font-size:15px;color:#6b7280;margin-bottom:36px;}
+
+/* Tip card */
+.tip-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 24px;margin-bottom:28px;min-height:90px;display:flex;align-items:center;gap:14px;text-align:right;transition:opacity 0.5s ease;}
+.tip-card.fade{opacity:0;}
+.tip-icon{font-size:28px;flex-shrink:0;}
+.tip-body{}
+.tip-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#3b82f6;margin-bottom:4px;}
+.tip-text{font-size:14px;color:#94a3b8;line-height:1.5;}
+
+/* Stats row */
+.stats{display:flex;gap:12px;justify-content:center;margin-bottom:32px;}
+.stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 16px;flex:1;}
+.stat-num{font-size:20px;font-weight:800;color:#3b82f6;font-variant-numeric:tabular-nums;}
+.stat-lbl{font-size:11px;color:#6b7280;margin-top:2px;}
+.stat-num.counting{animation:countUp 0.3s ease;}
+
+/* Progress */
+.progress-wrap{margin-bottom:10px;}
+.progress-bar-bg{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#6366f1);border-radius:99px;width:0%;transition:width 0.5s ease;box-shadow:0 0 8px rgba(59,130,246,0.5);}
+.progress-status{font-size:12px;color:#6b7280;margin-top:8px;min-height:18px;}
+
+/* CTA */
+.cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;border-radius:99px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);color:#93c5fd;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.cta:hover{background:rgba(59,130,246,0.2);}
+
+/* Ready state */
+.ready-flash{animation:readyPulse 0.6s ease;}
+@keyframes readyPulse{0%{transform:scale(1);}50%{transform:scale(1.02);}100%{transform:scale(1);}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-orb bg-orb1"></div>
+<div class="bg-orb bg-orb2"></div>
+<div class="bg-orb bg-orb3"></div>
+
+<div class="flight-track">
+  <div class="plane">✈️</div>
+  <div class="plane">✈️</div>
+  <div class="plane">✈️</div>
+</div>
+
+<div class="container">
+  <div class="logo">
+    <svg width="44" height="44" viewBox="0 0 100 100"><defs><linearGradient id="tlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs><rect width="100" height="100" rx="22" fill="url(#tlg)"/><text x="50" y="72" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="white">W</text></svg>
+    <div class="logo-text">
+      <div class="logo-brand">WizeTravel</div>
+      <div class="logo-sub">סוכן טיסות חכם</div>
+    </div>
+  </div>
+
+  <h1 id="heading">מכין את הטיסות הכי טובות עבורך</h1>
+  <p class="subtitle" id="sub">AI סורק מאות מסלולים כדי למצוא לך את העסקה הטובה ביותר</p>
+
+  <!-- Rotating tips -->
+  <div class="tip-card" id="tipCard">
+    <div class="tip-icon" id="tipIcon">💡</div>
+    <div class="tip-body">
+      <div class="tip-label">טיפ לחיסכון</div>
+      <div class="tip-text" id="tipText">טיסות ביום שלישי וסביבות שעה 6 בבוקר הן בממוצע 20% זולות יותר</div>
+    </div>
+  </div>
+
+  <!-- Live stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="sRoutes">0</div>
+      <div class="stat-lbl">מסלולים נסרקו</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="sDeals">0</div>
+      <div class="stat-lbl">דילים זוהו</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="sSaved">₪0</div>
+      <div class="stat-lbl">חיסכון ממוצע</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="pBar"></div></div>
+    <div class="progress-status" id="pStatus">מאתחל את מנוע AI...</div>
+  </div>
+
+  <a href="https://nodedai.streamlit.app" class="cta" id="ctaBtn">
+    <span id="ctaText">פתח עכשיו בכל מקרה</span>
+    <span>←</span>
+  </a>
+</div>
+
+<script>
+const TARGET = 'https://nodedai.streamlit.app';
+const TIPS = [
+  {icon:'💡', text:'טיסות ביום שלישי וסביבות שעה 6 בבוקר הן בממוצע 20% זולות יותר'},
+  {icon:'🔔', text:'הפעל התראת מחיר ו-AI יעדכן אותך ברגע שהמחיר יורד'},
+  {icon:'✈️', text:'פרישת כנפיים: לעתים טיסה עם עצירה קצרה זולה ב-40% מישירה'},
+  {icon:'📅', text:'הזמן 6-8 שבועות מראש לפני חג — זה הזמן הכי אופטימלי'},
+  {icon:'🌍', text:'DestinationX: AI יכול להציע יעד מפתיע בתקציב שלך'},
+  {icon:'💳', text:'נסיעות עסקיות? WizeTravel מוצא לך Business Class ב-Economy מחיר'},
+  {icon:'🕵️', text:'חפש ב-Incognito — חלק מהאתרים מעלים מחירים לפי היסטוריית גלישה'},
+  {icon:'📊', text:'ה-AI שלנו עקב אחרי 2.3 מיליון מחירי טיסה בחודש שעבר'},
+];
+
+const STATUSES = [
+  'מאתחל את מנוע AI...',
+  'מחבר למאגרי נתוני טיסות...',
+  'סורק מסלולים פופולריים...',
+  'מנתח מגמות מחירים...',
+  'מכייל מודל חיזוי מחירים...',
+  'מאחזר הצעות מחיר בזמן אמת...',
+  'כמעט מוכן...',
+];
+
+let tipIdx = 0, statusIdx = 0;
+let routes = 0, deals = 0;
+
+// Animate stats
+function animateStat(el, target, prefix='', suffix='') {
+  let cur = 0;
+  const step = Math.ceil(target / 40);
+  const t = setInterval(() => {
+    cur = Math.min(cur + step, target);
+    el.textContent = prefix + cur.toLocaleString('he') + suffix;
+    if (cur >= target) clearInterval(t);
+  }, 40);
+}
+
+setTimeout(() => animateStat(document.getElementById('sRoutes'), 487), 1000);
+setTimeout(() => animateStat(document.getElementById('sDeals'), 23), 2500);
+setTimeout(() => animateStat(document.getElementById('sSaved'), 1240, '₪'), 4000);
+
+// Rotating tips
+function rotateTip() {
+  const card = document.getElementById('tipCard');
+  card.classList.add('fade');
+  setTimeout(() => {
+    tipIdx = (tipIdx + 1) % TIPS.length;
+    document.getElementById('tipIcon').textContent = TIPS[tipIdx].icon;
+    document.getElementById('tipText').textContent = TIPS[tipIdx].text;
+    card.classList.remove('fade');
+  }, 500);
+}
+setInterval(rotateTip, 5000);
+
+// Progress bar
+let progress = 0;
+const totalTime = 55000; // 55 seconds max
+const startTime = Date.now();
+
+function updateProgress() {
+  const elapsed = Date.now() - startTime;
+  // Asymptotic progress: fast at first, slows down
+  progress = Math.min(95, (elapsed / totalTime) * 100 * (1 + Math.random() * 0.1));
+  document.getElementById('pBar').style.width = progress + '%';
+
+  const newStatusIdx = Math.min(Math.floor((elapsed / totalTime) * STATUSES.length), STATUSES.length - 1);
+  if (newStatusIdx !== statusIdx) {
+    statusIdx = newStatusIdx;
+    document.getElementById('pStatus').textContent = STATUSES[statusIdx];
+  }
+}
+setInterval(updateProgress, 800);
+
+// Ping Streamlit in background
+let pingCount = 0;
+function ping() {
+  pingCount++;
+  fetch(TARGET + '/_stcore/health', {method:'GET', mode:'no-cors'})
+    .then(() => {
+      // no-cors always resolves — check if we can load a known asset
+      checkReady();
+    })
+    .catch(() => {});
+}
+
+function checkReady() {
+  // Try loading a tiny resource from Streamlit
+  const img = new Image();
+  img.onload = () => onReady();
+  img.onerror = () => {}; // still loading
+  img.src = TARGET + '/favicon.png?t=' + Date.now();
+}
+
+function onReady() {
+  document.getElementById('pBar').style.width = '100%';
+  document.getElementById('pBar').style.background = 'linear-gradient(90deg,#10b981,#059669)';
+  document.getElementById('pStatus').textContent = '✅ WizeTravel מוכן! מעביר...';
+  document.getElementById('ctaText').textContent = 'כנס עכשיו →';
+  document.querySelector('.container').classList.add('ready-flash');
+  setTimeout(() => { window.location.href = TARGET; }, 1500);
+}
+
+// Start pinging every 5 seconds
+setInterval(ping, 5000);
+ping(); // immediate first ping
+
+// Hard redirect after 65 seconds if not yet redirected
+setTimeout(() => { window.location.href = TARGET; }, 65000);
+</script>
+</body>
+</html>
