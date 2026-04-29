@@ -72,6 +72,9 @@ nav.scrolled{background:rgba(5,6,15,.92);border-bottom-color:var(--border)}
 .nav-cta:hover{background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.08)}
 .lang-toggle{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border);padding:7px 13px;border-radius:99px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
 .lang-toggle:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.lang-pill{background:none;border:none;color:var(--muted2);padding:4px 8px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.5px;font-family:inherit;}
+.lang-pill:hover{color:var(--text);background:rgba(255,255,255,.08);}
+.lang-pill.active{background:rgba(99,102,241,.25);color:#a5b4fc;}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s,opacity .25s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -410,11 +413,12 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
     <a href="#faq">FAQ</a>
   </div>
   <div class="nav-right">
-    <select id="langBtn" onchange="setWlLang(this.value)" class="lang-toggle" style="cursor:pointer;font-family:inherit;">
-      <option value="en">EN</option>
-      <option value="pt">PT</option>
-      <option value="es">ES</option>
-    </select>
+    <div id="langBtn" style="display:flex;gap:3px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;">
+      <button class="lang-pill" data-lang="en" onclick="setWlLang('en')">EN</button>
+      <button class="lang-pill" data-lang="pt" onclick="setWlLang('pt')">PT</button>
+      <button class="lang-pill" data-lang="es" onclick="setWlLang('es')">ES</button>
+      <button class="lang-pill" data-lang="he" onclick="setWlLang('he')">עב</button>
+    </div>
     <a href="auth.html" class="nav-signin" id="nav-signin">Sign in</a>
     <a href="auth.html" class="nav-cta" id="nav-cta">Get Started</a>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -1316,6 +1320,35 @@ const WIZE_TR = {
     footerRights:'© 2026 WizeLife. Todos los derechos reservados.', footerMade:'Hecho con ❤️ en todo el mundo',
     mobileGetStarted:'Comenzar Gratis →',
   },
+  he: {
+    navProducts:'מוצרים', navPricing:'מחירים', navFaq:'שאלות נפוצות',
+    navSignin:'כניסה', navCta:'התחל בחינם',
+    heroBadge:'היתרון הלא הוגן שלך.',
+    h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
+    heroSub:'כסף, טיולים, מיסים, בריאות, נדל"ן — ההחלטות הגדולות בחיים, מונחות על ידי AI שנבנה במיוחד לכל תחום.',
+    heroBtn:'התחל בחינם ←', heroBtn2:'גלה את הכלים ↓',
+    feedLabel:'שידור חי מהחבילה',
+    trustLabel0:'כלי AI בחבילה אחת', trustLabel1:'להתחלה', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
+    suiteEye:'החבילה', suiteTitle:'חשבון אחד.\nכל החלטה חכמה.', suiteSub:'כל כלי הוא AI ייעודי — לא צ\'אטבוט גנרי. לחץ על כל כלי לצפייה בתצוגה מקדימה חיה.',
+    aiEye:'נסה עכשיו', aiTitle:'דבר עם WizeAI.\nחי, כאן ועכשיו.', aiSub:'ללא הרשמה. שאל כל דבר על כסף, טיסות, מיסים, בריאות או נדל"ן — קבל תשובה אמיתית תוך שניות.',
+    aiWelcome:'היי 👋 אני WizeAI. שאל אותי על השקעות, עסקאות טיסה, תכנון מס, בדיקת דם, או נכס — או לחץ על הצעה למטה.',
+    aiPlaceholder:'שאל כל דבר… למשל: \'האם כדאי לי לעבור לפורטוגל?\'',
+    aiSendBtn:'שלח ←',
+    calcEye:'מחשבון ROI', calcTitle:'כמה WizeLife יחסוך לך?', calcSub:'כוון את הפרופיל שלך וראה את החיסכון השנתי מתעדכן בזמן אמת.',
+    calcEyebrow:'חיסכון שנתי משוער', calcSubResult:'ערך WizeLife המוקרן — על בסיס תוצאות טיפוסיות של משתמשים בכל החבילה.',
+    compareEye:'למה WizeLife', compareTitle:'חבילה אחת מול כל השאר.', compareSub:'חמישה תחומים, כניסה אחת, מנוי אחד. השווה את החלופות.',
+    testiEye:'מה אומרים המשתמשים', testiTitle:'משתמשים אמיתיים. חיסכון אמיתי.', testiSub:'משוב מאנשים שמשתמשים ב-WizeLife בשלוש יבשות.',
+    pricingEye:'מחירים', pricingTitle:'מחירים פשוטים וישרים.', pricingSub:'התחל בחינם. שדרג כשתצטרך. ללא כרטיס אשראי.',
+    faqEye:'שאלות נפוצות', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
+    ctaEye:'התחל היום', ctaTitle:'מוכן לחיות יותר חכם?', ctaDesc:'הצטרף לאלפים שמקבלים החלטות טובות יותר עם AI. חינם לתמיד, שדרג מתי שרוצה.',
+    ctaBtn:'צור חשבון חינמי ←', ctaBtn2:'גלה את הכלים',
+    footerDesc:'חמישה כלי AI לכל החלטה חשובה בחיים. נבנה עם אהבה, מכל העולם.',
+    footerProducts:'מוצרים', footerAccount:'חשבון', footerInfo:'מידע',
+    footerSignin:'כניסה', footerSignup:'הרשמה חינמית', footerPricing:'מחירים',
+    footerContact:'צור קשר', footerPrivacy:'מדיניות פרטיות', footerTerms:'תנאי שירות',
+    footerRights:'© 2026 WizeLife. כל הזכויות שמורות.', footerMade:'נבנה עם ❤️ מכל העולם',
+    mobileGetStarted:'התחל בחינם ←',
+  },
 };
 
 const WIZE_FAQ_PT = [
@@ -1358,8 +1391,10 @@ function setWlLang(v){
 }
 function applyLandingLang(){
   const t = WIZE_TR[_wl_lang];
-  const lb = document.getElementById('langBtn');
-  if (lb) { if (lb.tagName === 'SELECT') lb.value = _wl_lang; else lb.textContent = _wl_lang.toUpperCase(); }
+  const isRtl = _wl_lang === 'he';
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+  document.documentElement.lang = _wl_lang;
+  document.querySelectorAll('.lang-pill').forEach(b => b.classList.toggle('active', b.dataset.lang === _wl_lang));
 
   // Nav
   document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
@@ -1489,7 +1524,14 @@ function applyLandingLang(){
     "What's a good rental yield in São Paulo?",
     "How do I rebalance a 60/40 portfolio?"
   ];
-  const suggs = _wl_lang === 'pt' ? suggestions_pt : _wl_lang === 'es' ? suggestions_es : suggestions_en;
+  const suggestions_he = [
+    "האם כדאי לי לעבור לפורטוגל?",
+    "האם TLV→NYC זול יותר דרך hub?",
+    "הסבר לי כולסטרול LDL של 138",
+    "מה תשואת שכירות טובה בתל אביב?",
+    "איך לאזן מחדש תיק 60/40?",
+  ];
+  const suggs = _wl_lang === 'pt' ? suggestions_pt : _wl_lang === 'es' ? suggestions_es : _wl_lang === 'he' ? suggestions_he : suggestions_en;
   const aiPromptsEl = document.getElementById('aiPrompts');
   if(aiPromptsEl){
     aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
@@ -1499,7 +1541,16 @@ function applyLandingLang(){
   }
 
   // FAQ — re-render by language
-  const faqData = _wl_lang === 'pt' ? WIZE_FAQ_PT : _wl_lang === 'es' ? WIZE_FAQ_ES : faqs;
+  const WIZE_FAQ_HE = [
+    {q:"האם WizeLife באמת חינמי?", a:"כן. קבל 3–5 תשובות AI ביום לכל כלי, חינם לתמיד. ללא כרטיס אשראי, ללא תקופת ניסיון. שדרג ל-Pro (₪18/חודש) לתשובות נוספות ותכונות מלאות."},
+    {q:"האם צריך חשבון נפרד לכל כלי?", a:"לא — חשבון WizeLife אחד עובד על כל 5 הכלים. כנס פעם אחת, השתמש בכל."},
+    {q:"במה WizeTax שונה ממחשבון מס רגיל?", a:"WizeTax משתמש ב-AI שאומן על חקיקת מס של 26 מדינות, כולל תרחישי מס יציאה, השוואות העתקת מגורים ויצירת מכתבים. לא רק מספרים — עצות פרקטיות."},
+    {q:"האם WizeTravel יכול באמת לחסוך לי כסף?", a:"כן. WizeTravel מוצא טיסות hidden-city, מסלולי positioning וinterlining וירטואלי בין חברות low-cost — מסלולים שאתרי הזמנה רגילים מפספסים לחלוטין."},
+    {q:"אילו שווקים WizeDeal מכסה?", a:"ישראל, ברזיל וארה\"ב. לכל שוק יש ידע עמוק במיסים מקומיים, מוצרי משכנתא ותשואות שכירות."},
+    {q:"האם הנתונים שלי מאובטחים?", a:"כל הנתונים מאוחסנים בחשבון Firebase האישי שלך. כל משתמש יכול לראות רק את הנתונים שלו. לעולם לא מוכרים או משתפים נתוני משתמשים."},
+    {q:"האם אפשר לבטל בכל עת?", a:"כן. ללא חוזים, ללא עמלות ביטול. בטל דרך הלוח בקרה בכל עת ותשמור גישה Pro עד סוף תקופת החיוב."},
+  ];
+  const faqData = _wl_lang === 'pt' ? WIZE_FAQ_PT : _wl_lang === 'es' ? WIZE_FAQ_ES : _wl_lang === 'he' ? WIZE_FAQ_HE : faqs;
   document.getElementById('faqList').innerHTML = faqData.map((f,i)=>`
 <div class="faq-item" data-i="${i}">
   <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
@@ -1515,7 +1566,7 @@ function applyLandingLang(){
 }
 
 function toggleLang(){
-  const langs = ['en','pt','es'];
+  const langs = ['en','pt','es','he'];
   _wl_lang = langs[(langs.indexOf(_wl_lang)+1) % langs.length];
   localStorage.setItem('wl_landing_lang', _wl_lang);
   localStorage.setItem('wl_lang', _wl_lang);
