@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WizeHealth — מכין את בריאותך</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#050810;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+
+.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.15;animation:drift 8s ease-in-out infinite;}
+.bg-orb1{width:400px;height:400px;background:#ec4899;top:-100px;right:-100px;animation-delay:0s;}
+.bg-orb2{width:300px;height:300px;background:#8b5cf6;bottom:-80px;left:-80px;animation-delay:3s;}
+.bg-orb3{width:200px;height:200px;background:#06b6d4;top:50%;left:50%;animation-delay:6s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.05);}}
+
+.pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;border-radius:50%;border:1px solid rgba(236,72,153,0.2);animation:pulseRing 3s ease-out infinite;}
+.pulse-ring:nth-child(2){animation-delay:1s;}
+.pulse-ring:nth-child(3){animation-delay:2s;}
+@keyframes pulseRing{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.4;}100%{transform:translate(-50%,-50%) scale(1.4);opacity:0;}}
+
+.container{position:relative;z-index:10;text-align:center;padding:40px 24px;max-width:520px;width:100%;}
+
+.logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:32px;}
+.logo svg{filter:drop-shadow(0 0 20px rgba(236,72,153,0.4));}
+.logo-text{text-align:right;}
+.logo-brand{font-size:22px;font-weight:800;color:#eef2ff;letter-spacing:-0.5px;}
+.logo-sub{font-size:13px;color:#6b7280;margin-top:2px;}
+
+h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;color:#eef2ff;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.25;}
+.subtitle{font-size:15px;color:#6b7280;margin-bottom:36px;}
+
+.tip-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 24px;margin-bottom:28px;min-height:90px;display:flex;align-items:center;gap:14px;text-align:right;transition:opacity 0.5s ease;}
+.tip-card.fade{opacity:0;}
+.tip-icon{font-size:28px;flex-shrink:0;}
+.tip-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ec4899;margin-bottom:4px;}
+.tip-text{font-size:14px;color:#94a3b8;line-height:1.5;}
+
+.stats{display:flex;gap:12px;justify-content:center;margin-bottom:32px;}
+.stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 16px;flex:1;}
+.stat-num{font-size:20px;font-weight:800;color:#ec4899;font-variant-numeric:tabular-nums;}
+.stat-lbl{font-size:11px;color:#6b7280;margin-top:2px;}
+
+.progress-wrap{margin-bottom:10px;}
+.progress-bar-bg{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#ec4899,#8b5cf6);border-radius:99px;width:0%;transition:width 0.5s ease;box-shadow:0 0 8px rgba(236,72,153,0.5);}
+.progress-status{font-size:12px;color:#6b7280;margin-top:8px;min-height:18px;}
+
+.cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;border-radius:99px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.25);color:#f9a8d4;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.cta:hover{background:rgba(236,72,153,0.2);}
+
+.ready-flash{animation:readyPulse 0.6s ease;}
+@keyframes readyPulse{0%{transform:scale(1);}50%{transform:scale(1.02);}100%{transform:scale(1);}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-orb bg-orb1"></div>
+<div class="bg-orb bg-orb2"></div>
+<div class="bg-orb bg-orb3"></div>
+<div class="pulse-ring"></div>
+<div class="pulse-ring"></div>
+<div class="pulse-ring"></div>
+
+<div class="container">
+  <div class="logo">
+    <svg width="44" height="44" viewBox="0 0 100 100"><defs><linearGradient id="hlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ec4899"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="100" height="100" rx="22" fill="url(#hlg)"/><text x="50" y="72" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="white">W</text></svg>
+    <div class="logo-text">
+      <div class="logo-brand">WizeHealth</div>
+      <div class="logo-sub">סוכן בריאות חכם</div>
+    </div>
+  </div>
+
+  <h1 id="heading">מכין את לוח הבריאות שלך</h1>
+  <p class="subtitle" id="sub">AI מנתח את הנתונים הרפואיים שלך ומייצר תובנות אישיות</p>
+
+  <div class="tip-card" id="tipCard">
+    <div class="tip-icon" id="tipIcon">💡</div>
+    <div class="tip-body">
+      <div class="tip-label">טיפ לבריאות</div>
+      <div class="tip-text" id="tipText">שינה של 7-9 שעות בלילה משפרת את מדדי הלב וכלי הדם ב-30%</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="sFiles">0</div>
+      <div class="stat-lbl">קבצים נתמכים</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="sMetrics">0</div>
+      <div class="stat-lbl">מדדים נסרקים</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="sInsights">0</div>
+      <div class="stat-lbl">תובנות AI</div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="pBar"></div></div>
+    <div class="progress-status" id="pStatus">מאתחל את מנוע הבריאות...</div>
+  </div>
+
+  <div id="ctaBtn" style="display:none">
+    <a href="https://health.wizelife.ai" class="cta" id="ctaLink">
+      <span id="ctaText">כנס עכשיו →</span>
+    </a>
+  </div>
+</div>
+
+<script>
+const _params = new URLSearchParams(window.location.search);
+const _token = _params.get('wl_token');
+const TARGET = 'https://health.wizelife.ai' + (_token ? '?wl_token=' + encodeURIComponent(_token) : '');
+const TIPS = [
+  {icon:'💡', text:'שינה של 7-9 שעות בלילה משפרת את מדדי הלב וכלי הדם ב-30%'},
+  {icon:'🏃', text:'30 דקות הליכה יומית מפחיתות סיכון למחלות לב ב-35%'},
+  {icon:'🥗', text:'תזונה עשירה בסיבים תזונתיים עוזרת לאיזון רמות הסוכר בדם'},
+  {icon:'💧', text:'שתיית 8 כוסות מים ביום משפרת ריכוז ואנרגיה לאורך היום'},
+  {icon:'🧘', text:'מדיטציה של 10 דקות ביום מפחיתה את רמות הקורטיזול ב-20%'},
+  {icon:'📊', text:'WizeHealth מנתח תוצאות בדם, MRI, ECG ועוד'},
+  {icon:'🔬', text:'AI שלנו זיהה תבניות בנתוני בריאות של מאות אלפי מטופלים'},
+  {icon:'❤️', text:'מעקב שגרתי אחר לחץ דם ודופק יכול לזהות בעיות שנים לפני הסימפטומים'},
+];
+
+const STATUSES = [
+  'מאתחל את מנוע הבריאות...',
+  'טוען מודלי ניתוח רפואי...',
+  'מגדיר ספריות AI...',
+  'מכייל מדדי רפואה מונעת...',
+  'מכין ממשק המטופל...',
+  'כמעט מוכן...',
+];
+
+let tipIdx = 0, statusIdx = 0;
+
+function animateStat(el, target) {
+  let cur = 0;
+  const step = Math.ceil(target / 40);
+  const t = setInterval(() => {
+    cur = Math.min(cur + step, target);
+    el.textContent = cur.toLocaleString('he');
+    if (cur >= target) clearInterval(t);
+  }, 40);
+}
+
+setTimeout(() => animateStat(document.getElementById('sFiles'), 12), 1000);
+setTimeout(() => animateStat(document.getElementById('sMetrics'), 47), 2500);
+setTimeout(() => animateStat(document.getElementById('sInsights'), 8), 4000);
+
+function rotateTip() {
+  const card = document.getElementById('tipCard');
+  card.classList.add('fade');
+  setTimeout(() => {
+    tipIdx = (tipIdx + 1) % TIPS.length;
+    document.getElementById('tipIcon').textContent = TIPS[tipIdx].icon;
+    document.getElementById('tipText').textContent = TIPS[tipIdx].text;
+    card.classList.remove('fade');
+  }, 500);
+}
+setInterval(rotateTip, 5000);
+
+let progress = 0;
+const totalTime = 55000;
+const startTime = Date.now();
+
+function updateProgress() {
+  const elapsed = Date.now() - startTime;
+  progress = Math.min(95, (elapsed / totalTime) * 100 * (1 + Math.random() * 0.1));
+  document.getElementById('pBar').style.width = progress + '%';
+
+  const newStatusIdx = Math.min(Math.floor((elapsed / totalTime) * STATUSES.length), STATUSES.length - 1);
+  if (newStatusIdx !== statusIdx) {
+    statusIdx = newStatusIdx;
+    document.getElementById('pStatus').textContent = STATUSES[statusIdx];
+  }
+}
+setInterval(updateProgress, 800);
+
+let redirected = false;
+
+function onReady() {
+  if (redirected) return;
+  redirected = true;
+  document.getElementById('pBar').style.width = '100%';
+  document.getElementById('pBar').style.background = 'linear-gradient(90deg,#10b981,#059669)';
+  document.getElementById('pStatus').textContent = '✅ WizeHealth מוכן! מעביר...';
+  document.getElementById('ctaBtn').style.display = 'block';
+  document.querySelector('.container').classList.add('ready-flash');
+  setTimeout(() => { window.location.href = TARGET; }, 1500);
+}
+
+function ping() {
+  fetch(TARGET + '/api/config', {method:'GET', mode:'no-cors'})
+    .then(() => { checkReady(); })
+    .catch(() => {});
+}
+
+function checkReady() {
+  const img = new Image();
+  img.onload = () => onReady();
+  img.onerror = () => {};
+  img.src = TARGET + '/favicon.ico?t=' + Date.now();
+}
+
+setInterval(ping, 5000);
+ping();
+
+setTimeout(() => {
+  if (redirected) return;
+  document.getElementById('pStatus').textContent = 'לוקח קצת יותר מהרגיל — לחץ כשמוכן';
+  document.getElementById('ctaBtn').style.display = 'block';
+  document.getElementById('ctaText').textContent = 'נסה לפתוח →';
+}, 90000);
+</script>
+</body>
+</html>

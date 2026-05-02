@@ -174,7 +174,7 @@
       <div class="tool-pro-badge" id="badge-travel" style="display:none;">Pro</div>
     </a>
 
-    <a class="tool-card" id="tool-health" href="https://health.wizelife.ai/" target="_blank" style="--c: var(--health)">
+    <a class="tool-card" id="tool-health" href="/health.html" target="_blank" style="--c: var(--health)">
       <div class="tool-icon">❤️</div>
       <div class="tool-sub">WizeHealth</div>
       <div class="tool-name">Vitara</div>
@@ -341,7 +341,7 @@ async function attachTokensToTools() {
         const token = await user.getIdToken();
         const tools = [
             { id: "tool-tax",    base: "https://mastermove.vercel.app/advisor" },
-            { id: "tool-health", base: "https://health.wizelife.ai/" },
+            { id: "tool-health", base: "/health.html" },
             { id: "tool-deal",   base: "https://check-deal.vercel.app/" },
         ];
         tools.forEach(({ id, base }) => {
