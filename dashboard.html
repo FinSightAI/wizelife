@@ -219,11 +219,19 @@
 const PAYPAL_PLAN_ID = "P-42B26777LT293231BNHMVWNA";
 
 requireAuth("auth.html").then(async (user) => {
+    // Fetch nickname from Firestore
+    let nick = user.displayName || user.email || "";
+    try {
+        const doc = await wlDb.collection("users").doc(user.uid).get();
+        if (doc.exists && doc.data().nickname) nick = doc.data().nickname;
+    } catch(e) {}
+    localStorage.setItem("wl_nickname", nick);
+
     // Nav
-    document.getElementById("navUserName").textContent = user.displayName || user.email;
+    document.getElementById("navUserName").textContent = nick;
 
     // Account info
-    document.getElementById("acctName").textContent  = user.displayName || "—";
+    document.getElementById("acctName").textContent  = nick;
     document.getElementById("acctEmail").textContent = user.email;
     const since = user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString("en-GB", { month: "short", year: "numeric" }) : "—";
     document.getElementById("acctSince").textContent = since;
@@ -339,14 +347,17 @@ async function attachTokensToTools() {
         const user = wlAuth.currentUser;
         if (!user) return;
         const token = await user.getIdToken();
+        const nick = encodeURIComponent(localStorage.getItem("wl_nickname") || "");
         const tools = [
-            { id: "tool-tax",    base: "https://mastermove.vercel.app/advisor" },
-            { id: "tool-health", base: "/health.html" },
-            { id: "tool-deal",   base: "https://check-deal.vercel.app/" },
+            { id: "tool-finsight", base: "https://finsightai.github.io/finsight/" },
+            { id: "tool-travel",   base: "https://travel.wizelife.ai" },
+            { id: "tool-tax",      base: "https://mastermove.vercel.app/advisor" },
+            { id: "tool-health",   base: "/health.html" },
+            { id: "tool-deal",     base: "https://check-deal.vercel.app/" },
         ];
         tools.forEach(({ id, base }) => {
             const el = document.getElementById(id);
-            if (el) el.href = `${base}?wl_token=${encodeURIComponent(token)}`;
+            if (el) el.href = `${base}?wl_token=${encodeURIComponent(token)}&wl_nick=${nick}`;
         });
     } catch (e) {
         // fail silently — tools still work without token (free tier)

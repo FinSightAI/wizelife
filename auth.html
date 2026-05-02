@@ -129,7 +129,7 @@
   <div id="signupForm" style="display:none;">
     <div class="form-group">
       <label>Full Name</label>
-      <input type="text" id="signupName" placeholder="Your name" autocomplete="name">
+      <input type="text" id="signupName" placeholder="כינוי — איך לקרוא לך? (Ofi, נועה, 007…)" autocomplete="nickname">
     </div>
     <div class="form-group">
       <label>Email</label>
@@ -213,7 +213,12 @@
     try {
       const cred = await wlAuth.createUserWithEmailAndPassword(email, pass);
       await cred.user.updateProfile({ displayName: name });
-      await wlDb.collection("users").doc(cred.user.uid).set({ plan: "free", createdAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      await wlDb.collection("users").doc(cred.user.uid).set({
+        plan: "free",
+        nickname: name,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      localStorage.setItem("wl_nickname", name);
       window.location.href = "dashboard.html";
     } catch (e) {
       document.getElementById("signupError").textContent = friendlyError(e.code);
@@ -227,7 +232,15 @@
       // First time? create user doc
       const ref = wlDb.collection("users").doc(cred.user.uid);
       const doc = await ref.get();
-      if (!doc.exists) await ref.set({ plan: "free", createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      const nick = cred.user.displayName || cred.user.email.split("@")[0];
+      if (!doc.exists) {
+        await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      } else {
+        // Update nickname if missing
+        const d = doc.data();
+        if (!d.nickname) await ref.update({ nickname: nick });
+      }
+      localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
       window.location.href = "dashboard.html";
     } catch (e) {
       alert(friendlyError(e.code));

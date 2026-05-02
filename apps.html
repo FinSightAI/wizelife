@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WizeLife — Unified App Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%;overflow:hidden}
+
+:root{
+  --bg:#060810;
+  --bg2:#0d1020;
+  --bg3:#141828;
+  --border:rgba(255,255,255,.07);
+  --border2:rgba(255,255,255,.13);
+  --text:#eef2ff;
+  --muted:#7280a0;
+  --muted2:#a0adcc;
+  --radius-card:18px;
+  --radius-btn:12px;
+  --ff-head:'Plus Jakarta Sans',sans-serif;
+  --ff-body:'Inter',sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+}
+
+/* ── Phone Shell ── */
+.phone{
+  width:320px;
+  background:var(--bg);
+  border-radius:44px;
+  border:2px solid rgba(255,255,255,.1);
+  overflow:hidden;
+  flex-shrink:0;
+  position:relative;
+  box-shadow:
+    0 0 0 6px rgba(255,255,255,.03),
+    0 40px 80px rgba(0,0,0,.7),
+    0 0 80px -10px var(--shell-glow, rgba(99,102,241,.12));
+  transition:box-shadow .4s;
+}
+.phone-notch{
+  height:32px;background:var(--bg);
+  display:flex;align-items:flex-start;justify-content:center;padding-top:6px;
+  position:relative;z-index:10;
+}
+.phone-notch::after{
+  content:'';width:88px;height:22px;
+  background:rgba(0,0,0,.95);border-radius:0 0 16px 16px;
+  display:block;border:1.5px solid rgba(255,255,255,.06);border-top:none;
+}
+.phone-screen{overflow-y:auto;scrollbar-width:none;max-height:618px}
+.phone-screen::-webkit-scrollbar{display:none}
+.phone-home{height:30px;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.phone-home::after{content:'';width:104px;height:4px;background:rgba(255,255,255,.18);border-radius:99px}
+
+/* ── Status bar ── */
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:8px 22px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);font-family:var(--ff-mono)}
+
+/* ── Top chrome ── */
+.top-chrome{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px 14px;
+  background:linear-gradient(180deg,var(--bg) 0%,transparent 100%);
+  position:sticky;top:0;z-index:9;
+}
+.top-chrome-left{display:flex;align-items:center;gap:10px}
+.app-icon{
+  width:38px;height:38px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  background:color-mix(in srgb,var(--c) 18%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+  flex-shrink:0;
+}
+.app-name{font-family:var(--ff-head);font-size:1.05rem;font-weight:800;letter-spacing:-.4px;color:var(--text)}
+.app-name em{font-style:normal;color:var(--c)}
+.top-right{display:flex;gap:8px}
+.icon-btn{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  font-size:.82rem;cursor:pointer;color:var(--muted2);
+  transition:all .2s;
+}
+.icon-btn:hover{background:rgba(255,255,255,.1);border-color:var(--border2)}
+
+/* ── Bottom nav ── */
+.bnav{
+  display:flex;
+  background:color-mix(in srgb,var(--bg2) 90%,transparent);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  padding:10px 0 6px;
+  position:sticky;bottom:0;
+}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.bni-ico{font-size:1.05rem;line-height:1;transition:transform .2s}
+.bni.active .bni-ico{transform:scale(1.15)}
+.bni-lbl{font-size:.6rem;font-weight:700;color:var(--muted);letter-spacing:.2px;transition:color .2s;font-family:var(--ff-body)}
+.bni.active .bni-lbl{color:var(--c)}
+.bni-pip{width:18px;height:3px;border-radius:99px;background:transparent;margin-top:3px;transition:background .2s}
+.bni.active .bni-pip{background:var(--c)}
+
+/* ── Cards ── */
+.wl-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-card);padding:16px;
+  margin:0 18px 10px;
+  transition:border-color .2s;
+}
+.wl-card.accent{
+  background:color-mix(in srgb,var(--c) 7%,var(--bg2));
+  border-color:color-mix(in srgb,var(--c) 25%,transparent);
+}
+.wl-card.glow{
+  box-shadow:0 8px 32px color-mix(in srgb,var(--c) 12%,transparent);
+}
+
+/* ── Section header ── */
+.sh{display:flex;justify-content:space-between;align-items:center;padding:0 18px;margin-bottom:8px}
+.sh-t{font-size:.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:var(--ff-body)}
+.sh-a{font-size:.72rem;font-weight:700;color:var(--c);font-family:var(--ff-body)}
+
+/* ── Chips ── */
+.chips{display:flex;gap:7px;padding:0 18px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:6px 14px;border-radius:99px;font-size:.72rem;font-weight:700;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-family:var(--ff-body);transition:all .2s}
+.chip.on{background:color-mix(in srgb,var(--c) 14%,transparent);border-color:color-mix(in srgb,var(--c) 40%,transparent);color:var(--text)}
+
+/* ── Metric card ── */
+.metric{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px;margin-bottom:10px}
+.met{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px}
+.met-lbl{font-size:.62rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-family:var(--ff-body)}
+.met-val{font-family:var(--ff-head);font-size:1.25rem;font-weight:900;letter-spacing:-.5px;color:var(--c);line-height:1}
+.met-sub{font-size:.62rem;color:var(--muted);margin-top:3px;font-family:var(--ff-body)}
+.met-bar{height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-top:6px}
+.met-fill{height:100%;border-radius:99px;background:var(--c);transition:width .8s ease}
+
+/* ── List row ── */
+.lrow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--ff-body)}
+.lrow:last-child{border:none}
+.lrow-l{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.lrow-ico{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.lrow-title{font-weight:600;font-size:.84rem;color:var(--text);line-height:1.2}
+.lrow-sub{font-size:.66rem;color:var(--muted);margin-top:1px}
+.lrow-r{text-align:right}
+.lrow-val{font-weight:700;font-size:.88rem;color:var(--text);font-family:var(--ff-mono)}
+.tag{padding:2px 8px;border-radius:6px;font-size:.65rem;font-weight:800;font-family:var(--ff-mono)}
+.tag.up{background:rgba(16,185,129,.13);color:#34d399}
+.tag.dn{background:rgba(239,68,68,.13);color:#f87171}
+.tag.neu{background:rgba(245,158,11,.13);color:#fcd34d}
+
+/* ── AI bubble ── */
+.ai-msg{padding:12px 14px;border-radius:4px 14px 14px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);font-size:.8rem;line-height:1.6;color:var(--muted2);margin:0 18px 8px;font-family:var(--ff-body)}
+.ai-msg strong{color:var(--text)}
+.ai-msg .ai-tag{font-size:.62rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--c);margin-bottom:5px;display:block}
+
+/* ── Hero value block ── */
+.hero-val{padding:16px 18px 4px}
+.hv-lbl{font-size:.66rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:var(--ff-body)}
+.hv-num{font-family:var(--ff-head);font-size:2.6rem;font-weight:900;letter-spacing:-2.5px;color:var(--text);line-height:1;margin:3px 0}
+.hv-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:800;font-family:var(--ff-mono)}
+.hv-badge.pos{background:rgba(16,185,129,.13);color:#34d399}
+.hv-badge.warn{background:rgba(245,158,11,.13);color:#fcd34d}
+.hv-badge.neg{background:rgba(239,68,68,.13);color:#f87171}
+.hv-badge.info{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ── Inline mini chart ── */
+.sparkline{display:flex;align-items:flex-end;gap:3px;height:36px}
+.spark-bar{flex:1;border-radius:3px 3px 0 0;background:color-mix(in srgb,var(--c) 22%,transparent);transition:background .2s}
+.spark-bar.hi{background:color-mix(in srgb,var(--c) 55%,transparent)}
+.spark-bar.now{background:var(--c)}
+
+/* ── CTA button ── */
+.cta-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border-radius:var(--radius-btn);
+  background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 70%,#a78bfa));
+  color:#fff;font-family:var(--ff-head);font-weight:800;font-size:.95rem;
+  cursor:pointer;
+  box-shadow:0 8px 28px color-mix(in srgb,var(--c) 30%,transparent);
+  border:none;transition:all .2s;
+}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px color-mix(in srgb,var(--c) 40%,transparent)}
+
+/* ── Onboarding ── */
+.ob-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px 24px 10px;min-height:540px}
+.ob-logo{font-family:var(--ff-head);font-size:1rem;font-weight:800;letter-spacing:-.5px;margin-bottom:18px;background:linear-gradient(120deg,#6366f1 0%,#a78bfa 40%,#ec4899 75%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ob-icon{width:76px;height:76px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 18px;
+  background:color-mix(in srgb,var(--c) 14%,transparent);
+  border:1.5px solid color-mix(in srgb,var(--c) 35%,transparent);
+  box-shadow:0 16px 48px color-mix(in srgb,var(--c) 22%,transparent);
+}
+.ob-title{font-family:var(--ff-head);font-size:1.65rem;font-weight:900;letter-spacing:-1px;color:var(--text);line-height:1.05;margin-bottom:8px}
+.ob-sub{font-size:.84rem;color:var(--muted2);line-height:1.6;margin-bottom:22px;font-family:var(--ff-body)}
+.ob-steps{width:100%;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.ob-step{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:13px;padding:10px 13px;text-align:left}
+.ob-step-ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.88rem;background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 28%,transparent);flex-shrink:0}
+.ob-step-txt{font-size:.78rem;color:var(--muted2);font-family:var(--ff-body);line-height:1.4}
+.ob-free{font-size:.72rem;color:var(--muted);margin-top:10px;font-family:var(--ff-body)}
+
+/* ── Input ── */
+.wl-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:11px;padding:11px 14px;color:var(--text);font-size:.88rem;font-family:var(--ff-body);outline:none;transition:border-color .2s}
+.wl-input:focus{border-color:color-mix(in srgb,var(--c) 55%,transparent)}
+.wl-input::placeholder{color:var(--muted)}
+
+/* ── Chat row ── */
+.chat-row{display:flex;margin-bottom:10px}
+.chat-row.user{justify-content:flex-end}
+.chat-bubble{max-width:82%;padding:10px 13px;font-size:.8rem;line-height:1.6;font-family:var(--ff-body);border-radius:4px 14px 14px 14px}
+.chat-row.bot .chat-bubble{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted2);border-radius:4px 14px 14px 14px}
+.chat-row.user .chat-bubble{background:color-mix(in srgb,var(--c) 22%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);color:var(--text);border-radius:14px 4px 14px 14px}
+
+/* ── Score grade ── */
+.grade{width:58px;height:58px;border-radius:17px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-head);font-size:2rem;font-weight:900;color:#fff;flex-shrink:0;
+  background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 60%,#6366f1));
+  box-shadow:0 8px 24px color-mix(in srgb,var(--c) 35%,transparent);
+}
+
+/* ── Step indicator ── */
+.step-dots{display:flex;gap:5px;justify-content:center;margin-bottom:14px}
+.sdot{width:6px;height:6px;border-radius:99px;background:var(--border2);transition:all .3s}
+.sdot.on{width:20px;background:var(--c)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+
+/* ═══════════════════════════════════
+   DESIGN CANVAS (inlined)
+═══════════════════════════════════ */
+const DC_THEME = {
+  bg: '#f0ede8',
+  grid: 'rgba(0,0,0,0.06)',
+  label: 'rgba(40,30,20,0.5)',
+  title: 'rgba(40,30,20,0.85)',
+  subtitle: 'rgba(60,50,40,0.6)',
+  font: '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+};
+
+function DesignCanvas({ children, minScale = 0.1, maxScale = 8 }) {
+  const vpRef = React.useRef(null);
+  const worldRef = React.useRef(null);
+  const tf = React.useRef({ x: 0, y: 0, scale: 1 });
+
+  const apply = React.useCallback(() => {
+    const { x, y, scale } = tf.current;
+    const el = worldRef.current;
+    if (el) el.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+  }, []);
+
+  React.useEffect(() => {
+    const vp = vpRef.current;
+    if (!vp) return;
+
+    const zoomAt = (cx, cy, factor) => {
+      const r = vp.getBoundingClientRect();
+      const px = cx - r.left, py = cy - r.top;
+      const t = tf.current;
+      const next = Math.min(maxScale, Math.max(minScale, t.scale * factor));
+      const k = next / t.scale;
+      t.x = px - (px - t.x) * k;
+      t.y = py - (py - t.y) * k;
+      t.scale = next;
+      apply();
+    };
+
+    const isMouseWheel = (e) =>
+      e.deltaMode !== 0 ||
+      (e.deltaX === 0 && Number.isInteger(e.deltaY) && Math.abs(e.deltaY) >= 40);
+
+    let isGesturing = false;
+    const onWheel = (e) => {
+      e.preventDefault();
+      if (isGesturing) return;
+      if (e.ctrlKey) {
+        zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.01));
+      } else if (isMouseWheel(e)) {
+        zoomAt(e.clientX, e.clientY, Math.exp(-Math.sign(e.deltaY) * 0.18));
+      } else {
+        tf.current.x -= e.deltaX;
+        tf.current.y -= e.deltaY;
+        apply();
+      }
+    };
+
+    let gsBase = 1;
+    const onGestureStart = (e) => { e.preventDefault(); isGesturing = true; gsBase = tf.current.scale; };
+    const onGestureChange = (e) => { e.preventDefault(); zoomAt(e.clientX, e.clientY, (gsBase * e.scale) / tf.current.scale); };
+    const onGestureEnd = (e) => { e.preventDefault(); isGesturing = false; };
+
+    let drag = null;
+    const onPointerDown = (e) => {
+      const onBg = e.target === vp || e.target === worldRef.current;
+      if (!(e.button === 1 || (e.button === 0 && onBg))) return;
+      e.preventDefault();
+      vp.setPointerCapture(e.pointerId);
+      drag = { id: e.pointerId, lx: e.clientX, ly: e.clientY };
+      vp.style.cursor = 'grabbing';
+    };
+    const onPointerMove = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      tf.current.x += e.clientX - drag.lx;
+      tf.current.y += e.clientY - drag.ly;
+      drag.lx = e.clientX; drag.ly = e.clientY;
+      apply();
+    };
+    const onPointerUp = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      vp.releasePointerCapture(e.pointerId);
+      drag = null;
+      vp.style.cursor = '';
+    };
+
+    vp.addEventListener('wheel', onWheel, { passive: false });
+    vp.addEventListener('gesturestart', onGestureStart, { passive: false });
+    vp.addEventListener('gesturechange', onGestureChange, { passive: false });
+    vp.addEventListener('gestureend', onGestureEnd, { passive: false });
+    vp.addEventListener('pointerdown', onPointerDown);
+    vp.addEventListener('pointermove', onPointerMove);
+    vp.addEventListener('pointerup', onPointerUp);
+    vp.addEventListener('pointercancel', onPointerUp);
+    return () => {
+      vp.removeEventListener('wheel', onWheel);
+      vp.removeEventListener('gesturestart', onGestureStart);
+      vp.removeEventListener('gesturechange', onGestureChange);
+      vp.removeEventListener('gestureend', onGestureEnd);
+      vp.removeEventListener('pointerdown', onPointerDown);
+      vp.removeEventListener('pointermove', onPointerMove);
+      vp.removeEventListener('pointerup', onPointerUp);
+      vp.removeEventListener('pointercancel', onPointerUp);
+    };
+  }, [apply, minScale, maxScale]);
+
+  const gridSvg = `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='${encodeURIComponent(DC_THEME.grid)}' stroke-width='1'/%3E%3C/svg%3E")`;
+
+  return (
+    <div ref={vpRef} style={{height:'100vh',width:'100vw',background:DC_THEME.bg,overflow:'hidden',overscrollBehavior:'none',touchAction:'none',position:'relative',fontFamily:DC_THEME.font,boxSizing:'border-box'}}>
+      <div ref={worldRef} style={{position:'absolute',top:0,left:0,transformOrigin:'0 0',willChange:'transform',width:'max-content',minWidth:'100%',minHeight:'100%',padding:'60px 0 80px',backgroundImage:gridSvg,backgroundSize:'120px 120px'}}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function DCSection({ title, subtitle, children, gap = 48 }) {
+  return (
+    <div style={{marginBottom:80,position:'relative'}}>
+      <div style={{padding:'0 60px 36px'}}>
+        <div style={{fontSize:22,fontWeight:600,color:DC_THEME.title,letterSpacing:-0.3,marginBottom:4}}>{title}</div>
+        {subtitle && <div style={{fontSize:14,fontWeight:400,color:DC_THEME.subtitle}}>{subtitle}</div>}
+      </div>
+      <div style={{display:'flex',gap,padding:'0 60px',alignItems:'flex-start',width:'max-content'}}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function DCArtboard({ label, children, width, height }) {
+  return (
+    <div style={{position:'relative',flexShrink:0}}>
+      {label && (
+        <div style={{position:'absolute',bottom:'100%',left:0,paddingBottom:8,fontSize:12,fontWeight:500,color:DC_THEME.label,whiteSpace:'nowrap'}}>
+          {label}
+        </div>
+      )}
+      <div style={{borderRadius:2,boxShadow:'0 1px 3px rgba(0,0,0,0.08),0 4px 16px rgba(0,0,0,0.06)',overflow:'hidden',width,height,background:'#fff'}}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════
+   SHARED CHROME COMPONENTS
+═══════════════════════════════════ */
+
+function Phone({color, children}){
+  return (
+    <div className="phone" style={{'--c':color,'--shell-glow':`color-mix(in srgb,${color} 16%,transparent)`}}>
+      <div className="phone-notch"></div>
+      {children}
+      <div className="phone-home"></div>
+    </div>
+  );
+}
+
+function Sbar(){
+  return <div className="sbar"><span>9:41</span><span>●●● WiFi ⚡88%</span></div>;
+}
+
+function TopChrome({appName, icon, color, actions=['🔔','⋯']}){
+  return (
+    <div className="top-chrome">
+      <div className="top-chrome-left">
+        <div className="app-icon">{icon}</div>
+        <div className="app-name">Wize<em>{appName}</em></div>
+      </div>
+      <div className="top-right">
+        {actions.map((a,i)=><div key={i} className="icon-btn">{a}</div>)}
+      </div>
+    </div>
+  );
+}
+
+function BNav({items, active, color}){
+  return (
+    <div className="bnav" style={{'--c':color}}>
+      {items.map((it,i)=>(
+        <div key={i} className={`bni${i===active?' active':''}`}>
+          <div className="bni-ico">{it.ico}</div>
+          <div className="bni-lbl">{it.lbl}</div>
+          <div className="bni-pip"></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Onboarding({color, icon, appName, tagline, steps, stepIdx=1}){
+  return (
+    <Phone color={color}>
+      <div className="phone-screen" style={{background:'var(--bg)'}}>
+        <Sbar/>
+        <div className="step-dots">
+          {[0,1,2].map(i=><div key={i} className={`sdot${i===stepIdx?' on':''}`}/>)}
+        </div>
+        <div className="ob-wrap">
+          <div className="ob-logo">WizeLife</div>
+          <div className="ob-icon">{icon}</div>
+          <div className="ob-title">{tagline[0]}<br/>{tagline[1]}</div>
+          <div className="ob-sub">{tagline[2]}</div>
+          <div className="ob-steps">
+            {steps.map((s,i)=>(
+              <div key={i} className="ob-step">
+                <div className="ob-step-ico">{s.ico}</div>
+                <div className="ob-step-txt">{s.txt}</div>
+              </div>
+            ))}
+          </div>
+          <div className="cta-btn" style={{width:'100%'}}>Get started free →</div>
+          <div className="ob-free">No credit card · cancel anytime</div>
+        </div>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════
+   💰 WIZEMONEY
+═══════════════════════════════════ */
+const MC = '#10b981';
+function MoneyHome(){
+  return (
+    <Phone color={MC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Money" icon="💰" color={MC}/>
+        <div className="hero-val">
+          <div className="hv-lbl">Total portfolio</div>
+          <div className="hv-num">$94,560</div>
+          <div className="hv-badge pos">↑ +2.4% this month</div>
+        </div>
+        <div style={{padding:'10px 18px 0'}}>
+          <div className="sparkline">
+            {[38,52,44,60,55,70,65,80,74,88,84,100].map((h,i)=>(
+              <div key={i} className={`spark-bar${i===11?' now':i>8?' hi':''}`} style={{height:`${h}%`}}/>
+            ))}
+          </div>
+        </div>
+        <div style={{height:12}}/>
+        <div className="sh"><div className="sh-t">Holdings</div><div className="sh-a">See all</div></div>
+        <div className="wl-card" style={{padding:'4px 14px'}}>
+          {[
+            {ico:'📈',bg:'rgba(16,185,129,.12)',tc:'#34d399',sym:'VOO',name:'Vanguard S&P 500',val:'$18,420',tag:'+2.4%',up:true},
+            {ico:'₿',bg:'rgba(99,102,241,.12)',tc:'#a5b4fc',sym:'BTC',name:'Bitcoin',val:'$9,110',tag:'+8.1%',up:true},
+            {ico:'🏛',bg:'rgba(245,158,11,.12)',tc:'#fcd34d',sym:'IL',name:'Pension · Menora',val:'₪214K',tag:'+0.7%',up:true},
+            {ico:'⚡',bg:'rgba(239,68,68,.12)',tc:'#f87171',sym:'TSLA',name:'Tesla',val:'$3,240',tag:'−1.2%',up:false},
+          ].map((a,i)=>(
+            <div key={i} className="lrow">
+              <div className="lrow-l">
+                <div className="lrow-ico" style={{background:a.bg,color:a.tc,fontFamily:'var(--ff-mono)',fontSize:'.7rem',fontWeight:700}}>{a.sym}</div>
+                <div><div className="lrow-title">{a.name}</div></div>
+              </div>
+              <div className="lrow-r">
+                <div className="lrow-val">{a.val}</div>
+                <div><span className={`tag ${a.up?'up':'dn'}`}>{a.tag}</span></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="sh" style={{marginTop:4}}><div className="sh-t">Goals</div><div className="sh-a">Edit</div></div>
+        {[
+          {ico:'🏠',name:'Down payment',pct:68},
+          {ico:'✈️',name:'Travel fund',pct:42},
+        ].map((g,i)=>(
+          <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'7px 18px',borderBottom:'1px solid var(--border)'}}>
+            <div style={{width:30,height:30,borderRadius:9,background:`color-mix(in srgb,${MC} 14%,transparent)`,border:`1px solid color-mix(in srgb,${MC} 25%,transparent)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'.85rem',flexShrink:0}}>{g.ico}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:'.78rem',fontWeight:600,color:'var(--text)',marginBottom:4}}>{g.name}</div>
+              <div style={{height:4,background:'rgba(255,255,255,.07)',borderRadius:99,overflow:'hidden'}}><div style={{height:'100%',width:`${g.pct}%`,background:MC,borderRadius:99}}/></div>
+            </div>
+            <div style={{fontFamily:'var(--ff-mono)',fontSize:'.7rem',fontWeight:700,color:'var(--muted)'}}>{g.pct}%</div>
+          </div>
+        ))}
+        <div style={{height:4}}/>
+        <BNav items={[{ico:'📊',lbl:'Portfolio'},{ico:'💬',lbl:'AI'},{ico:'🎯',lbl:'Goals'},{ico:'👤',lbl:'Account'}]} active={0} color={MC}/>
+      </div>
+    </Phone>
+  );
+}
+
+function MoneyChat(){
+  return (
+    <Phone color={MC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Money" icon="💰" color={MC} actions={['⋯']}/>
+        <div style={{padding:'0 0 4px'}}>
+          {[
+            {bot:true, t:'I\'ve analyzed your portfolio. Your pension is 12% below the recommended allocation for your age bracket. Shall I model a rebalancing?'},
+            {bot:false, t:'Yes, show me the best option.'},
+            {bot:true, t:'Moving 8% from cash into Keren Hishtalmut adds ₪2,840/yr tax-free. See simulation ↓'},
+          ].map((m,i)=>(
+            <div key={i} className={`chat-row ${m.bot?'bot':'user'}`} style={{padding:'0 18px'}}>
+              <div className="chat-bubble">{m.t}</div>
+            </div>
+          ))}
+          <div className="wl-card accent glow" style={{marginTop:4}}>
+            <div style={{fontSize:'.65rem',fontWeight:800,letterSpacing:1,textTransform:'uppercase',color:MC,marginBottom:8}}>Simulation · Keren Hishtalmut</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+              {[{l:'Annual gain',v:'₪2,840'},{l:'Tax saved',v:'₪1,200'},{l:'10yr total',v:'₪40,800'},{l:'Risk level',v:'Low'}].map((s,i)=>(
+                <div key={i}>
+                  <div style={{fontSize:'.62rem',color:'var(--muted)',fontWeight:600}}>{s.l}</div>
+                  <div style={{fontFamily:'var(--ff-head)',fontWeight:900,fontSize:'1rem',color:'var(--text)',letterSpacing:'-.3px'}}>{s.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div style={{padding:'8px 18px',borderTop:'1px solid var(--border)',display:'flex',gap:8,background:'var(--bg)'}}>
+          <input className="wl-input" placeholder="Ask about your portfolio…" readOnly style={{flex:1}}/>
+          <div className="cta-btn" style={{padding:'0 14px',borderRadius:10,fontSize:'.85rem',width:36,height:36,minWidth:36}}><span>↑</span></div>
+        </div>
+        <BNav items={[{ico:'📊',lbl:'Portfolio'},{ico:'💬',lbl:'AI'},{ico:'🎯',lbl:'Goals'},{ico:'👤',lbl:'Account'}]} active={1} color={MC}/>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════
+   ✈️ WIZETRAVEL
+═══════════════════════════════════ */
+const TC = '#3b82f6';
+function TravelHome(){
+  return (
+    <Phone color={TC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Travel" icon="✈️" color={TC}/>
+        <div className="wl-card" style={{marginBottom:10}}>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 26px 1fr',gap:6,alignItems:'center',marginBottom:10}}>
+            {[{lbl:'From',val:'TLV',sub:'Ben Gurion'},{lbl:'To',val:'JFK',sub:'New York'}].map((f,i)=>(
+              <React.Fragment key={i}>
+                {i===1 && <div style={{width:26,height:26,borderRadius:8,background:`color-mix(in srgb,${TC} 14%,transparent)`,border:`1px solid color-mix(in srgb,${TC} 30%,transparent)`,display:'flex',alignItems:'center',justifyContent:'center',color:TC,fontSize:'.8rem',fontWeight:800}}>⇌</div>}
+                <div key={`f${i}`}>
+                  <div style={{fontSize:'.6rem',fontWeight:800,letterSpacing:1,textTransform:'uppercase',color:TC}}>{f.lbl}</div>
+                  <div style={{fontFamily:'var(--ff-head)',fontWeight:900,fontSize:'1.2rem',letterSpacing:'-.5px',color:'var(--text)'}}>{f.val}</div>
+                  <div style={{fontSize:'.66rem',color:'var(--muted)'}}>{f.sub}</div>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+            <div style={{background:'var(--bg3)',borderRadius:10,padding:'8px 10px'}}>
+              <div style={{fontSize:'.6rem',color:'var(--muted)',fontWeight:700,letterSpacing:.5}}>DATE</div>
+              <div style={{fontWeight:700,fontSize:'.85rem',color:'var(--text)'}}>Jun 12 · 1 pax</div>
+            </div>
+            <div className="cta-btn" style={{borderRadius:10,fontSize:'.82rem',height:'auto',padding:'8px'}}>Search AI ✦</div>
+          </div>
+        </div>
+        <div className="chips">
+          {['All routes','Hidden city','Positioning','Low-cost'].map((c,i)=>(
+            <div key={i} className={`chip${i===0?' on':''}`}>{c}</div>
+          ))}
+        </div>
+        <div className="sh"><div className="sh-t">3 AI routes found</div><div className="sh-a">Sort ↕</div></div>
+        {[
+          {route:'TLV → AMS → JFK',type:'Positioning · virtual interline',price:'$370',was:'$680',save:'−45%',best:true},
+          {route:'TLV → LHR (hidden)',type:'Hidden-city · carry-on only',price:'$410',was:'$720',save:'−43%',best:false},
+          {route:'TLV → JFK direct',type:'El Al · nonstop · baseline',price:'$680',was:'',save:'',best:false},
+        ].map((f,i)=>(
+          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',marginBottom:8,borderLeft:`3px solid ${f.best?'#34d399':TC}`,background:f.best?'color-mix(in srgb,#34d399 5%,var(--bg2))':'var(--bg2)'}}>
+            {f.best && <div style={{position:'absolute',top:8,right:8,background:'#34d399',color:'#000',fontSize:'.58rem',fontWeight:900,padding:'2px 7px',borderRadius:5,letterSpacing:.5}}>BEST</div>}
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontFamily:'var(--ff-head)',fontWeight:800,fontSize:'.88rem',color:'var(--text)',marginBottom:2}}>{f.route}</div>
+              <div style={{fontSize:'.68rem',color:'var(--muted)'}}>{f.type}</div>
+            </div>
+            <div style={{textAlign:'right',flexShrink:0}}>
+              {f.was && <div style={{fontSize:'.68rem',color:'var(--muted)',textDecoration:'line-through'}}>{f.was}</div>}
+              <div style={{fontFamily:'var(--ff-head)',fontWeight:900,fontSize:'1.1rem',color:'var(--text)',letterSpacing:'-.3px'}}>{f.price}</div>
+              {f.save && <div style={{fontSize:'.68rem',fontWeight:800,color:'#34d399'}}>{f.save}</div>}
+            </div>
+          </div>
+        ))}
+        <div style={{height:4}}/>
+        <BNav items={[{ico:'✈️',lbl:'Search'},{ico:'🔔',lbl:'Alerts'},{ico:'📋',lbl:'History'},{ico:'👤',lbl:'Account'}]} active={0} color={TC}/>
+      </div>
+    </Phone>
+  );
+}
+
+function TravelAlerts(){
+  return (
+    <Phone color={TC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Travel" icon="✈️" color={TC} actions={['➕','⋯']}/>
+        <div className="ai-msg">
+          <span className="ai-tag">AI Price Alert</span>
+          <strong>TLV → JFK dropped $83</strong> since you saved this route — now <strong>$597</strong>. Hidden-city option still lower at $410.
+        </div>
+        <div className="sh"><div className="sh-t">Saved routes</div><div className="sh-a">+ Add</div></div>
+        {[
+          {from:'TLV',to:'JFK',label:'New York',date:'Jun 12',price:'$597',low:'$370',alert:true},
+          {from:'TLV',to:'LHR',label:'London',date:'Flexible',price:'$410',low:'$410',alert:false},
+          {from:'TLV',to:'FCO',label:'Rome',date:'Aug 3',price:'$320',low:'$280',alert:false},
+        ].map((r,i)=>(
+          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',borderLeft:`3px solid ${r.alert?'#34d399':TC}`,background:r.alert?'color-mix(in srgb,#34d399 5%,var(--bg2))':'var(--bg2)'}}>
+            <div>
+              <div style={{fontFamily:'var(--ff-mono)',fontWeight:700,fontSize:'.9rem',color:'var(--text)',marginBottom:2}}>{r.from} → {r.to}</div>
+              <div style={{fontSize:'.68rem',color:'var(--muted)'}}>{r.label} · {r.date}</div>
+              {r.alert && <div style={{marginTop:4,display:'inline-flex',alignItems:'center',gap:4,background:'rgba(52,211,153,.12)',border:'1px solid rgba(52,211,153,.25)',padding:'2px 8px',borderRadius:99,fontSize:'.62rem',fontWeight:800,color:'#34d399'}}>↓ Price dropped</div>}
+            </div>
+            <div style={{textAlign:'right'}}>
+              <div style={{fontFamily:'var(--ff-head)',fontWeight:900,fontSize:'1.1rem',color:'var(--text)'}}>{r.price}</div>
+              <div style={{fontSize:'.65rem',color:'#34d399',fontWeight:700}}>AI best: {r.low}</div>
+            </div>
+          </div>
+        ))}
+        <BNav items={[{ico:'✈️',lbl:'Search'},{ico:'🔔',lbl:'Alerts'},{ico:'📋',lbl:'History'},{ico:'👤',lbl:'Account'}]} active={1} color={TC}/>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════
+   🧾 WIZETAX
+═══════════════════════════════════ */
+const XC = '#f59e0b';
+function TaxHome(){
+  return (
+    <Phone color={XC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Tax" icon="🧾" color={XC}/>
+        <div className="hero-val" style={{paddingBottom:10}}>
+          <div className="hv-lbl">Exit-tax exposure today</div>
+          <div className="hv-num" style={{color:'var(--text)'}}>$40,800</div>
+          <div style={{display:'flex',gap:6,marginTop:6,flexWrap:'wrap'}}>
+            <div className="hv-badge warn">4 assets flagged</div>
+            <div className="hv-badge info">→ Portugal saves $40.8K</div>
+          </div>
+        </div>
+        <div className="ai-msg">
+          <span className="ai-tag">AI recommendation</span>
+          Wait <strong>3 months</strong> before transferring property — you'll drop below the 10yr residency threshold and save <strong>$18,200</strong> in exit tax.
+        </div>
+        <div className="chips">
+          {['All','Europe','Middle East','Americas','Asia'].map((c,i)=>(
+            <div key={i} className={`chip${i===0?' on':''}`}>{c}</div>
+          ))}
+        </div>
+        <div className="sh"><div className="sh-t">Scenarios · 26 countries</div></div>
+        <div className="wl-card" style={{padding:'4px 14px'}}>
+          {[
+            {f:'🇵🇹',name:'Portugal',sub:'NHR · 10yr scheme',tax:'$0',pct:0,best:true},
+            {f:'🇦🇪',name:'UAE',sub:'0% income tax · fees apply',tax:'$0',pct:0,best:true},
+            {f:'🇨🇾',name:'Cyprus',sub:'Non-dom · 60-day rule',tax:'$4,200',pct:10,best:false},
+            {f:'🇬🇷',name:'Greece',sub:'Non-dom · flat €100K/yr',tax:'$8,000',pct:20,best:false},
+            {f:'🇺🇸',name:'USA',sub:'FEIE exclusion',tax:'$40,800',pct:100,best:false},
+          ].map((c,i)=>(
+            <div key={i} className="lrow">
+              <div className="lrow-l">
+                <span style={{fontSize:'1.2rem',flexShrink:0}}>{c.f}</span>
+                <div>
+                  <div className="lrow-title">{c.name} {c.best && <span style={{background:XC,color:'#000',fontSize:'.55rem',fontWeight:900,padding:'1px 6px',borderRadius:4,marginLeft:4,verticalAlign:'middle'}}>BEST</span>}</div>
+                  <div className="lrow-sub">{c.sub}</div>
+                </div>
+              </div>
+              <div className="lrow-r">
+                <div className="lrow-val" style={{color:c.pct===0?'#34d399':c.pct<30?XC:'#f87171'}}>{c.tax}</div>
+                <div style={{height:3,width:56,background:'rgba(255,255,255,.06)',borderRadius:99,overflow:'hidden',marginTop:4,marginLeft:'auto'}}><div style={{height:'100%',width:`${c.pct}%`,background:c.pct===0?'#34d399':XC}}/></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{height:4}}/>
+        <BNav items={[{ico:'🌍',lbl:'Scenarios'},{ico:'✉️',lbl:'AI Letter'},{ico:'📄',lbl:'Report'},{ico:'👤',lbl:'Account'}]} active={0} color={XC}/>
+      </div>
+    </Phone>
+  );
+}
+
+function TaxLetter(){
+  return (
+    <Phone color={XC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Tax" icon="🧾" color={XC} actions={['📤','⋯']}/>
+        <div className="ai-msg">
+          <span className="ai-tag">AI Letter generator</span>
+          Generating your <strong>Portugal NHR relocation letter</strong> based on your assets, income, and 3-month timeline. Ready to send to your tax advisor.
+        </div>
+        <div className="wl-card accent glow" style={{fontFamily:'var(--ff-body)',fontSize:'.78rem',lineHeight:1.7,color:'var(--muted2)',position:'relative'}}>
+          <div style={{fontSize:'.65rem',fontWeight:800,letterSpacing:1,textTransform:'uppercase',color:XC,marginBottom:8}}>Relocation advisory letter</div>
+          <div style={{marginBottom:8}}>To: Tax Authority of Israel</div>
+          <div style={{marginBottom:8}}>Subject: Notice of Tax Residency Change — Portugal (NHR)</div>
+          <div>I, <strong style={{color:'var(--text)'}}>___________</strong>, hereby notify of my intention to establish primary tax residency in Portugal under the Non-Habitual Resident regime, effective <strong style={{color:XC}}>September 15, 2026</strong>, having completed the required 183-day absence threshold...</div>
+          <div style={{position:'absolute',bottom:0,left:0,right:0,height:36,background:'linear-gradient(transparent,var(--bg2))',borderRadius:'0 0 18px 18px'}}/>
+        </div>
+        <div style={{padding:'0 18px 8px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+          <div className="cta-btn" style={{background:'var(--bg3)',boxShadow:'none',border:'1px solid var(--border2)',color:'var(--text)',fontSize:'.82rem'}}>Copy text</div>
+          <div className="cta-btn" style={{fontSize:'.82rem'}}>Download PDF</div>
+        </div>
+        <BNav items={[{ico:'🌍',lbl:'Scenarios'},{ico:'✉️',lbl:'AI Letter'},{ico:'📄',lbl:'Report'},{ico:'👤',lbl:'Account'}]} active={1} color={XC}/>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════
+   ❤️ WIZEHEALTH
+═══════════════════════════════════ */
+const HC = '#ec4899';
+function HealthHome(){
+  return (
+    <Phone color={HC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Health" icon="❤️" color={HC}/>
+        <div className="ai-msg">
+          <span className="ai-tag">Today's insight</span>
+          Your LDL is 12% above optimal. Based on your microbiome data, <strong>adding 2 tbsp olive oil daily</strong> could reduce it in 6 weeks — more effective than statins for your profile.
+        </div>
+        <div className="sh"><div className="sh-t">Today's vitals</div><div className="sh-a">Full report</div></div>
+        <div className="metric">
+          {[
+            {ico:'❤️',lbl:'Heart rate',val:'62',unit:'bpm',note:'Optimal',fill:62,c:HC},
+            {ico:'🩸',lbl:'LDL Cholesterol',val:'138',unit:'mg/dL',note:'↑ Elevated',fill:78,c:'#f59e0b'},
+            {ico:'😴',lbl:'Deep sleep',val:'1h 04',unit:'',note:'Below target',fill:42,c:'#8b5cf6'},
+            {ico:'🧬',lbl:'Gut diversity',val:'85',unit:'pct',note:'Above median',fill:85,c:'#10b981'},
+          ].map((v,i)=>(
+            <div key={i} className="met" style={{position:'relative','--c':v.c}}>
+              <div style={{fontSize:'1rem',marginBottom:4}}>{v.ico}</div>
+              <div className="met-lbl">{v.lbl}</div>
+              <div className="met-val" style={{color:v.c}}>{v.val}<span style={{fontSize:'.6rem',fontWeight:500,color:'var(--muted)',marginLeft:2}}>{v.unit}</span></div>
+              <div className="met-sub">{v.note}</div>
+              <div className="met-bar"><div className="met-fill" style={{width:`${v.fill}%`,background:v.c}}/></div>
+            </div>
+          ))}
+        </div>
+        <div className="sh"><div className="sh-t">Today's plan</div><div className="sh-a">View all</div></div>
+        {[
+          {ico:'🥑',txt:'Add 1 tbsp olive oil to salad',done:true},
+          {ico:'🏃',txt:'30 min brisk walk (4 pm)',done:false},
+          {ico:'💊',txt:'Omega-3 supplement · evening',done:false},
+        ].map((t,i)=>(
+          <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'9px 18px',borderBottom:'1px solid var(--border)'}}>
+            <div style={{width:22,height:22,borderRadius:6,background:t.done?`color-mix(in srgb,${HC} 18%,transparent)`:'rgba(255,255,255,.04)',border:`1.5px solid ${t.done?HC:'rgba(255,255,255,.12)'}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'.65rem',color:HC,flexShrink:0}}>{t.done?'✓':''}</div>
+            <div style={{fontSize:'.82rem',color:t.done?'var(--muted)':'var(--muted2)',textDecoration:t.done?'line-through':'none'}}>{t.ico} {t.txt}</div>
+          </div>
+        ))}
+        <div style={{height:4}}/>
+        <BNav items={[{ico:'❤️',lbl:'Vitals'},{ico:'💬',lbl:'AI Chat'},{ico:'📋',lbl:'Plan'},{ico:'📈',lbl:'History'}]} active={0} color={HC}/>
+      </div>
+    </Phone>
+  );
+}
+
+function HealthChat(){
+  return (
+    <Phone color={HC}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Health" icon="❤️" color={HC} actions={['⋯']}/>
+        <div style={{padding:'4px 0'}}>
+          {[
+            {bot:true, t:'I\'ve analyzed your latest blood panel. Your LDL is 138 mg/dL — 12% above optimal. Given your gut microbiome profile, a dietary shift is more effective than medication for your case.'},
+            {bot:false, t:'What should I change in my diet?'},
+            {bot:true, t:'Priority: olive oil daily, reduce red meat to 1×/week, add fermented foods. I\'ve built a 6-week meal plan. Estimated LDL reduction: −18 mg/dL.'},
+          ].map((m,i)=>(
+            <div key={i} className={`chat-row ${m.bot?'bot':'user'}`} style={{padding:'0 18px'}}>
+              <div className="chat-bubble">{m.t}</div>
+            </div>
+          ))}
+          <div className="wl-card accent glow" style={{marginTop:4}}>
+            <div style={{fontSize:'.65rem',fontWeight:800,letterSpacing:1,textTransform:'uppercase',color:HC,marginBottom:8}}>6-week projection</div>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+              <span style={{fontSize:'.78rem',color:'var(--muted2)'}}>LDL now</span>
+              <span style={{fontFamily:'var(--ff-mono)',fontWeight:700,color:'#f59e0b'}}>138 mg/dL</span>
+            </div>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontSize:'.78rem',color:'var(--muted2)'}}>LDL projected</span>
+              <span style={{fontFamily:'var(--ff-mono)',fontWeight:700,color:'#34d399'}}>120 mg/dL ↓</span>
+            </div>
+          </div>
+        </div>
+        <div style={{padding:'8px 18px',borderTop:'1px solid var(--border)',display:'flex',gap:8,background:'var(--bg)'}}>
+          <input className="wl-input" placeholder="Ask about your health…" readOnly style={{flex:1}}/>
+          <div className="cta-btn" style={{padding:'0 12px',borderRadius:10,fontSize:'.85rem',width:36,height:36,minWidth:36}}><span>↑</span></div>
+        </div>
+        <BNav items={[{ico:'❤️',lbl:'Vitals'},{ico:'💬',lbl:'AI Chat'},{ico:'📋',lbl:'Plan'},{ico:'📈',lbl:'History'}]} active={1} color={HC}/>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════
+   🏠 WIZEDEAL
+═══════════════════════════════════ */
+const DC2 = '#8b5cf6';
+function DealHome(){
+  return (
+    <Phone color={DC2}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Deal" icon="🏠" color={DC2}/>
+        <div className="wl-card" style={{display:'flex',gap:10,alignItems:'center',padding:'10px 14px'}}>
+          <div style={{flex:1,fontSize:'.78rem',color:'var(--muted)',fontFamily:'var(--ff-mono)'}}>🔗 Paste listing URL…</div>
+          <div className="cta-btn" style={{padding:'6px 12px',fontSize:'.75rem',borderRadius:9,height:'auto'}}>Analyze ✦</div>
+        </div>
+        <div className="wl-card accent glow" style={{display:'flex',gap:14,alignItems:'center'}}>
+          <div className="grade">A</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontFamily:'var(--ff-head)',fontWeight:800,fontSize:'.9rem',color:'var(--text)',lineHeight:1.3}}>Rua Oscar Freire 1250 · apt 82</div>
+            <div style={{fontSize:'.7rem',color:'var(--muted)',marginTop:2}}>Jardins, São Paulo · 78m² · R$1.85M</div>
+            <div style={{marginTop:6,display:'inline-flex',alignItems:'center',gap:5,background:'rgba(52,211,153,.12)',border:'1px solid rgba(52,211,153,.25)',padding:'2px 9px',borderRadius:99,fontSize:'.65rem',fontWeight:800,color:'#34d399'}}>8% below comps</div>
+          </div>
+        </div>
+        <div className="metric">
+          {[{lbl:'Gross yield',val:'7.2%',sub:'Annual',fill:72},{lbl:'Net ROI yr1',val:'11.4%',sub:'After tax',fill:80},{lbl:'Payback',val:'8.2yr',sub:'At current rent',fill:45},{lbl:'vs Comps',val:'−8%',sub:'Below avg price',fill:20}].map((s,i)=>(
+            <div key={i} className="met">
+              <div className="met-lbl">{s.lbl}</div>
+              <div className="met-val">{s.val}</div>
+              <div className="met-sub">{s.sub}</div>
+              <div className="met-bar"><div className="met-fill" style={{width:`${s.fill}%`}}/></div>
+            </div>
+          ))}
+        </div>
+        <div className="ai-msg">
+          <span className="ai-tag">AI summary</span>
+          Priced <strong>8% below</strong> neighborhood comps. ITBI estimated <strong>R$55K</strong>. At current rental trajectory, payback in <strong>8.2 years</strong>. Deal score: A.
+        </div>
+        <div className="sh"><div className="sh-t">Comp prices / m²</div></div>
+        <div style={{padding:'0 18px 10px'}}>
+          <div style={{display:'flex',alignItems:'flex-end',gap:5,height:48}}>
+            {[55,70,48,80,65,95,85].map((h,i)=>(
+              <div key={i} style={{flex:1,height:`${h}%`,borderRadius:'4px 4px 0 0',background:i===3?DC2:i===5?`color-mix(in srgb,${DC2} 55%,transparent)`:`color-mix(in srgb,${DC2} 20%,transparent)`}}/>
+            ))}
+          </div>
+          <div style={{display:'flex',gap:5,marginTop:4}}>
+            {['C1','C2','C3','This','C5','C6','C7'].map((l,i)=>(
+              <div key={i} style={{flex:1,textAlign:'center',fontSize:'.55rem',color:i===3?DC2:'var(--muted)',fontFamily:'var(--ff-mono)',fontWeight:i===3?800:400}}>{l}</div>
+            ))}
+          </div>
+        </div>
+        <BNav items={[{ico:'🏠',lbl:'Analyze'},{ico:'📋',lbl:'Reports'},{ico:'🌍',lbl:'Markets'},{ico:'👤',lbl:'Account'}]} active={0} color={DC2}/>
+      </div>
+    </Phone>
+  );
+}
+
+function DealMarkets(){
+  return (
+    <Phone color={DC2}>
+      <div className="phone-screen">
+        <Sbar/>
+        <TopChrome appName="Deal" icon="🏠" color={DC2}/>
+        <div className="chips">
+          {['All','🇧🇷 Brazil','🇮🇱 Israel','🇺🇸 USA'].map((c,i)=>(
+            <div key={i} className={`chip${i===0?' on':''}`}>{c}</div>
+          ))}
+        </div>
+        <div className="sh"><div className="sh-t">Market overview</div><div className="sh-a">Jul 2026</div></div>
+        {[
+          {flag:'🇧🇷',city:'São Paulo',sub:'Jardins · avg 28K BRL/m²',yield:'7.8%',trend:'+4%',score:'A'},
+          {flag:'🇧🇷',city:'Rio de Janeiro',sub:'Ipanema · avg 24K BRL/m²',yield:'6.2%',trend:'+2%',score:'B'},
+          {flag:'🇮🇱',city:'Tel Aviv',sub:'Centre · avg ₪60K/m²',yield:'3.4%',trend:'−1%',score:'C'},
+          {flag:'🇺🇸',city:'Miami',sub:'Brickell · avg $850/sqft',yield:'5.1%',trend:'+6%',score:'B+'},
+        ].map((m,i)=>(
+          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px'}}>
+            <div style={{display:'flex',gap:10,alignItems:'center',flex:1}}>
+              <span style={{fontSize:'1.3rem'}}>{m.flag}</span>
+              <div>
+                <div style={{fontFamily:'var(--ff-head)',fontWeight:800,fontSize:'.88rem',color:'var(--text)'}}>{m.city}</div>
+                <div style={{fontSize:'.66rem',color:'var(--muted)'}}>{m.sub}</div>
+              </div>
+            </div>
+            <div style={{textAlign:'right',flexShrink:0}}>
+              <div style={{fontFamily:'var(--ff-mono)',fontWeight:700,color:DC2,fontSize:'.9rem'}}>{m.yield}</div>
+              <div style={{fontSize:'.65rem',color:m.trend.startsWith('+') ? '#34d399':'#f87171',fontWeight:700}}>{m.trend}</div>
+              <div style={{background:`color-mix(in srgb,${DC2} 14%,transparent)`,border:`1px solid color-mix(in srgb,${DC2} 30%,transparent)`,color:DC2,fontSize:'.6rem',fontWeight:900,padding:'1px 6px',borderRadius:5,marginTop:2,display:'inline-block'}}>{m.score}</div>
+            </div>
+          </div>
+        ))}
+        <BNav items={[{ico:'🏠',lbl:'Analyze'},{ico:'📋',lbl:'Reports'},{ico:'🌍',lbl:'Markets'},{ico:'👤',lbl:'Account'}]} active={2} color={DC2}/>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════
+   MAIN CANVAS
+═══════════════════════════════════ */
+const PW=320, PH=716;
+
+function App(){
+  return (
+    <DesignCanvas>
+
+      <DCSection
+        title="WizeLife — Unified Design System"
+        subtitle="One design language across all 5 apps. Dark base · per-product accent color · shared chrome (TopChrome + BNav + cards). Pan to explore all 5 suites →">
+        <DCArtboard label="💰 WizeMoney" width={PW} height={PH}>
+          <MoneyHome/>
+        </DCArtboard>
+        <DCArtboard label="✈️ WizeTravel" width={PW} height={PH}>
+          <TravelHome/>
+        </DCArtboard>
+        <DCArtboard label="🧾 WizeTax" width={PW} height={PH}>
+          <TaxHome/>
+        </DCArtboard>
+        <DCArtboard label="❤️ WizeHealth" width={PW} height={PH}>
+          <HealthHome/>
+        </DCArtboard>
+        <DCArtboard label="🏠 WizeDeal" width={PW} height={PH}>
+          <DealHome/>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        title="Secondary screens — AI chat · alerts · letter · markets"
+        subtitle="Shared AI chat pattern, shared input chrome, shared card system — but each screen breathes its product color.">
+        <DCArtboard label="💰 WizeMoney · AI Advisor" width={PW} height={PH}>
+          <MoneyChat/>
+        </DCArtboard>
+        <DCArtboard label="✈️ WizeTravel · Price Alerts" width={PW} height={PH}>
+          <TravelAlerts/>
+        </DCArtboard>
+        <DCArtboard label="🧾 WizeTax · AI Letter" width={PW} height={PH}>
+          <TaxLetter/>
+        </DCArtboard>
+        <DCArtboard label="❤️ WizeHealth · AI Chat" width={PW} height={PH}>
+          <HealthChat/>
+        </DCArtboard>
+        <DCArtboard label="🏠 WizeDeal · Markets" width={PW} height={PH}>
+          <DealMarkets/>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        title="Onboarding screens — WizeLife brand always present"
+        subtitle="The WizeLife wordmark appears on every onboarding. Same step-dots, same CTA button, same card structure — only the color and content change.">
+        <DCArtboard label="💰 WizeMoney onboarding" width={PW} height={PH}>
+          <Onboarding color={MC} icon="💰" appName="Money"
+            tagline={['Smart money,','simpler life.','Your entire financial picture — investments, pension, goals — in one AI-powered view.']}
+            steps={[{ico:'📊',txt:'Connect your portfolio & pension accounts'},{ico:'🎯',txt:'Set goals: home, travel, retirement'},{ico:'💬',txt:'Chat with your bilingual AI advisor'}]}
+          />
+        </DCArtboard>
+        <DCArtboard label="✈️ WizeTravel onboarding" width={PW} height={PH}>
+          <Onboarding color={TC} icon="✈️" appName="Travel"
+            tagline={['Stop overpaying','for flights.','Hidden-city tickets, positioning routes & virtual interlining — deals Google Flights never shows.']}
+            steps={[{ico:'📍',txt:'Set your home airport & favourite routes'},{ico:'🔔',txt:'Price-drop alerts in real time'},{ico:'🧠',txt:'34 AI flight-hacking tools'}]}
+          />
+        </DCArtboard>
+        <DCArtboard label="🧾 WizeTax onboarding" width={PW} height={PH}>
+          <Onboarding color={XC} icon="🧾" appName="Tax"
+            tagline={['Move smarter.','Pay less tax.','Model exit-tax across 26 countries and get a lawyer-ready relocation letter — in minutes.']}
+            steps={[{ico:'🌍',txt:'Tell us where you live & want to move'},{ico:'💰',txt:'Enter your assets: property, stocks, pension'},{ico:'📝',txt:'Get your AI relocation letter'}]}
+          />
+        </DCArtboard>
+        <DCArtboard label="❤️ WizeHealth onboarding" width={PW} height={PH}>
+          <Onboarding color={HC} icon="❤️" appName="Health"
+            tagline={['Your health,','deeply understood.','Upload blood work, sync wearables, get an AI advisor trained in cardiology & microbiome.']}
+            steps={[{ico:'🩸',txt:'Upload your latest blood panel'},{ico:'⌚',txt:'Sync Apple Health or Garmin'},{ico:'🍽️',txt:'Set your nutrition & wellness goals'}]}
+          />
+        </DCArtboard>
+        <DCArtboard label="🏠 WizeDeal onboarding" width={PW} height={PH}>
+          <Onboarding color={DC2} icon="🏠" appName="Deal"
+            tagline={['Every deal,','X-rayed by AI.','Paste any listing URL and get full ROI, yield, tax impact & comps in under 30 seconds.']}
+            steps={[{ico:'🔗',txt:'Paste any listing URL'},{ico:'📊',txt:'Instant ROI, yield & payback analysis'},{ico:'🌍',txt:'Brazil, Israel & USA tax rules baked in'}]}
+          />
+        </DCArtboard>
+      </DCSection>
+
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
