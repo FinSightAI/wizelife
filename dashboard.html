@@ -67,6 +67,9 @@
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
     margin-bottom: 40px; flex-wrap: wrap;
   }
+  
+  .plan-banner.yolo { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.1)); border: 1px solid rgba(245,158,11,0.25); }
+  .badge-yolo { background: linear-gradient(135deg,#f59e0b,#ef4444); color:#fff; }
   .plan-banner.free { background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1)); border: 1px solid rgba(99,102,241,0.25); }
   .plan-banner.pro  { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.1)); border: 1px solid rgba(16,185,129,0.3); }
   .plan-info h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
@@ -242,7 +245,8 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="js/wizelife-auth.js"></script>
 <script>
-const PAYPAL_PLAN_ID = "P-42B26777LT293231BNHMVWNA";
+const PAYPAL_PLAN_ID      = "P-42B26777LT293231BNHMVWNA";
+const PAYPAL_YOLO_PLAN_ID = "P-3WT61990FP2103335NH32GVA";
 
 requireAuth("auth.html").then(async (user) => {
     // Fetch nickname from Firestore
@@ -268,89 +272,106 @@ requireAuth("auth.html").then(async (user) => {
 });
 
 function renderPlan(plan, user) {
-    const isPro = plan === "pro";
+    const isYolo = plan === "yolo";
+    const isPro  = plan === "pro" || isYolo;
     const banner = document.getElementById("planBanner");
-    banner.className = `plan-banner ${isPro ? "pro" : "free"}`;
+    banner.className = `plan-banner ${isYolo ? "yolo" : isPro ? "pro" : "free"}`;
 
-    document.getElementById("planTitle").innerHTML =
-        `<span class="plan-badge ${isPro ? "badge-pro" : "badge-free"}">${isPro ? "PRO" : "FREE"}</span>${isPro ? "You're on Pro" : "Free Plan"}`;
-    document.getElementById("planDesc").textContent = isPro
-        ? "All tools and features unlocked. Thank you for supporting WizeLife!"
-        : "Upgrade to unlock all 5 tools fully — Tax Master, Mega Traveller, Vitara, Check Deal + all Pro features in FinSight.";
+    const badgeClass = isYolo ? "badge-yolo" : isPro ? "badge-pro" : "badge-free";
+    const badgeLabel = isYolo ? "YOLO ⚡" : isPro ? "PRO" : "FREE";
+    const titleText  = isYolo ? "You're on YOLO ⚡" : isPro ? "You're on Pro" : "Free Plan";
+    document.getElementById("planTitle").innerHTML = `<span class="plan-badge ${badgeClass}">${badgeLabel}</span>${titleText}`;
+    document.getElementById("planDesc").textContent = isYolo
+        ? "Maximum power. Every feature, every day, first in line."
+        : isPro
+        ? "All tools and features unlocked. Upgrade to YOLO for even more."
+        : "Upgrade to unlock all 5 tools fully.";
+    document.getElementById("acctPlan").innerHTML = `<span class="plan-badge ${badgeClass}">${isYolo ? "YOLO ⚡" : isPro ? "Pro" : "Free"}</span>`;
 
-    document.getElementById("acctPlan").innerHTML =
-        `<span class="plan-badge ${isPro ? "badge-pro" : "badge-free"}">${isPro ? "Pro" : "Free"}</span>`;
+    const codeRow = `
+        <div class="code-row" style="margin-top:12px;">
+            <input class="code-input" id="accessCodeInput" placeholder="Have an access code?" />
+            <button class="code-btn" onclick="applyCode('${user.uid}')">Apply</button>
+        </div>
+        <div class="code-msg" id="codeMsg"></div>`;
 
-    if (!isPro) {
-        // Show upgrade button in nav + banner
-        const navBtn = document.getElementById("navUpgradeBtn");
-        navBtn.style.display = "";
-        navBtn.href = paypalUrl(user.uid);
-
+    if (isYolo) {
         document.getElementById("planAction").innerHTML =
-            `<a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank">Upgrade to Pro — $4.99/mo</a>`;
-
-        // Show Pro badges on tools
-        ["badge-tax","badge-travel","badge-health","badge-deal"].forEach(id => {
-            document.getElementById(id).style.display = "";
-        });
-
+            `<span style="color:#f59e0b;font-size:0.9rem;font-weight:600;">⚡ YOLO — Maximum power active</span>`;
         document.getElementById("subContent").innerHTML = `
-            <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Unlock all 5 tools for one flat monthly fee.</p>
-            <a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;">
-                Upgrade to Pro — $4.99/mo
-            </a>
-            <div class="code-row">
-                <input class="code-input" id="accessCodeInput" placeholder="Have an access code?" />
-                <button class="code-btn" onclick="applyCode('${user.uid}')">Apply</button>
-            </div>
-            <div class="code-msg" id="codeMsg"></div>`;
-    } else {
-        document.getElementById("planAction").innerHTML =
-            `<span style="color:#6ee7b7;font-size:0.9rem;font-weight:600;">✓ All features active</span>`;
-
-        document.getElementById("subContent").innerHTML = `
-            <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#6ee7b7;">Active</span></div>
-            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">Pro — $4.99/mo</span></div>
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#f59e0b;">Active</span></div>
+            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">YOLO — $9.99/mo</span></div>
             <div style="margin-top:16px;">
                 <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
             </div>`;
+    } else if (isPro) {
+        const navBtn = document.getElementById("navUpgradeBtn");
+        navBtn.style.display = "";
+        navBtn.href = paypalYoloUrl(user.uid);
+        navBtn.textContent = "⚡ YOLO";
+        document.getElementById("planAction").innerHTML =
+            `<a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡ Upgrade to YOLO — $9.99/mo</a>`;
+        document.getElementById("subContent").innerHTML = `
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#6ee7b7;">Active</span></div>
+            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">Pro — $4.99/mo</span></div>
+            <a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-top:16px;background:linear-gradient(135deg,#f59e0b,#ef4444);">
+                ⚡ Upgrade to YOLO — $9.99/mo
+            </a>
+            ${codeRow}
+            <div style="margin-top:12px;">
+                <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
+            </div>`;
+    } else {
+        const navBtn = document.getElementById("navUpgradeBtn");
+        navBtn.style.display = "";
+        navBtn.href = paypalUrl(user.uid);
+        document.getElementById("planAction").innerHTML =
+            `<a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank">Upgrade to Pro — $4.99/mo</a>`;
+        ["badge-tax","badge-travel","badge-health","badge-deal"].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "";
+        });
+        document.getElementById("subContent").innerHTML = `
+            <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Unlock all 5 tools for one flat monthly fee.</p>
+            <a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-bottom:8px;">
+                Upgrade to Pro — $4.99/mo
+            </a>
+            <a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;background:linear-gradient(135deg,#f59e0b,#ef4444);">
+                ⚡ Upgrade to YOLO — $9.99/mo
+            </a>
+            ${codeRow}`;
     }
 }
-
-const ACCESS_CODES = new Set([
-    "BKU3-7TCCBW", "3QRT-4QF27K", "LZWY-ALHXD7",
-    "WZBD-UD7WC7",  "7ELJ-L29T4K", "ZYUO-67D4C7",
-]);
 
 async function applyCode(uid) {
     const input = document.getElementById("accessCodeInput");
     const msg   = document.getElementById("codeMsg");
     const code  = input.value.trim().toUpperCase();
-
     if (!code) return;
-
-    if (!ACCESS_CODES.has(code)) {
-        msg.style.color = "#f87171";
-        msg.textContent = "Invalid access code.";
-        return;
-    }
-
     msg.style.color = "#8892a4";
-    msg.textContent = "Activating…";
-
+    msg.textContent = "Checking…";
     try {
-        await wlDb.collection("users").doc(uid).set(
-            { plan: "pro", planActivatedAt: firebase.firestore.FieldValue.serverTimestamp() },
-            { merge: true }
-        );
-        msg.style.color = "#6ee7b7";
-        msg.textContent = "✓ Pro activated! Reloading…";
-        setTimeout(() => window.location.reload(), 1200);
-    } catch (e) {
+        const fn = firebase.functions().httpsCallable("validateCode");
+        const result = await fn({ code });
+        if (result.data.valid) {
+            const newPlan = result.data.plan;
+            msg.style.color = "#6ee7b7";
+            msg.textContent = `✓ ${newPlan === "yolo" ? "YOLO ⚡" : "Pro"} activated! Reloading…`;
+            setTimeout(() => window.location.reload(), 1200);
+        } else {
+            msg.style.color = "#f87171";
+            msg.textContent = "Invalid access code.";
+            input.value = "";
+        }
+    } catch(e) {
         msg.style.color = "#f87171";
-        msg.textContent = "Error activating. Please try again.";
+        msg.textContent = "Error. Please try again.";
     }
+}
+
+function paypalYoloUrl(uid) {
+  const base = `https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=${PAYPAL_YOLO_PLAN_ID}`;
+  return uid ? base + `&custom_id=${encodeURIComponent(uid)}` : base;
 }
 
 function paypalUrl(uid) {
