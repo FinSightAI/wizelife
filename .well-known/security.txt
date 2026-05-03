@@ -1,0 +1,5 @@
+Contact: mailto:security@wizelife.ai
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: en, he
+Policy: https://wizelife.ai/privacy.html
+Canonical: https://wizelife.ai/.well-known/security.txt
