@@ -281,7 +281,7 @@ function renderPlan(plan, user) {
         navBtn.href = paypalUrl(user.uid);
 
         document.getElementById("planAction").innerHTML =
-            `<a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank">Upgrade to Pro — $4.90/mo</a>`;
+            `<a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank">Upgrade to Pro — $4.99/mo</a>`;
 
         // Show Pro badges on tools
         ["badge-tax","badge-travel","badge-health","badge-deal"].forEach(id => {
@@ -291,7 +291,7 @@ function renderPlan(plan, user) {
         document.getElementById("subContent").innerHTML = `
             <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Unlock all 5 tools for one flat monthly fee.</p>
             <a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;">
-                Upgrade to Pro — $4.90/mo
+                Upgrade to Pro — $4.99/mo
             </a>
             <div class="code-row">
                 <input class="code-input" id="accessCodeInput" placeholder="Have an access code?" />
@@ -304,7 +304,7 @@ function renderPlan(plan, user) {
 
         document.getElementById("subContent").innerHTML = `
             <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#6ee7b7;">Active</span></div>
-            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">Pro — $4.90/mo</span></div>
+            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">Pro — $4.99/mo</span></div>
             <div style="margin-top:16px;">
                 <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
             </div>`;
