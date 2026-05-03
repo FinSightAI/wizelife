@@ -27,6 +27,13 @@ gtag('js',new Date());
 <meta name="twitter:description" content="5 AI tools in one place: money, travel, tax, health & real estate. Free to start.">
 <meta name="twitter:image"      content="https://wizelife.ai/og-image.png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6366f1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WizeLife">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1605,6 +1612,11 @@ wlAuth.onAuthStateChanged(function(user) {
         window._wlLoggedIn = false;
     }
 });
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
 </script>
 </body>
 </html>

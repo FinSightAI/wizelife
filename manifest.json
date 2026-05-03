@@ -1,0 +1,39 @@
+{
+  "name": "WizeLife",
+  "short_name": "WizeLife",
+  "description": "AI-powered life suite — Money, Tax, Travel, Health, Deals",
+  "start_url": "/dashboard.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0f1e",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "WizeMoney",  "url": "https://finsightai.github.io/finsight/",    "icons": [{"src":"/favicon.svg","sizes":"any"}] },
+    { "name": "WizeTax",    "url": "https://mastermove.vercel.app/advisor",      "icons": [{"src":"/favicon.svg","sizes":"any"}] },
+    { "name": "WizeTravel", "url": "https://nodedai.streamlit.app/",             "icons": [{"src":"/favicon.svg","sizes":"any"}] },
+    { "name": "WizeHealth", "url": "https://vitara.onrender.com/",               "icons": [{"src":"/favicon.svg","sizes":"any"}] },
+    { "name": "WizeDeal",   "url": "https://check-deal.vercel.app/",             "icons": [{"src":"/favicon.svg","sizes":"any"}] }
+  ]
+}
