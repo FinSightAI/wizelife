@@ -118,6 +118,23 @@
     main { padding: 90px 20px 40px; }
     .account-grid { grid-template-columns: 1fr; }
   }
+
+.tool-cold-badge {
+  margin-top: 6px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: .3px;
+}
+.tool-card-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.tool-card-loading .tool-cold-badge {
+  color: var(--c, #6366f1);
+  animation: pulse 1s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 </style>
 </head>
 <body>
@@ -166,20 +183,22 @@
       <div class="tool-pro-badge" id="badge-tax" style="display:none;">Pro</div>
     </a>
 
-    <a class="tool-card" id="tool-travel" href="https://travel.wizelife.ai" target="_blank" style="--c: var(--travel)">
+    <a class="tool-card" id="tool-travel" href="https://travel.wizelife.ai" target="_blank" style="--c: var(--travel)" onclick="showColdStart(event,this)">
       <div class="tool-icon">🌍</div>
       <div class="tool-sub">WizeTravel</div>
       <div class="tool-name">Mega Traveller</div>
       <div class="tool-desc">AI travel planner — routes, tips, cost breakdown for every destination.</div>
       <div class="tool-pro-badge" id="badge-travel" style="display:none;">Pro</div>
+      <div class="tool-cold-badge">⏱ First load ~30s</div>
     </a>
 
-    <a class="tool-card" id="tool-health" href="/health.html" target="_blank" style="--c: var(--health)">
+    <a class="tool-card" id="tool-health" href="https://vitara.onrender.com/" target="_blank" style="--c: var(--health)" onclick="showColdStart(event,this)">
       <div class="tool-icon">❤️</div>
       <div class="tool-sub">WizeHealth</div>
       <div class="tool-name">Vitara</div>
       <div class="tool-desc">Health & wellness tracker — understand your body, master your wellbeing.</div>
       <div class="tool-pro-badge" id="badge-health" style="display:none;">Pro</div>
+      <div class="tool-cold-badge">⏱ First load ~30s</div>
     </a>
 
     <a class="tool-card" id="tool-deal" href="https://check-deal.vercel.app/" target="_blank" style="--c: var(--deal)">
@@ -367,6 +386,18 @@ async function attachTokensToTools() {
 wlAuth.onAuthStateChanged(user => {
     if (user) attachTokensToTools();
 });
+
+function showColdStart(e, card) {
+  const badge = card.querySelector('.tool-cold-badge');
+  if (badge) {
+    badge.textContent = '⏳ מתחבר…';
+    card.classList.add('tool-card-loading');
+    setTimeout(() => {
+      card.classList.remove('tool-card-loading');
+      if (badge) badge.textContent = '⏱ First load ~30s';
+    }, 8000);
+  }
+}
 
 // Language selector
 function setDashLang(v) {
