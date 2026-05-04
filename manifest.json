@@ -30,10 +30,55 @@
     }
   ],
   "shortcuts": [
-    { "name": "WizeMoney",  "url": "https://finsightai.github.io/finsight/",    "icons": [{"src":"/favicon.svg","sizes":"any"}] },
-    { "name": "WizeTax",    "url": "https://mastermove.vercel.app/advisor",      "icons": [{"src":"/favicon.svg","sizes":"any"}] },
-    { "name": "WizeTravel", "url": "https://nodedai.streamlit.app/",             "icons": [{"src":"/favicon.svg","sizes":"any"}] },
-    { "name": "WizeHealth", "url": "https://vitara.onrender.com/",               "icons": [{"src":"/favicon.svg","sizes":"any"}] },
-    { "name": "WizeDeal",   "url": "https://check-deal.vercel.app/",             "icons": [{"src":"/favicon.svg","sizes":"any"}] }
+    {
+      "name": "WizeMoney",
+      "url": "https://money.wizelife.ai/",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "WizeTax",
+      "url": "https://tax.wizelife.ai/advisor",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "WizeTravel",
+      "url": "https://travel.wizelife.ai/",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "WizeHealth",
+      "url": "https://health.wizelife.ai/",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "WizeDeal",
+      "url": "https://deal.wizelife.ai/",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any"
+        }
+      ]
+    }
   ]
 }

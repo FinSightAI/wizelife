@@ -200,14 +200,14 @@
   <h3>Your Tools</h3>
   <div class="tools-grid" id="toolsGrid">
 
-    <a class="tool-card" id="tool-finsight" href="https://finsightai.github.io/finsight/" target="_blank" style="--c: var(--money)">
+    <a class="tool-card" id="tool-finsight" href="https://money.wizelife.ai/" target="_blank" style="--c: var(--money)">
       <div class="tool-icon">💰</div>
       <div class="tool-sub">WizeMoney</div>
       <div class="tool-name">FinSight</div>
       <div class="tool-desc">Full personal finance dashboard — bank, stocks, goals, AI insights.</div>
     </a>
 
-    <a class="tool-card" id="tool-tax" href="https://mastermove.vercel.app/advisor" target="_blank" style="--c: var(--tax)">
+    <a class="tool-card" id="tool-tax" href="https://tax.wizelife.ai/advisor" target="_blank" style="--c: var(--tax)">
       <div class="tool-icon">🧾</div>
       <div class="tool-sub">WizeTax</div>
       <div class="tool-name">Tax Master</div>
@@ -215,7 +215,7 @@
       <div class="tool-pro-badge" id="badge-tax" style="display:none;">Pro</div>
     </a>
 
-    <a class="tool-card" id="tool-travel" href="https://travel.wizelife.ai" target="_blank" style="--c: var(--travel)" onclick="showColdStart(event,this)">
+    <a class="tool-card" id="tool-travel" href="https://travel.wizelife.ai/" target="_blank" style="--c: var(--travel)" onclick="showColdStart(event,this)">
       <div class="tool-icon">🌍</div>
       <div class="tool-sub">WizeTravel</div>
       <div class="tool-name">Mega Traveller</div>
@@ -224,7 +224,7 @@
       
     </a>
 
-    <a class="tool-card" id="tool-health" href="https://vitara.onrender.com/" target="_blank" style="--c: var(--health)" onclick="showColdStart(event,this)">
+    <a class="tool-card" id="tool-health" href="https://health.wizelife.ai/" target="_blank" style="--c: var(--health)" onclick="showColdStart(event,this)">
       <div class="tool-icon">❤️</div>
       <div class="tool-sub">WizeHealth</div>
       <div class="tool-name">Vitara</div>
@@ -233,7 +233,7 @@
       
     </a>
 
-    <a class="tool-card" id="tool-deal" href="https://check-deal.vercel.app/" target="_blank" style="--c: var(--deal)">
+    <a class="tool-card" id="tool-deal" href="https://deal.wizelife.ai/" target="_blank" style="--c: var(--deal)">
       <div class="tool-icon">🏠</div>
       <div class="tool-sub">WizeDeal</div>
       <div class="tool-name">Check Deal</div>
@@ -419,11 +419,11 @@ async function attachTokensToTools() {
         const token = await user.getIdToken();
         const nick = encodeURIComponent(localStorage.getItem("wl_nickname") || "");
         const tools = [
-            { id: "tool-finsight", base: "https://finsightai.github.io/finsight/" },
-            { id: "tool-travel",   base: "https://travel.wizelife.ai" },
-            { id: "tool-tax",      base: "https://mastermove.vercel.app/advisor" },
+            { id: "tool-finsight", base: "https://money.wizelife.ai/" },
+            { id: "tool-travel",   base: "https://travel.wizelife.ai/" },
+            { id: "tool-tax",      base: "https://tax.wizelife.ai/advisor" },
             { id: "tool-health",   base: "/health.html" },
-            { id: "tool-deal",     base: "https://check-deal.vercel.app/" },
+            { id: "tool-deal",     base: "https://deal.wizelife.ai/" },
         ];
         tools.forEach(({ id, base }) => {
             const el = document.getElementById(id);
