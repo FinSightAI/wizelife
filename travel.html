@@ -147,14 +147,14 @@ h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;color:#eef2ff;letter-spacing
   </div>
 
   <div id="ctaBtn" style="display:none">
-    <a href="https://nodedai.streamlit.app" class="cta" id="ctaLink">
+    <a href="https://nodedai.onrender.com" class="cta" id="ctaLink">
       <span id="ctaText">כנס עכשיו →</span>
     </a>
   </div>
 </div>
 
 <script>
-const TARGET = 'https://nodedai.streamlit.app';
+const TARGET = 'https://nodedai.onrender.com';
 const TIPS = [
   {icon:'💡', text:'טיסות ביום שלישי וסביבות שעה 6 בבוקר הן בממוצע 20% זולות יותר'},
   {icon:'🔔', text:'הפעל התראת מחיר ו-AI יעדכן אותך ברגע שהמחיר יורד'},
@@ -230,7 +230,7 @@ setInterval(updateProgress, 800);
 let pingCount = 0;
 function ping() {
   pingCount++;
-  fetch(TARGET + '/_stcore/health', {method:'GET', mode:'no-cors'})
+  fetch(TARGET + '/health', {method:'GET', mode:'no-cors'})
     .then(() => {
       // no-cors always resolves — check if we can load a known asset
       checkReady();
@@ -243,7 +243,7 @@ function checkReady() {
   const img = new Image();
   img.onload = () => onReady();
   img.onerror = () => {}; // still loading
-  img.src = TARGET + '/favicon.png?t=' + Date.now();
+  img.src = TARGET + '/favicon.svg?t=' + Date.now();
 }
 
 let redirected = false;
