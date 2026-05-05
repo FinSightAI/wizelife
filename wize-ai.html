@@ -158,6 +158,22 @@ let _contextSummary = '';
 let _callsToday = 0;
 const DAILY_LIMITS = { free: 2, pro: 20, yolo: 40 };
 
+
+function showPaywall() {
+  document.getElementById('mainLayout').style.display = 'none';
+  const wall = document.getElementById('authWall');
+  wall.style.display = 'flex';
+  wall.innerHTML = `
+    <div style="font-size:48px;margin-bottom:16px">🤖</div>
+    <h2>WizeAI — YOLO בלבד</h2>
+    <p>יועץ ה-AI המשולב עם נתונים מכל האפליקציות זמין למנויי YOLO בלבד.</p>
+    <div style="display:flex;gap:12px;margin-top:8px">
+      <a href="dashboard.html" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 20px;color:#94a3b8;font-size:14px;text-decoration:none">חזור לדאשבורד</a>
+      <a href="dashboard.html#upgrade" class="auth-btn">שדרג ל-YOLO ← \.99/חודש</a>
+    </div>
+  `;
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 wlAuth.onAuthStateChanged(async user => {
   if (!user) {
@@ -167,6 +183,10 @@ wlAuth.onAuthStateChanged(async user => {
   document.getElementById('mainLayout').style.display = 'flex';
   _plan = await getUserPlan(user.uid);
   updatePlanBadge();
+  if (_plan !== 'yolo') {
+    showPaywall();
+    return;
+  }
   await loadContext();
 });
 
