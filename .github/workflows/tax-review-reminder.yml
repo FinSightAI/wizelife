@@ -1,0 +1,36 @@
+name: Tax Data Review Reminder
+on:
+  schedule:
+    - cron: '0 7 15 1 *'
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open reminder issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '📋 עדכון נתוני מס שנתי',
+              body: [
+                '## עדכון `wizelife/js/tax-data.js` נדרש',
+                '',
+                '**שלבים (~30 דקות):**',
+                '1. https://taxsummaries.pwc.com/ → כל מדינה → Individual → Taxes on personal income',
+                '2. עדכן `brackets[]`, `socialSec`, `socialCeil`, `health` לכל מדינה',
+                '3. עדכן `TAX_META` בתחתית הקובץ:',
+                '   - `validYear`: השנה הנוכחית',
+                '   - `updatedAt`: תאריך היום',
+                '   - `nextReview`: `"' + (new Date().getFullYear() + 1) + '-01-15"`',
+                '4. `git commit -m "tax: update rates for ' + new Date().getFullYear() + '" && git push`',
+                '',
+                '**מקורות:**',
+                '- PwC Worldwide Tax Summaries: https://taxsummaries.pwc.com/',
+                '- OECD Taxing Wages: https://stats.oecd.org/Index.aspx?DataSetCode=AWCORC',
+                '- KPMG Individual Tax Rates: https://kpmg.com/xx/en/home/services/tax/tax-tools-and-resources/tax-rates-online.html',
+              ].join('\n'),
+              labels: ['maintenance'],
+            })
