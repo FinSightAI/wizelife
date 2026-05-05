@@ -1178,10 +1178,40 @@ async function sendAI(){
   aiSend.disabled = true;
   addMsg(q,'user');
   const loadingEl = addMsg('','bot',true);
-  // Simulate thinking delay (600–1200ms)
-  await new Promise(r => setTimeout(r, 600 + Math.random()*600));
-  loadingEl.classList.remove('loading');
-  loadingEl.textContent = getAnswer(q);
+
+  const user = wlAuth.currentUser;
+  if(user){
+    try{
+      const plan = await getUserPlan(user.uid);
+      const planLabel = plan === 'yolo' ? 'YOLO (unlimited AI)'
+                       : plan === 'pro'  ? 'Pro'
+                       : 'Free (2 calls/day)';
+      const system = 'You are WizeAI, a sharp multi-domain life advisor covering: personal finance, tax optimization, flight deals & travel, health & nutrition, and real estate/deals. ' +
+        'The user has a ' + planLabel + ' WizeLife plan. Be concise, practical and personalized. ' +
+        'For YOLO/Pro users give full detailed answers. For Free users give a useful sample then mention upgrading for full analysis.';
+      const fn = firebase.functions().httpsCallable('aiProxy');
+      const res = await fn({
+        messages:[{role:'user',parts:[{text:q}]}],
+        system,
+        maxTokens:600
+      });
+      loadingEl.classList.remove('loading');
+      loadingEl.textContent = res.data.text || 'Sorry, no response.';
+    } catch(err){
+      loadingEl.classList.remove('loading');
+      if(err.code === 'resource-exhausted'){
+        loadingEl.textContent = 'You\'ve reached your daily AI limit. Upgrade to YOLO for 40 answers/day.';
+      } else if(err.code === 'unauthenticated'){
+        loadingEl.textContent = 'Session expired — please sign in again.';
+      } else {
+        loadingEl.textContent = 'Something went wrong. Try again in a moment.';
+      }
+    }
+  } else {
+    await new Promise(r => setTimeout(r, 700 + Math.random()*500));
+    loadingEl.classList.remove('loading');
+    loadingEl.textContent = getAnswer(q);
+  }
   aiSend.disabled = false;
 }
 aiSend.addEventListener('click', sendAI);
@@ -1612,6 +1642,7 @@ applyLandingLang();
 <!-- Firebase auth state — update nav if user is already logged in -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
 <script src="js/wizelife-auth.js"></script>
 <script>
 wlAuth.onAuthStateChanged(function(user) {
