@@ -156,6 +156,8 @@ const sendBtn   = document.getElementById('sendBtn');
 let _plan = 'free';
 let _contextSummary = '';
 let _callsToday = 0;
+let _history = [];
+const MAX_HISTORY = 8;
 const DAILY_LIMITS = { free: 2, pro: 20, yolo: 40 };
 
 
@@ -169,7 +171,7 @@ function showPaywall() {
     <p>יועץ ה-AI המשולב עם נתונים מכל האפליקציות זמין למנויי YOLO בלבד.</p>
     <div style="display:flex;gap:12px;margin-top:8px">
       <a href="dashboard.html" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 20px;color:#94a3b8;font-size:14px;text-decoration:none">חזור לדאשבורד</a>
-      <a href="dashboard.html#upgrade" class="auth-btn">שדרג ל-YOLO ← \.99/חודש</a>
+      <a href="dashboard.html#upgrade" class="auth-btn">שדרג ל-YOLO ← $9.99/חודש</a>
     </div>
   `;
 }
@@ -290,16 +292,21 @@ async function sendMsg() {
       'For YOLO/Pro: give full detailed answers with specific numbers. ' +
       'For Free: give a useful but brief answer, then mention upgrading for deeper analysis.';
 
+    _history.push({ role: 'user', parts: [{ text: q }] });
+    if (_history.length > MAX_HISTORY) _history = _history.slice(-MAX_HISTORY);
+
     const fn = firebase.functions().httpsCallable('aiProxy');
     const res = await fn({
-      messages: [{ role: 'user', parts: [{ text: q }] }],
+      messages: [..._history],
       system,
       maxTokens: _plan === 'yolo' ? 800 : _plan === 'pro' ? 600 : 300
     });
 
+    const replyText = res.data.text || 'אין תשובה.';
     loadEl.classList.remove('typing');
     loadEl.innerHTML = '';
-    loadEl.textContent = res.data.text || 'אין תשובה.';
+    loadEl.textContent = replyText;
+    _history.push({ role: 'model', parts: [{ text: replyText }] });
     _callsToday++;
     updateQuota();
 
