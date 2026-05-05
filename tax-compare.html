@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WizeTax — השוואת מסים בין מדינות | WizeLife</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+<script src="js/wizelife-auth.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,-apple-system,sans-serif;background:#0a0f1e;color:#e2e8f0;min-height:100vh;direction:rtl}
+a{color:inherit;text-decoration:none}
+
+/* topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(10,15,30,0.97);border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;padding:0 20px;gap:16px;z-index:100;backdrop-filter:blur(16px)}
+.topbar-back{font-size:13px;color:#6b7280;cursor:pointer;display:flex;align-items:center;gap:6px}
+.topbar-back:hover{color:#e2e8f0}
+.topbar-title{font-size:15px;font-weight:700;color:#eef2ff}
+.topbar-title span{color:#6366f1}
+.topbar-badge{margin-right:auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.2)}
+.topbar-badge.pro{background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.2)}
+.topbar-badge.yolo{background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.2)}
+
+/* layout */
+.page{max-width:960px;margin:0 auto;padding:80px 20px 60px}
+h1{font-size:24px;font-weight:800;margin-bottom:4px}
+.subtitle{color:#6b7280;font-size:14px;margin-bottom:32px}
+
+/* input card */
+.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:20px}
+.card h2{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#6b7280;margin-bottom:16px}
+.input-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
+.field label{font-size:12px;color:#7280a0;font-weight:500}
+.field input,.field select{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;color:#eef2ff;font-size:14px;font-family:inherit;width:100%;outline:none;transition:border .2s}
+.field input:focus,.field select:focus{border-color:#6366f1}
+.field .hint{font-size:11px;color:#4b5563}
+.source-badge{font-size:11px;background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.2);padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:4px;width:fit-content}
+
+/* country chips */
+.countries-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{padding:7px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#7280a0;transition:all .15s;user-select:none}
+.chip.selected{background:rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.5);color:#a5b4fc}
+.chip:hover{border-color:rgba(99,102,241,0.3);color:#c7d2fe}
+.chip.il.selected{background:rgba(59,130,246,0.2);border-color:rgba(59,130,246,0.5);color:#93c5fd}
+.select-all-btn{font-size:11px;color:#6b7280;cursor:pointer;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
+.select-all-btn:hover{color:#e2e8f0}
+
+/* run button */
+.run-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;margin-top:4px}
+.run-btn:hover{opacity:.9}
+.run-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* results */
+#resultsWrap{display:none}
+.results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.results-title{font-size:16px;font-weight:700}
+.results-sub{font-size:12px;color:#6b7280}
+
+/* table */
+.tbl-wrap{overflow-x:auto;border-radius:14px;border:1px solid rgba(255,255,255,0.07)}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th{background:rgba(255,255,255,0.04);padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#6b7280;text-align:right}
+td{padding:13px 16px;font-size:13px;border-top:1px solid rgba(255,255,255,0.05);text-align:right}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.country-cell{display:flex;align-items:center;gap:8px;font-weight:600;color:#eef2ff}
+.flag{font-size:18px}
+.net-val{font-weight:700;font-size:14px}
+.net-high{color:#34d399}
+.net-mid{color:#fbbf24}
+.net-low{color:#ef4444}
+.bar-wrap{width:80px;background:rgba(255,255,255,0.06);border-radius:99px;height:6px;display:inline-block;vertical-align:middle;margin-right:8px}
+.bar-fill{height:6px;border-radius:99px;background:linear-gradient(90deg,#6366f1,#8b5cf6)}
+.tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
+.tag.low{background:rgba(16,185,129,0.12);color:#34d399}
+.tag.mid{background:rgba(245,158,11,0.12);color:#fbbf24}
+.tag.high{background:rgba(239,68,68,0.12);color:#ef4444}
+.il-row td{background:rgba(99,102,241,0.05)}
+.il-row .country-cell{color:#a5b4fc}
+
+/* notes card */
+.notes-card{margin-top:20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px}
+.notes-card h3{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#6b7280;margin-bottom:12px}
+.notes-text{font-size:13px;color:#9ca3af;line-height:1.7;white-space:pre-wrap}
+
+/* loading */
+.loading{text-align:center;padding:48px;color:#6b7280}
+.spinner{width:32px;height:32px;border:3px solid rgba(99,102,241,0.2);border-top-color:#6366f1;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* auth wall */
+#authWall{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;gap:12px}
+#authWall h2{font-size:22px;font-weight:700}
+#authWall p{color:#6b7280;max-width:360px;font-size:14px}
+.auth-btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:12px 28px;border-radius:12px;font-weight:700;font-size:14px;color:#fff}
+
+@media(max-width:600px){
+  .input-row{flex-direction:column}
+  .field{min-width:unset}
+  th,td{padding:10px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="dashboard.html" class="topbar-back">← כל הכלים</a>
+  <span class="topbar-title">Wize<span>Tax</span> — השוואת מדינות</span>
+  <span id="planBadge" class="topbar-badge">Free</span>
+</div>
+
+<div class="page">
+
+  <div id="authWall">
+    <div style="font-size:48px">🌍</div>
+    <h2>יש להתחבר</h2>
+    <p>כדי להשוות מסים בין מדינות עם הנתונים שלך</p>
+    <a href="auth.html" class="auth-btn">התחברות / הרשמה</a>
+  </div>
+
+  <div id="mainContent" style="display:none">
+    <h1>🌍 השוואת מסים בין מדינות</h1>
+    <p class="subtitle">הזן משכורת ברוטו חודשית (ישראלית) וקבל תמונה מלאה — מה יישאר לך נטו בכל מדינה</p>
+
+    <!-- Input card -->
+    <div class="card">
+      <h2>נתוני הכנסה</h2>
+      <div class="input-row">
+        <div class="field">
+          <label>משכורת ברוטו חודשית (₪)</label>
+          <input type="number" id="grossSalary" placeholder="לדוגמה 25000" min="1000" max="500000">
+          <span id="moneySource" class="source-badge" style="display:none">✓ נטען מ-WizeMoney</span>
+        </div>
+        <div class="field">
+          <label>מצב משפחתי</label>
+          <select id="maritalStatus">
+            <option value="single">רווק/ה</option>
+            <option value="married">נשוי/אה</option>
+            <option value="married_working">נשוי/אה + בן/בת זוג עובד/ת</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>ילדים</label>
+          <select id="numChildren">
+            <option value="0">ללא</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3+</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Country selector -->
+    <div class="card">
+      <h2 style="display:flex;justify-content:space-between;align-items:center">
+        בחר מדינות להשוואה
+        <button class="select-all-btn" onclick="toggleAll()">בחר הכל</button>
+      </h2>
+      <div class="countries-grid" id="countriesGrid"></div>
+    </div>
+
+    <button class="run-btn" id="runBtn" onclick="runComparison()">השווה עכשיו →</button>
+
+    <!-- Results -->
+    <div id="resultsWrap">
+      <div style="height:28px"></div>
+      <div class="results-header">
+        <div>
+          <div class="results-title">תוצאות ההשוואה</div>
+          <div class="results-sub" id="resultsSub"></div>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>מדינה</th>
+              <th>ברוטו (מקומי)</th>
+              <th>מס הכנסה</th>
+              <th>ביטוח לאומי</th>
+              <th>נטו חודשי</th>
+              <th>שיעור אפקטיבי</th>
+              <th>יתרון מול ישראל</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+      <div class="notes-card">
+        <h3>הערות והמלצות</h3>
+        <div class="notes-text" id="notesText"></div>
+      </div>
+    </div>
+
+    <div id="loadingDiv" class="loading" style="display:none">
+      <div class="spinner"></div>
+      מחשב השוואה מלאה לכל המדינות...
+    </div>
+  </div>
+</div>
+
+<script>
+const COUNTRIES = [
+  { code:'IL', flag:'🇮🇱', name:'ישראל (בסיס)', currency:'ILS', rate:1 },
+  { code:'US', flag:'🇺🇸', name:'ארה"ב (ממוצע)', currency:'USD', rate:3.7 },
+  { code:'DE', flag:'🇩🇪', name:'גרמניה', currency:'EUR', rate:4.0 },
+  { code:'FR', flag:'🇫🇷', name:'צרפת', currency:'EUR', rate:4.0 },
+  { code:'NL', flag:'🇳🇱', name:'הולנד', currency:'EUR', rate:4.0 },
+  { code:'PT', flag:'🇵🇹', name:'פורטוגל', currency:'EUR', rate:4.0 },
+  { code:'ES', flag:'🇪🇸', name:'ספרד', currency:'EUR', rate:4.0 },
+  { code:'PL', flag:'🇵🇱', name:'פולין', currency:'PLN', rate:0.93 },
+  { code:'CZ', flag:'🇨🇿', name:'צ\'כיה', currency:'CZK', rate:0.17 },
+  { code:'EE', flag:'🇪🇪', name:'אסטוניה', currency:'EUR', rate:4.0 },
+  { code:'IE', flag:'🇮🇪', name:'אירלנד', currency:'EUR', rate:4.0 },
+  { code:'CH', flag:'🇨🇭', name:'שווייץ', currency:'CHF', rate:4.2 },
+  { code:'GB', flag:'🇬🇧', name:'בריטניה', currency:'GBP', rate:4.7 },
+  { code:'AE', flag:'🇦🇪', name:'איחוד האמירויות', currency:'USD', rate:3.7 },
+  { code:'SG', flag:'🇸🇬', name:'סינגפור', currency:'SGD', rate:2.8 },
+  { code:'CA', flag:'🇨🇦', name:'קנדה', currency:'CAD', rate:2.75 },
+  { code:'AU', flag:'🇦🇺', name:'אוסטרליה', currency:'AUD', rate:2.5 },
+  { code:'BR', flag:'🇧🇷', name:'ברזיל', currency:'BRL', rate:0.73 },
+  { code:'TH', flag:'🇹🇭', name:'תאילנד', currency:'THB', rate:0.11 },
+  { code:'GR', flag:'🇬🇷', name:'יוון', currency:'EUR', rate:4.0 },
+];
+
+let _plan = 'free';
+let _ilNetMonthly = null; // baseline for delta
+let _allSelected = false;
+
+// Build chips
+const grid = document.getElementById('countriesGrid');
+const defaultSelected = ['IL','PT','DE','AE','SG','US','GB'];
+COUNTRIES.forEach(c => {
+  const chip = document.createElement('div');
+  chip.className = 'chip' + (c.code === 'IL' ? ' il' : '') + (defaultSelected.includes(c.code) ? ' selected' : '');
+  chip.dataset.code = c.code;
+  chip.textContent = c.flag + ' ' + c.name;
+  chip.onclick = () => {
+    if (c.code === 'IL') return; // Israel always selected
+    chip.classList.toggle('selected');
+  };
+  grid.appendChild(chip);
+});
+
+function toggleAll() {
+  _allSelected = !_allSelected;
+  document.querySelectorAll('.chip').forEach(ch => {
+    if (ch.dataset.code !== 'IL') ch.classList.toggle('selected', _allSelected);
+  });
+}
+
+function getSelected() {
+  return [...document.querySelectorAll('.chip.selected')].map(ch => ch.dataset.code);
+}
+
+// Auth
+wlAuth.onAuthStateChanged(async user => {
+  if (!user) { document.getElementById('authWall').style.display = 'flex'; return; }
+  document.getElementById('mainContent').style.display = 'block';
+  _plan = await getUserPlan(user.uid);
+  const badge = document.getElementById('planBadge');
+  badge.textContent = _plan.toUpperCase();
+  badge.className = 'topbar-badge ' + _plan;
+  loadFromWizeMoney(user);
+});
+
+async function loadFromWizeMoney(user) {
+  try {
+    const doc = await wlDb.collection('users').doc(user.uid).collection('context').doc('money').get();
+    if (doc.exists && doc.data().monthlyIncome > 0) {
+      const income = doc.data().monthlyIncome;
+      document.getElementById('grossSalary').value = income;
+      document.getElementById('moneySource').style.display = 'inline-flex';
+    }
+  } catch(e) {}
+}
+
+async function runComparison() {
+  const gross = parseFloat(document.getElementById('grossSalary').value);
+  if (!gross || gross < 1000) { alert('הזן משכורת ברוטו תקינה'); return; }
+
+  const selected = getSelected();
+  if (selected.length < 2) { alert('בחר לפחות 2 מדינות'); return; }
+
+  const marital = document.getElementById('maritalStatus').value;
+  const children = document.getElementById('numChildren').value;
+
+  document.getElementById('runBtn').disabled = true;
+  document.getElementById('resultsWrap').style.display = 'none';
+  document.getElementById('loadingDiv').style.display = 'block';
+
+  const selectedCountries = COUNTRIES.filter(c => selected.includes(c.code));
+  const grossUSD = gross / 3.7;
+
+  const systemPrompt = `You are a professional international tax advisor.
+The user earns ${gross} ILS/month gross (≈ $${grossUSD.toFixed(0)} USD) in Israel.
+Marital status: ${marital}. Children: ${children}.
+
+For EACH of these countries: ${selectedCountries.map(c => c.name).join(', ')}
+Calculate and return a JSON array with this exact structure (no markdown, raw JSON only):
+[
+  {
+    "code": "IL",
+    "grossLocal": <gross in local currency, number>,
+    "incomeTax": <monthly income tax in local currency, number>,
+    "socialSecurity": <monthly social security + health in local currency, number>,
+    "netMonthly": <net take-home monthly in local currency, number>,
+    "netUSD": <net in USD, number>,
+    "effectiveRate": <total deduction % as integer>,
+    "currency": "ILS",
+    "notes": "<1 sentence: key advantage or disadvantage vs Israel>"
+  },
+  ...
+]
+
+Use current 2024/2025 tax rates. For each country include:
+- Income tax (actual brackets, not flat)
+- Social security / national insurance employee contribution
+- Mandatory health insurance if separate (Germany, Netherlands, etc.)
+- Standard deductions for the given marital status and children
+- Convert gross from ILS to local currency using approximate exchange rates
+- Israel baseline: apply Israeli tax brackets + Bituach Leumi + health tax
+
+After the JSON, add a newline then "NOTES:" then 3-5 bullet points (in Hebrew) about:
+- Which country is most attractive overall
+- Key non-monetary benefits (pension, parental leave, public services)
+- Any citizenship/visa considerations worth mentioning`;
+
+  try {
+    const fn = firebase.functions().httpsCallable('aiProxy');
+    const res = await fn({
+      messages: [{ role: 'user', parts: [{ text: 'Calculate the tax comparison as instructed.' }] }],
+      system: systemPrompt,
+      maxTokens: 2000
+    });
+
+    parseAndRender(res.data.text, gross, selectedCountries);
+  } catch(err) {
+    document.getElementById('loadingDiv').style.display = 'none';
+    document.getElementById('runBtn').disabled = false;
+    alert('שגיאה בחישוב. נסה שוב.');
+    console.error(err);
+  }
+}
+
+function parseAndRender(raw, grossILS, selectedCountries) {
+  let jsonStr = '', notes = '';
+  const notesIdx = raw.indexOf('NOTES:');
+  if (notesIdx !== -1) {
+    jsonStr = raw.slice(0, notesIdx).trim();
+    notes = raw.slice(notesIdx + 6).trim();
+  } else {
+    jsonStr = raw;
+  }
+
+  // Extract JSON array
+  const match = jsonStr.match(/\[[\s\S]*\]/);
+  if (!match) {
+    document.getElementById('loadingDiv').style.display = 'none';
+    document.getElementById('runBtn').disabled = false;
+    alert('לא ניתן לפרש את התוצאות. נסה שוב.');
+    return;
+  }
+
+  let rows;
+  try { rows = JSON.parse(match[0]); } catch(e) {
+    document.getElementById('loadingDiv').style.display = 'none';
+    document.getElementById('runBtn').disabled = false;
+    alert('שגיאת פרסור. נסה שוב.');
+    return;
+  }
+
+  // Find IL baseline net in USD
+  const ilRow = rows.find(r => r.code === 'IL');
+  const ilNetUSD = ilRow ? ilRow.netUSD : null;
+
+  // Sort: Israel first, then descending by netUSD
+  rows.sort((a, b) => {
+    if (a.code === 'IL') return -1;
+    if (b.code === 'IL') return 1;
+    return (b.netUSD || 0) - (a.netUSD || 0);
+  });
+
+  const maxNet = Math.max(...rows.map(r => r.netUSD || 0));
+
+  const tbody = document.getElementById('resultsBody');
+  tbody.innerHTML = '';
+
+  rows.forEach(row => {
+    const country = COUNTRIES.find(c => c.code === row.code) || {};
+    const pct = maxNet > 0 ? Math.round((row.netUSD / maxNet) * 100) : 0;
+    const deltaUSD = ilNetUSD && row.code !== 'IL' ? row.netUSD - ilNetUSD : null;
+    const isIL = row.code === 'IL';
+
+    const netClass = row.effectiveRate < 25 ? 'net-high'
+                   : row.effectiveRate < 38 ? 'net-mid' : 'net-low';
+    const rateTag = row.effectiveRate < 25 ? '<span class="tag low">נמוך</span>'
+                  : row.effectiveRate < 38  ? '<span class="tag mid">בינוני</span>'
+                  : '<span class="tag high">גבוה</span>';
+
+    let deltaCell = '—';
+    if (deltaUSD !== null) {
+      const sign = deltaUSD >= 0 ? '+' : '';
+      const color = deltaUSD >= 0 ? '#34d399' : '#ef4444';
+      deltaCell = `<span style="color:${color};font-weight:700">${sign}$${Math.round(deltaUSD).toLocaleString()}/חודש</span>`;
+    }
+
+    const tr = document.createElement('tr');
+    if (isIL) tr.className = 'il-row';
+    tr.innerHTML = `
+      <td><div class="country-cell"><span class="flag">${country.flag||''}</span>${country.name||row.code}</div></td>
+      <td>${Math.round(row.grossLocal).toLocaleString()} ${row.currency}</td>
+      <td>${Math.round(row.incomeTax).toLocaleString()} ${row.currency}</td>
+      <td>${Math.round(row.socialSecurity).toLocaleString()} ${row.currency}</td>
+      <td class="${netClass} net-val">
+        <span class="bar-wrap"><span class="bar-fill" style="width:${pct}%"></span></span>
+        ${Math.round(row.netMonthly).toLocaleString()} ${row.currency}
+        <br><span style="font-size:11px;color:#6b7280;font-weight:400">≈ $${Math.round(row.netUSD).toLocaleString()}</span>
+      </td>
+      <td>${row.effectiveRate}% ${rateTag}</td>
+      <td>${deltaCell}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('resultsSub').textContent =
+    `ברוטו: ${grossILS.toLocaleString()} ₪/חודש · ${selectedCountries.length} מדינות · מחירים ב-2025`;
+  document.getElementById('notesText').textContent = notes;
+  document.getElementById('loadingDiv').style.display = 'none';
+  document.getElementById('resultsWrap').style.display = 'block';
+  document.getElementById('runBtn').disabled = false;
+}
+</script>
+</body>
+</html>
