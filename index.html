@@ -1435,12 +1435,13 @@ const WIZE_FAQ_ES = [
 ];
 
 function _detectLandingLang(){
-  // Shared cross-app key takes priority, then page-specific key
-  const saved = localStorage.getItem('wl_lang') || localStorage.getItem('wl_landing_lang');
-  if(saved && ['en','pt','es','he'].includes(saved)) return saved;
+  // Landing page has its own preference; only falls back to cross-app key if explicitly set here before
+  const landing = localStorage.getItem('wl_landing_lang');
+  if(landing && ['en','pt','es','he'].includes(landing)) return landing;
   const bl = (navigator.language || 'en').toLowerCase();
   if(bl.startsWith('pt')) return 'pt';
   if(bl.startsWith('es')) return 'es';
+  if(bl.startsWith('he') || bl.startsWith('iw')) return 'he';
   return 'en';
 }
 let _wl_lang = _detectLandingLang();
