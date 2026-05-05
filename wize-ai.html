@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WizeAI — יועץ החיים שלך</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+<script src="/js/wizelife-auth.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#070b18;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── Top bar ── */
+.topbar{height:52px;background:rgba(7,11,24,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:100}
+.topbar-back{color:#6b7280;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px}
+.topbar-back:hover{color:#e2e8f0}
+.topbar-title{font-size:15px;font-weight:700;color:#eef2ff}
+.topbar-title span{color:#6366f1}
+.topbar-plan{margin-right:auto;font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:20px;background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.2)}
+.topbar-plan.yolo{background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.2)}
+.topbar-plan.pro{background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.2)}
+
+/* ── Layout ── */
+.layout{display:flex;flex:1;max-width:1100px;margin:0 auto;width:100%;gap:24px;padding:24px 20px}
+
+/* ── Context sidebar ── */
+.ctx-panel{width:260px;flex-shrink:0}
+.ctx-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;margin-bottom:12px}
+.ctx-card h3{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280;margin-bottom:12px}
+.ctx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px}
+.ctx-label{color:#7280a0}
+.ctx-val{font-weight:600;color:#eef2ff}
+.ctx-val.pos{color:#34d399}
+.ctx-val.neg{color:#ef4444}
+.ctx-loading{color:#4b5563;font-size:12px;text-align:center;padding:8px 0}
+.ctx-empty{color:#374151;font-size:12px;text-align:center;padding:8px 0}
+.apps-list{display:flex;flex-wrap:wrap;gap:6px}
+.app-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(99,102,241,0.12);color:#818cf8;border:1px solid rgba(99,102,241,0.15)}
+.app-badge.pending{background:rgba(107,114,128,0.12);color:#6b7280;border-color:rgba(107,114,128,0.15)}
+
+/* ── Chat area ── */
+.chat-wrap{flex:1;display:flex;flex-direction:column;min-width:0}
+.chat-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-bottom:8px;max-height:calc(100vh - 180px)}
+.msg{max-width:88%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.msg.user{align-self:flex-start;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.25);color:#c7d2fe}
+.msg.bot{align-self:flex-end;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#e2e8f0}
+.msg.error{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#fca5a5}
+
+.typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#6366f1;animation:blink 1.2s infinite;margin:0 2px}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+/* ── Suggestions ── */
+.suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.sug{font-size:12px;padding:7px 14px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#94a3b8;cursor:pointer;transition:.15s}
+.sug:hover{background:rgba(99,102,241,0.12);border-color:rgba(99,102,241,0.25);color:#c7d2fe}
+
+/* ── Input ── */
+.input-row{display:flex;gap:10px;margin-top:12px}
+.msg-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;color:#eef2ff;font-size:14px;font-family:inherit;resize:none;outline:none;transition:.15s;min-height:48px;max-height:120px}
+.msg-input:focus{border-color:rgba(99,102,241,0.5);background:rgba(99,102,241,0.05)}
+.send-btn{background:#6366f1;border:none;border-radius:12px;padding:12px 20px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
+.send-btn:hover{background:#4f46e5}
+.send-btn:disabled{opacity:.4;cursor:default}
+
+/* ── Quota bar ── */
+.quota{font-size:11px;color:#4b5563;text-align:center;margin-top:8px}
+
+/* ── Auth wall ── */
+.auth-wall{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px;text-align:center;padding:40px}
+.auth-wall h2{font-size:22px;font-weight:800;color:#eef2ff}
+.auth-wall p{color:#6b7280;font-size:14px;max-width:320px}
+.auth-btn{background:#6366f1;border:none;border-radius:10px;padding:12px 28px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+
+@media(max-width:768px){
+  .layout{flex-direction:column;padding:12px}
+  .ctx-panel{width:100%}
+  .chat-body{max-height:55vh}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <a href="dashboard.html" class="topbar-back">← דאשבורד</a>
+  <span class="topbar-title">Wize<span>AI</span></span>
+  <span class="topbar-plan" id="planBadge">FREE</span>
+</div>
+
+<!-- Auth wall (shown when not logged in) -->
+<div class="auth-wall" id="authWall" style="display:none">
+  <h2>WizeAI דורש חשבון WizeLife</h2>
+  <p>יועץ AI שמכיר את הנתונים שלך מכל 5 האפליקציות — כסף, מס, טיסות, בריאות, עסקאות</p>
+  <a href="auth.html" class="auth-btn">כניסה / הרשמה</a>
+</div>
+
+<!-- Main layout -->
+<div class="layout" id="mainLayout" style="display:none">
+
+  <!-- Context sidebar -->
+  <div class="ctx-panel">
+    <div class="ctx-card">
+      <h3>נתונים מחוברים</h3>
+      <div id="appsConnected"><span class="ctx-loading">טוען...</span></div>
+    </div>
+    <div class="ctx-card" id="moneyCtx" style="display:none">
+      <h3>WizeMoney</h3>
+      <div id="moneyCtxRows"></div>
+    </div>
+    <div class="ctx-card">
+      <h3>WizeAI יודע לענות על</h3>
+      <div style="font-size:12px;color:#6b7280;line-height:1.8">
+        💰 תכנון פיננסי<br>
+        ✈️ טיסות ותקציב נסיעות<br>
+        🧾 אופטימיזציית מס<br>
+        🩺 הוצאות בריאות<br>
+        🛍️ עסקאות וקניות
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat -->
+  <div class="chat-wrap">
+    <div class="chat-body" id="chatBody">
+      <div class="msg bot" id="welcomeMsg">היי 👋 אני WizeAI — יועץ שמכיר את כל הנתונים שלך. שאל אותי כל דבר.</div>
+    </div>
+
+    <div class="suggestions" id="suggestions">
+      <button class="sug" onclick="sendSuggestion(this)">האם אני יכול להרשות לעצמי לטוס?</button>
+      <button class="sug" onclick="sendSuggestion(this)">מה ההוצאה הגדולה שלי החודש?</button>
+      <button class="sug" onclick="sendSuggestion(this)">כמה חוסך לי במס?</button>
+      <button class="sug" onclick="sendSuggestion(this)">האם אני בדרך ליעד החיסכון?</button>
+    </div>
+
+    <div class="input-row">
+      <textarea class="msg-input" id="msgInput" placeholder="שאל כל דבר על הכספים, הטיסות, המס שלך..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">שלח</button>
+    </div>
+    <div class="quota" id="quotaBar"></div>
+  </div>
+</div>
+
+<script>
+const chatBody  = document.getElementById('chatBody');
+const msgInput  = document.getElementById('msgInput');
+const sendBtn   = document.getElementById('sendBtn');
+
+let _plan = 'free';
+let _contextSummary = '';
+let _callsToday = 0;
+const DAILY_LIMITS = { free: 2, pro: 20, yolo: 40 };
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+wlAuth.onAuthStateChanged(async user => {
+  if (!user) {
+    document.getElementById('authWall').style.display = 'flex';
+    return;
+  }
+  document.getElementById('mainLayout').style.display = 'flex';
+  _plan = await getUserPlan(user.uid);
+  updatePlanBadge();
+  await loadContext();
+});
+
+function updatePlanBadge() {
+  const b = document.getElementById('planBadge');
+  b.textContent = _plan.toUpperCase();
+  b.className = 'topbar-plan ' + _plan;
+}
+
+// ── Load cross-app context ────────────────────────────────────────────────────
+async function loadContext() {
+  try {
+    const fn = firebase.functions().httpsCallable('getUserContext');
+    const res = await fn({});
+    _contextSummary = res.data.summary || '';
+    const apps = res.data.apps || [];
+    renderApps(apps);
+    renderMoneyCtx();
+  } catch(e) {
+    document.getElementById('appsConnected').innerHTML =
+      '<span class="ctx-empty">Abre WizeMoney uma vez para conectar os dados</span>';
+  }
+}
+
+function renderApps(apps) {
+  const all = ['money','tax','travel','health','deals'];
+  const el = document.getElementById('appsConnected');
+  el.innerHTML = '<div class="apps-list">' +
+    all.map(a => {
+      const connected = apps.includes(a);
+      const label = {money:'WizeMoney',tax:'WizeTax',travel:'WizeTravel',health:'WizeHealth',deals:'WizeDeal'}[a];
+      return `<span class="app-badge${connected?'':' pending'}">${connected?'✓ ':'◦ '}${label}</span>`;
+    }).join('') +
+  '</div>';
+}
+
+async function renderMoneyCtx() {
+  const uid = wlAuth.currentUser?.uid;
+  if (!uid) return;
+  const snap = await wlDb.collection('users').doc(uid).collection('context').doc('money').get();
+  if (!snap.exists) return;
+  const m = snap.data();
+  const card = document.getElementById('moneyCtx');
+  const rows = document.getElementById('moneyCtxRows');
+  const fmt = n => '₪' + Math.round(n||0).toLocaleString('he-IL');
+  const delta = m.expenseDelta || 0;
+  rows.innerHTML = `
+    <div class="ctx-row"><span class="ctx-label">הכנסה חודשית</span><span class="ctx-val pos">${fmt(m.monthlyIncome)}</span></div>
+    <div class="ctx-row"><span class="ctx-label">הוצאות החודש</span><span class="ctx-val ${delta>10?'neg':''}">${fmt(m.monthlyExpenses)}${delta!==0?` <small>(${delta>0?'+':''}${delta}%)</small>`:''}</span></div>
+    <div class="ctx-row"><span class="ctx-label">שווי נטו</span><span class="ctx-val">${fmt(m.netWorth)}</span></div>
+    ${m.goals&&m.goals.length?`<div class="ctx-row"><span class="ctx-label">יעדי חיסכון</span><span class="ctx-val">${m.goals.length} פעילים</span></div>`:''}
+  `;
+  card.style.display = 'block';
+}
+
+// ── Chat ──────────────────────────────────────────────────────────────────────
+function addMsg(text, who, isLoading) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + who;
+  if (isLoading) el.innerHTML = '<span class="typing"><span></span><span></span><span></span></span>';
+  else el.textContent = text;
+  chatBody.appendChild(el);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  return el;
+}
+
+function sendSuggestion(btn) {
+  msgInput.value = btn.textContent;
+  document.getElementById('suggestions').style.display = 'none';
+  sendMsg();
+}
+
+async function sendMsg() {
+  const q = msgInput.value.trim();
+  if (!q || sendBtn.disabled) return;
+  msgInput.value = '';
+  sendBtn.disabled = true;
+  document.getElementById('suggestions').style.display = 'none';
+
+  const limit = DAILY_LIMITS[_plan] || 2;
+  if (_callsToday >= limit) {
+    addMsg(`הגעת למגבלת ${limit} שאלות ביום לפלאן ${_plan.toUpperCase()}. שדרג ל-YOLO לקבל 40 שאלות ביום.`, 'error');
+    sendBtn.disabled = false;
+    return;
+  }
+
+  addMsg(q, 'user');
+  const loadEl = addMsg('', 'bot', true);
+
+  try {
+    const planLabel = _plan === 'yolo' ? 'YOLO (40 calls/day, full answers)'
+                    : _plan === 'pro'  ? 'Pro (20 calls/day)'
+                    : 'Free (2 calls/day, brief answers)';
+
+    const system = 'You are WizeAI, a precise multi-domain life advisor. ' +
+      'The user has a ' + planLabel + ' WizeLife plan. ' +
+      (_contextSummary
+        ? 'Here is their real financial context (aggregated, no PII):\n' + _contextSummary + '\n\nUse this data to give personalized, specific answers. '
+        : '') +
+      'Be concise and actionable. Answer in the same language the user writes in (Hebrew or English). ' +
+      'For YOLO/Pro: give full detailed answers with specific numbers. ' +
+      'For Free: give a useful but brief answer, then mention upgrading for deeper analysis.';
+
+    const fn = firebase.functions().httpsCallable('aiProxy');
+    const res = await fn({
+      messages: [{ role: 'user', parts: [{ text: q }] }],
+      system,
+      maxTokens: _plan === 'yolo' ? 800 : _plan === 'pro' ? 600 : 300
+    });
+
+    loadEl.classList.remove('typing');
+    loadEl.innerHTML = '';
+    loadEl.textContent = res.data.text || 'אין תשובה.';
+    _callsToday++;
+    updateQuota();
+
+  } catch(err) {
+    loadEl.className = 'msg error';
+    loadEl.innerHTML = '';
+    if (err.code === 'resource-exhausted') {
+      loadEl.textContent = 'הגעת למגבלת השימוש היומית. שדרג ל-YOLO לקבל 40 שאלות ביום.';
+    } else {
+      loadEl.textContent = 'שגיאה — נסה שוב.';
+    }
+  }
+  sendBtn.disabled = false;
+}
+
+function updateQuota() {
+  const limit = DAILY_LIMITS[_plan] || 2;
+  document.getElementById('quotaBar').textContent =
+    `${_callsToday} / ${limit} שאלות היום`;
+}
+
+// Auto-resize textarea
+msgInput.addEventListener('input', () => {
+  msgInput.style.height = 'auto';
+  msgInput.style.height = Math.min(msgInput.scrollHeight, 120) + 'px';
+});
+msgInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+});
+</script>
+</body>
+</html>
