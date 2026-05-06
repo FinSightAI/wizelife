@@ -198,11 +198,12 @@
   <div class="nav-right">
     <span class="user-name" id="navUserName">Loading…</span>
     <a class="btn-upgrade" id="navUpgradeBtn" href="#" style="display:none;">Upgrade to Pro</a>
-    <select id="dashLangBtn" onchange="setDashLang(this.value)" class="btn-sm" style="cursor:pointer;font-family:inherit;padding:6px 10px;">
-      <option value="en">EN</option>
-      <option value="pt">PT</option>
-      <option value="es">ES</option>
-    </select>
+    <div id="dashLangBtn" style="display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;">
+      <button class="dash-lang-pill" data-lang="he" onclick="setDashLang('he')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">עב</button>
+      <button class="dash-lang-pill" data-lang="en" onclick="setDashLang('en')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">EN</button>
+      <button class="dash-lang-pill" data-lang="pt" onclick="setDashLang('pt')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">PT</button>
+      <button class="dash-lang-pill" data-lang="es" onclick="setDashLang('es')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">ES</button>
+    </div>
     <button class="btn-sm" onclick="signOut()">Sign Out</button>
   </div>
 </nav>
@@ -484,8 +485,17 @@ function setDashLang(v) {
     if (!['en','pt','es','he'].includes(v)) return;
     localStorage.setItem('wl_lang', v);
     injectLangToToolLinks(v);
-    const sel = document.getElementById('dashLangBtn');
-    if (sel) sel.value = v;
+    // Highlight active pill (active=accent color, inactive=muted)
+    document.querySelectorAll('.dash-lang-pill').forEach(b => {
+        const active = b.getAttribute('data-lang') === v;
+        b.style.background = active ? 'rgba(16,185,129,0.18)' : 'none';
+        b.style.color = active ? '#10b981' : '#7b88ad';
+    });
+    // Apply RTL/LTR + reload UI text by re-running translatePage (or simply reload)
+    document.documentElement.dir = (v === 'he') ? 'rtl' : 'ltr';
+    document.documentElement.lang = v;
+    if (typeof translateDashboard === 'function') translateDashboard(v);
+    else location.reload();
 }
 
 function injectLangToToolLinks(lang) {
