@@ -331,5 +331,49 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
 </script>
+
+<script>
+const AUTH_TR = {
+  he: { signIn: 'כניסה', signUp: 'יצירת חשבון', email: 'אימייל', password: 'סיסמה', fullName: 'שם מלא', forgot: 'שכחת סיסמה?', subtitle: 'הסוויטה לחיים מבוססת AI', signInBtn: 'כניסה', signUpBtn: 'הרשמה' },
+  en: { signIn: 'Sign In', signUp: 'Create Account', email: 'Email', password: 'Password', fullName: 'Full Name', forgot: 'Forgot password?', subtitle: 'Your AI-powered life suite', signInBtn: 'Sign In', signUpBtn: 'Create Account' },
+  pt: { signIn: 'Entrar', signUp: 'Criar Conta', email: 'Email', password: 'Senha', fullName: 'Nome Completo', forgot: 'Esqueceu a senha?', subtitle: 'Sua suíte de vida com IA', signInBtn: 'Entrar', signUpBtn: 'Criar Conta' },
+  es: { signIn: 'Iniciar Sesión', signUp: 'Crear Cuenta', email: 'Email', password: 'Contraseña', fullName: 'Nombre Completo', forgot: '¿Olvidaste la contraseña?', subtitle: 'Tu suite de vida con IA', signInBtn: 'Iniciar Sesión', signUpBtn: 'Crear Cuenta' },
+};
+function setAuthLang(v) {
+  if (!['en','pt','es','he'].includes(v)) return;
+  localStorage.setItem('wl_lang', v);
+  const t = AUTH_TR[v];
+  document.documentElement.dir = (v === 'he') ? 'rtl' : 'ltr';
+  document.documentElement.lang = v;
+  document.querySelectorAll('.auth-lang-pill').forEach(b => {
+    const active = b.getAttribute('data-lang') === v;
+    b.style.background = active ? 'rgba(99,102,241,0.18)' : 'none';
+    b.style.color = active ? '#a5b4fc' : '#7b88ad';
+  });
+  const tabL = document.getElementById('tabLogin');
+  const tabS = document.getElementById('tabSignup');
+  if (tabL) tabL.textContent = t.signIn;
+  if (tabS) tabS.textContent = t.signUp;
+  document.querySelectorAll('label').forEach(l => {
+    const txt = l.textContent.trim();
+    if (/email/i.test(txt)) l.textContent = t.email;
+    else if (/password|סיסמה|senha|contraseña/i.test(txt)) l.textContent = t.password;
+    else if (/full name|שם מלא|nome|nombre/i.test(txt)) l.textContent = t.fullName;
+  });
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  if (loginBtn) loginBtn.textContent = t.signInBtn;
+  if (signupBtn) signupBtn.textContent = t.signUpBtn;
+  const subtitle = document.querySelector('.logo p');
+  if (subtitle) subtitle.textContent = t.subtitle;
+  document.querySelectorAll('.forgot a').forEach(a => a.textContent = t.forgot);
+}
+(function() {
+  const saved = localStorage.getItem('wl_lang') || 'en';
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setAuthLang(saved); });
+  } else { setAuthLang(saved); }
+})();
+</script>
 </body>
 </html>
