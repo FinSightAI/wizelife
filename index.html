@@ -1069,15 +1069,16 @@ window.addEventListener('scroll',()=>{
 });
 
 // ── TOOLS DATA ──
-const TOOLS = [
-  const ICONS = {
+const ICONS = {
   money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg>',
   travel: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"/></svg>',
   tax: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5" opacity=".7"/></svg>',
   health: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-6 4 12 2-6h7"/></svg>',
   deal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10" opacity=".7"/><path d="M9 21v-6h6v6" opacity=".5"/></svg>'
 };
-{id:'money',  name:'Money',  em:'Wize', color:'#10b981', desc:'Personal finance & investments'},
+
+const TOOLS = [
+  {id:'money',  name:'Money',  em:'Wize', color:'#10b981', desc:'Personal finance & investments'},
   {id:'travel', name:'Travel', em:'Wize', color:'#3b82f6', desc:'Flight AI with hidden-city & virtual interlining'},
   {id:'tax',    name:'Tax',    em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries'},
   {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Cardiology & nutrition-trained AI'},
