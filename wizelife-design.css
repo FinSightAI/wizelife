@@ -369,3 +369,40 @@
 /* ── Monospace utility (numbers, prices) ─────────────────────────── */
 .wl-mono { font-family: var(--wl-font-mono); font-variant-numeric: tabular-nums; }
 .wl-stat-val { font-variant-numeric: tabular-nums; }
+
+/* ── WizeLife unified theme toggle (cross-app consistency) ── */
+.wl-theme-btn,
+#wl-theme-toggle,
+#wlThemeToggle {
+  position: fixed !important;
+  bottom: 18px !important; left: 18px !important;
+  width: 38px !important; height: 38px !important;
+  border-radius: 50% !important;
+  background: rgba(15,23,42,0.85) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #cbd5e1 !important;
+  font-size: 15px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+  z-index: 9999 !important;
+  transition: all .18s ease !important;
+}
+.wl-theme-btn:hover,
+#wl-theme-toggle:hover,
+#wlThemeToggle:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+}
+[data-theme="light"] .wl-theme-btn,
+[data-theme="light"] #wl-theme-toggle,
+body.light .wl-theme-btn,
+body.light #wlThemeToggle {
+  background: rgba(255,255,255,0.95) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  color: #475569 !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
+}
