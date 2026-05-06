@@ -1507,14 +1507,16 @@ const WIZE_FAQ_ES = [
 ];
 
 function _detectLandingLang(){
-  // Landing page has its own preference; only falls back to cross-app key if explicitly set here before
+  // Landing page preference order: explicit setting > cross-app wl_lang > browser > Hebrew default
   const landing = localStorage.getItem('wl_landing_lang');
   if(landing && ['en','pt','es','he'].includes(landing)) return landing;
-  const bl = (navigator.language || 'en').toLowerCase();
+  const cross = localStorage.getItem('wl_lang');
+  if(cross && ['en','pt','es','he'].includes(cross)) return cross;
+  const bl = (navigator.language || 'he').toLowerCase();
   if(bl.startsWith('pt')) return 'pt';
   if(bl.startsWith('es')) return 'es';
-  if(bl.startsWith('he') || bl.startsWith('iw')) return 'he';
-  return 'en';
+  if(bl.startsWith('en')) return 'en';
+  return 'he'; // default Hebrew
 }
 let _wl_lang = _detectLandingLang();
 
