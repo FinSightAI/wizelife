@@ -10,208 +10,249 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
 <script src="js/wizelife-auth.js"></script>
 <script src="js/tax-data.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',-apple-system,sans-serif;background:#030508;color:#e2e8f0;min-height:100vh;direction:rtl}
-a{color:inherit;text-decoration:none}
 
-/* topbar */
-.topbar{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(10,15,30,0.97);border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;padding:0 20px;gap:16px;z-index:100;backdrop-filter:blur(16px)}
-.topbar-back{font-size:13px;color:#6b7280;cursor:pointer;display:flex;align-items:center;gap:6px}
-.topbar-back:hover{color:#e2e8f0}
-.topbar-title{font-size:15px;font-weight:700;color:#eef2ff}
-.topbar-title span{color:#6366f1}
-.topbar-badge{margin-right:auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.2)}
-.topbar-badge.pro{background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.2)}
-.topbar-badge.yolo{background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.2)}
-
-/* layout */
-.page{max-width:960px;margin:0 auto;padding:80px 20px 60px}
-h1{font-size:24px;font-weight:800;margin-bottom:4px}
-.subtitle{color:#6b7280;font-size:14px;margin-bottom:32px}
-
-/* input card */
-.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:20px}
-.card h2{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#6b7280;margin-bottom:16px}
-.input-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
-.field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
-.field label{font-size:12px;color:#7280a0;font-weight:500}
-.field input,.field select{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;color:#eef2ff;font-size:14px;font-family:inherit;width:100%;outline:none;transition:border .2s}
-.field input:focus,.field select:focus{border-color:#6366f1}
-.source-badge{font-size:11px;background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.2);padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:4px;width:fit-content}
-
-/* country chips */
-.countries-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.chip{padding:7px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#7280a0;transition:all .15s;user-select:none}
-.chip.selected{background:rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.5);color:#a5b4fc}
-.chip:hover{border-color:rgba(99,102,241,0.3);color:#c7d2fe}
-.chip.il.selected{background:rgba(59,130,246,0.2);border-color:rgba(59,130,246,0.5);color:#93c5fd}
-.select-all-btn{font-size:11px;color:#6b7280;cursor:pointer;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
-.select-all-btn:hover{color:#e2e8f0}
-
-/* data quality badge */
-.data-badge{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:6px;margin-top:8px}
-.data-badge span{background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.2);padding:2px 7px;border-radius:99px;font-weight:600}
-
-/* run button */
-.run-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;margin-top:4px}
-.run-btn:hover{opacity:.9}
-.run-btn:disabled{opacity:.5;cursor:not-allowed}
-
-/* results */
-#resultsWrap{display:none}
-.results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.results-title{font-size:16px;font-weight:700}
-.results-sub{font-size:12px;color:#6b7280}
-
-/* table */
-.tbl-wrap{overflow-x:auto;border-radius:14px;border:1px solid rgba(255,255,255,0.07)}
-table{width:100%;border-collapse:collapse;min-width:600px}
-th{background:rgba(255,255,255,0.04);padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#6b7280;text-align:right}
-td{padding:13px 16px;font-size:13px;border-top:1px solid rgba(255,255,255,0.05);text-align:right}
-tr:hover td{background:rgba(255,255,255,0.02)}
-.country-cell{display:flex;align-items:center;gap:8px;font-weight:600;color:#eef2ff}
-.flag{font-size:18px}
-.net-val{font-weight:700;font-size:14px}
-.net-high{color:#34d399}
-.net-mid{color:#fbbf24}
-.net-low{color:#ef4444}
-.bar-wrap{width:80px;background:rgba(255,255,255,0.06);border-radius:99px;height:6px;display:inline-block;vertical-align:middle;margin-right:8px}
-.bar-fill{height:6px;border-radius:99px;background:linear-gradient(90deg,#6366f1,#8b5cf6)}
-.tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
-.tag.low{background:rgba(16,185,129,0.12);color:#34d399}
-.tag.mid{background:rgba(245,158,11,0.12);color:#fbbf24}
-.tag.high{background:rgba(239,68,68,0.12);color:#ef4444}
-.il-row td{background:rgba(99,102,241,0.05)}
-.il-row .country-cell{color:#a5b4fc}
-.country-note{font-size:11px;color:#4b5563;margin-top:3px;font-weight:400}
-
-/* notes card */
-.notes-card{margin-top:20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px}
-.notes-card h3{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#6b7280;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.ai-chip{font-size:10px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.2);padding:2px 7px;border-radius:99px;font-weight:600;text-transform:none;letter-spacing:0}
-.notes-text{font-size:13px;color:#9ca3af;line-height:1.7;white-space:pre-wrap}
-.notes-loading{font-size:12px;color:#4b5563;font-style:italic}
-
-/* loading */
-.loading{text-align:center;padding:48px;color:#6b7280}
-.spinner{width:32px;height:32px;border:3px solid rgba(99,102,241,0.2);border-top-color:#6366f1;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* auth wall */
-#authWall{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;gap:12px}
-#authWall h2{font-size:22px;font-weight:700}
-#authWall p{color:#6b7280;max-width:360px;font-size:14px}
-.auth-btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:12px 28px;border-radius:12px;font-weight:700;font-size:14px;color:#fff}
-
-@media(max-width:600px){
-  .input-row{flex-direction:column}
-  .field{min-width:unset}
-  th,td{padding:10px 12px;font-size:12px}
-}
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#030508;color:#e2e8f0;font-family:'Inter',sans-serif}
+body{display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+
+/* ── Topbar ── */
+.topbar{height:52px;background:rgba(3,5,8,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:100;flex-shrink:0}
+.topbar-back{font-size:13px;color:#6b7280;display:flex;align-items:center;gap:6px;transition:color .2s}
+.topbar-back:hover{color:#e2e8f0}
+.topbar-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:#eef2ff;letter-spacing:-.3px}
+.topbar-title span{background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topbar-badge{margin-right:auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.2)}
+.topbar-badge.pro{background:rgba(16,185,129,.15);color:#34d399;border-color:rgba(16,185,129,.2)}
+.topbar-badge.yolo{background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.2)}
+
+/* ── App shell ── */
+.app-shell{display:flex;flex:1;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{width:220px;flex-shrink:0;background:#060810;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;overflow-y:auto}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-wordmark{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;letter-spacing:-.3px;color:#eef2ff}
+.sb-wordmark em{font-style:normal;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:14px 16px 4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s}
+.sb-item:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.03)}
+.sb-item.active{color:#f59e0b;background:rgba(245,158,11,.08)}
+.sb-item svg{width:15px;height:15px;flex-shrink:0}
+.sb-spacer{flex:1}
+.sb-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.05);font-size:11px;color:#6b7280}
+.sb-footer strong{color:#eef2ff;display:block;margin-bottom:2px}
+
+/* ── Main content ── */
+.main-content{flex:1;overflow-y:auto;padding:28px 32px 60px;background:#060810}
+
+/* Auth wall */
+#authWall{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:16px;text-align:center;padding:40px}
+#authWall h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#eef2ff}
+#authWall p{color:#6b7280;font-size:14px;max-width:380px}
+.auth-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-weight:700;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* Page header */
+.page-hd{margin-bottom:24px}
+.page-hd h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:900;color:#eef2ff;letter-spacing:-.5px;margin-bottom:4px}
+.page-hd p{font-size:13px;color:#6b7280}
+
+/* Cards */
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.input-row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:160px}
+.field label{font-size:11.5px;color:#7280a0;font-weight:500}
+.field input,.field select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:9px 12px;color:#eef2ff;font-size:13.5px;font-family:inherit;width:100%;outline:none;transition:border .2s}
+.field input:focus,.field select:focus{border-color:#f59e0b}
+.source-badge{font-size:11px;background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2);padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:4px;width:fit-content;margin-top:4px}
+
+/* Country chips */
+.countries-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#94a3b8;transition:all .15s;user-select:none}
+.chip.selected{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35);color:#fbbf24}
+.chip.il{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);color:#fcd34d;cursor:default}
+.data-badge{font-size:10.5px;color:#6b7280;display:flex;align-items:center;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);margin-top:4px}
+.select-all-btn{font-size:11px;font-weight:600;padding:4px 12px;border-radius:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#fbbf24;cursor:pointer;font-family:inherit}
+.select-all-btn:hover{background:rgba(245,158,11,.2)}
+
+/* Run button */
+.run-btn{width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .2s;margin-bottom:24px}
+.run-btn:hover{opacity:.88}
+.run-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Results */
+.results-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.results-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:#eef2ff}
+.results-sub{font-size:11px;color:#6b7280;margin-top:3px}
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid rgba(255,255,255,.07)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead tr{background:rgba(255,255,255,.04)}
+th{text-align:right;color:#6b7280;font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#e2e8f0;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.il-row td{background:rgba(245,158,11,.04)}
+.il-row:hover td{background:rgba(245,158,11,.07)}
+.country-cell{display:flex;align-items:center;gap:8px;font-weight:600;color:#eef2ff}
+.flag{font-size:16px}
+.country-note{font-size:10.5px;color:#6b7280;margin-top:2px}
+.net-val{font-weight:700;font-size:13px}
+.net-high{color:#34d399}
+.net-mid{color:#fbbf24}
+.net-low{color:#f87171}
+.bar-wrap{display:block;width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:99px;margin-bottom:4px;overflow:hidden}
+.bar-fill{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444);border-radius:99px}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-right:4px}
+.tag.low{background:rgba(16,185,129,.15);color:#34d399}
+.tag.mid{background:rgba(245,158,11,.15);color:#fbbf24}
+.tag.high{background:rgba(239,68,68,.15);color:#f87171}
+
+/* AI notes */
+.notes-card{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:12px;padding:18px 20px;margin-top:16px}
+.notes-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:#fbbf24;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ai-chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.notes-text{font-size:13px;color:#94a3b8;line-height:1.7;white-space:pre-line}
+.notes-loading{color:#6b7280;font-style:italic}
+
+/* Loading */
+.loading{display:flex;align-items:center;gap:10px;color:#6b7280;font-size:14px;padding:20px 0}
+.spinner{width:18px;height:18px;border:2px solid rgba(245,158,11,.2);border-top-color:#f59e0b;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
 
 <div class="topbar">
-  <a href="dashboard.html" class="topbar-back">← כל הכלים</a>
-  <span class="topbar-title">Wize<span>Tax</span> — השוואת מדינות</span>
+  <a href="dashboard.html" class="topbar-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    כל הכלים
+  </a>
+  <span class="topbar-title">Wize<span>Tax</span></span>
   <span id="planBadge" class="topbar-badge">Free</span>
 </div>
 
-<div class="page">
+<div class="app-shell">
 
-  <div id="authWall">
-    <div style="font-size:48px">🌍</div>
-    <h2>יש להתחבר</h2>
-    <p>כדי להשוות מסים בין מדינות עם הנתונים שלך</p>
-    <a href="auth.html" class="auth-btn">התחברות / הרשמה</a>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sb-brand"><div class="sb-wordmark">Wize<em>Tax</em></div></div>
+    <div class="sb-section">כלים</div>
+    <div class="sb-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      השוואת מדינות
+    </div>
+    <div class="sb-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      סימולטור הכנסה
+    </div>
+    <div class="sb-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      ציר זמן מס
+    </div>
+    <div class="sb-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      יועץ AI
+    </div>
+    <div class="sb-section">עוד</div>
+    <div class="sb-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      דוחות
+    </div>
+    <div class="sb-spacer"></div>
+    <div class="sb-footer" id="sbFooter"><strong id="sbUserName">—</strong>מנוי WizeLife</div>
   </div>
 
-  <div id="mainContent" style="display:none">
-    <h1>🌍 השוואת מסים בין מדינות</h1>
-    <p class="subtitle">הזן משכורת ברוטו חודשית (ישראלית) וקבל תמונה מלאה — מה יישאר לך נטו בכל מדינה</p>
+  <!-- Main -->
+  <div class="main-content">
 
-    <!-- Input card -->
-    <div class="card">
-      <h2>נתוני הכנסה</h2>
-      <div class="input-row">
-        <div class="field">
-          <label>משכורת ברוטו חודשית (₪)</label>
-          <input type="number" id="grossSalary" placeholder="לדוגמה 25000" min="1000" max="500000">
-          <span id="moneySource" class="source-badge" style="display:none">✓ נטען מ-WizeMoney</span>
-        </div>
-        <div class="field">
-          <label>מצב משפחתי</label>
-          <select id="maritalStatus">
-            <option value="single">רווק/ה</option>
-            <option value="married">נשוי/אה</option>
-            <option value="married_working">נשוי/אה + בן/בת זוג עובד/ת</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>ילדים</label>
-          <select id="numChildren">
-            <option value="0">ללא</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3+</option>
-          </select>
-        </div>
-      </div>
+    <div id="authWall">
+      <div style="font-size:48px;margin-bottom:8px">🌍</div>
+      <h2>יש להתחבר</h2>
+      <p>כדי להשוות מסים בין מדינות עם הנתונים שלך</p>
+      <a href="auth.html" class="auth-btn">התחברות / הרשמה</a>
     </div>
 
-    <!-- Country selector -->
-    <div class="card">
-      <h2 style="display:flex;justify-content:space-between;align-items:center">
-        בחר מדינות להשוואה
-        <button class="select-all-btn" onclick="toggleAll()">בחר הכל</button>
-      </h2>
-      <div class="countries-grid" id="countriesGrid"></div>
-      <div class="data-badge">
-        <span>נתונים מאומתים 2025</span>
-        מקורות: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס רשמיות
+    <div id="mainContent" style="display:none">
+      <div class="page-hd">
+        <h1>השוואת מסים בין מדינות</h1>
+        <p>הזן משכורת ברוטו חודשית וקבל תמונה מלאה — מה יישאר לך נטו בכל מדינה</p>
       </div>
-    </div>
 
-    <button class="run-btn" id="runBtn" onclick="runComparison()">השווה עכשיו →</button>
-
-    <!-- Results -->
-    <div id="resultsWrap">
-      <div style="height:28px"></div>
-      <div class="results-header">
-        <div>
-          <div class="results-title">תוצאות ההשוואה</div>
-          <div class="results-sub" id="resultsSub"></div>
+      <div class="card">
+        <h2>נתוני הכנסה</h2>
+        <div class="input-row">
+          <div class="field">
+            <label>משכורת ברוטו חודשית (₪)</label>
+            <input type="number" id="grossSalary" placeholder="לדוגמה 25000" min="1000" max="500000">
+            <span id="moneySource" class="source-badge" style="display:none">✓ נטען מ-WizeMoney</span>
+          </div>
+          <div class="field">
+            <label>מצב משפחתי</label>
+            <select id="maritalStatus">
+              <option value="single">רווק/ה</option>
+              <option value="married">נשוי/אה</option>
+              <option value="married_working">נשוי/אה + בן/בת זוג עובד/ת</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ילדים</label>
+            <select id="numChildren">
+              <option value="0">ללא</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3+</option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>מדינה</th>
-              <th>ברוטו (מקומי)</th>
-              <th>מס הכנסה</th>
-              <th>ביטוח לאומי + בריאות</th>
-              <th>נטו חודשי</th>
-              <th>שיעור אפקטיבי</th>
-              <th>יתרון מול ישראל</th>
-            </tr>
-          </thead>
-          <tbody id="resultsBody"></tbody>
-        </table>
-      </div>
-      <div class="notes-card">
-        <h3>המלצות AI <span class="ai-chip">Gemini</span></h3>
-        <div class="notes-text" id="notesText"><span class="notes-loading">טוען המלצות...</span></div>
-      </div>
-    </div>
 
-    <div id="loadingDiv" class="loading" style="display:none">
-      <div class="spinner"></div>
-      מחשב...
+      <div class="card">
+        <h2>בחר מדינות להשוואה <button class="select-all-btn" onclick="toggleAll()">בחר הכל</button></h2>
+        <div class="countries-grid" id="countriesGrid"></div>
+        <div class="data-badge">
+          <span>✓ נתונים מאומתים 2025</span>
+          מקורות: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס רשמיות
+        </div>
+      </div>
+
+      <button class="run-btn" id="runBtn" onclick="runComparison()">השווה עכשיו →</button>
+
+      <div id="resultsWrap" style="display:none">
+        <div class="results-header">
+          <div>
+            <div class="results-title">תוצאות ההשוואה</div>
+            <div class="results-sub" id="resultsSub"></div>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>מדינה</th><th>ברוטו (מקומי)</th><th>מס הכנסה</th>
+                <th>ביטוח לאומי + בריאות</th><th>נטו חודשי</th>
+                <th>שיעור אפקטיבי</th><th>יתרון מול ישראל</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+        <div class="notes-card">
+          <h3>המלצות AI <span class="ai-chip">Gemini</span></h3>
+          <div class="notes-text" id="notesText"><span class="notes-loading">טוען המלצות...</span></div>
+        </div>
+      </div>
+
+      <div id="loadingDiv" class="loading" style="display:none">
+        <div class="spinner"></div>
+        מחשב...
+      </div>
     </div>
   </div>
 </div>
@@ -254,6 +295,7 @@ function getSelected() {
 
 // Auth
 wlAuth.onAuthStateChanged(async user => {
+  if (user) { const el=document.getElementById("sbUserName"); if(el) el.textContent=user.displayName||user.email||"משתמש"; }
   if (!user) { document.getElementById('authWall').style.display = 'flex'; return; }
   document.getElementById('mainContent').style.display = 'block';
   _plan = await getUserPlan(user.uid);
@@ -391,5 +433,8 @@ function renderTable(rows, grossILS, countryCount, ilNetUSD, maxNet) {
   document.getElementById('notesText').innerHTML = '<span class="notes-loading">טוען המלצות AI...</span>';
 }
 </script>
+</body>
+</html>
+
 </body>
 </html>
