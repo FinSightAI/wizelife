@@ -3,129 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WizeHealth — מכין את בריאותך</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#050810;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-
-.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.15;animation:drift 8s ease-in-out infinite;}
-.bg-orb1{width:400px;height:400px;background:#ec4899;top:-100px;right:-100px;animation-delay:0s;}
-.bg-orb2{width:300px;height:300px;background:#8b5cf6;bottom:-80px;left:-80px;animation-delay:3s;}
-.bg-orb3{width:200px;height:200px;background:#06b6d4;top:50%;left:50%;animation-delay:6s;}
-@keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.05);}}
-
-.pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;border-radius:50%;border:1px solid rgba(236,72,153,0.2);animation:pulseRing 3s ease-out infinite;}
-.pulse-ring:nth-child(2){animation-delay:1s;}
-.pulse-ring:nth-child(3){animation-delay:2s;}
-@keyframes pulseRing{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.4;}100%{transform:translate(-50%,-50%) scale(1.4);opacity:0;}}
-
-.container{position:relative;z-index:10;text-align:center;padding:40px 24px;max-width:520px;width:100%;}
-
-.logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:32px;}
-.logo svg{filter:drop-shadow(0 0 20px rgba(236,72,153,0.4));}
-.logo-text{text-align:right;}
-.logo-brand{font-size:22px;font-weight:800;color:#eef2ff;letter-spacing:-0.5px;}
-.logo-sub{font-size:13px;color:#6b7280;margin-top:2px;}
-
-h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;color:#eef2ff;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.25;}
-.subtitle{font-size:15px;color:#6b7280;margin-bottom:36px;}
-
-.tip-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 24px;margin-bottom:28px;min-height:90px;display:flex;align-items:center;gap:14px;text-align:right;transition:opacity 0.5s ease;}
-.tip-card.fade{opacity:0;}
-.tip-icon{font-size:28px;flex-shrink:0;}
-.tip-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ec4899;margin-bottom:4px;}
-.tip-text{font-size:14px;color:#94a3b8;line-height:1.5;}
-
-.stats{display:flex;gap:12px;justify-content:center;margin-bottom:32px;}
-.stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 16px;flex:1;}
-.stat-num{font-size:20px;font-weight:800;color:#ec4899;font-variant-numeric:tabular-nums;}
-.stat-lbl{font-size:11px;color:#6b7280;margin-top:2px;}
-
-.progress-wrap{margin-bottom:10px;}
-.progress-bar-bg{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,#ec4899,#8b5cf6);border-radius:99px;width:0%;transition:width 0.5s ease;box-shadow:0 0 8px rgba(236,72,153,0.5);}
-.progress-status{font-size:12px;color:#6b7280;margin-top:8px;min-height:18px;}
-
-.cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;border-radius:99px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.25);color:#f9a8d4;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
-.cta:hover{background:rgba(236,72,153,0.2);}
-
-.ready-flash{animation:readyPulse 0.6s ease;}
-@keyframes readyPulse{0%{transform:scale(1);}50%{transform:scale(1.02);}100%{transform:scale(1);}}
-</style>
+<title>WizeHealth — הבריאות שלך, מנוהלת בחכמה</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "WizeLife",
-  "url": "https://wizelife.ai",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "https://wizelife.ai/icon-512.png",
-    "width": 512,
-    "height": 512
-  },
-  "description": "AI-powered life suite — Money, Tax, Travel, Health, Real Estate. Five tools in one place.",
-  "sameAs": [
-    "https://finsightai.github.io/wizelife/"
-  ]
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"WizeLife","url":"https://wizelife.ai"}</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#030508;color:#e2e8f0;font-family:'Inter',sans-serif}
+body{display:flex;flex-direction:column;align-items:center}
+
+/* ── Launch bar ── */
+.launch-bar{width:100%;background:rgba(236,72,153,0.08);border-bottom:1px solid rgba(236,72,153,0.15);padding:10px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.launch-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.launch-logo span{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:#eef2ff}
+.launch-logo span em{color:#ec4899;font-style:normal}
+.launch-status{font-size:12px;color:#94a3b8;flex:1;text-align:right}
+.launch-prog-wrap{width:120px;height:3px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;flex-shrink:0}
+.launch-prog{height:100%;width:0%;background:linear-gradient(90deg,#ec4899,#8b5cf6);border-radius:99px;transition:width .5s ease}
+.launch-cta{display:none;align-items:center;gap:6px;padding:6px 16px;border-radius:99px;background:rgba(236,72,153,0.15);border:1px solid rgba(236,72,153,0.3);color:#f9a8d4;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.launch-cta:hover{background:rgba(236,72,153,0.25)}
+.launch-cta.visible{display:flex}
+
+/* ── Page shell ── */
+.page-shell{padding:32px 24px 64px;display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:1280px}
+.page-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+/* ── Browser chrome ── */
+.browser{width:100%;max-width:1200px;border-radius:14px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.07);background:#0d1020}
+.browser-chrome{height:38px;background:#141828;display:flex;align-items:center;padding:0 14px;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.bc-dots{display:flex;gap:5px}
+.bc-dot{width:10px;height:10px;border-radius:50%}
+.bc-dot:nth-child(1){background:#ff5f57}.bc-dot:nth-child(2){background:#febc2e}.bc-dot:nth-child(3){background:#28c840}
+.bc-url{flex:1;background:rgba(255,255,255,.05);border-radius:5px;height:22px;display:flex;align-items:center;padding:0 10px;font-size:11px;color:rgba(255,255,255,.35);font-family:'Inter',sans-serif;margin:0 10px}
+.bc-url-dot{width:6px;height:6px;border-radius:50%;background:#ec4899;margin-left:6px;flex-shrink:0}
+
+/* ── App layout ── */
+.app-wrap{display:flex;height:580px}
+.sidebar{width:210px;flex-shrink:0;background:#0a0e1a;border-left:1px solid rgba(255,255,255,.05);padding:16px 0;display:flex;flex-direction:column}
+.sb-brand{padding:0 16px 16px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:8px}
+.sb-wordmark{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;letter-spacing:-.3px}
+.sb-wordmark em{font-style:normal;background:linear-gradient(135deg,#ec4899,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 16px 4px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:12px;color:rgba(255,255,255,.5);cursor:pointer;border-radius:0}
+.sb-item.active{color:#ec4899;background:rgba(236,72,153,.08)}
+.sb-item svg{width:14px;height:14px;flex-shrink:0;opacity:.7}
+.sb-item.active svg{opacity:1}
+.sb-spacer{flex:1}
+.sb-user{padding:10px 16px;border-top:1px solid rgba(255,255,255,.05);font-size:11px}
+.sb-user-name{color:#eef2ff;font-weight:600}
+.sb-user-plan{color:#ec4899;font-size:10px;margin-top:1px}
+
+/* ── Main content ── */
+.main{flex:1;overflow:hidden;padding:20px 24px;display:flex;flex-direction:column;gap:16px;background:#060810}
+.main-header{display:flex;align-items:center;justify-content:space-between}
+.main-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:#eef2ff}
+.main-sub{font-size:11px;color:#6b7280;margin-top:1px}
+.date-badge{font-size:10px;color:#94a3b8;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:4px 10px;border-radius:99px}
+
+/* stat cards */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px}
+.stat-label{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.stat-val{font-size:20px;font-weight:700;color:#eef2ff;font-family:'Plus Jakarta Sans',sans-serif}
+.stat-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:4px}
+.stat-badge.ok{background:rgba(16,185,129,.15);color:#34d399}
+.stat-badge.warn{background:rgba(245,158,11,.15);color:#fbbf24}
+.stat-badge.hi{background:rgba(239,68,68,.15);color:#f87171}
+
+/* table */
+.wl-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.wl-table th{text-align:right;color:#6b7280;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.7px;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.wl-table td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);color:#e2e8f0}
+.wl-table tr:last-child td{border-bottom:none}
+.wl-table tr:hover td{background:rgba(255,255,255,.02)}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px}
+.tag.g{background:rgba(16,185,129,.15);color:#34d399}
+.tag.y{background:rgba(245,158,11,.15);color:#fbbf24}
+.tag.r{background:rgba(239,68,68,.15);color:#f87171}
+
+/* ── Right panel ── */
+.rpanel{width:240px;flex-shrink:0;background:#0a0e1a;border-right:1px solid rgba(255,255,255,.05);padding:16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.rp-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:#eef2ff;margin-bottom:10px}
+.rp-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px}
+.rp-label{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.prog-row{display:flex;align-items:center;gap:8px;font-size:11px;color:#94a3b8;margin-bottom:6px}
+.prog-bar{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#ec4899,#8b5cf6)}
+.prog-val{font-size:10px;color:#ec4899;font-weight:700;flex-shrink:0;width:26px;text-align:left}
+.score-big{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:900;color:#ec4899;text-align:center;line-height:1}
+.score-lbl{font-size:10px;color:#6b7280;text-align:center;margin-top:4px}
+.cmsg{font-size:11px;line-height:1.5;color:#94a3b8;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:6px;margin-bottom:6px}
+.cmsg strong{color:#eef2ff}
+.cmsg.user{background:rgba(236,72,153,.08);color:#f9a8d4;text-align:left}
+</style>
 </head>
 <body>
 
-<div class="bg-orb bg-orb1"></div>
-<div class="bg-orb bg-orb2"></div>
-<div class="bg-orb bg-orb3"></div>
-<div class="pulse-ring"></div>
-<div class="pulse-ring"></div>
-<div class="pulse-ring"></div>
-
-<div class="container">
-  <div class="logo">
-    <svg width="44" height="44" viewBox="0 0 100 100"><defs><linearGradient id="hlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ec4899"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="100" height="100" rx="22" fill="url(#hlg)"/><text x="50" y="72" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="white">W</text></svg>
-    <div class="logo-text">
-      <div class="logo-brand">WizeHealth</div>
-      <div class="logo-sub">סוכן בריאות חכם</div>
-    </div>
+<!-- Launch bar -->
+<div class="launch-bar">
+  <div class="launch-logo">
+    <svg width="20" height="20" viewBox="0 0 100 100"><defs><linearGradient id="hlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ec4899"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="100" height="100" rx="20" fill="url(#hlg)"/><text x="50" y="70" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="56" fill="white">W</text></svg>
+    <span>Wize<em>Health</em></span>
   </div>
+  <div class="launch-status" id="pStatus">מאתחל את מנוע הבריאות...</div>
+  <div class="launch-prog-wrap"><div class="launch-prog" id="pBar"></div></div>
+  <a href="https://health.wizelife.ai" class="launch-cta" id="ctaBtn">פתח את האפליקציה ←</a>
+</div>
 
-  <h1 id="heading">מכין את לוח הבריאות שלך</h1>
-  <p class="subtitle" id="sub">AI מנתח את הנתונים הרפואיים שלך ומייצר תובנות אישיות</p>
+<!-- Page shell -->
+<div class="page-shell">
+  <div class="page-label">WizeHealth · Personal Health Dashboard</div>
 
-  <div class="tip-card" id="tipCard">
-    <div class="tip-icon" id="tipIcon">💡</div>
-    <div class="tip-body">
-      <div class="tip-label">טיפ לבריאות</div>
-      <div class="tip-text" id="tipText">שינה של 7-9 שעות בלילה משפרת את מדדי הלב וכלי הדם ב-30%</div>
+  <!-- Browser chrome -->
+  <div class="browser">
+    <div class="browser-chrome">
+      <div class="bc-dots"><div class="bc-dot"></div><div class="bc-dot"></div><div class="bc-dot"></div></div>
+      <div class="bc-url"><div class="bc-url-dot"></div>health.wizelife.ai · Dashboard</div>
     </div>
-  </div>
+    <div class="app-wrap">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sb-brand"><div class="sb-wordmark">Wize<em>Health</em></div></div>
+        <div class="sb-section">ניתוח</div>
+        <div class="sb-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>דאשבורד</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>בדיקות דם</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>מדדים חיוניים</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>גנטיקה</div>
+        <div class="sb-section">כלים</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>יועץ AI</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>דוחות</div>
+        <div class="sb-spacer"></div>
+        <div class="sb-user"><div class="sb-user-name">Yotam R.</div><div class="sb-user-plan">Pro Plan ✦</div></div>
+      </div>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-num" id="sFiles">0</div>
-      <div class="stat-lbl">קבצים נתמכים</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="sMetrics">0</div>
-      <div class="stat-lbl">מדדים נסרקים</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="sInsights">0</div>
-      <div class="stat-lbl">תובנות AI</div>
-    </div>
-  </div>
+      <!-- Main content -->
+      <div class="main">
+        <div class="main-header">
+          <div><div class="main-title">Blood Panel — Latest Results</div><div class="main-sub">עודכן לאחרונה: 2 בינואר 2026</div></div>
+          <div class="date-badge">Q1 2026</div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">WBC</div><div class="stat-val">6.2</div><div class="stat-badge ok">תקין</div></div>
+          <div class="stat-card"><div class="stat-label">Cholesterol</div><div class="stat-val">198</div><div class="stat-badge ok">תקין</div></div>
+          <div class="stat-card"><div class="stat-label">LDL</div><div class="stat-val">138</div><div class="stat-badge warn">גבול</div></div>
+          <div class="stat-card"><div class="stat-label">HDL</div><div class="stat-val">52</div><div class="stat-badge ok">תקין</div></div>
+        </div>
+        <div style="flex:1;overflow:auto">
+        <table class="wl-table">
+          <thead><tr><th>מדד</th><th>תוצאה</th><th>יחידה</th><th>טווח תקין</th><th>סטטוס</th><th>שינוי</th></tr></thead>
+          <tbody>
+            <tr><td>Hemoglobin</td><td>14.2</td><td>g/dL</td><td>13.5–17.5</td><td><span class="tag g">תקין</span></td><td style="color:#34d399">+0.3</td></tr>
+            <tr><td>Glucose</td><td>94</td><td>mg/dL</td><td>70–99</td><td><span class="tag g">תקין</span></td><td style="color:#34d399">−2</td></tr>
+            <tr><td>Triglycerides</td><td>142</td><td>mg/dL</td><td>&lt;150</td><td><span class="tag y">גבול</span></td><td style="color:#fbbf24">+8</td></tr>
+            <tr><td>Vitamin D</td><td>28</td><td>ng/mL</td><td>30–100</td><td><span class="tag r">נמוך</span></td><td style="color:#f87171">−4</td></tr>
+            <tr><td>TSH</td><td>2.1</td><td>mIU/L</td><td>0.4–4.0</td><td><span class="tag g">תקין</span></td><td style="color:#6b7280">—</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
 
-  <div class="progress-wrap">
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="pBar"></div></div>
-    <div class="progress-status" id="pStatus">מאתחל את מנוע הבריאות...</div>
-  </div>
-
-  <div id="ctaBtn" style="display:none">
-    <a href="https://health.wizelife.ai" class="cta" id="ctaLink">
-      <span id="ctaText">כנס עכשיו →</span>
-    </a>
+      <!-- Right panel -->
+      <div class="rpanel">
+        <div class="rp-section">
+          <div class="rp-label">Metabolic Score</div>
+          <div class="score-big">74</div>
+          <div class="score-lbl">מתוך 100 — טוב</div>
+          <div style="margin-top:12px">
+            <div class="prog-row">לב<div class="prog-bar"><div class="prog-fill" style="width:82%"></div></div><div class="prog-val">82%</div></div>
+            <div class="prog-row">כבד<div class="prog-bar"><div class="prog-fill" style="width:91%"></div></div><div class="prog-val">91%</div></div>
+            <div class="prog-row">כליות<div class="prog-bar"><div class="prog-fill" style="width:88%"></div></div><div class="prog-val">88%</div></div>
+            <div class="prog-row">ויטמינים<div class="prog-bar"><div class="prog-fill" style="width:55%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div><div class="prog-val" style="color:#f59e0b">55%</div></div>
+          </div>
+        </div>
+        <div class="rp-section">
+          <div class="rp-label">AI Advisor</div>
+          <div class="cmsg">ה-LDL שלך (<strong>138 mg/dL</strong>) גבוה מעט. מומלץ להפחית בשומן רווי.</div>
+          <div class="cmsg user">בנה לי תפריט שבועי?</div>
+          <div class="cmsg">תפריט 6-שבועי נוצר ✓ — 42 ארוחות + רשימת קניות.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -133,16 +193,6 @@ h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;color:#eef2ff;letter-spacing
 const _params = new URLSearchParams(window.location.search);
 const _token = _params.get('wl_token');
 const TARGET = 'https://health.wizelife.ai' + (_token ? '?wl_token=' + encodeURIComponent(_token) : '');
-const TIPS = [
-  {icon:'💡', text:'שינה של 7-9 שעות בלילה משפרת את מדדי הלב וכלי הדם ב-30%'},
-  {icon:'🏃', text:'30 דקות הליכה יומית מפחיתות סיכון למחלות לב ב-35%'},
-  {icon:'🥗', text:'תזונה עשירה בסיבים תזונתיים עוזרת לאיזון רמות הסוכר בדם'},
-  {icon:'💧', text:'שתיית 8 כוסות מים ביום משפרת ריכוז ואנרגיה לאורך היום'},
-  {icon:'🧘', text:'מדיטציה של 10 דקות ביום מפחיתה את רמות הקורטיזול ב-20%'},
-  {icon:'📊', text:'WizeHealth מנתח תוצאות בדם, MRI, ECG ועוד'},
-  {icon:'🔬', text:'AI שלנו זיהה תבניות בנתוני בריאות של מאות אלפי מטופלים'},
-  {icon:'❤️', text:'מעקב שגרתי אחר לחץ דם ודופק יכול לזהות בעיות שנים לפני הסימפטומים'},
-];
 
 const STATUSES = [
   'מאתחל את מנוע הבריאות...',
@@ -152,35 +202,7 @@ const STATUSES = [
   'מכין ממשק המטופל...',
   'כמעט מוכן...',
 ];
-
-let tipIdx = 0, statusIdx = 0;
-
-function animateStat(el, target) {
-  let cur = 0;
-  const step = Math.ceil(target / 40);
-  const t = setInterval(() => {
-    cur = Math.min(cur + step, target);
-    el.textContent = cur.toLocaleString('he');
-    if (cur >= target) clearInterval(t);
-  }, 40);
-}
-
-setTimeout(() => animateStat(document.getElementById('sFiles'), 12), 1000);
-setTimeout(() => animateStat(document.getElementById('sMetrics'), 47), 2500);
-setTimeout(() => animateStat(document.getElementById('sInsights'), 8), 4000);
-
-function rotateTip() {
-  const card = document.getElementById('tipCard');
-  card.classList.add('fade');
-  setTimeout(() => {
-    tipIdx = (tipIdx + 1) % TIPS.length;
-    document.getElementById('tipIcon').textContent = TIPS[tipIdx].icon;
-    document.getElementById('tipText').textContent = TIPS[tipIdx].text;
-    card.classList.remove('fade');
-  }, 500);
-}
-setInterval(rotateTip, 5000);
-
+let statusIdx = 0;
 let progress = 0;
 const totalTime = 55000;
 const startTime = Date.now();
@@ -189,49 +211,42 @@ function updateProgress() {
   const elapsed = Date.now() - startTime;
   progress = Math.min(95, (elapsed / totalTime) * 100 * (1 + Math.random() * 0.1));
   document.getElementById('pBar').style.width = progress + '%';
-
-  const newStatusIdx = Math.min(Math.floor((elapsed / totalTime) * STATUSES.length), STATUSES.length - 1);
-  if (newStatusIdx !== statusIdx) {
-    statusIdx = newStatusIdx;
+  const newIdx = Math.min(Math.floor((elapsed / totalTime) * STATUSES.length), STATUSES.length - 1);
+  if (newIdx !== statusIdx) {
+    statusIdx = newIdx;
     document.getElementById('pStatus').textContent = STATUSES[statusIdx];
   }
 }
 setInterval(updateProgress, 800);
 
 let redirected = false;
-
 function onReady() {
   if (redirected) return;
   redirected = true;
   document.getElementById('pBar').style.width = '100%';
   document.getElementById('pBar').style.background = 'linear-gradient(90deg,#10b981,#059669)';
   document.getElementById('pStatus').textContent = '✅ WizeHealth מוכן! מעביר...';
-  document.getElementById('ctaBtn').style.display = 'block';
-  document.querySelector('.container').classList.add('ready-flash');
+  document.getElementById('ctaBtn').classList.add('visible');
   setTimeout(() => { window.location.href = TARGET; }, 1500);
 }
 
 function ping() {
-  fetch(TARGET + '/api/config', {method:'GET', mode:'no-cors'})
-    .then(() => { checkReady(); })
-    .catch(() => {});
+  fetch(TARGET + '/api/config', {method:'GET', mode:'no-cors'}).then(() => checkReady()).catch(() => {});
 }
-
 function checkReady() {
   const img = new Image();
   img.onload = () => onReady();
   img.onerror = () => {};
   img.src = TARGET + '/favicon.ico?t=' + Date.now();
 }
-
 setInterval(ping, 5000);
 ping();
 
 setTimeout(() => {
   if (redirected) return;
   document.getElementById('pStatus').textContent = 'לוקח קצת יותר מהרגיל — לחץ כשמוכן';
-  document.getElementById('ctaBtn').style.display = 'block';
-  document.getElementById('ctaText').textContent = 'נסה לפתוח →';
+  document.getElementById('ctaBtn').classList.add('visible');
+  document.getElementById('ctaBtn').textContent = 'נסה לפתוח →';
 }, 90000);
 </script>
 </body>

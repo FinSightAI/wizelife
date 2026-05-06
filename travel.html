@@ -3,169 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WizeTravel — מכין את הטיסות שלך</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#050810;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-
-/* Animated background */
-.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.15;animation:drift 8s ease-in-out infinite;}
-.bg-orb1{width:400px;height:400px;background:#3b82f6;top:-100px;right:-100px;animation-delay:0s;}
-.bg-orb2{width:300px;height:300px;background:#6366f1;bottom:-80px;left:-80px;animation-delay:3s;}
-.bg-orb3{width:200px;height:200px;background:#06b6d4;top:50%;left:50%;animation-delay:6s;}
-@keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.05);}}
-
-/* Flight path animation */
-.flight-track{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
-.plane{position:absolute;font-size:20px;animation:flyAcross linear infinite;opacity:0.25;}
-.plane:nth-child(1){top:20%;animation-duration:18s;animation-delay:0s;}
-.plane:nth-child(2){top:55%;animation-duration:24s;animation-delay:7s;font-size:14px;}
-.plane:nth-child(3){top:78%;animation-duration:15s;animation-delay:3s;font-size:12px;}
-@keyframes flyAcross{from{left:-5%;opacity:0;}10%{opacity:0.25;}90%{opacity:0.25;}to{left:105%;opacity:0;}}
-
-.container{position:relative;z-index:10;text-align:center;padding:40px 24px;max-width:520px;width:100%;}
-
-/* Logo */
-.logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:32px;}
-.logo svg{filter:drop-shadow(0 0 20px rgba(59,130,246,0.4));}
-.logo-text{text-align:right;}
-.logo-brand{font-size:22px;font-weight:800;color:#eef2ff;letter-spacing:-0.5px;}
-.logo-sub{font-size:13px;color:#6b7280;margin-top:2px;}
-
-/* Main heading */
-h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;color:#eef2ff;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.25;}
-.subtitle{font-size:15px;color:#6b7280;margin-bottom:36px;}
-
-/* Tip card */
-.tip-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 24px;margin-bottom:28px;min-height:90px;display:flex;align-items:center;gap:14px;text-align:right;transition:opacity 0.5s ease;}
-.tip-card.fade{opacity:0;}
-.tip-icon{font-size:28px;flex-shrink:0;}
-.tip-body{}
-.tip-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#3b82f6;margin-bottom:4px;}
-.tip-text{font-size:14px;color:#94a3b8;line-height:1.5;}
-
-/* Stats row */
-.stats{display:flex;gap:12px;justify-content:center;margin-bottom:32px;}
-.stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 16px;flex:1;}
-.stat-num{font-size:20px;font-weight:800;color:#3b82f6;font-variant-numeric:tabular-nums;}
-.stat-lbl{font-size:11px;color:#6b7280;margin-top:2px;}
-.stat-num.counting{animation:countUp 0.3s ease;}
-
-/* Progress */
-.progress-wrap{margin-bottom:10px;}
-.progress-bar-bg{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#6366f1);border-radius:99px;width:0%;transition:width 0.5s ease;box-shadow:0 0 8px rgba(59,130,246,0.5);}
-.progress-status{font-size:12px;color:#6b7280;margin-top:8px;min-height:18px;}
-
-/* CTA */
-.cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;border-radius:99px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);color:#93c5fd;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
-.cta:hover{background:rgba(59,130,246,0.2);}
-
-/* Ready state */
-.ready-flash{animation:readyPulse 0.6s ease;}
-@keyframes readyPulse{0%{transform:scale(1);}50%{transform:scale(1.02);}100%{transform:scale(1);}}
-</style>
+<title>WizeTravel — טיסות חכמות עם AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "WizeLife",
-  "url": "https://wizelife.ai",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "https://wizelife.ai/icon-512.png",
-    "width": 512,
-    "height": 512
-  },
-  "description": "AI-powered life suite — Money, Tax, Travel, Health, Real Estate. Five tools in one place.",
-  "sameAs": [
-    "https://finsightai.github.io/wizelife/"
-  ]
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"WizeLife","url":"https://wizelife.ai"}</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#030508;color:#e2e8f0;font-family:'Inter',sans-serif}
+body{display:flex;flex-direction:column;align-items:center}
+
+.launch-bar{width:100%;background:rgba(59,130,246,0.08);border-bottom:1px solid rgba(59,130,246,0.15);padding:10px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.launch-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.launch-logo span{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:#eef2ff}
+.launch-logo span em{color:#3b82f6;font-style:normal}
+.launch-status{font-size:12px;color:#94a3b8;flex:1;text-align:right}
+.launch-prog-wrap{width:120px;height:3px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;flex-shrink:0}
+.launch-prog{height:100%;width:0%;background:linear-gradient(90deg,#3b82f6,#6366f1);border-radius:99px;transition:width .5s ease}
+.launch-cta{display:none;align-items:center;gap:6px;padding:6px 16px;border-radius:99px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);color:#93c5fd;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.launch-cta:hover{background:rgba(59,130,246,0.25)}
+.launch-cta.visible{display:flex}
+
+.page-shell{padding:32px 24px 64px;display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:1280px}
+.page-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+.browser{width:100%;max-width:1200px;border-radius:14px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.07);background:#0d1020}
+.browser-chrome{height:38px;background:#141828;display:flex;align-items:center;padding:0 14px;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.bc-dots{display:flex;gap:5px}
+.bc-dot{width:10px;height:10px;border-radius:50%}
+.bc-dot:nth-child(1){background:#ff5f57}.bc-dot:nth-child(2){background:#febc2e}.bc-dot:nth-child(3){background:#28c840}
+.bc-url{flex:1;background:rgba(255,255,255,.05);border-radius:5px;height:22px;display:flex;align-items:center;padding:0 10px;font-size:11px;color:rgba(255,255,255,.35);margin:0 10px}
+.bc-url-dot{width:6px;height:6px;border-radius:50%;background:#3b82f6;margin-left:6px;flex-shrink:0}
+
+.app-wrap{display:flex;height:580px}
+.sidebar{width:210px;flex-shrink:0;background:#0a0e1a;border-left:1px solid rgba(255,255,255,.05);padding:16px 0;display:flex;flex-direction:column}
+.sb-brand{padding:0 16px 16px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:8px}
+.sb-wordmark{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;letter-spacing:-.3px}
+.sb-wordmark em{font-style:normal;background:linear-gradient(135deg,#3b82f6,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 16px 4px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:12px;color:rgba(255,255,255,.5);cursor:pointer}
+.sb-item.active{color:#3b82f6;background:rgba(59,130,246,.08)}
+.sb-item svg{width:14px;height:14px;flex-shrink:0;opacity:.7}
+.sb-item.active svg{opacity:1}
+.sb-spacer{flex:1}
+.sb-user{padding:10px 16px;border-top:1px solid rgba(255,255,255,.05);font-size:11px}
+.sb-user-name{color:#eef2ff;font-weight:600}
+.sb-user-plan{color:#3b82f6;font-size:10px;margin-top:1px}
+
+.main{flex:1;overflow:hidden;padding:20px 24px;display:flex;flex-direction:column;gap:16px;background:#060810}
+.main-header{display:flex;align-items:center;justify-content:space-between}
+.main-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:#eef2ff}
+.main-sub{font-size:11px;color:#6b7280;margin-top:1px}
+.search-row{display:flex;gap:8px;align-items:center}
+.search-field{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;height:32px;display:flex;align-items:center;padding:0 12px;font-size:12px;color:#94a3b8}
+.search-btn{background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:8px;height:32px;padding:0 16px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px}
+.stat-label{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.stat-val{font-size:20px;font-weight:700;color:#eef2ff;font-family:'Plus Jakarta Sans',sans-serif}
+.stat-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:4px;background:rgba(59,130,246,.15);color:#60a5fa}
+
+.wl-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.wl-table th{text-align:right;color:#6b7280;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.7px;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.wl-table td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);color:#e2e8f0}
+.wl-table tr:last-child td{border-bottom:none}
+.wl-table tr:hover td{background:rgba(255,255,255,.02)}
+.price-tag{font-weight:700;color:#3b82f6}
+.deal-tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(16,185,129,.15);color:#34d399}
+
+.rpanel{width:240px;flex-shrink:0;background:#0a0e1a;border-right:1px solid rgba(255,255,255,.05);padding:16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.rp-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px}
+.rp-label{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.ai-insight{font-size:11px;line-height:1.5;color:#94a3b8;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:6px;margin-bottom:6px}
+.ai-insight strong{color:#eef2ff}
+.price-history{display:flex;align-items:flex-end;gap:3px;height:50px;margin-top:8px}
+.ph-bar{flex:1;border-radius:3px 3px 0 0;background:rgba(59,130,246,.3)}
+.ph-bar.hi{background:rgba(59,130,246,.7)}
+.data-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.data-row:last-child{border-bottom:none}
+.data-key{color:#6b7280}
+.data-val{color:#eef2ff;font-weight:600}
+</style>
 </head>
 <body>
 
-<div class="bg-orb bg-orb1"></div>
-<div class="bg-orb bg-orb2"></div>
-<div class="bg-orb bg-orb3"></div>
-
-<div class="flight-track">
-  <div class="plane">✈️</div>
-  <div class="plane">✈️</div>
-  <div class="plane">✈️</div>
+<div class="launch-bar">
+  <div class="launch-logo">
+    <svg width="20" height="20" viewBox="0 0 100 100"><defs><linearGradient id="tlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect width="100" height="100" rx="20" fill="url(#tlg)"/><text x="50" y="70" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="56" fill="white">W</text></svg>
+    <span>Wize<em>Travel</em></span>
+  </div>
+  <div class="launch-status" id="pStatus">מאתחל את מנוע AI...</div>
+  <div class="launch-prog-wrap"><div class="launch-prog" id="pBar"></div></div>
+  <a href="https://nodedai.onrender.com" class="launch-cta" id="ctaBtn">פתח את האפליקציה ←</a>
 </div>
 
-<div class="container">
-  <div class="logo">
-    <svg width="44" height="44" viewBox="0 0 100 100"><defs><linearGradient id="tlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs><rect width="100" height="100" rx="22" fill="url(#tlg)"/><text x="50" y="72" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="white">W</text></svg>
-    <div class="logo-text">
-      <div class="logo-brand">WizeTravel</div>
-      <div class="logo-sub">סוכן טיסות חכם</div>
-    </div>
-  </div>
+<div class="page-shell">
+  <div class="page-label">WizeTravel · AI Flight Intelligence</div>
 
-  <h1 id="heading">מכין את הטיסות הכי טובות עבורך</h1>
-  <p class="subtitle" id="sub">AI סורק מאות מסלולים כדי למצוא לך את העסקה הטובה ביותר</p>
-
-  <!-- Rotating tips -->
-  <div class="tip-card" id="tipCard">
-    <div class="tip-icon" id="tipIcon">💡</div>
-    <div class="tip-body">
-      <div class="tip-label">טיפ לחיסכון</div>
-      <div class="tip-text" id="tipText">טיסות ביום שלישי וסביבות שעה 6 בבוקר הן בממוצע 20% זולות יותר</div>
+  <div class="browser">
+    <div class="browser-chrome">
+      <div class="bc-dots"><div class="bc-dot"></div><div class="bc-dot"></div><div class="bc-dot"></div></div>
+      <div class="bc-url"><div class="bc-url-dot"></div>travel.wizelife.ai · Flight Search</div>
     </div>
-  </div>
+    <div class="app-wrap">
+      <div class="sidebar">
+        <div class="sb-brand"><div class="sb-wordmark">Wize<em>Travel</em></div></div>
+        <div class="sb-section">חיפוש</div>
+        <div class="sb-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>חיפוש טיסות</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>מסלולים שמורים</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>התראות מחיר</div>
+        <div class="sb-section">ניתוח</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>מגמות מחיר</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI Planner</div>
+        <div class="sb-spacer"></div>
+        <div class="sb-user"><div class="sb-user-name">Yotam R.</div><div class="sb-user-plan">Pro Plan ✦</div></div>
+      </div>
 
-  <!-- Live stats -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-num" id="sRoutes">0</div>
-      <div class="stat-lbl">מסלולים נסרקו</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="sDeals">0</div>
-      <div class="stat-lbl">דילים זוהו</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="sSaved">₪0</div>
-      <div class="stat-lbl">חיסכון ממוצע</div>
-    </div>
-  </div>
+      <div class="main">
+        <div class="main-header">
+          <div><div class="main-title">Flight Search</div><div class="main-sub">AI מנתח 2.3M+ מחירי טיסה בזמן אמת</div></div>
+        </div>
+        <div class="search-row">
+          <div class="search-field">✈ תל אביב (TLV)</div>
+          <div style="color:#6b7280;font-size:14px">→</div>
+          <div class="search-field">🗺 ברצלונה (BCN)</div>
+          <div class="search-field">📅 15 מרץ – 22 מרץ</div>
+          <div class="search-field">👤 2 נוסעים</div>
+          <div class="search-btn">חפש</div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">מסלולים נסרקו</div><div class="stat-val">487</div><div class="stat-badge">↑ 23 חדש</div></div>
+          <div class="stat-card"><div class="stat-label">מחיר הכי זול</div><div class="stat-val">₪1,240</div><div class="stat-badge">−18% ממוצע</div></div>
+          <div class="stat-card"><div class="stat-label">חיסכון פוטנציאלי</div><div class="stat-val">₪890</div><div class="stat-badge">AI Deal</div></div>
+        </div>
+        <div style="flex:1;overflow:auto">
+        <table class="wl-table">
+          <thead><tr><th>חברת תעופה</th><th>יציאה</th><th>הגעה</th><th>עצירות</th><th>משך</th><th>מחיר לנוסע</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Wizz Air</td><td>06:20</td><td>09:45</td><td>ישיר</td><td>4h 25m</td><td><span class="price-tag">₪1,240</span></td><td><span class="deal-tag">הכי זול</span></td></tr>
+            <tr><td>EasyJet</td><td>11:15</td><td>15:05</td><td>ישיר</td><td>4h 50m</td><td><span class="price-tag">₪1,390</span></td><td></td></tr>
+            <tr><td>Ryanair</td><td>07:00</td><td>12:30</td><td>1 עצירה</td><td>6h 30m</td><td><span class="price-tag">₪980</span></td><td><span class="deal-tag">זול ביותר</span></td></tr>
+            <tr><td>El Al</td><td>14:30</td><td>18:10</td><td>ישיר</td><td>4h 40m</td><td><span class="price-tag">₪1,850</span></td><td></td></tr>
+            <tr><td>Vueling</td><td>09:45</td><td>15:20</td><td>1 עצירה</td><td>6h 35m</td><td><span class="price-tag">₪1,050</span></td><td></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
 
-  <!-- Progress -->
-  <div class="progress-wrap">
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="pBar"></div></div>
-    <div class="progress-status" id="pStatus">מאתחל את מנוע AI...</div>
-  </div>
-
-  <div id="ctaBtn" style="display:none">
-    <a href="https://nodedai.onrender.com" class="cta" id="ctaLink">
-      <span id="ctaText">כנס עכשיו →</span>
-    </a>
+      <div class="rpanel">
+        <div class="rp-section">
+          <div class="rp-label">Price Trend — TLV→BCN</div>
+          <div class="price-history">
+            <div class="ph-bar" style="height:40%"></div><div class="ph-bar" style="height:60%"></div><div class="ph-bar hi" style="height:85%"></div><div class="ph-bar" style="height:70%"></div><div class="ph-bar" style="height:55%"></div><div class="ph-bar" style="height:45%"></div><div class="ph-bar" style="height:35%"></div>
+          </div>
+          <div style="font-size:10px;color:#6b7280;margin-top:4px">מחיר יורד — הזמן עכשיו ↓</div>
+        </div>
+        <div class="rp-section">
+          <div class="rp-label">AI Insights</div>
+          <div class="ai-insight">טיסות ביום <strong>שלישי בבוקר</strong> זולות בממוצע <strong>23%</strong> לוחית.</div>
+          <div class="ai-insight">הטיסה של <strong>Ryanair</strong> עם עצירה חוסכת <strong>₪260</strong> — מומלצת לנסיעה ללא מטען.</div>
+        </div>
+        <div class="rp-section">
+          <div class="rp-label">Route Details</div>
+          <div class="data-row"><span class="data-key">יעד</span><span class="data-val">Barcelona (BCN)</span></div>
+          <div class="data-row"><span class="data-key">תאריכים</span><span class="data-val">15–22 מרץ</span></div>
+          <div class="data-row"><span class="data-key">נוסעים</span><span class="data-val">2 מבוגרים</span></div>
+          <div class="data-row"><span class="data-key">מחלקה</span><span class="data-val">Economy</span></div>
+          <div class="data-row"><span class="data-key">מטבע</span><span class="data-val">ILS ₪</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 const TARGET = 'https://nodedai.onrender.com';
-const TIPS = [
-  {icon:'💡', text:'טיסות ביום שלישי וסביבות שעה 6 בבוקר הן בממוצע 20% זולות יותר'},
-  {icon:'🔔', text:'הפעל התראת מחיר ו-AI יעדכן אותך ברגע שהמחיר יורד'},
-  {icon:'✈️', text:'פרישת כנפיים: לעתים טיסה עם עצירה קצרה זולה ב-40% מישירה'},
-  {icon:'📅', text:'הזמן 6-8 שבועות מראש לפני חג — זה הזמן הכי אופטימלי'},
-  {icon:'🌍', text:'DestinationX: AI יכול להציע יעד מפתיע בתקציב שלך'},
-  {icon:'💳', text:'נסיעות עסקיות? WizeTravel מוצא לך Business Class ב-Economy מחיר'},
-  {icon:'🕵️', text:'חפש ב-Incognito — חלק מהאתרים מעלים מחירים לפי היסטוריית גלישה'},
-  {icon:'📊', text:'ה-AI שלנו עקב אחרי 2.3 מיליון מחירי טיסה בחודש שעבר'},
-];
-
 const STATUSES = [
   'מאתחל את מנוע AI...',
   'מחבר למאגרי נתוני טיסות...',
@@ -175,100 +190,51 @@ const STATUSES = [
   'מאחזר הצעות מחיר בזמן אמת...',
   'כמעט מוכן...',
 ];
-
-let tipIdx = 0, statusIdx = 0;
-let routes = 0, deals = 0;
-
-// Animate stats
-function animateStat(el, target, prefix='', suffix='') {
-  let cur = 0;
-  const step = Math.ceil(target / 40);
-  const t = setInterval(() => {
-    cur = Math.min(cur + step, target);
-    el.textContent = prefix + cur.toLocaleString('he') + suffix;
-    if (cur >= target) clearInterval(t);
-  }, 40);
-}
-
-setTimeout(() => animateStat(document.getElementById('sRoutes'), 487), 1000);
-setTimeout(() => animateStat(document.getElementById('sDeals'), 23), 2500);
-setTimeout(() => animateStat(document.getElementById('sSaved'), 1240, '₪'), 4000);
-
-// Rotating tips
-function rotateTip() {
-  const card = document.getElementById('tipCard');
-  card.classList.add('fade');
-  setTimeout(() => {
-    tipIdx = (tipIdx + 1) % TIPS.length;
-    document.getElementById('tipIcon').textContent = TIPS[tipIdx].icon;
-    document.getElementById('tipText').textContent = TIPS[tipIdx].text;
-    card.classList.remove('fade');
-  }, 500);
-}
-setInterval(rotateTip, 5000);
-
-// Progress bar
+let statusIdx = 0;
 let progress = 0;
-const totalTime = 55000; // 55 seconds max
+const totalTime = 55000;
 const startTime = Date.now();
 
 function updateProgress() {
   const elapsed = Date.now() - startTime;
-  // Asymptotic progress: fast at first, slows down
   progress = Math.min(95, (elapsed / totalTime) * 100 * (1 + Math.random() * 0.1));
   document.getElementById('pBar').style.width = progress + '%';
-
-  const newStatusIdx = Math.min(Math.floor((elapsed / totalTime) * STATUSES.length), STATUSES.length - 1);
-  if (newStatusIdx !== statusIdx) {
-    statusIdx = newStatusIdx;
+  const newIdx = Math.min(Math.floor((elapsed / totalTime) * STATUSES.length), STATUSES.length - 1);
+  if (newIdx !== statusIdx) {
+    statusIdx = newIdx;
     document.getElementById('pStatus').textContent = STATUSES[statusIdx];
   }
 }
 setInterval(updateProgress, 800);
 
-// Ping Streamlit in background
-let pingCount = 0;
-function ping() {
-  pingCount++;
-  fetch(TARGET + '/health', {method:'GET', mode:'no-cors'})
-    .then(() => {
-      // no-cors always resolves — check if we can load a known asset
-      checkReady();
-    })
-    .catch(() => {});
-}
-
-function checkReady() {
-  // Try loading a tiny resource from Streamlit
-  const img = new Image();
-  img.onload = () => onReady();
-  img.onerror = () => {}; // still loading
-  img.src = TARGET + '/favicon.svg?t=' + Date.now();
-}
-
 let redirected = false;
-
 function onReady() {
   if (redirected) return;
   redirected = true;
   document.getElementById('pBar').style.width = '100%';
   document.getElementById('pBar').style.background = 'linear-gradient(90deg,#10b981,#059669)';
   document.getElementById('pStatus').textContent = '✅ WizeTravel מוכן! מעביר...';
-  document.getElementById('ctaBtn').style.display = 'block';
-  document.querySelector('.container').classList.add('ready-flash');
+  document.getElementById('ctaBtn').classList.add('visible');
   setTimeout(() => { window.location.href = TARGET; }, 1500);
 }
 
-// Start pinging every 5 seconds
+function ping() {
+  fetch(TARGET + '/health', {method:'GET', mode:'no-cors'}).then(() => checkReady()).catch(() => {});
+}
+function checkReady() {
+  const img = new Image();
+  img.onload = () => onReady();
+  img.onerror = () => {};
+  img.src = TARGET + '/favicon.svg?t=' + Date.now();
+}
 setInterval(ping, 5000);
-ping(); // immediate first ping
+ping();
 
-// After 90s show a manual button but don't auto-redirect to a sleeping server
 setTimeout(() => {
   if (redirected) return;
   document.getElementById('pStatus').textContent = 'לוקח קצת יותר מהרגיל — לחץ כשמוכן';
-  document.getElementById('ctaBtn').style.display = 'block';
-  document.getElementById('ctaText').textContent = 'נסה לפתוח →';
+  document.getElementById('ctaBtn').classList.add('visible');
+  document.getElementById('ctaBtn').textContent = 'נסה לפתוח →';
 }, 90000);
 </script>
 </body>
