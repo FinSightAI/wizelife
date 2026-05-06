@@ -515,7 +515,8 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
       <button class="lang-pill" data-lang="pt" onclick="setWlLang('pt')" title="Português">pt</button>
       <button class="lang-pill" data-lang="he" onclick="setWlLang('he')" title="עברית">he</button>
 </div>
-    <a href="auth.html" class="nav-signin" id="nav-signin">Sign in</a>
+    <span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);"></span>
+      <a href="auth.html" class="nav-signin" id="nav-signin">Sign in</a>
     <a href="auth.html" class="nav-cta" id="nav-cta">Get Started</a>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1767,6 +1768,41 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
   }, {threshold: 0.5});
   obs.observe(el);
 });
+</script>
+
+<script>
+(function() {
+    function updateLandingPlanBadge() {
+        var el = document.getElementById('navPlanBadge');
+        if (!el) return;
+        var plan = localStorage.getItem('wl_plan');
+        if (!plan || plan === 'free') {
+            el.style.display = 'none';
+            return;
+        }
+        var labels = { yolo: '⚡ YOLO', pro: '✦ PRO', pro_trial: '✦ PRO' };
+        el.textContent = labels[plan] || plan.toUpperCase();
+        el.style.display = 'inline';
+        if (plan === 'yolo') {
+            el.style.background = 'linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2))';
+            el.style.color = '#fbbf24';
+            el.style.borderColor = 'rgba(245,158,11,0.35)';
+        } else if (plan === 'pro' || plan === 'pro_trial') {
+            el.style.background = 'rgba(16,185,129,0.18)';
+            el.style.color = '#34d399';
+            el.style.borderColor = 'rgba(16,185,129,0.35)';
+        }
+        // If logged in: also hide "Get Started" CTA + change "Sign In" to "Dashboard"
+        var signin = document.querySelector('.nav-signin');
+        var cta = document.querySelector('.nav-cta');
+        if (signin) { signin.textContent = 'Dashboard'; signin.href = 'dashboard.html'; }
+        if (cta) cta.style.display = 'none';
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateLandingPlanBadge);
+    } else { updateLandingPlanBadge(); }
+    window.addEventListener('storage', function(e){ if(e.key === 'wl_plan') updateLandingPlanBadge(); });
+})();
 </script>
 </body>
 </html>
