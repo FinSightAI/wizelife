@@ -8,8 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body,#root{height:100%;overflow:hidden}
+html,body,#root{min-height:100%;background:#030508}
 
+/* ═══════════════════════════════════════════════
+   WIZELIFE DESIGN SYSTEM — ONE SHELL, FIVE SOULS
+   ─────────────────────────────────────────────
+   Base layer:  always --bg / --bg2 / --bg3
+   Accent layer: --c (tool color), swapped per product
+   Typography:  Plus Jakarta Sans (headings) + Inter (body)
+   Radii:       cards 18px, buttons 12px, chips 99px
+   Shadows:     color-glow only, no gray drop-shadows
+   Motion:      subtle transforms + glow pulses
+═══════════════════════════════════════════════ */
 :root{
   --bg:#060810;
   --bg2:#0d1020;
@@ -59,7 +69,7 @@ html,body,#root{height:100%;overflow:hidden}
 /* ── Status bar ── */
 .sbar{display:flex;justify-content:space-between;align-items:center;padding:8px 22px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);font-family:var(--ff-mono)}
 
-/* ── Top chrome ── */
+/* ── Top chrome (same across ALL apps) ── */
 .top-chrome{
   display:flex;align-items:center;justify-content:space-between;
   padding:10px 20px 14px;
@@ -86,7 +96,7 @@ html,body,#root{height:100%;overflow:hidden}
 }
 .icon-btn:hover{background:rgba(255,255,255,.1);border-color:var(--border2)}
 
-/* ── Bottom nav ── */
+/* ── Bottom nav (same chrome) ── */
 .bnav{
   display:flex;
   background:color-mix(in srgb,var(--bg2) 90%,transparent);
@@ -185,7 +195,7 @@ html,body,#root{height:100%;overflow:hidden}
 }
 .cta-btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px color-mix(in srgb,var(--c) 40%,transparent)}
 
-/* ── Onboarding ── */
+/* ── Onboarding specific ── */
 .ob-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px 24px 10px;min-height:540px}
 .ob-logo{font-family:var(--ff-head);font-size:1rem;font-weight:800;letter-spacing:-.5px;margin-bottom:18px;background:linear-gradient(120deg,#6366f1 0%,#a78bfa 40%,#ec4899 75%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ob-icon{width:76px;height:76px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 18px;
@@ -201,7 +211,39 @@ html,body,#root{height:100%;overflow:hidden}
 .ob-step-txt{font-size:.78rem;color:var(--muted2);font-family:var(--ff-body);line-height:1.4}
 .ob-free{font-size:.72rem;color:var(--muted);margin-top:10px;font-family:var(--ff-body)}
 
-/* ── Input ── */
+/* ── Bottom sheet (AI drawer) ── */
+.bottom-sheet-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:20;
+  backdrop-filter:blur(4px);opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+.bottom-sheet-overlay.open{opacity:1;pointer-events:all}
+.bottom-sheet{
+  position:absolute;bottom:0;left:0;right:0;z-index:21;
+  background:var(--bg2);border-radius:20px 20px 0 0;
+  border-top:1px solid var(--border2);
+  padding:0 18px 18px;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.16,1,.3,1);
+  max-height:72%;
+}
+.bottom-sheet.open{transform:translateY(0)}
+.bs-handle{width:36px;height:4px;border-radius:99px;background:rgba(255,255,255,.15);margin:10px auto 14px}
+.bs-title{font-family:var(--ff-head);font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.bs-msgs{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;max-height:180px;overflow-y:auto;scrollbar-width:none}
+.bs-msgs::-webkit-scrollbar{display:none}
+.bs-msg{padding:10px 12px;border-radius:4px 12px 12px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:.78rem;line-height:1.55;color:var(--muted2);font-family:var(--ff-body)}
+.bs-msg strong{color:var(--text)}
+.bs-input-row{display:flex;gap:8px}
+.bs-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;color:var(--text);font-size:.8rem;font-family:var(--ff-body);outline:none}
+.bs-input:focus{border-color:color-mix(in srgb,var(--c) 55%,transparent)}
+.bs-input::placeholder{color:var(--muted)}
+.bs-send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 65%,#a78bfa));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;cursor:pointer;flex-shrink:0;border:none}
+
+/* ── Lang pill ── */
+.lang-bar{display:flex;gap:4px;padding:6px 18px 2px;justify-content:flex-end}
+[dir=rtl] .lang-bar{justify-content:flex-start}
+.lpill{padding:3px 9px;border-radius:99px;font-size:.6rem;font-weight:800;cursor:pointer;font-family:var(--ff-body);border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);transition:all .15s}
+.lpill.on{background:color-mix(in srgb,var(--c) 15%,transparent);border-color:color-mix(in srgb,var(--c) 35%,transparent);color:var(--c)}
 .wl-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:11px;padding:11px 14px;color:var(--text);font-size:.88rem;font-family:var(--ff-body);outline:none;transition:border-color .2s}
 .wl-input:focus{border-color:color-mix(in srgb,var(--c) 55%,transparent)}
 .wl-input::placeholder{color:var(--muted)}
@@ -223,30 +265,22 @@ html,body,#root{height:100%;overflow:hidden}
 .step-dots{display:flex;gap:5px;justify-content:center;margin-bottom:14px}
 .sdot{width:6px;height:6px;border-radius:99px;background:var(--border2);transition:all .3s}
 .sdot.on{width:20px;background:var(--c)}
+
+
+/* ── Page shell (replaces DesignCanvas) ── */
+.page-shell{padding:48px 24px 80px;display:flex;flex-direction:column;gap:64px;align-items:center;min-height:100vh;background:#030508}
+.dc-section{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:1800px}
+.dc-section-head{text-align:center;padding:0 16px;max-width:740px}
+.dc-section-head h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:900;letter-spacing:-.5px;color:#eef2ff;margin-bottom:8px}
+.dc-section-head p{font-size:.9rem;color:#a0adcc;line-height:1.55}
+.dc-grid{display:flex;flex-wrap:wrap;gap:32px;justify-content:center;align-items:flex-start;padding:20px 0}
+.dc-artboard{display:flex;flex-direction:column;align-items:center;gap:12px}
+.dc-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.page-header-bar{text-align:center;padding-bottom:16px}
+.page-header-bar h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:900;letter-spacing:-1px;color:#eef2ff;margin-bottom:8px}
+.page-header-bar p{font-size:.9rem;color:#a0adcc}
+
 </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "WizeLife",
-  "url": "https://wizelife.ai",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "https://wizelife.ai/icon-512.png",
-    "width": 512,
-    "height": 512
-  },
-  "description": "AI-powered life suite — Money, Tax, Travel, Health, Real Estate. Five tools in one place.",
-  "sameAs": [
-    "https://finsightai.github.io/wizelife/"
-  ]
-}
-</script>
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-<link rel="apple-touch-icon" href="/icon-192.png">
 </head>
 <body>
 <div id="root"></div>
@@ -256,161 +290,41 @@ html,body,#root{height:100%;overflow:hidden}
 <script type="text/babel">
 
 /* ═══════════════════════════════════
-   DESIGN CANVAS (inlined)
-═══════════════════════════════════ */
-const DC_THEME = {
-  bg: '#f0ede8',
-  grid: 'rgba(0,0,0,0.06)',
-  label: 'rgba(40,30,20,0.5)',
-  title: 'rgba(40,30,20,0.85)',
-  subtitle: 'rgba(60,50,40,0.6)',
-  font: '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
-};
-
-function DesignCanvas({ children, minScale = 0.1, maxScale = 8 }) {
-  const vpRef = React.useRef(null);
-  const worldRef = React.useRef(null);
-  const tf = React.useRef({ x: 0, y: 0, scale: 1 });
-
-  const apply = React.useCallback(() => {
-    const { x, y, scale } = tf.current;
-    const el = worldRef.current;
-    if (el) el.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`;
-  }, []);
-
-  React.useEffect(() => {
-    const vp = vpRef.current;
-    if (!vp) return;
-
-    const zoomAt = (cx, cy, factor) => {
-      const r = vp.getBoundingClientRect();
-      const px = cx - r.left, py = cy - r.top;
-      const t = tf.current;
-      const next = Math.min(maxScale, Math.max(minScale, t.scale * factor));
-      const k = next / t.scale;
-      t.x = px - (px - t.x) * k;
-      t.y = py - (py - t.y) * k;
-      t.scale = next;
-      apply();
-    };
-
-    const isMouseWheel = (e) =>
-      e.deltaMode !== 0 ||
-      (e.deltaX === 0 && Number.isInteger(e.deltaY) && Math.abs(e.deltaY) >= 40);
-
-    let isGesturing = false;
-    const onWheel = (e) => {
-      e.preventDefault();
-      if (isGesturing) return;
-      if (e.ctrlKey) {
-        zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.01));
-      } else if (isMouseWheel(e)) {
-        zoomAt(e.clientX, e.clientY, Math.exp(-Math.sign(e.deltaY) * 0.18));
-      } else {
-        tf.current.x -= e.deltaX;
-        tf.current.y -= e.deltaY;
-        apply();
-      }
-    };
-
-    let gsBase = 1;
-    const onGestureStart = (e) => { e.preventDefault(); isGesturing = true; gsBase = tf.current.scale; };
-    const onGestureChange = (e) => { e.preventDefault(); zoomAt(e.clientX, e.clientY, (gsBase * e.scale) / tf.current.scale); };
-    const onGestureEnd = (e) => { e.preventDefault(); isGesturing = false; };
-
-    let drag = null;
-    const onPointerDown = (e) => {
-      const onBg = e.target === vp || e.target === worldRef.current;
-      if (!(e.button === 1 || (e.button === 0 && onBg))) return;
-      e.preventDefault();
-      vp.setPointerCapture(e.pointerId);
-      drag = { id: e.pointerId, lx: e.clientX, ly: e.clientY };
-      vp.style.cursor = 'grabbing';
-    };
-    const onPointerMove = (e) => {
-      if (!drag || e.pointerId !== drag.id) return;
-      tf.current.x += e.clientX - drag.lx;
-      tf.current.y += e.clientY - drag.ly;
-      drag.lx = e.clientX; drag.ly = e.clientY;
-      apply();
-    };
-    const onPointerUp = (e) => {
-      if (!drag || e.pointerId !== drag.id) return;
-      vp.releasePointerCapture(e.pointerId);
-      drag = null;
-      vp.style.cursor = '';
-    };
-
-    vp.addEventListener('wheel', onWheel, { passive: false });
-    vp.addEventListener('gesturestart', onGestureStart, { passive: false });
-    vp.addEventListener('gesturechange', onGestureChange, { passive: false });
-    vp.addEventListener('gestureend', onGestureEnd, { passive: false });
-    vp.addEventListener('pointerdown', onPointerDown);
-    vp.addEventListener('pointermove', onPointerMove);
-    vp.addEventListener('pointerup', onPointerUp);
-    vp.addEventListener('pointercancel', onPointerUp);
-    return () => {
-      vp.removeEventListener('wheel', onWheel);
-      vp.removeEventListener('gesturestart', onGestureStart);
-      vp.removeEventListener('gesturechange', onGestureChange);
-      vp.removeEventListener('gestureend', onGestureEnd);
-      vp.removeEventListener('pointerdown', onPointerDown);
-      vp.removeEventListener('pointermove', onPointerMove);
-      vp.removeEventListener('pointerup', onPointerUp);
-      vp.removeEventListener('pointercancel', onPointerUp);
-    };
-  }, [apply, minScale, maxScale]);
-
-  const gridSvg = `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='${encodeURIComponent(DC_THEME.grid)}' stroke-width='1'/%3E%3C/svg%3E")`;
-
-  return (
-    <div ref={vpRef} style={{height:'100vh',width:'100vw',background:DC_THEME.bg,overflow:'hidden',overscrollBehavior:'none',touchAction:'none',position:'relative',fontFamily:DC_THEME.font,boxSizing:'border-box'}}>
-      <div ref={worldRef} style={{position:'absolute',top:0,left:0,transformOrigin:'0 0',willChange:'transform',width:'max-content',minWidth:'100%',minHeight:'100%',padding:'60px 0 80px',backgroundImage:gridSvg,backgroundSize:'120px 120px'}}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function DCSection({ title, subtitle, children, gap = 48 }) {
-  return (
-    <div style={{marginBottom:80,position:'relative'}}>
-      <div style={{padding:'0 60px 36px'}}>
-        <div style={{fontSize:22,fontWeight:600,color:DC_THEME.title,letterSpacing:-0.3,marginBottom:4}}>{title}</div>
-        {subtitle && <div style={{fontSize:14,fontWeight:400,color:DC_THEME.subtitle}}>{subtitle}</div>}
-      </div>
-      <div style={{display:'flex',gap,padding:'0 60px',alignItems:'flex-start',width:'max-content'}}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function DCArtboard({ label, children, width, height }) {
-  return (
-    <div style={{position:'relative',flexShrink:0}}>
-      {label && (
-        <div style={{position:'absolute',bottom:'100%',left:0,paddingBottom:8,fontSize:12,fontWeight:500,color:DC_THEME.label,whiteSpace:'nowrap'}}>
-          {label}
-        </div>
-      )}
-      <div style={{borderRadius:2,boxShadow:'0 1px 3px rgba(0,0,0,0.08),0 4px 16px rgba(0,0,0,0.06)',overflow:'hidden',width,height,background:'#fff'}}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════
    SHARED CHROME COMPONENTS
 ═══════════════════════════════════ */
+const cs = (obj) => Object.entries(obj).map(([k,v])=>`${k}:${v}`).join(';');
 
-function Phone({color, children}){
+function Phone({color, children, aiMessages}){
+  const [lang, setLang] = React.useState('en');
+  const [sheetOpen, setSheetOpen] = React.useState(false);
+  const langs = [{k:'en',l:'EN'},{k:'he',l:'עב'},{k:'pt',l:'PT'},{k:'es',l:'ES'}];
+  const isRTL = lang==='he';
+  const defaultMsgs = [{t:isRTL?'שלום! אני WizeAI. שאל אותי כל דבר.':'Hi! I\'m WizeAI. Ask me anything.'}];
   return (
-    <div className="phone" style={{'--c':color,'--shell-glow':`color-mix(in srgb,${color} 16%,transparent)`}}>
+    <div className="phone" dir={isRTL?'rtl':'ltr'} style={{'--c':color,'--shell-glow':`color-mix(in srgb,${color} 16%,transparent)`}}>
       <div className="phone-notch"></div>
+      <div className="lang-bar" style={{'--c':color}}>
+        {langs.map(({k,l})=>(
+          <div key={k} className={`lpill${lang===k?' on':''}`} onClick={()=>setLang(k)}>{l}</div>
+        ))}
+      </div>
       {children}
-      <div className="phone-home"></div>
+      <div className={`bottom-sheet-overlay${sheetOpen?' open':''}`} onClick={()=>setSheetOpen(false)}/>
+      <div className={`bottom-sheet${sheetOpen?' open':''}`} style={{'--c':color}}>
+        <div className="bs-handle"/>
+        <div className="bs-title">
+          <div style={{width:22,height:22,borderRadius:7,background:`linear-gradient(135deg,${color},color-mix(in srgb,${color} 60%,#6366f1))`,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:'.65rem',fontWeight:900}}>W</div>
+          WizeAI {isRTL?'· עברית':'· EN'}
+        </div>
+        <div className="bs-msgs">
+          {(aiMessages||defaultMsgs).map((m,i)=>(<div key={i} className="bs-msg">{m.t}</div>))}
+        </div>
+        <div className="bs-input-row">
+          <input className="bs-input" placeholder={isRTL?'שאל אותי…':'Ask anything…'} readOnly/>
+          <button className="bs-send">↑</button>
+        </div>
+      </div>
+      <div className="phone-home" onClick={()=>setSheetOpen(o=>!o)} style={{cursor:'pointer'}}/>
     </div>
   );
 }
@@ -486,11 +400,13 @@ function MoneyHome(){
       <div className="phone-screen">
         <Sbar/>
         <TopChrome appName="Money" icon="💰" color={MC}/>
+        {/* Portfolio total */}
         <div className="hero-val">
           <div className="hv-lbl">Total portfolio</div>
           <div className="hv-num">$94,560</div>
           <div className="hv-badge pos">↑ +2.4% this month</div>
         </div>
+        {/* Sparkline */}
         <div style={{padding:'10px 18px 0'}}>
           <div className="sparkline">
             {[38,52,44,60,55,70,65,80,74,88,84,100].map((h,i)=>(
@@ -498,6 +414,7 @@ function MoneyHome(){
             ))}
           </div>
         </div>
+        {/* Holdings */}
         <div style={{height:12}}/>
         <div className="sh"><div className="sh-t">Holdings</div><div className="sh-a">See all</div></div>
         <div className="wl-card" style={{padding:'4px 14px'}}>
@@ -519,6 +436,7 @@ function MoneyHome(){
             </div>
           ))}
         </div>
+        {/* Goals */}
         <div className="sh" style={{marginTop:4}}><div className="sh-t">Goals</div><div className="sh-a">Edit</div></div>
         {[
           {ico:'🏠',name:'Down payment',pct:68},
@@ -556,6 +474,7 @@ function MoneyChat(){
               <div className="chat-bubble">{m.t}</div>
             </div>
           ))}
+          {/* Result card */}
           <div className="wl-card accent glow" style={{marginTop:4}}>
             <div style={{fontSize:'.65rem',fontWeight:800,letterSpacing:1,textTransform:'uppercase',color:MC,marginBottom:8}}>Simulation · Keren Hishtalmut</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
@@ -568,6 +487,7 @@ function MoneyChat(){
             </div>
           </div>
         </div>
+        {/* Input */}
         <div style={{padding:'8px 18px',borderTop:'1px solid var(--border)',display:'flex',gap:8,background:'var(--bg)'}}>
           <input className="wl-input" placeholder="Ask about your portfolio…" readOnly style={{flex:1}}/>
           <div className="cta-btn" style={{padding:'0 14px',borderRadius:10,fontSize:'.85rem',width:36,height:36,minWidth:36}}><span>↑</span></div>
@@ -588,6 +508,7 @@ function TravelHome(){
       <div className="phone-screen">
         <Sbar/>
         <TopChrome appName="Travel" icon="✈️" color={TC}/>
+        {/* Search card */}
         <div className="wl-card" style={{marginBottom:10}}>
           <div style={{display:'grid',gridTemplateColumns:'1fr 26px 1fr',gap:6,alignItems:'center',marginBottom:10}}>
             {[{lbl:'From',val:'TLV',sub:'Ben Gurion'},{lbl:'To',val:'JFK',sub:'New York'}].map((f,i)=>(
@@ -609,18 +530,20 @@ function TravelHome(){
             <div className="cta-btn" style={{borderRadius:10,fontSize:'.82rem',height:'auto',padding:'8px'}}>Search AI ✦</div>
           </div>
         </div>
+        {/* Filter chips */}
         <div className="chips">
           {['All routes','Hidden city','Positioning','Low-cost'].map((c,i)=>(
             <div key={i} className={`chip${i===0?' on':''}`}>{c}</div>
           ))}
         </div>
+        {/* Results */}
         <div className="sh"><div className="sh-t">3 AI routes found</div><div className="sh-a">Sort ↕</div></div>
         {[
-          {route:'TLV → AMS → JFK',type:'Positioning · virtual interline',price:'$370',was:'$680',save:'−45%',best:true},
-          {route:'TLV → LHR (hidden)',type:'Hidden-city · carry-on only',price:'$410',was:'$720',save:'−43%',best:false},
-          {route:'TLV → JFK direct',type:'El Al · nonstop · baseline',price:'$680',was:'',save:'',best:false},
+          {route:'TLV → AMS → JFK',type:'Positioning · virtual interline',price:'$370',was:'$680',save:'−45%',best:true,lc:TC},
+          {route:'TLV → LHR (hidden)',type:'Hidden-city · carry-on only',price:'$410',was:'$720',save:'−43%',best:false,lc:TC},
+          {route:'TLV → JFK direct',type:'El Al · nonstop · baseline',price:'$680',was:'',save:'',best:false,lc:'var(--muted)'},
         ].map((f,i)=>(
-          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',marginBottom:8,borderLeft:`3px solid ${f.best?'#34d399':TC}`,background:f.best?'color-mix(in srgb,#34d399 5%,var(--bg2))':'var(--bg2)'}}>
+          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',marginBottom:8,borderLeftWidth:3,borderLeftColor:f.best?'#34d399':TC,borderLeft:`3px solid ${f.best?'#34d399':TC}`,background:f.best?'color-mix(in srgb,#34d399 5%,var(--bg2))':'var(--bg2)'}}>
             {f.best && <div style={{position:'absolute',top:8,right:8,background:'#34d399',color:'#000',fontSize:'.58rem',fontWeight:900,padding:'2px 7px',borderRadius:5,letterSpacing:.5}}>BEST</div>}
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontFamily:'var(--ff-head)',fontWeight:800,fontSize:'.88rem',color:'var(--text)',marginBottom:2}}>{f.route}</div>
@@ -652,11 +575,11 @@ function TravelAlerts(){
         </div>
         <div className="sh"><div className="sh-t">Saved routes</div><div className="sh-a">+ Add</div></div>
         {[
-          {from:'TLV',to:'JFK',label:'New York',date:'Jun 12',price:'$597',low:'$370',alert:true},
-          {from:'TLV',to:'LHR',label:'London',date:'Flexible',price:'$410',low:'$410',alert:false},
-          {from:'TLV',to:'FCO',label:'Rome',date:'Aug 3',price:'$320',low:'$280',alert:false},
+          {from:'TLV',to:'JFK',label:'New York',date:'Jun 12',price:'$597',low:'$370',alert:true,c:'#34d399'},
+          {from:'TLV',to:'LHR',label:'London',date:'Flexible',price:'$410',low:'$410',alert:false,c:TC},
+          {from:'TLV',to:'FCO',label:'Rome',date:'Aug 3',price:'$320',low:'$280',alert:false,c:TC},
         ].map((r,i)=>(
-          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',borderLeft:`3px solid ${r.alert?'#34d399':TC}`,background:r.alert?'color-mix(in srgb,#34d399 5%,var(--bg2))':'var(--bg2)'}}>
+          <div key={i} className="wl-card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',borderLeftWidth:3,borderLeft:`3px solid ${r.alert?'#34d399':TC}`,background:r.alert?'color-mix(in srgb,#34d399 5%,var(--bg2))':'var(--bg2)'}}>
             <div>
               <div style={{fontFamily:'var(--ff-mono)',fontWeight:700,fontSize:'.9rem',color:'var(--text)',marginBottom:2}}>{r.from} → {r.to}</div>
               <div style={{fontSize:'.68rem',color:'var(--muted)'}}>{r.label} · {r.date}</div>
@@ -684,6 +607,7 @@ function TaxHome(){
       <div className="phone-screen">
         <Sbar/>
         <TopChrome appName="Tax" icon="🧾" color={XC}/>
+        {/* Hero */}
         <div className="hero-val" style={{paddingBottom:10}}>
           <div className="hv-lbl">Exit-tax exposure today</div>
           <div className="hv-num" style={{color:'var(--text)'}}>$40,800</div>
@@ -692,10 +616,12 @@ function TaxHome(){
             <div className="hv-badge info">→ Portugal saves $40.8K</div>
           </div>
         </div>
+        {/* AI Insight */}
         <div className="ai-msg">
           <span className="ai-tag">AI recommendation</span>
           Wait <strong>3 months</strong> before transferring property — you'll drop below the 10yr residency threshold and save <strong>$18,200</strong> in exit tax.
         </div>
+        {/* Country chips */}
         <div className="chips">
           {['All','Europe','Middle East','Americas','Asia'].map((c,i)=>(
             <div key={i} className={`chip${i===0?' on':''}`}>{c}</div>
@@ -769,10 +695,12 @@ function HealthHome(){
       <div className="phone-screen">
         <Sbar/>
         <TopChrome appName="Health" icon="❤️" color={HC}/>
+        {/* AI insight */}
         <div className="ai-msg">
           <span className="ai-tag">Today's insight</span>
           Your LDL is 12% above optimal. Based on your microbiome data, <strong>adding 2 tbsp olive oil daily</strong> could reduce it in 6 weeks — more effective than statins for your profile.
         </div>
+        {/* Vitals grid */}
         <div className="sh"><div className="sh-t">Today's vitals</div><div className="sh-a">Full report</div></div>
         <div className="metric">
           {[
@@ -790,6 +718,7 @@ function HealthHome(){
             </div>
           ))}
         </div>
+        {/* Daily plan */}
         <div className="sh"><div className="sh-t">Today's plan</div><div className="sh-a">View all</div></div>
         {[
           {ico:'🥑',txt:'Add 1 tbsp olive oil to salad',done:true},
@@ -849,17 +778,19 @@ function HealthChat(){
 /* ═══════════════════════════════════
    🏠 WIZEDEAL
 ═══════════════════════════════════ */
-const DC2 = '#8b5cf6';
+const DC = '#8b5cf6';
 function DealHome(){
   return (
-    <Phone color={DC2}>
+    <Phone color={DC}>
       <div className="phone-screen">
         <Sbar/>
-        <TopChrome appName="Deal" icon="🏠" color={DC2}/>
+        <TopChrome appName="Deal" icon="🏠" color={DC}/>
+        {/* URL input */}
         <div className="wl-card" style={{display:'flex',gap:10,alignItems:'center',padding:'10px 14px'}}>
           <div style={{flex:1,fontSize:'.78rem',color:'var(--muted)',fontFamily:'var(--ff-mono)'}}>🔗 Paste listing URL…</div>
           <div className="cta-btn" style={{padding:'6px 12px',fontSize:'.75rem',borderRadius:9,height:'auto'}}>Analyze ✦</div>
         </div>
+        {/* Deal score */}
         <div className="wl-card accent glow" style={{display:'flex',gap:14,alignItems:'center'}}>
           <div className="grade">A</div>
           <div style={{flex:1,minWidth:0}}>
@@ -868,6 +799,7 @@ function DealHome(){
             <div style={{marginTop:6,display:'inline-flex',alignItems:'center',gap:5,background:'rgba(52,211,153,.12)',border:'1px solid rgba(52,211,153,.25)',padding:'2px 9px',borderRadius:99,fontSize:'.65rem',fontWeight:800,color:'#34d399'}}>8% below comps</div>
           </div>
         </div>
+        {/* Metrics */}
         <div className="metric">
           {[{lbl:'Gross yield',val:'7.2%',sub:'Annual',fill:72},{lbl:'Net ROI yr1',val:'11.4%',sub:'After tax',fill:80},{lbl:'Payback',val:'8.2yr',sub:'At current rent',fill:45},{lbl:'vs Comps',val:'−8%',sub:'Below avg price',fill:20}].map((s,i)=>(
             <div key={i} className="met">
@@ -878,24 +810,26 @@ function DealHome(){
             </div>
           ))}
         </div>
+        {/* AI insight */}
         <div className="ai-msg">
           <span className="ai-tag">AI summary</span>
           Priced <strong>8% below</strong> neighborhood comps. ITBI estimated <strong>R$55K</strong>. At current rental trajectory, payback in <strong>8.2 years</strong>. Deal score: A.
         </div>
+        {/* Mini chart */}
         <div className="sh"><div className="sh-t">Comp prices / m²</div></div>
         <div style={{padding:'0 18px 10px'}}>
           <div style={{display:'flex',alignItems:'flex-end',gap:5,height:48}}>
             {[55,70,48,80,65,95,85].map((h,i)=>(
-              <div key={i} style={{flex:1,height:`${h}%`,borderRadius:'4px 4px 0 0',background:i===3?DC2:i===5?`color-mix(in srgb,${DC2} 55%,transparent)`:`color-mix(in srgb,${DC2} 20%,transparent)`}}/>
+              <div key={i} style={{flex:1,height:`${h}%`,borderRadius:'4px 4px 0 0',background:i===3?DC:i===5?`color-mix(in srgb,${DC} 55%,transparent)`:`color-mix(in srgb,${DC} 20%,transparent)`}}/>
             ))}
           </div>
           <div style={{display:'flex',gap:5,marginTop:4}}>
             {['C1','C2','C3','This','C5','C6','C7'].map((l,i)=>(
-              <div key={i} style={{flex:1,textAlign:'center',fontSize:'.55rem',color:i===3?DC2:'var(--muted)',fontFamily:'var(--ff-mono)',fontWeight:i===3?800:400}}>{l}</div>
+              <div key={i} style={{flex:1,textAlign:'center',fontSize:'.55rem',color:i===3?DC:'var(--muted)',fontFamily:'var(--ff-mono)',fontWeight:i===3?800:400}}>{l}</div>
             ))}
           </div>
         </div>
-        <BNav items={[{ico:'🏠',lbl:'Analyze'},{ico:'📋',lbl:'Reports'},{ico:'🌍',lbl:'Markets'},{ico:'👤',lbl:'Account'}]} active={0} color={DC2}/>
+        <BNav items={[{ico:'🏠',lbl:'Analyze'},{ico:'📋',lbl:'Reports'},{ico:'🌍',lbl:'Markets'},{ico:'👤',lbl:'Account'}]} active={0} color={DC}/>
       </div>
     </Phone>
   );
@@ -903,10 +837,10 @@ function DealHome(){
 
 function DealMarkets(){
   return (
-    <Phone color={DC2}>
+    <Phone color={DC}>
       <div className="phone-screen">
         <Sbar/>
-        <TopChrome appName="Deal" icon="🏠" color={DC2}/>
+        <TopChrome appName="Deal" icon="🏠" color={DC}/>
         <div className="chips">
           {['All','🇧🇷 Brazil','🇮🇱 Israel','🇺🇸 USA'].map((c,i)=>(
             <div key={i} className={`chip${i===0?' on':''}`}>{c}</div>
@@ -928,13 +862,13 @@ function DealMarkets(){
               </div>
             </div>
             <div style={{textAlign:'right',flexShrink:0}}>
-              <div style={{fontFamily:'var(--ff-mono)',fontWeight:700,color:DC2,fontSize:'.9rem'}}>{m.yield}</div>
+              <div style={{fontFamily:'var(--ff-mono)',fontWeight:700,color:DC,fontSize:'.9rem'}}>{m.yield}</div>
               <div style={{fontSize:'.65rem',color:m.trend.startsWith('+') ? '#34d399':'#f87171',fontWeight:700}}>{m.trend}</div>
-              <div style={{background:`color-mix(in srgb,${DC2} 14%,transparent)`,border:`1px solid color-mix(in srgb,${DC2} 30%,transparent)`,color:DC2,fontSize:'.6rem',fontWeight:900,padding:'1px 6px',borderRadius:5,marginTop:2,display:'inline-block'}}>{m.score}</div>
+              <div style={{background:`color-mix(in srgb,${DC} 14%,transparent)`,border:`1px solid color-mix(in srgb,${DC} 30%,transparent)`,color:DC,fontSize:'.6rem',fontWeight:900,padding:'1px 6px',borderRadius:5,marginTop:2,display:'inline-block'}}>{m.score}</div>
             </div>
           </div>
         ))}
-        <BNav items={[{ico:'🏠',lbl:'Analyze'},{ico:'📋',lbl:'Reports'},{ico:'🌍',lbl:'Markets'},{ico:'👤',lbl:'Account'}]} active={2} color={DC2}/>
+        <BNav items={[{ico:'🏠',lbl:'Analyze'},{ico:'📋',lbl:'Reports'},{ico:'🌍',lbl:'Markets'},{ico:'👤',lbl:'Account'}]} active={2} color={DC}/>
       </div>
     </Phone>
   );
@@ -947,84 +881,67 @@ const PW=320, PH=716;
 
 function App(){
   return (
-    <DesignCanvas>
+    <div className="page-shell">
+      <div className="page-header-bar">
+        <h1>WizeLife — Mobile App Designs</h1>
+        <p>Five apps. One design system. Per-product accent. Same chrome.</p>
+      </div>
 
-      <DCSection
-        title="WizeLife — Unified Design System"
-        subtitle="One design language across all 5 apps. Dark base · per-product accent color · shared chrome (TopChrome + BNav + cards). Pan to explore all 5 suites →">
-        <DCArtboard label="💰 WizeMoney" width={PW} height={PH}>
-          <MoneyHome/>
-        </DCArtboard>
-        <DCArtboard label="✈️ WizeTravel" width={PW} height={PH}>
-          <TravelHome/>
-        </DCArtboard>
-        <DCArtboard label="🧾 WizeTax" width={PW} height={PH}>
-          <TaxHome/>
-        </DCArtboard>
-        <DCArtboard label="❤️ WizeHealth" width={PW} height={PH}>
-          <HealthHome/>
-        </DCArtboard>
-        <DCArtboard label="🏠 WizeDeal" width={PW} height={PH}>
-          <DealHome/>
-        </DCArtboard>
-      </DCSection>
+      {/* ─── SYSTEM OVERVIEW ─── */}
+      <div className="dc-section"><div className="dc-section-head"><h2>WizeLife — Unified Design System</h2><p>One design language across all 5 apps. Dark base · per-product accent color · shared chrome (TopChrome + BNav + cards). Pan to explore all 5 suites →</p></div><div className="dc-grid"><div className="dc-artboard"><div className="dc-label">💰 WizeMoney</div><MoneyHome/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">✈️ WizeTravel</div><TravelHome/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">🧾 WizeTax</div><TaxHome/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">❤️ WizeHealth</div><HealthHome/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">🏠 WizeDeal</div><DealHome/>
+        </div>
+      </div></div>
 
-      <DCSection
-        title="Secondary screens — AI chat · alerts · letter · markets"
-        subtitle="Shared AI chat pattern, shared input chrome, shared card system — but each screen breathes its product color.">
-        <DCArtboard label="💰 WizeMoney · AI Advisor" width={PW} height={PH}>
-          <MoneyChat/>
-        </DCArtboard>
-        <DCArtboard label="✈️ WizeTravel · Price Alerts" width={PW} height={PH}>
-          <TravelAlerts/>
-        </DCArtboard>
-        <DCArtboard label="🧾 WizeTax · AI Letter" width={PW} height={PH}>
-          <TaxLetter/>
-        </DCArtboard>
-        <DCArtboard label="❤️ WizeHealth · AI Chat" width={PW} height={PH}>
-          <HealthChat/>
-        </DCArtboard>
-        <DCArtboard label="🏠 WizeDeal · Markets" width={PW} height={PH}>
-          <DealMarkets/>
-        </DCArtboard>
-      </DCSection>
+      {/* ─── SECONDARY SCREENS ─── */}
+      <div className="dc-section"><div className="dc-section-head"><h2>Secondary screens — AI chat · alerts · letter · markets</h2><p>Shared AI chat pattern, shared input chrome, shared card system — but each screen breathes its product color.</p></div><div className="dc-grid"><div className="dc-artboard"><div className="dc-label">💰 WizeMoney · AI Advisor</div><MoneyChat/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">✈️ WizeTravel · Price Alerts</div><TravelAlerts/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">🧾 WizeTax · AI Letter</div><TaxLetter/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">❤️ WizeHealth · AI Chat</div><HealthChat/>
+        </div>
+        <div className="dc-artboard"><div className="dc-label">🏠 WizeDeal · Markets</div><DealMarkets/>
+        </div>
+      </div></div>
 
-      <DCSection
-        title="Onboarding screens — WizeLife brand always present"
-        subtitle="The WizeLife wordmark appears on every onboarding. Same step-dots, same CTA button, same card structure — only the color and content change.">
-        <DCArtboard label="💰 WizeMoney onboarding" width={PW} height={PH}>
-          <Onboarding color={MC} icon="💰" appName="Money"
+      {/* ─── ONBOARDING ─── */}
+      <div className="dc-section"><div className="dc-section-head"><h2>Onboarding screens — WizeLife brand always present</h2><p>The WizeLife wordmark appears on every onboarding. Same step-dots, same CTA button, same card structure — only the color and content change.</p></div><div className="dc-grid"><div className="dc-artboard"><div className="dc-label">💰 WizeMoney onboarding</div><Onboarding color={MC} icon="💰" appName="Money"
             tagline={['Smart money,','simpler life.','Your entire financial picture — investments, pension, goals — in one AI-powered view.']}
             steps={[{ico:'📊',txt:'Connect your portfolio & pension accounts'},{ico:'🎯',txt:'Set goals: home, travel, retirement'},{ico:'💬',txt:'Chat with your bilingual AI advisor'}]}
           />
-        </DCArtboard>
-        <DCArtboard label="✈️ WizeTravel onboarding" width={PW} height={PH}>
-          <Onboarding color={TC} icon="✈️" appName="Travel"
+        </div>
+        <div className="dc-artboard"><div className="dc-label">✈️ WizeTravel onboarding</div><Onboarding color={TC} icon="✈️" appName="Travel"
             tagline={['Stop overpaying','for flights.','Hidden-city tickets, positioning routes & virtual interlining — deals Google Flights never shows.']}
             steps={[{ico:'📍',txt:'Set your home airport & favourite routes'},{ico:'🔔',txt:'Price-drop alerts in real time'},{ico:'🧠',txt:'34 AI flight-hacking tools'}]}
           />
-        </DCArtboard>
-        <DCArtboard label="🧾 WizeTax onboarding" width={PW} height={PH}>
-          <Onboarding color={XC} icon="🧾" appName="Tax"
+        </div>
+        <div className="dc-artboard"><div className="dc-label">🧾 WizeTax onboarding</div><Onboarding color={XC} icon="🧾" appName="Tax"
             tagline={['Move smarter.','Pay less tax.','Model exit-tax across 26 countries and get a lawyer-ready relocation letter — in minutes.']}
             steps={[{ico:'🌍',txt:'Tell us where you live & want to move'},{ico:'💰',txt:'Enter your assets: property, stocks, pension'},{ico:'📝',txt:'Get your AI relocation letter'}]}
           />
-        </DCArtboard>
-        <DCArtboard label="❤️ WizeHealth onboarding" width={PW} height={PH}>
-          <Onboarding color={HC} icon="❤️" appName="Health"
+        </div>
+        <div className="dc-artboard"><div className="dc-label">❤️ WizeHealth onboarding</div><Onboarding color={HC} icon="❤️" appName="Health"
             tagline={['Your health,','deeply understood.','Upload blood work, sync wearables, get an AI advisor trained in cardiology & microbiome.']}
             steps={[{ico:'🩸',txt:'Upload your latest blood panel'},{ico:'⌚',txt:'Sync Apple Health or Garmin'},{ico:'🍽️',txt:'Set your nutrition & wellness goals'}]}
           />
-        </DCArtboard>
-        <DCArtboard label="🏠 WizeDeal onboarding" width={PW} height={PH}>
-          <Onboarding color={DC2} icon="🏠" appName="Deal"
+        </div>
+        <div className="dc-artboard"><div className="dc-label">🏠 WizeDeal onboarding</div><Onboarding color={DC} icon="🏠" appName="Deal"
             tagline={['Every deal,','X-rayed by AI.','Paste any listing URL and get full ROI, yield, tax impact & comps in under 30 seconds.']}
             steps={[{ico:'🔗',txt:'Paste any listing URL'},{ico:'📊',txt:'Instant ROI, yield & payback analysis'},{ico:'🌍',txt:'Brazil, Israel & USA tax rules baked in'}]}
           />
-        </DCArtboard>
-      </DCSection>
+        </div>
+      </div></div>
 
-    </DesignCanvas>
+    </div>
   );
 }
 
