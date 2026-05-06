@@ -379,6 +379,26 @@ function renderPlan(plan, user) {
     const isPro  = plan === "pro" || isYolo;
     const banner = document.getElementById("planBanner");
     banner.className = `plan-banner ${isYolo ? "yolo" : isPro ? "pro" : "free"}`;
+    // Update top-nav plan badge
+    const navBadge = document.getElementById("navPlanBadge");
+    if (navBadge) {
+        const labels = { yolo: "⚡ YOLO", pro: "✦ PRO", free: "FREE" };
+        const key = isYolo ? "yolo" : isPro ? "pro" : "free";
+        navBadge.textContent = labels[key];
+        if (key === "yolo") {
+            navBadge.style.background = "linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2))";
+            navBadge.style.color = "#fbbf24";
+            navBadge.style.borderColor = "rgba(245,158,11,0.35)";
+        } else if (key === "pro") {
+            navBadge.style.background = "rgba(16,185,129,0.18)";
+            navBadge.style.color = "#34d399";
+            navBadge.style.borderColor = "rgba(16,185,129,0.35)";
+        } else {
+            navBadge.style.background = "rgba(99,102,241,0.15)";
+            navBadge.style.color = "#a5b4fc";
+            navBadge.style.borderColor = "rgba(99,102,241,0.25)";
+        }
+    }
 
     const badgeClass = isYolo ? "badge-yolo" : isPro ? "badge-pro" : "badge-free";
     const badgeLabel = isYolo ? "YOLO ⚡" : isPro ? "PRO" : "FREE";
