@@ -4,7 +4,7 @@
    <link rel="stylesheet" href="https://wizelife.ai/wizelife-design.css">
    ════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   /* Backgrounds */
@@ -36,6 +36,7 @@
   /* Fonts */
   --wl-font-head: 'Plus Jakarta Sans', sans-serif;
   --wl-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --wl-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* Radii */
   --wl-r-sm:      8px;
@@ -344,3 +345,8 @@
   .wl-sb-brand { text-align: center; padding: 14px 8px; }
   .wl-sb-item { justify-content: center; padding: 10px; }
 }
+
+
+/* ── Monospace utility (numbers, prices) ─────────────────────────── */
+.wl-mono { font-family: var(--wl-font-mono); font-variant-numeric: tabular-nums; }
+.wl-stat-val { font-variant-numeric: tabular-nums; }
