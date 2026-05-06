@@ -4,7 +4,7 @@
    <link rel="stylesheet" href="https://wizelife.ai/wizelife-design.css">
    ════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   /* Backgrounds */
@@ -322,7 +322,7 @@
   letter-spacing: -.4px;
   color: var(--wl-text);
 }
-.wl-h1 { font-size: 24px; font-weight: 900; }
+.wl-h1 { font-size: 24px; font-weight: 800; }
 .wl-h2 { font-size: 18px; font-weight: 800; }
 .wl-h3 { font-size: 14px; font-weight: 700; }
 
