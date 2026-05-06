@@ -497,6 +497,13 @@ async function attachTokensToTools() {
         if (!user) return;
         const token = await user.getIdToken();
         const nick = encodeURIComponent(localStorage.getItem("wl_nickname") || "");
+        // Fetch user's plan from Firestore so apps know their tier
+        let plan = "free";
+        try {
+            const doc = await wlDb.collection("users").doc(user.uid).get();
+            if (doc.exists) plan = doc.data().plan || "free";
+        } catch (e) {}
+        localStorage.setItem("wl_plan", plan);
         const tools = [
             { id: "tool-finsight", base: "https://money.wizelife.ai/" },
             { id: "tool-travel",   base: "https://travel.wizelife.ai/" },
@@ -506,7 +513,7 @@ async function attachTokensToTools() {
         ];
         tools.forEach(({ id, base }) => {
             const el = document.getElementById(id);
-            if (el) el.href = `${base}?wl_token=${encodeURIComponent(token)}&wl_nick=${nick}`;
+            if (el) el.href = `${base}?wl_token=${encodeURIComponent(token)}&wl_nick=${nick}&wl_plan=${plan}`;
         });
     } catch (e) {
         // fail silently — tools still work without token (free tier)
