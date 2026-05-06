@@ -44,6 +44,25 @@
   --wl-r-lg:      16px;
 }
 
+/* ── Light mode override (apply via [data-theme="light"] or body.light) ── */
+[data-theme="light"], body.light, body.theme-light {
+  --wl-bg:        #f8fafc;
+  --wl-bg-2:      #ffffff;
+  --wl-bg-3:      #f1f5f9;
+  --wl-bg-4:      #e2e8f0;
+  --wl-border:    rgba(0,0,0,.08);
+  --wl-border-2:  rgba(0,0,0,.14);
+  --wl-text:      #1e293b;
+  --wl-text-2:    #64748b;
+  --wl-muted:     #94a3b8;
+}
+
+[data-theme="light"] .wl-shell, body.light .wl-shell, body.theme-light .wl-shell {
+  background: var(--wl-bg);
+  color: var(--wl-text);
+}
+
+
 /* ── App shell layout ─────────────────────────────────────────────── */
 .wl-shell {
   display: flex;
