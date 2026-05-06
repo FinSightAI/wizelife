@@ -1,0 +1,346 @@
+/* ════════════════════════════════════════════════════════════════════
+   WizeLife Design System — v1.0
+   Shared CSS for all WizeLife apps. Loaded via:
+   <link rel="stylesheet" href="https://wizelife.ai/wizelife-design.css">
+   ════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Backgrounds */
+  --wl-bg:        #030508;
+  --wl-bg-2:      #060810;
+  --wl-bg-3:      #0d1020;
+  --wl-bg-4:      #141828;
+
+  /* Borders */
+  --wl-border:    rgba(255,255,255,.07);
+  --wl-border-2:  rgba(255,255,255,.13);
+
+  /* Text */
+  --wl-text:      #eef2ff;
+  --wl-text-2:    #94a3b8;
+  --wl-muted:     #6b7280;
+
+  /* Per-tool accents */
+  --wl-money:     #10b981;
+  --wl-travel:    #3b82f6;
+  --wl-tax:       #f59e0b;
+  --wl-health:    #ec4899;
+  --wl-deal:      #8b5cf6;
+  --wl-ai:        #6366f1;
+
+  /* Default accent (overridden per app) */
+  --wl-c:         #6366f1;
+
+  /* Fonts */
+  --wl-font-head: 'Plus Jakarta Sans', sans-serif;
+  --wl-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Radii */
+  --wl-r-sm:      8px;
+  --wl-r-md:      12px;
+  --wl-r-lg:      16px;
+}
+
+/* ── App shell layout ─────────────────────────────────────────────── */
+.wl-shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--wl-bg);
+  color: var(--wl-text);
+  font-family: var(--wl-font-body);
+}
+
+/* ── Sidebar (left, 220px) ─────────────────────────────────────────── */
+.wl-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--wl-bg-2);
+  border-right: 1px solid var(--wl-border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+[dir="rtl"] .wl-sidebar { border-right: none; border-left: 1px solid var(--wl-border); }
+
+.wl-sb-brand {
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--wl-border);
+}
+.wl-sb-wordmark {
+  font-family: var(--wl-font-head);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+  color: var(--wl-text);
+}
+.wl-sb-wordmark em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--wl-c), color-mix(in srgb, var(--wl-c) 60%, white));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.wl-sb-section {
+  font-family: var(--wl-font-head);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+  padding: 14px 16px 4px;
+}
+
+.wl-sb-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.5);
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-family: inherit;
+  width: 100%;
+  text-align: inherit;
+}
+.wl-sb-item:hover {
+  color: rgba(255,255,255,.85);
+  background: rgba(255,255,255,.03);
+}
+.wl-sb-item.active {
+  color: var(--wl-c);
+  background: color-mix(in srgb, var(--wl-c) 10%, transparent);
+}
+.wl-sb-item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.wl-sb-spacer { flex: 1; }
+.wl-sb-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--wl-border);
+  font-size: 11px;
+  color: var(--wl-muted);
+}
+.wl-sb-footer strong {
+  color: var(--wl-text);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ── Main content ─────────────────────────────────────────────────── */
+.wl-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+  background: var(--wl-bg-2);
+}
+
+.wl-page-header {
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wl-page-title {
+  font-family: var(--wl-font-head);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--wl-text);
+  letter-spacing: -.4px;
+}
+.wl-page-sub {
+  font-size: 12px;
+  color: var(--wl-muted);
+  margin-top: 3px;
+}
+
+/* ── Stat cards ──────────────────────────────────────────────────── */
+.wl-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.wl-stat-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--wl-border);
+  border-radius: var(--wl-r-md);
+  padding: 14px 16px;
+}
+.wl-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--wl-muted);
+  margin-bottom: 6px;
+}
+.wl-stat-val {
+  font-family: var(--wl-font-head);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--wl-text);
+  letter-spacing: -.5px;
+}
+.wl-stat-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+.wl-stat-badge.ok    { background: rgba(16,185,129,.15);  color: #34d399; }
+.wl-stat-badge.warn  { background: rgba(245,158,11,.15);  color: #fbbf24; }
+.wl-stat-badge.bad   { background: rgba(239,68,68,.15);   color: #f87171; }
+.wl-stat-badge.info  { background: color-mix(in srgb, var(--wl-c) 15%, transparent); color: var(--wl-c); }
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.wl-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--wl-border);
+  border-radius: var(--wl-r-lg);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+.wl-card-title {
+  font-family: var(--wl-font-head);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--wl-muted);
+  margin-bottom: 12px;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────── */
+.wl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.wl-table th {
+  text-align: inherit;
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  color: var(--wl-muted);
+  border-bottom: 1px solid var(--wl-border);
+}
+.wl-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.03);
+  color: var(--wl-text);
+}
+.wl-table tr:last-child td { border-bottom: none; }
+.wl-table tr:hover td { background: rgba(255,255,255,.02); }
+
+/* ── Right panel (240px, optional) ───────────────────────────────── */
+.wl-rpanel {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--wl-bg-2);
+  border-left: 1px solid var(--wl-border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+[dir="rtl"] .wl-rpanel { border-left: none; border-right: 1px solid var(--wl-border); }
+
+.wl-rp-section {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--wl-border);
+  border-radius: var(--wl-r-md);
+  padding: 12px;
+}
+.wl-rp-label {
+  font-family: var(--wl-font-head);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 8px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────── */
+.wl-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--wl-r-md);
+  font-family: var(--wl-font-head);
+  font-size: 13px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--wl-c), color-mix(in srgb, var(--wl-c) 70%, white));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.wl-btn-primary:hover { opacity: .9; }
+
+.wl-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--wl-r-md);
+  font-family: var(--wl-font-head);
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255,255,255,.05);
+  color: var(--wl-text);
+  border: 1px solid var(--wl-border-2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s;
+}
+.wl-btn-secondary:hover { background: rgba(255,255,255,.09); }
+
+/* ── Headings ────────────────────────────────────────────────────── */
+.wl-h1, .wl-h2, .wl-h3 {
+  font-family: var(--wl-font-head);
+  letter-spacing: -.4px;
+  color: var(--wl-text);
+}
+.wl-h1 { font-size: 24px; font-weight: 900; }
+.wl-h2 { font-size: 18px; font-weight: 800; }
+.wl-h3 { font-size: 14px; font-weight: 700; }
+
+/* ── Per-app accent setters (apply on .wl-shell or body) ─────────── */
+.wl-money  { --wl-c: var(--wl-money);  }
+.wl-travel { --wl-c: var(--wl-travel); }
+.wl-tax    { --wl-c: var(--wl-tax);    }
+.wl-health { --wl-c: var(--wl-health); }
+.wl-deal   { --wl-c: var(--wl-deal);   }
+.wl-ai     { --wl-c: var(--wl-ai);     }
+
+/* ── Responsive (narrow screens hide right panel; sidebar collapses) */
+@media (max-width: 980px) {
+  .wl-rpanel { display: none; }
+}
+@media (max-width: 720px) {
+  .wl-sidebar { width: 64px; }
+  .wl-sb-section, .wl-sb-item span, .wl-sb-footer { display: none; }
+  .wl-sb-brand { text-align: center; padding: 14px 8px; }
+  .wl-sb-item { justify-content: center; padding: 10px; }
+}
