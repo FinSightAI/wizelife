@@ -425,7 +425,7 @@ function renderPlan(plan, user) {
             `<span style="color:#f59e0b;font-size:0.9rem;font-weight:600;">⚡ YOLO — Maximum power active</span>`;
         document.getElementById("subContent").innerHTML = `
             <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#f59e0b;">Active</span></div>
-            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">YOLO — $9.99/mo</span></div>
+            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">YOLO — $4.90/mo</span></div>
             <div style="margin-top:16px;">
                 <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
             </div>`;
@@ -435,12 +435,12 @@ function renderPlan(plan, user) {
         navBtn.href = paypalYoloUrl(user.uid);
         navBtn.textContent = "⚡ YOLO";
         document.getElementById("planAction").innerHTML =
-            `<a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡ Upgrade to YOLO — $9.99/mo</a>`;
+            `<a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡ Upgrade to YOLO — $4.90/mo</a>`;
         document.getElementById("subContent").innerHTML = `
             <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#6ee7b7;">Active</span></div>
             <div class="info-row"><span class="info-label">Plan</span><span class="info-value">Pro — $4.99/mo</span></div>
             <a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-top:16px;background:linear-gradient(135deg,#f59e0b,#ef4444);">
-                ⚡ Upgrade to YOLO — $9.99/mo
+                ⚡ Upgrade to YOLO — $4.90/mo
             </a>
             ${codeRow}
             <div style="margin-top:12px;">
@@ -462,7 +462,7 @@ function renderPlan(plan, user) {
                 Upgrade to Pro — $4.99/mo
             </a>
             <a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;background:linear-gradient(135deg,#f59e0b,#ef4444);">
-                ⚡ Upgrade to YOLO — $9.99/mo
+                ⚡ Upgrade to YOLO — $4.90/mo
             </a>
             ${codeRow}`;
     }
