@@ -356,8 +356,8 @@ const PAYPAL_PLAN_ID      = "P-42B26777LT293231BNHMVWNA";
 const PAYPAL_YOLO_PLAN_ID = "P-3WT61990FP2103335NH32GVA";
 
 requireAuth("auth.html").then(async (user) => {
-    // Fetch nickname from Firestore
-    let nick = user.displayName || user.email || "";
+    // Fetch nickname from Firestore (prefer name; fall back to email local-part — never full email)
+    let nick = user.displayName || (user.email && user.email.includes('@') ? user.email.split('@')[0] : (user.email || ""));
     try {
         const doc = await wlDb.collection("users").doc(user.uid).get();
         if (doc.exists && doc.data().nickname) nick = doc.data().nickname;
