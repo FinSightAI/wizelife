@@ -1,84 +1,26 @@
 {
-  "name": "WizeLife",
+  "name": "WizeLife — AI Life Suite",
   "short_name": "WizeLife",
-  "description": "AI-powered life suite — Money, Tax, Travel, Health, Deals",
+  "description": "Five AI-powered tools for every important decision in your life — money, taxes, travel, health, real estate.",
   "start_url": "/dashboard.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0a0f1e",
+  "background_color": "#0a0e17",
   "theme_color": "#6366f1",
-  "orientation": "portrait-primary",
-  "lang": "en",
+  "orientation": "any",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["finance", "productivity", "lifestyle", "travel", "health"],
   "icons": [
-    {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "assets/wizelife-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/wizelife-icon-256.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "assets/wizelife-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
-    {
-      "name": "WizeMoney",
-      "url": "https://money.wizelife.ai/",
-      "icons": [
-        {
-          "src": "/favicon.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
-      "name": "WizeTax",
-      "url": "https://tax.wizelife.ai/advisor",
-      "icons": [
-        {
-          "src": "/favicon.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
-      "name": "WizeTravel",
-      "url": "https://travel.wizelife.ai/",
-      "icons": [
-        {
-          "src": "/favicon.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
-      "name": "WizeHealth",
-      "url": "https://health.wizelife.ai/",
-      "icons": [
-        {
-          "src": "/favicon.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
-      "name": "WizeDeal",
-      "url": "https://deal.wizelife.ai/",
-      "icons": [
-        {
-          "src": "/favicon.svg",
-          "sizes": "any"
-        }
-      ]
-    }
+    { "name": "WizeMoney", "short_name": "Money", "url": "https://money.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png", "sizes": "192x192" }] },
+    { "name": "WizeTax", "short_name": "Tax", "url": "https://mastermove.vercel.app/advisor", "icons": [{ "src": "assets/wizelife-icon-192.png", "sizes": "192x192" }] },
+    { "name": "WizeTravel", "short_name": "Travel", "url": "https://travel.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png", "sizes": "192x192" }] },
+    { "name": "WizeHealth", "short_name": "Health", "url": "https://health.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png", "sizes": "192x192" }] },
+    { "name": "WizeDeal", "short_name": "Deal", "url": "https://check-deal.vercel.app/", "icons": [{ "src": "assets/wizelife-icon-192.png", "sizes": "192x192" }] }
   ]
 }

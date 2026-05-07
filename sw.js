@@ -1,11 +1,13 @@
-const CACHE = 'wizelife-v2';
+const CACHE = 'wizelife-v3';
 const SHELL = [
   '/dashboard.html',
   '/auth.html',
   '/index.html',
-  '/favicon.svg',
   '/manifest.json',
   '/js/wizelife-auth.js',
+  '/assets/wizelife-icon.png',
+  '/assets/wizelife-icon-192.png',
+  '/assets/wizelife-icon-256.png',
 ];
 
 self.addEventListener('install', e => {
