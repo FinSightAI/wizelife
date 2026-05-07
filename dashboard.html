@@ -343,6 +343,37 @@
     </div>
   </div>
 
+  <!-- Referral + Feedback -->
+  <h3 style="margin-top:32px">Invite friends &amp; share feedback</h3>
+  <div class="account-grid">
+    <div class="account-card">
+      <h4 style="display:flex;align-items:center;gap:8px">🎁 Refer a friend</h4>
+      <p style="color:var(--muted);font-size:0.9rem;margin:8px 0 12px;line-height:1.5">
+        Share your link. When a friend upgrades to PRO, you get a free month of PRO.
+        If they go YOLO, you get a free month of YOLO.
+      </p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input id="refLink" type="text" readonly value="—"
+          style="flex:1;min-width:200px;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:ui-monospace,monospace">
+        <button id="refCopyBtn" class="btn-sm" style="cursor:pointer">📋 Copy</button>
+        <button id="refShareBtn" class="btn-sm" style="cursor:pointer">↗ Share</button>
+      </div>
+      <div id="refStats" style="margin-top:14px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:0.85rem;color:var(--muted);display:none">
+        <span style="color:var(--text);font-weight:700"><span id="refCount">0</span></span> friends joined ·
+        <span style="color:var(--success);font-weight:700"><span id="refDays">0</span> days</span> earned
+      </div>
+    </div>
+    <div class="account-card">
+      <h4 style="display:flex;align-items:center;gap:8px">💬 Feedback</h4>
+      <p style="color:var(--muted);font-size:0.9rem;margin:8px 0 12px;line-height:1.5">
+        Tell us what works and what's missing. Every comment is read by Ofir personally.
+      </p>
+      <a href="feedback.html" class="btn-upgrade" style="display:inline-block;text-align:center;text-decoration:none">
+        Send feedback →
+      </a>
+    </div>
+  </div>
+
 </main>
 
 <!-- Firebase -->
@@ -376,7 +407,46 @@ requireAuth("auth.html").then(async (user) => {
     // Plan
     const plan = await getUserPlan(user.uid);
     renderPlan(plan, user);
+
+    // Referral panel
+    try { await renderReferral(user); } catch(e) { console.warn("referral render failed", e); }
 });
+
+async function renderReferral(user) {
+    const code = await getOrCreateReferralCode(user.uid);
+    if (!code) return;
+    const link = `https://wizelife.ai/auth.html?ref=${code}`;
+    const inp = document.getElementById("refLink");
+    if (inp) inp.value = link;
+
+    // Copy + Share buttons
+    const copyBtn = document.getElementById("refCopyBtn");
+    if (copyBtn) copyBtn.onclick = async () => {
+        try { await navigator.clipboard.writeText(link); copyBtn.textContent = "✓ Copied"; setTimeout(()=>copyBtn.textContent="📋 Copy",1600); }
+        catch { inp.select(); document.execCommand("copy"); }
+    };
+    const shareBtn = document.getElementById("refShareBtn");
+    if (shareBtn) shareBtn.onclick = async () => {
+        if (navigator.share) {
+            try { await navigator.share({ title: "WizeLife — AI life suite", text: "5 AI tools for money, tax, travel, health, deals.", url: link }); } catch {}
+        } else {
+            window.open("https://wa.me/?text=" + encodeURIComponent("Check out WizeLife — " + link), "_blank");
+        }
+    };
+
+    // Stats
+    try {
+        const doc = await wlDb.collection("users").doc(user.uid).get();
+        const d = doc.exists ? doc.data() : {};
+        const count = d.referralCount || 0;
+        const days = (d.referralRewards || []).reduce((s, r) => s + (r.days || 0), 0);
+        if (count > 0 || days > 0) {
+            document.getElementById("refStats").style.display = "block";
+            document.getElementById("refCount").textContent = count;
+            document.getElementById("refDays").textContent = days;
+        }
+    } catch {}
+}
 
 function renderPlan(plan, user) {
     const isYolo = plan === "yolo";

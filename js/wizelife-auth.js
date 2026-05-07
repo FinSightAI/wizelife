@@ -47,6 +47,91 @@ async function getUserPlan(uid) {
     return plan;
 }
 
+// ── Referral system ─────────────────────────────────────────────────────────────
+// Each user gets a short code. Sharing wizelife.ai/auth.html?ref=CODE lets a friend
+// sign up; if they later upgrade to PRO or YOLO, the referrer earns a month of the
+// matching tier (30d). Stored in Firestore as users/{uid}.referralRewards = [{tier,days,from,ts}].
+
+function _genReferralCode() {
+    // 6-char alphanumeric, easy to share
+    const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+    let s = "";
+    for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)];
+    return s;
+}
+
+async function getOrCreateReferralCode(uid) {
+    if (!uid || !wlDb) return null;
+    try {
+        const ref = wlDb.collection("users").doc(uid);
+        const doc = await ref.get();
+        if (doc.exists && doc.data().referralCode) return doc.data().referralCode;
+        // Generate + write atomically (best-effort; collisions rare)
+        const code = _genReferralCode();
+        await ref.set({ referralCode: code }, { merge: true });
+        return code;
+    } catch (e) { console.warn("getOrCreateReferralCode failed", e); return null; }
+}
+
+// Stash a ?ref=CODE that came in the URL — will be applied at signup time
+function captureReferralCode() {
+    try {
+        const r = new URLSearchParams(location.search).get("ref");
+        if (r && /^[A-Z0-9]{4,10}$/i.test(r)) {
+            localStorage.setItem("wl_ref_pending", r.toUpperCase());
+        }
+    } catch {}
+}
+
+// Called once after a brand new user is created — records referredBy on their record
+async function applyReferralOnSignup(uid) {
+    if (!uid || !wlDb) return;
+    let pending = null;
+    try { pending = localStorage.getItem("wl_ref_pending"); } catch {}
+    if (!pending) return;
+    try {
+        // Resolve referralCode -> referrer uid
+        const q = await wlDb.collection("users").where("referralCode", "==", pending).limit(1).get();
+        if (q.empty) { localStorage.removeItem("wl_ref_pending"); return; }
+        const referrerUid = q.docs[0].id;
+        if (referrerUid === uid) { localStorage.removeItem("wl_ref_pending"); return; }
+        await wlDb.collection("users").doc(uid).set({
+            referredBy: referrerUid,
+            referralCodeUsed: pending,
+            referralAppliedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+        localStorage.removeItem("wl_ref_pending");
+    } catch (e) { console.warn("applyReferralOnSignup failed", e); }
+}
+
+// Called when a user upgrades to PRO/YOLO — awards 30 days of matching tier to the referrer
+async function rewardReferrerOnUpgrade(uid, newTier) {
+    if (!uid || !wlDb || !["pro", "yolo"].includes(newTier)) return;
+    try {
+        const userDoc = await wlDb.collection("users").doc(uid).get();
+        if (!userDoc.exists) return;
+        const u = userDoc.data();
+        if (!u.referredBy || u.referralRewardSent) return; // only first upgrade triggers reward
+
+        // Append a reward entry to the referrer
+        const refRef = wlDb.collection("users").doc(u.referredBy);
+        await refRef.set({
+            referralRewards: firebase.firestore.FieldValue.arrayUnion({
+                tier: newTier,
+                days: 30,
+                from: uid,
+                ts: Date.now(),
+            }),
+            referralCount: firebase.firestore.FieldValue.increment(1),
+        }, { merge: true });
+
+        await wlDb.collection("users").doc(uid).set({ referralRewardSent: true }, { merge: true });
+    } catch (e) { console.warn("rewardReferrerOnUpgrade failed", e); }
+}
+
+// Stamp a pending capture as soon as this script loads (works on auth.html etc)
+captureReferralCode();
+
 // Redirect to dashboard if already logged in
 function requireAuth(redirectTo = "auth.html") {
     return new Promise(resolve => {

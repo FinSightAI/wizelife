@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){try{
+  var t=localStorage.getItem('wl_theme');
+  var isLight=t==='light';
+  document.documentElement.setAttribute('data-theme',isLight?'light':'dark');
+  document.documentElement.classList.add(isLight?'light':'dark');
+  if(document.body){document.body.classList.add(isLight?'light':'dark');}
+  document.addEventListener('DOMContentLoaded',function(){
+    document.body.classList.add(isLight?'light':'dark');
+  });
+}catch(e){}})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-i18n-title="feedback.title">Feedback — WizeLife</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#6366f1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root {
+    --bg:#050810; --bg2:#0d1117; --bg3:#161b27;
+    --border:rgba(255,255,255,0.08); --text:#f0f4ff; --muted:#8892a4;
+    --accent:#6366f1; --accent2:#8b5cf6;
+    --success:#10b981; --warn:#f59e0b; --danger:#ef4444;
+  }
+  html.light, html.light body {
+    --bg:#f8fafc; --bg2:#ffffff; --bg3:#f1f5f9;
+    --border:rgba(15,23,42,0.1); --text:#0f172a; --muted:#64748b;
+  }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:24px 16px; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .head { text-align:center; margin-bottom: 32px; }
+  .head h1 {
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-size: clamp(34px, 6vw, 52px); font-weight:900; letter-spacing:-1.2; line-height:1.05;
+    margin-bottom: 10px;
+  }
+  .head h1 .grad {
+    background: linear-gradient(120deg,#6366f1 0%,#8b5cf6 30%,#a78bfa 50%,#ec4899 75%,#f59e0b 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    animation: shift 8s ease infinite;
+  }
+  @keyframes shift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+  .head p { color: var(--muted); font-size: 15px; max-width: 500px; margin: 0 auto; }
+  form { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+  .field { margin-bottom: 18px; }
+  label { display:block; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px; }
+  input[type=text], input[type=email], textarea, select {
+    width: 100%; padding: 11px 14px; font: inherit; font-size: 14px;
+    background: var(--bg3); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; outline: none; transition: border-color 0.15s;
+  }
+  textarea { resize: vertical; min-height: 80px; }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  .stars { display: flex; gap: 6px; }
+  .star {
+    cursor: pointer; font-size: 30px; line-height: 1;
+    color: var(--border); transition: color 0.1s, transform 0.1s;
+    user-select: none;
+  }
+  .star.active, .star:hover { color: #fbbf24; }
+  .star:hover { transform: scale(1.1); }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    padding: 9px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    background: var(--bg3); color: var(--muted); border: 1px solid var(--border); border-radius: 99px;
+    transition: all 0.15s;
+  }
+  .pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+  button[type=submit] {
+    width: 100%; padding: 14px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white; border: 0; border-radius: 12px; margin-top: 8px;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  button[type=submit]:hover { opacity: 0.92; }
+  button[type=submit]:active { transform: scale(0.99); }
+  button[type=submit]:disabled { opacity: 0.6; cursor: not-allowed; }
+  .ok-msg, .err-msg {
+    padding: 14px 18px; border-radius: 12px; font-size: 14px; font-weight: 600;
+    margin-top: 16px; text-align: center;
+  }
+  .ok-msg { background: rgba(16,185,129,0.12); color: var(--success); border:1px solid rgba(16,185,129,0.3); }
+  .err-msg { background: rgba(239,68,68,0.12); color: var(--danger); border:1px solid rgba(239,68,68,0.3); }
+  .back {
+    display:inline-block; margin-bottom:16px; color:var(--muted);
+    text-decoration:none; font-size:13px;
+  }
+  .back:hover { color: var(--text); }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← <span data-i18n="back">Back</span></a>
+  <div class="head">
+    <h1><span data-i18n="feedback.heading">We'd love your</span> <span class="grad" data-i18n="feedback.headingGrad">feedback</span></h1>
+    <p data-i18n="feedback.lede">Tell us what works, what doesn't, and what you'd love to see. Your input shapes WizeLife.</p>
+  </div>
+
+  <form id="fbForm">
+    <div class="field">
+      <label data-i18n="feedback.app">Which tool is this about?</label>
+      <div class="pills" id="appPills">
+        <div class="pill" data-app="money">💰 WizeMoney</div>
+        <div class="pill" data-app="tax">💡 WizeTax</div>
+        <div class="pill" data-app="travel">✈️ WizeTravel</div>
+        <div class="pill" data-app="health">❤️ WizeHealth</div>
+        <div class="pill" data-app="deal">🏠 WizeDeal</div>
+        <div class="pill" data-app="general">🌟 WizeLife</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="feedback.rating">Overall rating</label>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="loved" data-i18n="feedback.loved">What worked well? (optional)</label>
+      <textarea id="loved" placeholder="The AI advisor saved me hours… / The tax wizard was super clear…"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="missing" data-i18n="feedback.missing">What's missing or confusing? (optional)</label>
+      <textarea id="missing" placeholder="I couldn't find… / The button for X was hidden…"></textarea>
+    </div>
+
+    <div class="field">
+      <label data-i18n="feedback.payQuestion">Would you pay for this?</label>
+      <div class="pills" id="payPills">
+        <div class="pill" data-pay="no" data-i18n="feedback.payNo">Not yet</div>
+        <div class="pill" data-pay="under5" data-i18n="feedback.payUnder5">Up to $5/mo</div>
+        <div class="pill" data-pay="under10" data-i18n="feedback.payUnder10">$5-10/mo</div>
+        <div class="pill" data-pay="under30" data-i18n="feedback.payUnder30">$10-30/mo</div>
+        <div class="pill" data-pay="more" data-i18n="feedback.payMore">$30+/mo</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email" data-i18n="feedback.email">Email (optional — so we can follow up)</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <div class="hint" data-i18n="feedback.emailHint">We won't subscribe you to anything.</div>
+    </div>
+
+    <button type="submit" id="submitBtn" data-i18n="feedback.submit">Send feedback</button>
+    <div id="msg"></div>
+  </form>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="js/wizelife-auth.js"></script>
+<script>
+// ── Simple i18n (he/en/pt/es) ──────────────────────────────────────────────────
+const I = {
+  he: {
+    'back':'חזרה',
+    'feedback.title':'משוב — WizeLife','feedback.heading':'נשמח לקבל','feedback.headingGrad':'את המשוב שלך',
+    'feedback.lede':'ספר לנו מה עובד, מה לא, ומה היית רוצה לראות. המשוב שלך מעצב את WizeLife.',
+    'feedback.app':'איזה כלי? ','feedback.rating':'דירוג כללי','feedback.loved':'מה עבד טוב? (לא חובה)',
+    'feedback.missing':'מה חסר או מבלבל? (לא חובה)','feedback.payQuestion':'תהיה מוכן לשלם?',
+    'feedback.payNo':'עוד לא','feedback.payUnder5':'עד $5/חודש','feedback.payUnder10':'$5-10/חודש',
+    'feedback.payUnder30':'$10-30/חודש','feedback.payMore':'יותר מ-$30',
+    'feedback.email':'אימייל (לא חובה — לרצף שיחה)','feedback.emailHint':'לא נירשם אותך לשום דיוור.',
+    'feedback.submit':'שלח משוב',
+    'msg.ok':'תודה! המשוב שלך נשמר ✓','msg.err':'שמירה נכשלה. נסה שוב.','msg.fillApp':'בחר אפליקציה',
+  },
+  en: {
+    'back':'Back',
+    'feedback.title':'Feedback — WizeLife','feedback.heading':"We'd love your",'feedback.headingGrad':'feedback',
+    'feedback.lede':"Tell us what works, what doesn't, and what you'd love to see. Your input shapes WizeLife.",
+    'feedback.app':'Which tool is this about?','feedback.rating':'Overall rating','feedback.loved':'What worked well? (optional)',
+    'feedback.missing':"What's missing or confusing? (optional)",'feedback.payQuestion':'Would you pay for this?',
+    'feedback.payNo':'Not yet','feedback.payUnder5':'Up to $5/mo','feedback.payUnder10':'$5-10/mo',
+    'feedback.payUnder30':'$10-30/mo','feedback.payMore':'$30+/mo',
+    'feedback.email':'Email (optional — so we can follow up)','feedback.emailHint':"We won't subscribe you to anything.",
+    'feedback.submit':'Send feedback',
+    'msg.ok':'Thanks! Your feedback was saved ✓','msg.err':'Save failed. Please try again.','msg.fillApp':'Pick an app first',
+  },
+  pt: {
+    'back':'Voltar',
+    'feedback.title':'Feedback — WizeLife','feedback.heading':'Adoraríamos seu','feedback.headingGrad':'feedback',
+    'feedback.lede':'Conte-nos o que funciona, o que não, e o que você gostaria de ver.',
+    'feedback.app':'Qual ferramenta?','feedback.rating':'Avaliação geral','feedback.loved':'O que funcionou bem? (opcional)',
+    'feedback.missing':'O que está faltando ou confuso? (opcional)','feedback.payQuestion':'Pagaria por isso?',
+    'feedback.payNo':'Ainda não','feedback.payUnder5':'Até $5/mês','feedback.payUnder10':'$5-10/mês',
+    'feedback.payUnder30':'$10-30/mês','feedback.payMore':'$30+/mês',
+    'feedback.email':'Email (opcional — para resposta)','feedback.emailHint':'Não enviaremos newsletters.',
+    'feedback.submit':'Enviar feedback',
+    'msg.ok':'Obrigado! Seu feedback foi salvo ✓','msg.err':'Falha. Tente novamente.','msg.fillApp':'Escolha um app',
+  },
+  es: {
+    'back':'Atrás',
+    'feedback.title':'Feedback — WizeLife','feedback.heading':'Nos encantaría tu','feedback.headingGrad':'feedback',
+    'feedback.lede':'Cuéntanos qué funciona, qué no, y qué te gustaría ver.',
+    'feedback.app':'¿Qué herramienta?','feedback.rating':'Calificación general','feedback.loved':'¿Qué funcionó bien? (opcional)',
+    'feedback.missing':'¿Qué falta o es confuso? (opcional)','feedback.payQuestion':'¿Pagarías por esto?',
+    'feedback.payNo':'Todavía no','feedback.payUnder5':'Hasta $5/mes','feedback.payUnder10':'$5-10/mes',
+    'feedback.payUnder30':'$10-30/mes','feedback.payMore':'$30+/mes',
+    'feedback.email':'Email (opcional — para seguimiento)','feedback.emailHint':'No te enviaremos newsletters.',
+    'feedback.submit':'Enviar feedback',
+    'msg.ok':'¡Gracias! Tu feedback se guardó ✓','msg.err':'Falló. Inténtalo de nuevo.','msg.fillApp':'Elige una app',
+  },
+};
+const lang = (function(){ const v = localStorage.getItem('wl_lang'); return ['he','en','pt','es'].includes(v) ? v : 'en'; })();
+const t = k => (I[lang] || I.en)[k] || k;
+document.documentElement.lang = lang;
+document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+document.title = t('feedback.title');
+document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+document.querySelectorAll('[data-i18n-title]').forEach(el => { el.textContent = t(el.dataset.i18nTitle); });
+
+// ── State ──────────────────────────────────────────────────────────────────────
+let state = { app: '', rating: 0, pay: '' };
+
+// Pre-select app from ?app=tax param
+const urlApp = new URLSearchParams(location.search).get('app');
+if (urlApp) {
+  const pill = document.querySelector(`#appPills .pill[data-app="${urlApp}"]`);
+  if (pill) { pill.classList.add('active'); state.app = urlApp; }
+}
+
+// ── Pill toggles ───────────────────────────────────────────────────────────────
+function setupPills(rootId, key) {
+  document.querySelectorAll(`#${rootId} .pill`).forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll(`#${rootId} .pill`).forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state[key] = p.dataset[key === 'app' ? 'app' : 'pay'];
+    });
+  });
+}
+setupPills('appPills', 'app');
+setupPills('payPills', 'pay');
+
+// ── Stars ──────────────────────────────────────────────────────────────────────
+const stars = document.querySelectorAll('.star');
+stars.forEach(s => {
+  s.addEventListener('click', () => {
+    state.rating = parseInt(s.dataset.v);
+    stars.forEach(x => x.classList.toggle('active', parseInt(x.dataset.v) <= state.rating));
+  });
+});
+
+// ── Prefill email if logged in ─────────────────────────────────────────────────
+wlAuth.onAuthStateChanged(user => {
+  if (user && user.email && !document.getElementById('email').value) {
+    document.getElementById('email').value = user.email;
+  }
+});
+
+// ── Submit ─────────────────────────────────────────────────────────────────────
+const form = document.getElementById('fbForm');
+const msg = document.getElementById('msg');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  msg.innerHTML = '';
+  if (!state.app) { msg.innerHTML = `<div class="err-msg">${t('msg.fillApp')}</div>`; return; }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  const payload = {
+    app: state.app,
+    rating: state.rating || null,
+    pay: state.pay || null,
+    loved: document.getElementById('loved').value.trim() || null,
+    missing: document.getElementById('missing').value.trim() || null,
+    email: document.getElementById('email').value.trim() || null,
+    uid: wlAuth.currentUser?.uid || null,
+    plan: localStorage.getItem('wl_plan') || null,
+    lang,
+    ua: navigator.userAgent.slice(0, 200),
+    ts: firebase.firestore.FieldValue.serverTimestamp(),
+    referrer: document.referrer.slice(0, 200) || null,
+  };
+  try {
+    await wlDb.collection('feedback').add(payload);
+    msg.innerHTML = `<div class="ok-msg">${t('msg.ok')}</div>`;
+    form.reset();
+    state = { app: '', rating: 0, pay: '' };
+    document.querySelectorAll('.pill, .star').forEach(p => p.classList.remove('active'));
+  } catch (err) {
+    console.error('feedback save failed', err);
+    msg.innerHTML = `<div class="err-msg">${t('msg.err')}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

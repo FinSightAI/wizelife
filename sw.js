@@ -1,8 +1,9 @@
-const CACHE = 'wizelife-v3';
+const CACHE = 'wizelife-v4';
 const SHELL = [
   '/dashboard.html',
   '/auth.html',
   '/index.html',
+  '/feedback.html',
   '/manifest.json',
   '/js/wizelife-auth.js',
   '/assets/wizelife-icon.png',

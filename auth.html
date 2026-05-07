@@ -305,6 +305,7 @@
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
       localStorage.setItem("wl_nickname", name);
+      try { await applyReferralOnSignup(cred.user.uid); } catch {}
       window.location.href = "dashboard.html";
     } catch (e) {
       document.getElementById("signupError").textContent = friendlyError(e.code);
@@ -321,6 +322,7 @@
       const nick = cred.user.displayName || cred.user.email.split("@")[0];
       if (!doc.exists) {
         await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        try { await applyReferralOnSignup(cred.user.uid); } catch {}
       } else {
         // Update nickname if missing
         const d = doc.data();
