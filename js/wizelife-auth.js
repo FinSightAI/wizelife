@@ -20,10 +20,31 @@ googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 // Read user plan from Firestore
 async function getUserPlan(uid) {
+    // 1. Check Firestore (canonical source)
+    let firestorePlan = null;
     try {
         const doc = await wlDb.collection("users").doc(uid).get();
-        return doc.exists ? (doc.data().plan || "free") : "free";
-    } catch { return "free"; }
+        if (doc.exists && doc.data().plan) firestorePlan = doc.data().plan;
+    } catch {}
+    // 2. Check localStorage (set by access codes redeemed in any app)
+    let localPlan = null;
+    try {
+        const p = localStorage.getItem("wl_plan");
+        if (p && ["pro", "yolo", "free"].includes(p)) localPlan = p;
+    } catch {}
+    // 3. Pick highest tier: yolo > pro > free
+    const rank = { yolo: 3, pro: 2, free: 1 };
+    const fsRank = rank[firestorePlan] || 0;
+    const lsRank = rank[localPlan] || 0;
+    const best = fsRank >= lsRank ? firestorePlan : localPlan;
+    const plan = best || "free";
+    // 4. Sync back to Firestore if localStorage has higher tier (e.g. access code redeemed)
+    if (lsRank > fsRank && wlDb && uid) {
+        try { await wlDb.collection("users").doc(uid).set({ plan: localPlan }, { merge: true }); } catch {}
+    }
+    // 5. Save to localStorage for next visit
+    try { localStorage.setItem("wl_plan", plan); } catch {}
+    return plan;
 }
 
 // Redirect to dashboard if already logged in
