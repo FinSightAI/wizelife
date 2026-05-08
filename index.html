@@ -1803,9 +1803,10 @@ wlAuth.onAuthStateChanged(function(user) {
 });
 </script>
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
+// Smart SW registration with auto-update banner — see js/sw-register.js
+const _swScript = document.createElement('script');
+_swScript.src = 'js/sw-register.js';
+document.head.appendChild(_swScript);
 
 // Trust bar counter animation
 document.querySelectorAll('.trust-num[data-count]').forEach(el => {

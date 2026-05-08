@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v8';
+const CACHE = 'wizelife-v9';
 const SHELL = [
   '/dashboard.html',
   '/auth.html',
@@ -6,6 +6,7 @@ const SHELL = [
   '/feedback.html',
   '/manifest.json',
   '/js/wizelife-auth.js',
+  '/js/sw-register.js',
   '/assets/wizelife-icon.png',
   '/assets/wizelife-icon-192.png',
   '/assets/wizelife-icon-256.png',
@@ -15,6 +16,11 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
   );
+});
+
+// Listen for the "user clicked Update" message from sw-register.js → activate immediately
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
