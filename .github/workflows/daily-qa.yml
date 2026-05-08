@@ -1,0 +1,181 @@
+name: Daily QA — All Apps
+
+# Runs every day at 06:00 UTC. Hits all 5 deployed apps, validates
+# HTTP status + key markers in the HTML, then either appends a green
+# row to the rolling status issue or opens a high-priority issue if
+# something is down. GitHub emails you on issue activity automatically
+# — no Gmail App Password needed.
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Wake sleeping services (Render free-tier cold start)
+        run: |
+          for url in https://master-backend-79jx.onrender.com/health https://vitara.onrender.com/; do
+            for i in 1 2 3; do
+              if curl -fsS --max-time 60 "$url" > /dev/null; then break; fi
+              echo "warming $url (attempt $i)"
+              sleep 15
+            done
+          done
+
+      - name: Run QA checks
+        id: qa
+        run: |
+          python3 - <<'PY'
+          import json, time, urllib.request, urllib.error, sys
+
+          # name, url, expected substring on success (case-insensitive)
+          targets = [
+              ("WizeLife (landing)",    "https://wizelife.ai/",                   "wizelife"),
+              ("WizeLife (auth)",       "https://wizelife.ai/auth.html",          "sign"),
+              ("WizeLife (dashboard)",  "https://wizelife.ai/dashboard.html",     "dashboard"),
+              ("WizeLife (feedback)",   "https://wizelife.ai/feedback.html",      "feedback"),
+              ("WizeMoney",             "https://finsightai.github.io/finsight/", "wizemoney"),
+              ("WizeTax (advisor)",     "https://tax.wizelife.ai/advisor",        "wizetax"),
+              ("WizeTax backend health","https://master-backend-79jx.onrender.com/health", "ok"),
+              ("WizeTax backend chat",  "https://master-backend-79jx.onrender.com/api/ai-proxy", None),  # POST tested below
+              ("WizeTravel",            "https://nodedai.streamlit.app/",         "stream"),  # Streamlit shell
+              ("WizeHealth",            "https://vitara.onrender.com/",           "wizehealth"),
+              ("WizeDeal",              "https://check-deal.vercel.app/",         "wizedeal"),
+          ]
+
+          rows = []
+          fails = 0
+
+          for name, url, marker in targets:
+              t0 = time.time()
+              try:
+                  req = urllib.request.Request(url, headers={"User-Agent": "WizeLife-QA/1.0 (+github-actions)"})
+                  with urllib.request.urlopen(req, timeout=45) as r:
+                      body = r.read(40000).decode("utf-8", errors="ignore")
+                      status = r.status
+                      ms = int((time.time() - t0) * 1000)
+                      ok = 200 <= status < 400
+                      if marker and ok and marker.lower() not in body.lower():
+                          ok = False
+                          note = f"missing marker '{marker}'"
+                      else:
+                          note = ""
+                      icon = "✅" if ok else "⚠️"
+                      if not ok:
+                          fails += 1
+                      rows.append((icon, name, status, ms, note, url))
+              except Exception as e:
+                  fails += 1
+                  ms = int((time.time() - t0) * 1000)
+                  rows.append(("❌", name, "ERR", ms, str(e)[:80], url))
+
+          # POST test for ai-proxy
+          import json as _j
+          t0 = time.time()
+          try:
+              data = _j.dumps({"messages":[{"role":"user","parts":[{"text":"ok"}]}],"maxTokens":10}).encode()
+              req = urllib.request.Request("https://master-backend-79jx.onrender.com/api/ai-proxy",
+                  data=data, headers={"Content-Type":"application/json","User-Agent":"WizeLife-QA/1.0"})
+              with urllib.request.urlopen(req, timeout=45) as r:
+                  body = r.read().decode("utf-8", errors="ignore")
+                  ms = int((time.time() - t0) * 1000)
+                  parsed = _j.loads(body) if body else {}
+                  ok = "text" in parsed and parsed["text"]
+                  rows.append(("✅" if ok else "⚠️", "ai-proxy POST", r.status, ms,
+                               "" if ok else f"err: {parsed.get('error','no text')[:60]}",
+                               "/api/ai-proxy"))
+                  if not ok: fails += 1
+          except Exception as e:
+              fails += 1
+              ms = int((time.time() - t0) * 1000)
+              rows.append(("❌", "ai-proxy POST", "ERR", ms, str(e)[:80], "/api/ai-proxy"))
+
+          # Build markdown report
+          ts = time.strftime("%Y-%m-%d %H:%M UTC")
+          md = [f"### Daily QA — {ts}", "", f"**{len(rows) - fails}/{len(rows)} passing**", ""]
+          md.append("| | App | Status | Latency | Note |")
+          md.append("|---|---|---|---|---|")
+          for icon, name, status, ms, note, url in rows:
+              md.append(f"| {icon} | {name} | `{status}` | {ms}ms | {note} |")
+          md.append("")
+          report = "\n".join(md)
+
+          with open("qa-report.md", "w") as f:
+              f.write(report)
+          print(report)
+
+          # Outputs for next step
+          import os
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"fails={fails}\n")
+              f.write(f"total={len(rows)}\n")
+              f.write("body<<EOF\n")
+              f.write(report)
+              f.write("\nEOF\n")
+          PY
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report-${{ github.run_id }}
+          path: qa-report.md
+          retention-days: 30
+
+      - name: Comment on rolling QA status issue
+        uses: actions/github-script@v7
+        env:
+          QA_BODY: ${{ steps.qa.outputs.body }}
+          QA_FAILS: ${{ steps.qa.outputs.fails }}
+        with:
+          script: |
+            const body = process.env.QA_BODY;
+            const fails = parseInt(process.env.QA_FAILS || '0', 10);
+            const title = '📊 Daily QA Status — rolling log';
+
+            // Find existing rolling issue (open) authored by github-actions
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'qa-rolling', per_page: 5,
+            });
+            let issue = issues.find(i => i.title === title);
+
+            if (!issue) {
+              const { data: created } = await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title,
+                body: 'Rolling daily QA status. Each run appends a comment below.\n\nFailures will also open a separate alert issue.',
+                labels: ['qa-rolling'],
+              });
+              issue = created;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issue.number,
+              body,
+            });
+
+            // If anything failed, also open a high-priority issue (which sends email via GH notifications)
+            if (fails > 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: `🚨 QA failures — ${new Date().toISOString().slice(0,10)} (${fails} failing)`,
+                body: body + '\n\n> Auto-opened by Daily QA workflow. Close once resolved.',
+                labels: ['qa-alert', 'bug'],
+              });
+            }
+
+      - name: Fail the workflow on any failure
+        if: steps.qa.outputs.fails != '0'
+        run: |
+          echo "${{ steps.qa.outputs.fails }} of ${{ steps.qa.outputs.total }} checks failed"
+          exit 1
