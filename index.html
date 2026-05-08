@@ -431,8 +431,8 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
   nav{padding:0 20px}
   .nav-links,.nav-signin{display:none}
   .hamburger{display:flex}
-  section{padding:90px 20px}
-  .hero{padding:110px 20px 60px}
+  section{padding:60px 18px}
+  .hero{padding:90px 18px 48px;min-height:auto}
   .testi-grid,.pricing-grid{grid-template-columns:1fr}
   .testi-card:last-child{grid-column:auto}
   .trust-inner{flex-wrap:wrap}
@@ -440,11 +440,46 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
   .trust-item:nth-last-child(-n+2){border-bottom:none}
   .footer-top{flex-direction:column}
   .footer-links{gap:32px}
-  h1{letter-spacing:-2px}
-  .panel{padding:26px 22px}
+  h1{font-size:clamp(2.2rem,8.5vw,4rem);letter-spacing:-0.5px;line-height:1.06;margin-bottom:20px;padding:0 6px;word-break:keep-all;hyphens:none}
+  .hero-badge{flex-wrap:wrap;text-align:center;line-height:1.4}
+  .hero-sub{font-size:1.02rem;margin-bottom:32px;line-height:1.55;padding:0 4px}
+  .hero-badge{font-size:.72rem;padding:6px 12px;margin-bottom:22px}
+  .hero-btns{flex-direction:column;width:100%;max-width:340px;margin:0 auto;gap:10px}
+  .hero-btns .btn-primary,.hero-btns .btn-secondary{width:100%;padding:14px 20px;font-size:1rem}
+  .panel{padding:22px 18px}
   .tool-stage{min-height:auto}
-  .deal-stats{grid-template-columns:1fr 1fr}
+  .deal-stats{grid-template-columns:1fr 1fr;gap:10px}
   .tax-grid{grid-template-columns:1fr}
+  /* Compare table: switch from 4 columns to a stacked card view */
+  .compare-head{display:none}
+  .compare-row{display:grid;grid-template-columns:1fr;padding:14px 16px;border-bottom:1px solid var(--border)}
+  .compare-cell{padding:4px 0;font-size:.92rem}
+  .compare-cell.hl{font-weight:700;color:var(--accent2)}
+  /* Pricing card less vertical bloat */
+  .plan-card{padding:24px 22px}
+  .plan-price{font-size:2.6rem !important}
+  /* FAQ items more breathing room */
+  .faq-question{padding:14px 16px;font-size:.95rem}
+  .faq-answer{padding:0 16px 14px;font-size:.88rem}
+  /* Tools showcase: smaller cards stack 1-up cleanly */
+  .tool-tabs{display:flex;flex-direction:column;gap:6px}
+  .tool-tab{padding:14px 16px;font-size:.95rem}
+  /* Aurora glows: smaller + less aggressive on mobile */
+  .aurora-1,.aurora-2,.aurora-3{opacity:.5}
+  /* Hide hero feed (live activity ticker) on tiny screens — too much chrome */
+  .hero-feed{margin-top:42px}
+  /* Calculator: make labels stack above inputs */
+  .calc-row,.calc-brow{flex-direction:column !important;align-items:stretch !important;gap:6px !important}
+  .calc-bval{text-align:start !important;font-size:1.1rem !important}
+  /* Hebrew-specific: letter-spacing 0 (negative crushes Hebrew) */
+  html[dir="rtl"] h1,html[dir="rtl"] h2{letter-spacing:0 !important}
+}
+@media(max-width:380px){
+  /* iPhone SE / mini */
+  h1{font-size:2.2rem}
+  section{padding:48px 14px}
+  .hero{padding:80px 14px 40px}
+  .panel{padding:18px 14px}
 }
 </style>
 <script type="application/ld+json">
