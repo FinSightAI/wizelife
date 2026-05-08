@@ -27,6 +27,14 @@ const SECURITY_HEADERS = [
     'x-frame-options',
 ];
 
+// All Playwright contexts identify themselves via this UA so Cloudflare's
+// WAF rule (Skip if User-Agent contains 'WizeLife-QA') matches every request.
+const QA_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 WizeLife-QA/1.0';
+
+function ctxOpts(extra = {}) {
+    return { userAgent: QA_UA, ...extra };
+}
+
 const VIEWPORTS = {
     'mobile':  devices['iPhone 13'],
     'tablet':  devices['iPad Pro 11'],
@@ -55,7 +63,7 @@ function checkSSL(host) {
 
 // ──────────────────────────────────────────────────────────────────────────────
 async function tier1_HealthCheck(browser, t) {
-    const ctx = await browser.newContext({ userAgent: 'WizeLife-QA/1.0' });
+    const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     const consoleErrors = [];
     const failedReqs = [];
@@ -86,7 +94,7 @@ async function tier1_HealthCheck(browser, t) {
 }
 
 async function tier4_Accessibility(browser, t) {
-    const ctx = await browser.newContext();
+    const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
         await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
@@ -98,7 +106,7 @@ async function tier4_Accessibility(browser, t) {
 }
 
 async function tier5_SEO(browser, t) {
-    const ctx = await browser.newContext();
+    const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
         await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
@@ -120,7 +128,7 @@ async function tier5_SEO(browser, t) {
 
 async function tier6_PWA(browser, t) {
     if (!t.app === 'wizelife' && !t.app === 'money' && !t.app === 'health') return { skip: true };
-    const ctx = await browser.newContext();
+    const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
         await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
@@ -151,7 +159,7 @@ async function tier6_PWA(browser, t) {
 async function tier7_Viewports(browser, t) {
     const out = {};
     for (const [name, device] of Object.entries(VIEWPORTS)) {
-        const ctx = await browser.newContext(device);
+        const ctx = await browser.newContext({ ...device, userAgent: (device.userAgent || '') + ' WizeLife-QA/1.0' });
         const page = await ctx.newPage();
         try {
             const t0 = Date.now();
@@ -169,7 +177,7 @@ async function tier7_Viewports(browser, t) {
 async function tier10_I18n(browser, t) {
     const langs = ['he', 'en', 'pt', 'es'];
     const out = {};
-    const ctx = await browser.newContext();
+    const ctx = await browser.newContext(ctxOpts());
     for (const lang of langs) {
         const page = await ctx.newPage();
         try {
@@ -191,7 +199,7 @@ async function tier10_I18n(browser, t) {
 // ──────────────────────────────────────────────────────────────────────────────
 async function tier8_CrossAppSSO(browser) {
     // Set wl_token + wl_plan via URL on WizeMoney; verify Money respects it.
-    const ctx = await browser.newContext();
+    const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
         // We don't have a real SSO token here for an unauth check, so just
