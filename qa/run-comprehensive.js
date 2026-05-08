@@ -35,6 +35,23 @@ function ctxOpts(extra = {}) {
     return { userAgent: QA_UA, ...extra };
 }
 
+// Wait through Cloudflare/Vercel bot-challenge interstitials. Real browsers
+// pass these automatically — we just need to give the page time to redirect.
+async function gotoRealPage(page, url, opts = {}) {
+    const resp = await page.goto(url, { waitUntil: 'load', timeout: 30000, ...opts });
+    // Detect CF/Vercel challenge titles and wait for the real page to load
+    let title = await page.title().catch(() => '');
+    let attempts = 0;
+    while (/just a moment|verifying|checking|cloudflare/i.test(title) && attempts < 3) {
+        try {
+            await page.waitForLoadState('networkidle', { timeout: 15000 });
+        } catch {}
+        title = await page.title().catch(() => '');
+        attempts++;
+    }
+    return resp;
+}
+
 const VIEWPORTS = {
     'mobile':  devices['iPhone 13'],
     'tablet':  devices['iPad Pro 11'],
@@ -74,7 +91,7 @@ async function tier1_HealthCheck(browser, t) {
     const t0 = Date.now();
     let resp, body = '';
     try {
-        resp = await page.goto(t.url, { waitUntil: 'load', timeout: 30000 });
+        resp = await gotoRealPage(page, t.url);
         body = await page.content();
     } catch (e) {
         await ctx.close();
@@ -97,7 +114,7 @@ async function tier4_Accessibility(browser, t) {
     const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
-        await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
+        await gotoRealPage(page, t.url, { waitUntil: "domcontentloaded", timeout: 25000 });
         const results = await new AxeBuilder({ page }).analyze();
         await ctx.close();
         const critical = results.violations.filter(v => v.impact === 'critical' || v.impact === 'serious');
@@ -109,7 +126,7 @@ async function tier5_SEO(browser, t) {
     const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
-        await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
+        await gotoRealPage(page, t.url, { waitUntil: "domcontentloaded", timeout: 25000 });
         const meta = await page.evaluate(() => ({
             title: document.title,
             description: document.querySelector('meta[name=description]')?.content || '',
@@ -131,7 +148,7 @@ async function tier6_PWA(browser, t) {
     const ctx = await browser.newContext(ctxOpts());
     const page = await ctx.newPage();
     try {
-        await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
+        await gotoRealPage(page, t.url, { waitUntil: "domcontentloaded", timeout: 25000 });
         const pwa = await page.evaluate(async () => {
             const manifest = document.querySelector('link[rel=manifest]')?.href;
             let manifestData = null;
@@ -163,7 +180,7 @@ async function tier7_Viewports(browser, t) {
         const page = await ctx.newPage();
         try {
             const t0 = Date.now();
-            await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
+            await gotoRealPage(page, t.url, { waitUntil: "domcontentloaded", timeout: 25000 });
             const ms = Date.now() - t0;
             // Check for horizontal scroll (a sign of broken responsive layout)
             const hScroll = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
