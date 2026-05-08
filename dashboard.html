@@ -505,10 +505,7 @@ function renderPlan(plan, user) {
             `<span style="color:#f59e0b;font-size:0.9rem;font-weight:600;">⚡ YOLO — Maximum power active</span>`;
         document.getElementById("subContent").innerHTML = `
             <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#f59e0b;">Active</span></div>
-            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">YOLO — $9.99/mo</span></div>
-            <div style="margin-top:16px;">
-                <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
-            </div>`;
+            <div class="info-row"><span class="info-label">Plan</span><span class="info-value">YOLO — $9.99/mo</span></div>`;
     } else if (isPro) {
         const navBtn = document.getElementById("navUpgradeBtn");
         navBtn.style.display = "";
@@ -522,10 +519,7 @@ function renderPlan(plan, user) {
             <a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-top:16px;background:linear-gradient(135deg,#f59e0b,#ef4444);">
                 ⚡ Upgrade to YOLO — $9.99/mo
             </a>
-            ${codeRow}
-            <div style="margin-top:12px;">
-                <button class="btn-danger" onclick="manageSubscription()">Cancel Subscription</button>
-            </div>`;
+            ${codeRow}`;
     } else {
         const navBtn = document.getElementById("navUpgradeBtn");
         navBtn.style.display = "";
