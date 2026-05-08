@@ -401,6 +401,8 @@ requireAuth("auth.html").then(async (user) => {
         const doc = await wlDb.collection("users").doc(user.uid).get();
         if (doc.exists && doc.data().nickname) nick = doc.data().nickname;
     } catch(e) {}
+    // First name only — "John Doe" → "John"
+    if (nick && /\s/.test(nick)) nick = nick.split(/\s+/)[0];
     localStorage.setItem("wl_nickname", nick);
 
     // Nav

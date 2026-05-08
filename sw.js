@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v9';
+const CACHE = 'wizelife-v10';
 const SHELL = [
   '/dashboard.html',
   '/auth.html',
