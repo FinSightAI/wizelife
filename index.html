@@ -590,11 +590,21 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
     5 AI tools · one account · live now
   </div>
 
-  <h1>
-    Make every<br>
-    <span class="gradient-text">smart decision</span><br>
-    with AI.
+  <div style="font-family:'Plus Jakarta Sans',Inter,sans-serif;font-size:clamp(48px,9vw,86px);font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:18px;color:#eef2ff;animation:fadeUp .5s ease both;">
+    Wize<span class="wize-life-grad">Life</span>
+  </div>
+  <h1 style="font-size:clamp(2rem,5vw,3.4rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:30px;max-width:860px;animation:fadeUp .7s .15s ease both;">
+    Make every <span class="gradient-text">smart decision</span> with AI.
   </h1>
+  <style>
+    .wize-life-grad{
+      background:linear-gradient(120deg,#6366f1 0%,#8b5cf6 30%,#a78bfa 50%,#c084fc 75%,#6366f1 100%);
+      background-size:200% 200%;
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      animation:wize-life-shift 8s ease infinite;
+    }
+    @keyframes wize-life-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  </style>
   <p class="hero-sub" style="display:none;">Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.</p>
   <div class="hero-btns">
     <a href="auth.html" class="btn-primary">Start free →</a>
