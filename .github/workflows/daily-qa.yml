@@ -113,10 +113,12 @@ jobs:
           e2e_fails=$(cat /tmp/e2e-fails 2>/dev/null || echo 0)
           total=$((comp_fails + e2e_fails))
           echo "fails=$total" >> $GITHUB_OUTPUT
+          # Use a unique random delimiter so a stray 'EOF' inside the report doesn't break the heredoc
+          DELIM="GH_QA_REPORT_$(date +%s)_$RANDOM"
           {
-            echo "body<<EOF"
+            echo "body<<$DELIM"
             cat combined-report.md
-            echo "EOF"
+            echo "$DELIM"
           } >> $GITHUB_OUTPUT
 
       - name: Upload artifact
