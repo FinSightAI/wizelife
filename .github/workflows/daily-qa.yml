@@ -1,13 +1,8 @@
 name: Daily QA — All Apps
 
-# Runs every day at 06:00 UTC. Comprehensive checks across all 5
-# WizeLife apps + landing pages:
-#   Tier 1 — HTTP, JS console errors, broken assets, security headers,
-#            SSL expiry, i18n coverage
-#   Tier 2 — Lighthouse (perf/a11y/best-practices/SEO), PWA, visual diff
-#   Tier 3 — Auth flow E2E (skipped unless QA_EMAIL/QA_PASSWORD secrets)
-# Results post to a rolling 'Daily QA Status' issue. Failures open a
-# high-priority alert issue → GitHub emails you (no Gmail app password).
+# Comprehensive 13-tier QA suite + E2E flows. Runs daily at 06:00 UTC.
+# Posts results to a rolling 'Daily QA Status' issue. Failures open
+# a high-priority alert issue → GitHub emails you (no Gmail App Pass).
 
 on:
   schedule:
@@ -20,7 +15,7 @@ jobs:
     permissions:
       issues: write
       contents: read
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,12 +25,16 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Playwright + tools
+      - name: Install Playwright + axe-core + Lighthouse
         run: |
-          npm install --no-save --prefix /tmp/qa-deps \
+          mkdir -p /tmp/qa-deps
+          cd /tmp/qa-deps
+          npm init -y > /dev/null
+          npm install --no-save \
             playwright@1.45.0 \
+            @axe-core/playwright@4.9.0 \
             @lhci/cli@0.13.0
-          npx --prefix /tmp/qa-deps playwright install chromium --with-deps
+          npx playwright install chromium --with-deps
 
       - name: Wake sleeping services
         run: |
@@ -47,232 +46,73 @@ jobs:
             done
           done
 
-      # ────────────────────────────────────────────────────────────────
-      # TIER 1: HTTP + console errors + broken assets + security + SSL + i18n
-      # ────────────────────────────────────────────────────────────────
-      - name: Tier 1 — HTTP, console errors, broken assets, headers, SSL, i18n
-        id: tier1
+      - name: Tier 1-12 — Comprehensive checks
+        id: comp
         env:
           NODE_PATH: /tmp/qa-deps/node_modules
         run: |
-          node --experimental-modules - <<'JS' > tier1-report.md
-          const { chromium } = require('playwright');
-          const https = require('https');
-          const tls = require('tls');
+          node qa/run-comprehensive.js
+          echo "fails=$(cat /tmp/total-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
 
-          const targets = [
-              { name: "WizeLife (landing)",   url: "https://wizelife.ai/",                   marker: "wizelife" },
-              { name: "WizeLife (auth)",      url: "https://wizelife.ai/auth.html",          marker: "sign" },
-              { name: "WizeLife (dashboard)", url: "https://wizelife.ai/dashboard.html",     marker: "dashboard" },
-              { name: "WizeLife (feedback)",  url: "https://wizelife.ai/feedback.html",      marker: "feedback" },
-              { name: "WizeMoney",            url: "https://finsightai.github.io/finsight/", marker: "wizemoney" },
-              { name: "WizeTax",              url: "https://tax.wizelife.ai/advisor",        marker: "wizetax" },
-              { name: "WizeTravel",           url: "https://nodedai.streamlit.app/",         marker: "stream" },
-              { name: "WizeHealth",           url: "https://vitara.onrender.com/",           marker: "wizehealth" },
-              { name: "WizeDeal",             url: "https://check-deal.vercel.app/",         marker: "wizedeal" },
-          ];
-
-          const SECURITY_HEADERS = ['strict-transport-security', 'x-content-type-options', 'x-frame-options'];
-
-          // ── SSL expiry check ──
-          function checkSSL(host) {
-              return new Promise(resolve => {
-                  const sock = tls.connect({ host, port: 443, servername: host, timeout: 10000 }, () => {
-                      const cert = sock.getPeerCertificate();
-                      sock.end();
-                      if (!cert || !cert.valid_to) return resolve({ ok: false, days: null });
-                      const days = Math.floor((new Date(cert.valid_to) - Date.now()) / 86400000);
-                      resolve({ ok: days > 14, days, expires: cert.valid_to });
-                  });
-                  sock.on('error', () => resolve({ ok: false, days: null }));
-                  sock.on('timeout', () => { sock.destroy(); resolve({ ok: false, days: null }); });
-              });
-          }
-
-          // ── i18n: check that the same key isn't always Hebrew (binary lang) ──
-          // Heuristic: pages should serve Hebrew when ?wl_lang=he, English when ?wl_lang=en.
-          // We just check that the lang attr / dir is reactive.
-          async function i18nCheck(page, url) {
-              const issues = [];
-              for (const lang of ['he', 'en', 'pt', 'es']) {
-                  try {
-                      await page.goto(url + (url.includes('?') ? '&' : '?') + `wl_lang=${lang}`, { waitUntil: 'domcontentloaded', timeout: 25000 });
-                      const html = await page.evaluate(() => ({ lang: document.documentElement.lang, dir: document.documentElement.dir }));
-                      // If lang isn't applied at all, that's a miss. Tolerant — only flag truly absent.
-                  } catch (e) {}
-              }
-              return issues;
-          }
-
-          (async () => {
-              const browser = await chromium.launch();
-              const ctx = await browser.newContext({ ignoreHTTPSErrors: false, userAgent: 'WizeLife-QA/1.0' });
-              const sections = ['# Tier 1 — Health, Console, Assets, Security, SSL\n'];
-              let fails = 0;
-
-              for (const t of targets) {
-                  const page = await ctx.newPage();
-                  const consoleErrors = [];
-                  const failedReqs = [];
-                  page.on('pageerror', e => consoleErrors.push(`pageerror: ${e.message}`.slice(0, 160)));
-                  page.on('console', m => { if (m.type() === 'error') consoleErrors.push(`console: ${m.text()}`.slice(0, 160)); });
-                  page.on('requestfailed', r => failedReqs.push(`${r.url()} → ${r.failure()?.errorText}`.slice(0, 160)));
-                  page.on('response', r => { if (r.status() >= 400) failedReqs.push(`${r.url()} → ${r.status()}`.slice(0, 160)); });
-
-                  const t0 = Date.now();
-                  let httpOk = false, headers = {}, bodyText = '';
-                  try {
-                      const resp = await page.goto(t.url, { waitUntil: 'load', timeout: 30000 });
-                      const ms = Date.now() - t0;
-                      httpOk = resp && resp.ok();
-                      headers = resp ? resp.headers() : {};
-                      bodyText = await page.content();
-                      const markerOk = !t.marker || bodyText.toLowerCase().includes(t.marker.toLowerCase());
-                      const host = new URL(t.url).hostname;
-                      const ssl = await checkSSL(host);
-                      const missingHeaders = SECURITY_HEADERS.filter(h => !headers[h]);
-
-                      let status = (httpOk && markerOk) ? '✅' : '⚠️';
-                      if (!httpOk || !markerOk) fails++;
-                      if (consoleErrors.length > 3) { status = '⚠️'; fails++; }
-                      if (failedReqs.length > 0) { if (status === '✅') status = '⚠️'; }
-                      if (!ssl.ok) { fails++; status = '🚨'; }
-
-                      sections.push(`## ${status} ${t.name}`);
-                      sections.push(`- HTTP: ${resp?.status() || 'ERR'} • ${ms}ms • marker '${t.marker}' ${markerOk ? '✓' : '✗'}`);
-                      sections.push(`- SSL: ${ssl.days != null ? `${ssl.days} days left (expires ${ssl.expires})` : 'unknown'}`);
-                      sections.push(`- Security headers missing: ${missingHeaders.length ? missingHeaders.join(', ') : 'none ✓'}`);
-                      sections.push(`- Console errors: ${consoleErrors.length}`);
-                      if (consoleErrors.length) consoleErrors.slice(0,3).forEach(e => sections.push(`  - \`${e}\``));
-                      sections.push(`- Failed requests: ${failedReqs.length}`);
-                      if (failedReqs.length) failedReqs.slice(0,3).forEach(e => sections.push(`  - \`${e}\``));
-                      sections.push('');
-                  } catch (e) {
-                      fails++;
-                      sections.push(`## ❌ ${t.name}`);
-                      sections.push(`- Error: ${e.message}`);
-                      sections.push('');
-                  }
-                  await page.close();
-              }
-
-              await browser.close();
-              process.stdout.write(sections.join('\n'));
-              require('fs').writeFileSync('/tmp/tier1-fails', String(fails));
-          })();
-          JS
-          echo "fails=$(cat /tmp/tier1-fails)" >> $GITHUB_OUTPUT
-
-      # ────────────────────────────────────────────────────────────────
-      # TIER 2: Lighthouse (perf/a11y/best-practices/SEO) on key pages
-      # ────────────────────────────────────────────────────────────────
-      - name: Tier 2 — Lighthouse on key pages
-        id: tier2
+      - name: Lighthouse on key pages
+        id: lh
         env:
           NODE_PATH: /tmp/qa-deps/node_modules
         continue-on-error: true
         run: |
-          node - <<'JS' > tier2-report.md
-          const { execFileSync } = require('child_process');
-          const fs = require('fs');
+          mkdir -p /tmp/lh
+          {
+            echo '## Tier 2 — Lighthouse'
+            echo ''
+            echo '| Page | Performance | Accessibility | Best Practices | SEO |'
+            echo '|---|---|---|---|---|'
+          } > lighthouse-report.md
+          for url in 'https://wizelife.ai/' 'https://wizelife.ai/auth.html' 'https://finsightai.github.io/finsight/' 'https://check-deal.vercel.app/'; do
+            name=$(echo "$url" | sed 's|https://||;s|/|·|g')
+            timeout 90 npx --prefix /tmp/qa-deps lighthouse "$url" \
+              --only-categories=performance,accessibility,best-practices,seo \
+              --chrome-flags="--headless --no-sandbox --disable-gpu" \
+              --output=json --output-path=/tmp/lh/r.json --quiet 2>/dev/null || true
+            if [ -f /tmp/lh/r.json ]; then
+              p=$(node -p "Math.round((require('/tmp/lh/r.json').categories.performance?.score||0)*100)")
+              a=$(node -p "Math.round((require('/tmp/lh/r.json').categories.accessibility?.score||0)*100)")
+              b=$(node -p "Math.round((require('/tmp/lh/r.json').categories['best-practices']?.score||0)*100)")
+              s=$(node -p "Math.round((require('/tmp/lh/r.json').categories.seo?.score||0)*100)")
+              echo "| $name | $p | $a | $b | $s |" >> lighthouse-report.md
+              rm -f /tmp/lh/r.json
+            else
+              echo "| $name | err | err | err | err |" >> lighthouse-report.md
+            fi
+          done
 
-          const pages = [
-              { name: 'WizeLife landing', url: 'https://wizelife.ai/' },
-              { name: 'WizeLife auth',    url: 'https://wizelife.ai/auth.html' },
-              { name: 'WizeMoney',        url: 'https://finsightai.github.io/finsight/' },
-              { name: 'WizeDeal',         url: 'https://check-deal.vercel.app/' },
-          ];
-
-          const out = ['# Tier 2 — Lighthouse (key pages only)\n'];
-          out.push('| Page | Performance | Accessibility | Best Practices | SEO |');
-          out.push('|---|---|---|---|---|');
-
-          for (const p of pages) {
-              try {
-                  const json = execFileSync('npx', ['--prefix', '/tmp/qa-deps', 'lhci', 'collect',
-                      `--url=${p.url}`, '--numberOfRuns=1', '--settings.preset=desktop',
-                      '--settings.chromeFlags=--no-sandbox', '--upload.target=filesystem',
-                      '--upload.outputDir=/tmp/lh', '--collect.staticDistDir='], { encoding: 'utf8', stdio: ['ignore','pipe','pipe'], timeout: 120000 });
-                  // Read the most recent report
-                  const files = fs.readdirSync('/tmp/lh').filter(f => f.endsWith('.json'));
-                  if (!files.length) throw new Error('no report');
-                  const latest = files.map(f => ({f, t: fs.statSync('/tmp/lh/'+f).mtimeMs})).sort((a,b)=>b.t-a.t)[0].f;
-                  const r = JSON.parse(fs.readFileSync('/tmp/lh/'+latest, 'utf8'));
-                  const c = r.categories;
-                  const score = (n) => n != null ? Math.round(n * 100) : 'N/A';
-                  out.push(`| ${p.name} | ${score(c.performance?.score)} | ${score(c.accessibility?.score)} | ${score(c['best-practices']?.score)} | ${score(c.seo?.score)} |`);
-                  fs.unlinkSync('/tmp/lh/'+latest);
-              } catch (e) {
-                  out.push(`| ${p.name} | err | err | err | err |`);
-              }
-          }
-          process.stdout.write(out.join('\n'));
-          JS
-
-      # ────────────────────────────────────────────────────────────────
-      # TIER 3: Auth flow E2E (skipped if no QA secrets)
-      # ────────────────────────────────────────────────────────────────
-      - name: Tier 3 — Auth flow E2E
-        id: tier3
+      - name: E2E flows (Tier 14)
+        id: e2e
         env:
           NODE_PATH: /tmp/qa-deps/node_modules
           QA_EMAIL: ${{ secrets.QA_EMAIL }}
           QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
         continue-on-error: true
         run: |
-          if [ -z "$QA_EMAIL" ] || [ -z "$QA_PASSWORD" ]; then
-            echo "# Tier 3 — Auth flow E2E\n\n_skipped — QA_EMAIL/QA_PASSWORD secrets not set_" > tier3-report.md
-            exit 0
-          fi
-          node - <<'JS' > tier3-report.md
-          const { chromium } = require('playwright');
-          (async () => {
-              const browser = await chromium.launch();
-              const ctx = await browser.newContext();
-              const page = await ctx.newPage();
-              const out = ['# Tier 3 — Auth flow E2E'];
-              try {
-                  await page.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
-                  // Switch to login tab if needed; fill email/password
-                  await page.fill('input[type=email]', process.env.QA_EMAIL).catch(()=>{});
-                  await page.fill('input[type=password]', process.env.QA_PASSWORD).catch(()=>{});
-                  // Best-effort click the email-login button
-                  const btn = page.locator('button:has-text("Sign in"), button:has-text("Login"), button:has-text("התחבר"), button:has-text("Entrar"), button#loginBtn').first();
-                  await btn.click({ timeout: 5000 }).catch(()=>{});
-                  // Wait for either dashboard URL or error
-                  await page.waitForURL(/dashboard\.html/, { timeout: 15000 }).catch(()=>{});
-                  const finalUrl = page.url();
-                  if (finalUrl.includes('dashboard')) {
-                      out.push(`- ✅ logged in successfully → ${finalUrl}`);
-                  } else {
-                      out.push(`- ❌ did not reach dashboard. Final URL: ${finalUrl}`);
-                  }
-              } catch (e) {
-                  out.push(`- ❌ error: ${e.message.slice(0,200)}`);
-              }
-              await browser.close();
-              process.stdout.write(out.join('\n'));
-          })();
-          JS
+          node qa/run-e2e.js
+          echo "fails=$(cat /tmp/e2e-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
 
-      # ────────────────────────────────────────────────────────────────
-      # Combine reports
-      # ────────────────────────────────────────────────────────────────
-      - name: Build combined report
+      - name: Combine reports
         id: combine
         run: |
           ts=$(date -u +"%Y-%m-%d %H:%M UTC")
           {
             echo "## 📊 Daily QA — $ts"
             echo ""
-            cat tier1-report.md 2>/dev/null || echo '_tier1 missing_'
+            cat comprehensive-report.md 2>/dev/null || echo '_comprehensive missing_'
             echo ""
-            cat tier2-report.md 2>/dev/null || echo '_tier2 missing_'
+            cat lighthouse-report.md 2>/dev/null || echo '_lighthouse missing_'
             echo ""
-            cat tier3-report.md 2>/dev/null || echo '_tier3 missing_'
+            cat e2e-report.md 2>/dev/null || echo '_e2e missing_'
           } > combined-report.md
-          fails=$(cat /tmp/tier1-fails 2>/dev/null || echo 0)
-          echo "fails=$fails" >> $GITHUB_OUTPUT
+          comp_fails=$(cat /tmp/total-fails 2>/dev/null || echo 0)
+          e2e_fails=$(cat /tmp/e2e-fails 2>/dev/null || echo 0)
+          total=$((comp_fails + e2e_fails))
+          echo "fails=$total" >> $GITHUB_OUTPUT
           {
             echo "body<<EOF"
             cat combined-report.md
@@ -285,9 +125,9 @@ jobs:
           name: qa-report-${{ github.run_id }}
           path: |
             combined-report.md
-            tier1-report.md
-            tier2-report.md
-            tier3-report.md
+            comprehensive-report.md
+            lighthouse-report.md
+            e2e-report.md
           retention-days: 30
 
       - name: Comment on rolling QA status issue
@@ -311,7 +151,7 @@ jobs:
               const { data: created } = await github.rest.issues.create({
                 owner: context.repo.owner, repo: context.repo.repo,
                 title,
-                body: 'Rolling daily QA status — comprehensive 3-tier checks. Each run appends a comment below.',
+                body: 'Rolling QA status — 13-tier comprehensive checks + E2E flows. Each run appends a comment.',
                 labels: ['qa-rolling'],
               });
               issue = created;
@@ -326,14 +166,14 @@ jobs:
             if (fails > 0) {
               await github.rest.issues.create({
                 owner: context.repo.owner, repo: context.repo.repo,
-                title: `🚨 QA failures — ${new Date().toISOString().slice(0,10)} (${fails} tier-1 failing)`,
-                body: body + '\n\n> Auto-opened by Daily QA workflow. Reply with what to fix.',
+                title: `🚨 QA failures — ${new Date().toISOString().slice(0,10)} (${fails} failing)`,
+                body: body + '\n\n> Auto-opened. Reply with what to fix.',
                 labels: ['qa-alert', 'bug'],
               });
             }
 
-      - name: Fail workflow if tier-1 failed
+      - name: Fail workflow if anything failed
         if: steps.combine.outputs.fails != '0'
         run: |
-          echo "Tier 1 failures: ${{ steps.combine.outputs.fails }}"
+          echo "Total failures: ${{ steps.combine.outputs.fails }}"
           exit 1
