@@ -168,8 +168,9 @@ jobs:
               await github.rest.issues.create({
                 owner: context.repo.owner, repo: context.repo.repo,
                 title: `🚨 QA failures — ${new Date().toISOString().slice(0,10)} (${fails} failing)`,
-                body: body + '\n\n> Auto-opened. Reply with what to fix.',
+                body: '@FinSightAI — daily QA detected issues:\n\n' + body + '\n\n> Auto-opened. Reply with what to fix.',
                 labels: ['qa-alert', 'bug'],
+                assignees: ['FinSightAI'],
               });
             }
 
