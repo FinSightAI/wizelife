@@ -356,21 +356,26 @@
       await _finishGoogleAuth(cred);
     } catch (e) {
       console.error("Google login failed:", e);
-      // Show real Firebase error code so user can act / report
+      // Always include the raw error code so we can diagnose unknown failures
       const code = e.code || "unknown";
-      const msg = (
-        code === "auth/popup-blocked"           ? "הדפדפן חסם את החלון. אפשר Google sign-in דרך redirect?" :
-        code === "auth/popup-closed-by-user"    ? "ביטלת את ההתחברות. נסה שוב." :
-        code === "auth/unauthorized-domain"     ? "הדומיין הזה לא מורשה ב-Firebase. כתוב לתמיכה." :
-        code === "auth/operation-not-allowed"   ? "Google sign-in לא מופעל ב-Firebase Console." :
-        code === "auth/network-request-failed"  ? "תקלת רשת. בדוק חיבור אינטרנט." :
-        friendlyError(code) || ("שגיאה: " + code)
+      const reason = (
+        code === "auth/popup-blocked"           ? "הדפדפן חסם את החלון" :
+        code === "auth/popup-closed-by-user"    ? "ביטלת את ההתחברות" :
+        code === "auth/unauthorized-domain"     ? "הדומיין הזה לא מורשה ב-Firebase" :
+        code === "auth/operation-not-allowed"   ? "Google sign-in לא מופעל ב-Firebase Console" :
+        code === "auth/network-request-failed"  ? "תקלת רשת. בדוק חיבור אינטרנט" :
+        code === "auth/cancelled-popup-request" ? "Popup קודם בוטל. רענן ונסה שוב" :
+        code === "auth/internal-error"          ? "שגיאה פנימית של Firebase" :
+        code === "auth/account-exists-with-different-credential" ? "כבר נרשמת עם email/password באימייל הזה" :
+        (e.message || "שגיאה לא ידועה")
       );
+      // Always show the code at the end — copy-paste this when reporting
+      const fullMsg = `${reason}\n\nקוד שגיאה: ${code}\n\nצלם והעבר ל-hi@wizelife.ai אם זה ממשיך`;
       // Auto-fallback: on popup-blocked, try redirect
       if (code === "auth/popup-blocked") {
         try { await wlAuth.signInWithRedirect(googleProvider); return; } catch {}
       }
-      alert(msg);
+      alert(fullMsg);
     }
   }
 
