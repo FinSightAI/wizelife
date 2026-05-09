@@ -18,11 +18,18 @@
   function detectApp() {
     var h = (location.host || '').toLowerCase();
     var p = (location.pathname || '').toLowerCase();
+    // Match canonical *.wizelife.ai subdomains first
+    if (h.indexOf('money.wizelife')  >= 0) return 'money';
+    if (h.indexOf('tax.wizelife')    >= 0) return 'tax';
+    if (h.indexOf('health.wizelife') >= 0) return 'health';
+    if (h.indexOf('travel.wizelife') >= 0) return 'travel';
+    if (h.indexOf('deal.wizelife')   >= 0) return 'deal';
+    // Underlying deployment hosts
     if (h.indexOf('finsightai.github.io') >= 0 && p.indexOf('/finsight') >= 0) return 'money';
-    if (h.indexOf('mastermove') >= 0 || h.indexOf('tax.wizelife') >= 0) return 'tax';
-    if (h.indexOf('vitara') >= 0 || h.indexOf('rambam') >= 0 || h.indexOf('health.wizelife') >= 0) return 'health';
-    if (h.indexOf('streamlit') >= 0 || h.indexOf('wizetravel') >= 0 || h.indexOf('travel.wizelife') >= 0 || h.indexOf('mega-traveller') >= 0) return 'travel';
-    if (h.indexOf('check-deal') >= 0 || h.indexOf('wizedeal') >= 0 || h.indexOf('deal.wizelife') >= 0) return 'deal';
+    if (h.indexOf('mastermove') >= 0) return 'tax';
+    if (h.indexOf('vitara') >= 0 || h.indexOf('rambam') >= 0) return 'health';
+    if (h.indexOf('streamlit') >= 0 || h.indexOf('wizetravel') >= 0 || h.indexOf('mega-traveller') >= 0) return 'travel';
+    if (h.indexOf('check-deal') >= 0 || h.indexOf('wizedeal') >= 0) return 'deal';
     return 'portal'; // wizelife.ai itself
   }
 
@@ -60,12 +67,15 @@
 
   /* Per-app default item sets. Each app gets a 4–5 item internal nav. */
   var APP_NAVS = {
+    /* WizeMoney items — links use '%BASE%' which is replaced with the right
+       prefix at render time ('/' on money.wizelife.ai, '/finsight/' on
+       finsightai.github.io/finsight/). */
     money: [
-      { icon:'home',   key:'home',   href:'/finsight/index.html',           label:{he:'בית',     en:'Home',    pt:'Início',  es:'Inicio'} },
-      { icon:'chart',  key:'stocks', href:'/finsight/pages/stocks.html',     label:{he:'מניות',   en:'Stocks',  pt:'Ações',   es:'Bolsa'  } },
-      { icon:'target', key:'goals',  href:'/finsight/pages/goals.html',      label:{he:'יעדים',   en:'Goals',   pt:'Metas',   es:'Metas'  } },
-      { icon:'family', key:'family', href:'/finsight/pages/family.html',     label:{he:'משפחה',   en:'Family',  pt:'Família', es:'Familia'} },
-      { icon:'user',   key:'profile',href:'/finsight/pages/preferences.html',label:{he:'פרופיל',  en:'Profile', pt:'Perfil',  es:'Perfil' } }
+      { icon:'home',   key:'home',   href:'%BASE%index.html',            label:{he:'בית',    en:'Home',    pt:'Início',  es:'Inicio'} },
+      { icon:'chart',  key:'stocks', href:'%BASE%pages/stocks.html',     label:{he:'מניות',  en:'Stocks',  pt:'Ações',   es:'Bolsa'  } },
+      { icon:'target', key:'goals',  href:'%BASE%pages/goals.html',      label:{he:'יעדים',  en:'Goals',   pt:'Metas',   es:'Metas'  } },
+      { icon:'family', key:'family', href:'%BASE%pages/family.html',     label:{he:'משפחה', en:'Family',  pt:'Família', es:'Familia'} },
+      { icon:'user',   key:'profile',href:'%BASE%pages/preferences.html',label:{he:'פרופיל', en:'Profile', pt:'Perfil',  es:'Perfil' } }
     ],
     tax: [
       { icon:'home',  key:'home',    href:'/',         label:{he:'בית',    en:'Home',     pt:'Início',  es:'Inicio'  } },
@@ -169,6 +179,13 @@
               ? window.WIZE_APP_NAV
               : APP_NAVS[appId];
     if (!items || !items.length) return;
+    /* Resolve %BASE% in WizeMoney links — '/finsight/' on GitHub Pages,
+       '/' on the canonical money.wizelife.ai subdomain. */
+    var base = (location.host.indexOf('finsightai.github.io') >= 0) ? '/finsight/' : '/';
+    items = items.map(function (it) {
+      if (!it.href || it.href.indexOf('%BASE%') < 0) return it;
+      return Object.assign({}, it, { href: it.href.replace('%BASE%', base) });
+    });
     injectStyle();
     var lang = getLang();
     var nav = document.createElement('nav');

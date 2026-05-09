@@ -21,11 +21,18 @@
 
   function detectApp() {
     var h = (location.host || '').toLowerCase();
-    if (h.indexOf('finsightai.github.io') >= 0 || h.indexOf('money.wizelife') >= 0) return 'money';
-    if (h.indexOf('mastermove') >= 0 || h.indexOf('tax.wizelife') >= 0) return 'tax';
-    if (h.indexOf('vitara') >= 0 || h.indexOf('rambam') >= 0 || h.indexOf('health.wizelife') >= 0) return 'health';
-    if (h.indexOf('streamlit') >= 0 || h.indexOf('wizetravel') >= 0 || h.indexOf('travel.wizelife') >= 0) return 'travel';
-    if (h.indexOf('check-deal') >= 0 || h.indexOf('deal.wizelife') >= 0) return 'deal';
+    // Canonical *.wizelife.ai subdomains
+    if (h.indexOf('money.wizelife')  >= 0) return 'money';
+    if (h.indexOf('tax.wizelife')    >= 0) return 'tax';
+    if (h.indexOf('health.wizelife') >= 0) return 'health';
+    if (h.indexOf('travel.wizelife') >= 0) return 'travel';
+    if (h.indexOf('deal.wizelife')   >= 0) return 'deal';
+    // Direct deployment hosts
+    if (h.indexOf('finsightai.github.io') >= 0) return 'money';
+    if (h.indexOf('mastermove') >= 0) return 'tax';
+    if (h.indexOf('vitara') >= 0 || h.indexOf('rambam') >= 0) return 'health';
+    if (h.indexOf('streamlit') >= 0 || h.indexOf('wizetravel') >= 0) return 'travel';
+    if (h.indexOf('check-deal') >= 0) return 'deal';
     return 'portal';
   }
 
@@ -115,11 +122,20 @@
     var cur = detectApp();
     var sso = getSso();
 
-    /* Hamburger button */
+    /* Hamburger button — pin opposite the WizeLife brand (RTL→left, LTR→right). */
     var btn = document.createElement('button');
     btn.id = 'wize-ham-btn';
     btn.setAttribute('aria-label', t.menu);
     btn.innerHTML = '☰';
+    function applyBtnSide() {
+      var rtl = (document.documentElement.dir === 'rtl') ||
+                ((document.documentElement.lang || '').toLowerCase().indexOf('he') === 0) ||
+                getLang() === 'he';
+      btn.style.right = rtl ? 'auto' : '10px';
+      btn.style.left  = rtl ? '10px' : 'auto';
+    }
+    applyBtnSide();
+    window.addEventListener('languagechange', applyBtnSide);
 
     /* Backdrop */
     var ov = document.createElement('div');

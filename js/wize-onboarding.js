@@ -166,6 +166,13 @@
     if (explicit && COPY[explicit]) return explicit;
     var h = (location.host || '').toLowerCase();
     var p = (location.pathname || '').toLowerCase();
+    // wizelife.ai subdomains (canonical entry points)
+    if (h.indexOf('money.wizelife') === 0 || h.indexOf('money.wizelife') > 0) return 'money';
+    if (h.indexOf('tax.wizelife') >= 0)    return 'tax';
+    if (h.indexOf('health.wizelife') >= 0) return 'health';
+    if (h.indexOf('travel.wizelife') >= 0) return 'travel';
+    if (h.indexOf('deal.wizelife') >= 0)   return 'deal';
+    // Underlying hosts (in case user goes direct)
     if (h.indexOf('finsightai.github.io') >= 0 && p.indexOf('/finsight') >= 0) return 'money';
     if (h.indexOf('mastermove') >= 0) return 'tax';
     if (h.indexOf('vitara') >= 0 || h.indexOf('rambam') >= 0) return 'health';
@@ -321,6 +328,9 @@
   function maybeShow() {
     var appId = detectApp();
     if (!COPY[appId]) return;
+    // The WizeLife portal itself doesn't need an onboarding — that page IS
+    // the launcher. Onboarding only fires inside the 5 sub-apps.
+    if (appId === 'portal') return;
     var key = 'wl_ob_' + appId;
     var seen;
     try { seen = localStorage.getItem(key); } catch (e) { seen = '1'; /* private mode → don't nag */ }
