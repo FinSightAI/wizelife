@@ -43,6 +43,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Dashboard — Wize Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://vitara.onrender.com" crossorigin>
+<link rel="dns-prefetch" href="https://vitara.onrender.com">
+<link rel="preconnect" href="https://master-backend-79jx.onrender.com" crossorigin>
+<link rel="dns-prefetch" href="https://master-backend-79jx.onrender.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -805,20 +809,40 @@ _swScript.src = 'js/sw-register.js';
 document.head.appendChild(_swScript);
 </script>
 <script>
-/* Pre-warm Render-hosted backends so the user doesn't hit a cold-start when
-   they tap into the app from the dashboard. Fire-and-forget, no-cors, mode safe. */
+/* Wake Render/Vercel backends as soon as the user lands on the dashboard,
+   so the cold-start finishes before they tap a tool card. */
 (function prewarmBackends(){
-  try {
-    var targets = [
-      'https://vitara.onrender.com/',          // WizeHealth (Render — sleeps after 15min idle)
-      'https://mastermove.vercel.app/api/health' // WizeTax (Vercel cold-start)
-    ];
-    setTimeout(function(){
-      targets.forEach(function(u){
-        try { fetch(u, { mode: 'no-cors', cache: 'no-cache', credentials: 'omit' }).catch(function(){}); } catch(e){}
-      });
-    }, 1500); // wait until dashboard is interactive, then warm
-  } catch(e) {}
+  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+  var TARGETS = [
+    'https://vitara.onrender.com/',                 // WizeHealth (Render free, 15min idle → spin-down)
+    'https://master-backend-79jx.onrender.com/health' // WizeTax backend (Render free)
+  ];
+  // 1) Initial warm-up shortly after the dashboard becomes interactive
+  setTimeout(function(){ TARGETS.forEach(ping); }, 1500);
+  // 2) Re-ping every 4 min while the dashboard is foregrounded (Render sleeps at 15min)
+  setInterval(function(){
+    if (document.visibilityState === 'visible') TARGETS.forEach(ping);
+  }, 4 * 60 * 1000);
+  // 3) Last-mile boost: when the user hovers/touches a Render-backed card,
+  //    ping the matching backend so the final cold start finishes by tap-time.
+  function attachHover(){
+    var map = {
+      'tool-health': 'https://vitara.onrender.com/',
+      'tool-tax':    'https://master-backend-79jx.onrender.com/health'
+    };
+    Object.keys(map).forEach(function(id){
+      var el = document.getElementById(id);
+      if (!el || el.dataset._wlWarm) return;
+      el.dataset._wlWarm = '1';
+      var fired = false;
+      function fire(){ if (fired) return; fired = true; ping(map[id]); }
+      el.addEventListener('mouseenter', fire, { passive:true, once:true });
+      el.addEventListener('touchstart', fire, { passive:true, once:true });
+      el.addEventListener('focus',      fire, { passive:true, once:true });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attachHover);
+  else attachHover();
 })();
 </script>
 <script src="js/wize-bottom-nav.js" defer></script>

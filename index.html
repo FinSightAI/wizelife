@@ -57,6 +57,13 @@ gtag('js',new Date());
 <link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Pre-warm the Render-hosted backends so they're awake by the time a user
+     taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
+     The actual wake-up GET is fired below in <script>. -->
+<link rel="preconnect" href="https://vitara.onrender.com" crossorigin>
+<link rel="dns-prefetch" href="https://vitara.onrender.com">
+<link rel="preconnect" href="https://master-backend-79jx.onrender.com" crossorigin>
+<link rel="dns-prefetch" href="https://master-backend-79jx.onrender.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -1873,5 +1880,18 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
 })();
 </script>
 <script src="/js/wize-bottom-nav.js" defer></script>
+<script>
+/* Even on the public landing page, fire a single warm-up GET to Vitara so
+   that by the time the user signs in and clicks Health, it's already up. */
+(function prewarmBackends(){
+  try {
+    setTimeout(function(){
+      ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health'].forEach(function(u){
+        try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){}
+      });
+    }, 2500);
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>

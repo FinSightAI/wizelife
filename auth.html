@@ -43,6 +43,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign In — Wize Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://vitara.onrender.com" crossorigin>
+<link rel="dns-prefetch" href="https://vitara.onrender.com">
+<link rel="preconnect" href="https://master-backend-79jx.onrender.com" crossorigin>
+<link rel="dns-prefetch" href="https://master-backend-79jx.onrender.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -498,6 +502,21 @@ function setAuthLang(v) {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setAuthLang(saved); });
   } else { setAuthLang(saved); }
+})();
+</script>
+<script>
+/* Pre-warm Render-hosted backends from auth.html too. The user is about to
+   sign in and head to the dashboard / a tool — start the wake-up now so the
+   30–60s Render cold-start finishes before they tap a card. */
+(function prewarmBackends(){
+  try {
+    var targets = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health'];
+    setTimeout(function(){
+      targets.forEach(function(u){
+        try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){}
+      });
+    }, 800);
+  } catch(e) {}
 })();
 </script>
 </body>
