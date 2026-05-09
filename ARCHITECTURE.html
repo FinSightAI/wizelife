@@ -333,7 +333,140 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 
 <hr/>
 
-<h2>11. WizeMoney internal architecture</h2>
+<h2>11. Per-app configuration matrix</h2>
+
+<h3>11.0 WizeLife (landing + portal)</h3>
+
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Production URL</td><td>https://wizelife.ai</td></tr>
+<tr><td>Hosting</td><td>GitHub Pages</td></tr>
+<tr><td>Repo</td><td><code>FinSightAI/wizelife</code></td></tr>
+<tr><td>Local path</td><td><code>TOTALIST/wizelife/</code></td></tr>
+<tr><td>Stack</td><td>Vanilla HTML/CSS/JS, Firebase Auth</td></tr>
+<tr><td>SW cache</td><td><code>wizelife-v11</code></td></tr>
+<tr><td>SW SHELL pages</td><td>index, auth, dashboard, feedback, apps, health, travel, wizetravel, tax-compare, web-apps, wize-ai, privacy, terms, 404 (15 pages)</td></tr>
+<tr><td>GA tracking ID</td><td><code>G-MPRTN6CJ9K</code></td></tr>
+<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code></td></tr>
+<tr><td>Backend</td><td>None (Firebase Auth + Firestore directly)</td></tr>
+<tr><td>AI providers</td><td>None (auth/portal only)</td></tr>
+<tr><td>Languages</td><td>he / en / pt / es</td></tr>
+<tr><td>Auto-update banner</td><td>✓ via <code>js/sw-register.js</code> (5-min poll, focus check)</td></tr>
+<tr><td>Pages</td><td>landing, auth (login/signup), dashboard (account/plan/referral), feedback (4-language form)</td></tr>
+<tr><td>Recent installs</td><td>Microsoft Clarity, smart SW auto-update, Wize&lt;Life&gt; animated brand title, mobile nav (hamburger surfaces lang/CTA), referral system + 30-day reward, ARCHITECTURE.md/.html</td></tr>
+</table>
+
+<h3>11.1 WizeMoney (FinSight)</h3>
+
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Production URL</td><td>https://finsightai.github.io/finsight/</td></tr>
+<tr><td>Hosting</td><td>GitHub Pages</td></tr>
+<tr><td>Repo</td><td><code>FinSightAI/finsight</code></td></tr>
+<tr><td>Local path</td><td><code>finance dashboard/</code></td></tr>
+<tr><td>Stack</td><td>Vanilla HTML/CSS/JS, Firebase, PWA</td></tr>
+<tr><td>SW cache</td><td><code>finsight-v235</code></td></tr>
+<tr><td>SW pages</td><td>38 internal pages (bank, credit, stocks, goals, etc.)</td></tr>
+<tr><td>GA tracking ID</td><td><code>G-DB63NWYGX5</code></td></tr>
+<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (loaded via sidebar.js → all 38 pages)</td></tr>
+<tr><td>Backend (chat)</td><td>Firebase Functions <code>aiProxy</code> (legacy, not invoked)</td></tr>
+<tr><td>Backend (advisor)</td><td><code>https://master-backend-79jx.onrender.com/api/ai-proxy</code></td></tr>
+<tr><td>AI providers</td><td>Gemini 2.5-flash-lite (via /api/ai-proxy) + Tavily web search (auto-analysis only)</td></tr>
+<tr><td>Languages</td><td>he / en / pt / es</td></tr>
+<tr><td>Auto-update banner</td><td>✓ via <code>js/app.js</code> <code>registerServiceWorker</code> (banner pattern)</td></tr>
+<tr><td>Pages</td><td>38 (dashboard, bank, credit, my-funds, stocks, stock-analytics, sectors, investment-advisor, ai-chat, ai-story, goals, simulator, tax-optimizer, pension-optimizer, compare-funds, family-dashboard, tesouro-direto, fiis, renda-fixa, etc.)</td></tr>
+<tr><td>Recent installs</td><td>Investment advisor v2 (3-market awareness IL/US/BR, 2026 tax-product limits, sanity validations, Tavily web search), neutral dark bg, sidebar cleanup (no sign-in pill, no bottom plan pill, Pro badges hidden while paywall off), first-name display, smart SW update, Clarity, sectors comparison page</td></tr>
+</table>
+
+<h3>11.2 WizeTax</h3>
+
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Production URL</td><td>https://tax.wizelife.ai</td></tr>
+<tr><td>Frontend hosting</td><td>Vercel</td></tr>
+<tr><td>Backend hosting</td><td>Render (<code>master-backend-79jx.onrender.com</code>)</td></tr>
+<tr><td>Frontend repo</td><td><code>FinSightAI/master</code>, path <code>tax master/frontend/</code></td></tr>
+<tr><td>Backend repo</td><td><code>FinSightAI/master</code>, path <code>tax master/backend/</code></td></tr>
+<tr><td>Frontend stack</td><td>Next.js 15, React 18, Tailwind</td></tr>
+<tr><td>Backend stack</td><td>FastAPI, Python 3.11, slowapi rate limit</td></tr>
+<tr><td>SW cache</td><td><code>taxmaster-v2</code> (in <code>frontend/public/sw.js</code>)</td></tr>
+<tr><td>GA tracking ID</td><td><code>G-3W9ZZ0008E</code></td></tr>
+<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (via <code>&lt;Script&gt;</code> in layout.tsx + CSP allowed)</td></tr>
+<tr><td>AI provider</td><td>Gemini 2.5-flash-lite via <code>agent/orchestrator.py</code></td></tr>
+<tr><td>Web search</td><td>Tavily (finance topic) injected before each <code>/api/chat</code> call</td></tr>
+<tr><td>Languages</td><td>he / en / pt / es</td></tr>
+<tr><td>Auto-update banner</td><td>✓ Inline in <code>layout.tsx</code></td></tr>
+<tr><td>Backend endpoints</td><td><code>/health</code>, <code>/api/chat</code> (SSE), <code>/api/ai-proxy</code>, <code>/api/analyze</code>, <code>/api/savings</code>, <code>/api/countries</code>, <code>/api/regimes</code>, <code>/api/country/{code}</code>, <code>/api/company</code>, <code>/api/israel</code>, <code>/api/tax-updates</code></td></tr>
+<tr><td>Recent installs</td><td>Wize&lt;Tax&gt; branded title (yellow gradient), AI-proxy with Tavily augmentation, gemini-2.5-flash-lite (was retired 2.0), 'Cloudflare WAF allow WizeLife-QA UA' for daily QA, sidebar cleanup, dark neutral palette, Clarity, ms-clarity CSP allowed, smart SW update banner, first-name display</td></tr>
+</table>
+
+<h3>11.3 WizeTravel</h3>
+
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Production URL</td><td>https://nodedai.streamlit.app</td></tr>
+<tr><td>Frontend hosting</td><td>Vercel (Next.js wizetravel-app) + Streamlit (mega traveller)</td></tr>
+<tr><td>Backend hosting</td><td>Render (mega traveller server.py)</td></tr>
+<tr><td>Frontend repo</td><td><code>FinSightAI/wizetravel-next</code>, path <code>wizetravel-app/</code></td></tr>
+<tr><td>Backend repo</td><td>(mega traveller, separate)</td></tr>
+<tr><td>Frontend stack</td><td>Next.js 15</td></tr>
+<tr><td>Backend stack</td><td>FastAPI + Streamlit</td></tr>
+<tr><td>SW cache</td><td>None (Streamlit doesn't use SW)</td></tr>
+<tr><td>GA tracking ID</td><td>(none configured yet)</td></tr>
+<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (via layout.tsx)</td></tr>
+<tr><td>AI provider</td><td>Gemini</td></tr>
+<tr><td>Web search</td><td>Tavily (not yet wired)</td></tr>
+<tr><td>Languages</td><td>he / en / pt / es</td></tr>
+<tr><td>Backend endpoints</td><td><code>/api/visa-check</code> (passport+destination), <code>/api/exchange-rates</code>, <code>/api/true-cost</code>, <code>/api/deal-hunter</code>, <code>/api/competitor</code>, <code>/api/rss</code>, <code>/api/hidden-city</code></td></tr>
+<tr><td>Recent installs</td><td>Wize&lt;Travel&gt; cyan animated title, neutral dark bg, visa-check field rename (passport/destination), first-name display, Clarity</td></tr>
+</table>
+
+<h3>11.4 WizeHealth (Vitara / RAMBAM)</h3>
+
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Production URL</td><td>https://vitara.onrender.com</td></tr>
+<tr><td>Hosting</td><td>Render (single Node.js service)</td></tr>
+<tr><td>Repo</td><td><code>finsightai/vitara</code></td></tr>
+<tr><td>Local path</td><td><code>RAMBAM/</code></td></tr>
+<tr><td>Stack</td><td>Express.js + Vanilla HTML/CSS/JS frontend in <code>public/</code></td></tr>
+<tr><td>SW cache</td><td><code>vitara-v4</code></td></tr>
+<tr><td>GA tracking ID</td><td>(none)</td></tr>
+<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (inline in index.html <code>&lt;head&gt;</code>)</td></tr>
+<tr><td>Backend endpoints</td><td><code>/api/chat</code> (SSE), <code>/api/auth/login</code>, <code>/api/auth/check</code>, <code>/api/config</code>, <code>/api/transcribe</code>, file upload</td></tr>
+<tr><td>AI providers</td><td>Gemini 2.5-flash-lite (default), Groq, OpenRouter (admin only)</td></tr>
+<tr><td>Plan-aware quota</td><td><code>_check_ai_quota</code> middleware — free 5/day, pro 20/day, yolo 40/day</td></tr>
+<tr><td>Auth flow</td><td>Reads <code>wl_token</code> from URL → stores in localStorage → sends <code>Authorization: Bearer</code> → server verifies via Firebase Admin → resolves plan from Firestore</td></tr>
+<tr><td>Languages</td><td>he / en / pt / es</td></tr>
+<tr><td>Auto-update banner</td><td>✓ Inline in index.html</td></tr>
+<tr><td>Pages</td><td><code>/</code> (chat), <code>/data.html</code> (vitals/blood tests/meds/symptom journal)</td></tr>
+<tr><td>Recent installs</td><td>Wize&lt;Health&gt; pink/magenta brand title, AI-provider modal hidden from end users, gemini-2.5-flash-lite (was retired 2.0), color-contrast a11y fix (--t3 #4a5568 → #94a3b8), keyboard-accessible sidebar (tabindex+aria-label), neutral dark palette, SSO recognition (reads wl_sso.token+plan on first chat), Clarity, smart SW banner (pink theme), modernized welcome (file upload CTA + redesigned cards), <strong>/data.html dashboard page</strong> with 4 tabs: Vitals (BP/sugar/weight/sleep + 30-day trend chart), Blood Tests (markers + lab+notes+attach), Meds (browser Notification reminders), Symptom Journal (5-level severity), Quick Upload (PDF/image → AI parse via chat)</td></tr>
+</table>
+
+<h3>11.5 WizeDeal (Check Deal)</h3>
+
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Production URL</td><td>https://check-deal.vercel.app/</td></tr>
+<tr><td>Hosting</td><td>Vercel (FE + API routes)</td></tr>
+<tr><td>Repo</td><td><code>finsightai/check-deal</code></td></tr>
+<tr><td>Local path</td><td><code>Check Deal/</code></td></tr>
+<tr><td>Stack</td><td>Next.js 15, React 18, Tailwind, lucide-react</td></tr>
+<tr><td>SW cache</td><td><code>checkdeal-v2</code> (in <code>public/sw.js</code>)</td></tr>
+<tr><td>GA tracking ID</td><td><code>G-6E5BE86WVT</code></td></tr>
+<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (via layout.tsx)</td></tr>
+<tr><td>Backend</td><td>Vercel API routes in <code>src/app/api/ai/*</code></td></tr>
+<tr><td>AI provider</td><td>Gemini 2.5-flash-lite (5 routes: market-data, rental-estimate, chat, parse-listing, insights)</td></tr>
+<tr><td>API routes</td><td><code>/api/ai/chat</code>, <code>/api/ai/insights</code>, <code>/api/ai/market-data</code>, <code>/api/ai/parse-listing</code>, <code>/api/ai/rental-estimate</code>, <code>/api/rental/*</code></td></tr>
+<tr><td>Languages</td><td>he / en / pt / es</td></tr>
+<tr><td>Auto-update banner</td><td>✓ Inline in <code>layout.tsx</code></td></tr>
+<tr><td>Pages</td><td>Home (dashboard-style), Wizard, Saved Deals, Comparison, Portfolio</td></tr>
+<tr><td>Recent installs</td><td>Wize&lt;Deal&gt; animated multi-color brand title, Building2 → Home icon (mobile nav), neutral dark bg (was via-blue-950), all 5 AI routes upgraded to gemini-2.5-flash-lite, Clarity, smart SW banner, first-name display, dashboard-style home (was marketing landing)</td></tr>
+</table>
+
+<hr/>
+
+<h2>12. WizeMoney internal architecture</h2>
 
 <p>WizeMoney is the most complex sub-app:</p>
 
@@ -468,6 +601,36 @@ curl -m 60 -X POST https://master-backend-79jx.onrender.com/api/ai-proxy \
 
 # Check QA issue list
 gh issue list --repo FinSightAI/wizelife --label qa-alert</code></pre>
+
+<hr/>
+
+<h2>18. Folder structure &amp; macOS iCloud caveat</h2>
+
+<pre><code>~/Desktop/Desktop - O's MacBook Air/
+├── TOTALIST/          ← meta dir (qa_agent + wizelife + CLAUDE.md)
+│   ├── wizelife/      ← repo FinSightAI/wizelife (landing/auth/dashboard/feedback)
+│   └── qa_agent/      ← local-only Playwright headless QA
+├── finance dashboard/ ← repo FinSightAI/finsight (WizeMoney, 38 pages)
+├── tax master/        ← repo FinSightAI/master (WizeTax FE+BE)
+├── Check Deal/        ← repo finsightai/check-deal (WizeDeal)
+├── RAMBAM/            ← repo finsightai/vitara (WizeHealth)
+├── wizetravel-app/    ← repo FinSightAI/wizetravel-next (WizeTravel FE)
+├── mega traveller/    ← WizeTravel backend (legacy)
+└── wizehealth/        ← WizeHealth splash redirect</code></pre>
+
+<p><strong>Why not all under TOTALIST?</strong> Each sub-app has its own git remote and was</p>
+<p>created at different times. Could be reorganized but not worth the churn —</p>
+<p>git tracks remote URLs per directory, not by parent path.</p>
+
+<p><strong>⚠️ macOS iCloud sync bug:</strong> The Desktop folder appears twice with different</p>
+<p>Unicode for the apostrophe in "O's":</p>
+<ul>
+<li><code>Desktop - O's MacBook Air/...</code> (ASCII <code>'</code>) — <strong>iCloud stub, do not edit</strong></li>
+<li><code>Desktop - O’s MacBook Air/...</code> (Unicode <code>’</code>) — <strong>real folder, all work happens here</strong></li>
+</ul>
+
+<p>Verify via inode: real folder has many entries, stub has few. Memory entry</p>
+<p>keeps Claude pointed at the right path automatically.</p>
 
 <hr/>
 
