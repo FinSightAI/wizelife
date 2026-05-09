@@ -183,12 +183,25 @@
 </script>
 </head>
 <body>
+<style>
+  /* Mobile (≤520px): swap inline 4-pill row for compact native select */
+  @media (max-width: 520px) {
+    #wl_lang_pills { display: none !important; }
+    #wl_lang_select { display: inline-block !important; }
+  }
+</style>
 <div id="wl_lang_pills" style="position:absolute;top:18px;right:18px;display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;z-index:100">
   <button class="auth-lang-pill" data-lang="he" onclick="setAuthLang('he')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="עברית">HE</button>
   <button class="auth-lang-pill" data-lang="en" onclick="setAuthLang('en')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="English">EN</button>
   <button class="auth-lang-pill" data-lang="pt" onclick="setAuthLang('pt')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="Português">PT</button>
   <button class="auth-lang-pill" data-lang="es" onclick="setAuthLang('es')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="Español">ES</button>
 </div>
+<select id="wl_lang_select" onchange="setAuthLang(this.value)" aria-label="Language" style="display:none;position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);color:#eef2ff;border-radius:8px;padding:6px 10px;font:700 12px Inter,sans-serif;cursor:pointer;z-index:100">
+  <option value="he">🇮🇱 HE</option>
+  <option value="en">🇺🇸 EN</option>
+  <option value="pt">🇧🇷 PT</option>
+  <option value="es">🇪🇸 ES</option>
+</select>
 
 <div class="card">
   <div class="logo">
@@ -460,6 +473,8 @@ function setAuthLang(v) {
     b.style.background = active ? 'rgba(99,102,241,0.18)' : 'none';
     b.style.color = active ? '#a5b4fc' : '#7b88ad';
   });
+  var sel = document.getElementById('wl_lang_select');
+  if (sel && sel.value !== v) sel.value = v;
   const tabL = document.getElementById('tabLogin');
   const tabS = document.getElementById('tabSignup');
   if (tabL) tabL.textContent = t.signIn;

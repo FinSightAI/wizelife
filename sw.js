@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v14';
+const CACHE = 'wizelife-v15';
 const SHELL = [
   // Core flow
   '/index.html',
@@ -23,6 +23,7 @@ const SHELL = [
   '/js/wizelife-auth.js',
   '/js/sw-register.js',
   '/js/wize-disclaimer.js',
+  '/js/wize-bottom-nav.js',
   '/assets/wizelife-icon.png',
   '/assets/wizelife-icon-192.png',
   '/assets/wizelife-icon-256.png',

@@ -148,6 +148,11 @@
     nav { padding: 14px 20px; }
     main { padding: 90px 20px 40px; }
     .account-grid { grid-template-columns: 1fr; }
+    /* Mobile: swap inline lang pills for compact native select */
+    .lang-pills-row { display: none !important; }
+    .lang-select-mobile { display: inline-block !important; }
+    /* Wrap nav-right onto multiple lines so things don't get clipped */
+    .nav-right { flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
   }
 
 .tool-cold-badge {
@@ -260,12 +265,19 @@
       <span class="user-name" id="navUserName" style="color:#eef2ff;font-weight:600;">Loading…</span>
     </div>
     <a class="btn-upgrade" id="navUpgradeBtn" href="#" style="display:none;">Upgrade to Pro</a>
-    <div id="dashLangBtn" style="display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;">
+    <div id="dashLangBtn" class="lang-pills-row" style="display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;">
       <button class="dash-lang-pill" data-lang="he" onclick="setDashLang('he')" title="עברית" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">HE</button>
       <button class="dash-lang-pill" data-lang="en" onclick="setDashLang('en')" title="English" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">EN</button>
       <button class="dash-lang-pill" data-lang="pt" onclick="setDashLang('pt')" title="Português" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">PT</button>
       <button class="dash-lang-pill" data-lang="es" onclick="setDashLang('es')" title="Español" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">ES</button>
     </div>
+    <!-- Compact native select shown only on mobile (≤700px) -->
+    <select id="dashLangSelect" class="lang-select-mobile" onchange="setDashLang(this.value)" aria-label="Language" style="display:none;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;border-radius:8px;padding:6px 10px;font:700 12px Inter,sans-serif;cursor:pointer">
+      <option value="he">🇮🇱 HE</option>
+      <option value="en">🇺🇸 EN</option>
+      <option value="pt">🇧🇷 PT</option>
+      <option value="es">🇪🇸 ES</option>
+    </select>
     <button class="btn-sm" onclick="signOut()">Sign Out</button>
   </div>
 </nav>
@@ -757,6 +769,8 @@ function setDashLang(v) {
         b.style.background = active ? 'rgba(16,185,129,0.18)' : 'none';
         b.style.color = active ? '#10b981' : '#7b88ad';
     });
+    var sel = document.getElementById('dashLangSelect');
+    if (sel && sel.value !== v) sel.value = v;
     // Apply RTL/LTR + reload UI text by re-running translatePage (or simply reload)
     document.documentElement.dir = (v === 'he') ? 'rtl' : 'ltr';
     document.documentElement.lang = v;
@@ -790,5 +804,23 @@ const _swScript = document.createElement('script');
 _swScript.src = 'js/sw-register.js';
 document.head.appendChild(_swScript);
 </script>
+<script>
+/* Pre-warm Render-hosted backends so the user doesn't hit a cold-start when
+   they tap into the app from the dashboard. Fire-and-forget, no-cors, mode safe. */
+(function prewarmBackends(){
+  try {
+    var targets = [
+      'https://vitara.onrender.com/',          // WizeHealth (Render — sleeps after 15min idle)
+      'https://mastermove.vercel.app/api/health' // WizeTax (Vercel cold-start)
+    ];
+    setTimeout(function(){
+      targets.forEach(function(u){
+        try { fetch(u, { mode: 'no-cors', cache: 'no-cache', credentials: 'omit' }).catch(function(){}); } catch(e){}
+      });
+    }, 1500); // wait until dashboard is interactive, then warm
+  } catch(e) {}
+})();
+</script>
+<script src="js/wize-bottom-nav.js" defer></script>
 </body>
 </html>
