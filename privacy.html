@@ -67,77 +67,137 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
 
 <div class="page">
   <h1 class="page-title">Privacy Policy</h1>
-  <p class="page-sub">Last updated: April 2026</p>
+  <p class="page-sub">Last updated: 2026-05-09 · Version 2.0</p>
 
   <section>
     <h2>1. Who We Are</h2>
-    <p>WizeLife ("we", "us", "our") operates the website wizelife.ai and the suite of AI tools accessible through it — WizeMoney, WizeTravel, WizeTax, WizeHealth, and WizeDeal. Our contact email is <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a>.</p>
+    <p>WizeLife ("we", "us", "our") operates the website wizelife.ai and the suite of AI tools accessible through it — WizeMoney, WizeTravel, WizeTax, WizeHealth, and WizeDeal. Our contact email is <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a>. We comply with the Israeli Privacy Protection Law (חוק הגנת הפרטיות, התשמ"א-1981) and applicable directives of the Israeli Privacy Protection Authority.</p>
   </section>
 
   <section>
     <h2>2. What We Collect</h2>
-    <p>We collect only what's necessary to provide the service:</p>
+    <p>We collect only what's necessary to provide the service. Categories:</p>
     <ul>
-      <li><strong>Account data:</strong> your email address, display name, and password hash (via Firebase Authentication).</li>
-      <li><strong>Usage data:</strong> financial transactions, goals, and settings you enter — stored in Firestore under your user ID.</li>
-      <li><strong>Analytics data:</strong> page views, session duration, and browser/device type — collected via Google Analytics only if you accept cookies.</li>
-      <li><strong>AI queries:</strong> the questions you send to our AI assistant. These are processed by third-party AI APIs and are not stored permanently by us.</li>
+      <li><strong>Account data:</strong> your email address, display name, and password hash (Firebase Authentication).</li>
+      <li><strong>Financial data (sensitive):</strong> bank balances, fund holdings, stock holdings, goals, and budgets you voluntarily enter into WizeMoney. Stored under your Firebase user ID.</li>
+      <li><strong>Health data (sensitive):</strong> blood-test markers, vital signs, medications, and symptoms you voluntarily enter into WizeHealth. Stored locally in your browser by default; synced to Firestore only if you log in and choose to sync.</li>
+      <li><strong>Tax-related data:</strong> citizenships, residency, income brackets, and the questions you ask WizeTax. Used to personalise tax answers, not stored beyond your session unless you explicitly save a profile.</li>
+      <li><strong>Real-estate data:</strong> deal details (address, price, mortgage terms) you analyse in WizeDeal.</li>
+      <li><strong>Travel data:</strong> destinations, dates, trip plans entered in WizeTravel.</li>
+      <li><strong>AI queries:</strong> the questions you send. Routed to third-party AI APIs (Google Gemini, sometimes Tavily for web search). Not stored permanently by us.</li>
+      <li><strong>Analytics data:</strong> page views, session duration, browser/device type — Google Analytics + Microsoft Clarity (session replays). Set only when you accept the cookie banner; you can withdraw consent at any time.</li>
+      <li><strong>Auto-categorisation data:</strong> if you use WizeMoney's auto-categorise feature, transaction descriptions are sent to Gemini for tagging, then results returned to your browser. Not stored on AI provider servers.</li>
+    </ul>
+    <p>We do <strong>not</strong> collect: government IDs, passport numbers, payment-card numbers (handled by Stripe directly when billing is live), biometric data, or geolocation beyond country-level.</p>
+  </section>
+
+  <section>
+    <h2>3. Why We Collect It (Legal Basis)</h2>
+    <ul>
+      <li><strong>Performance of contract:</strong> account auth, syncing your data, generating the AI answers you request.</li>
+      <li><strong>Legitimate interest:</strong> enforcing fair-use AI quotas, preventing abuse, debugging.</li>
+      <li><strong>Consent:</strong> analytics, session replays, marketing emails.</li>
+      <li><strong>Legal obligation:</strong> retaining records required by Israeli/EU law (e.g. tax audit if we become a billing entity).</li>
+    </ul>
+    <p>We do <strong>not</strong> sell your data, share it with advertisers, or use it for any purpose other than operating and improving the service.</p>
+  </section>
+
+  <section>
+    <h2>4. Where Your Data Lives (Cross-Border Transfer)</h2>
+    <p>Most of our infrastructure is hosted in the <strong>United States</strong> by major cloud providers. By using WizeLife you consent to your data being processed in the US. We rely on Standard Contractual Clauses (SCCs) where applicable.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:0.92rem;margin-top:8px;">
+      <tr><th align="left" style="padding:6px 8px;border-bottom:1px solid var(--border);">Service</th><th align="left" style="padding:6px 8px;border-bottom:1px solid var(--border);">Region</th><th align="left" style="padding:6px 8px;border-bottom:1px solid var(--border);">What's processed</th></tr>
+      <tr><td style="padding:6px 8px;">Firebase Auth + Firestore</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Account, financial, goals, profile data</td></tr>
+      <tr><td style="padding:6px 8px;">Google Gemini</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries (not retained beyond session)</td></tr>
+      <tr><td style="padding:6px 8px;">Tavily</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Web-search queries (financial/tax topics)</td></tr>
+      <tr><td style="padding:6px 8px;">Render</td><td style="padding:6px 8px;">US (Oregon)</td><td style="padding:6px 8px;">API backends (master-backend, vitara)</td></tr>
+      <tr><td style="padding:6px 8px;">Vercel</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">WizeTax / WizeDeal frontends</td></tr>
+      <tr><td style="padding:6px 8px;">GitHub Pages</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">WizeLife / WizeMoney static hosting</td></tr>
+      <tr><td style="padding:6px 8px;">Cloudflare</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">DNS, DDoS protection, WAF</td></tr>
+      <tr><td style="padding:6px 8px;">Google Analytics + Microsoft Clarity</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Anonymised usage + session replays (consent only)</td></tr>
+      <tr><td style="padding:6px 8px;">Resend (when active)</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Transactional emails</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>5. AI Processing — What the Models See</h2>
+    <p>When you ask the AI a question, the prompt sent to Gemini may include:</p>
+    <ul>
+      <li>The text of your question.</li>
+      <li>Aggregated context from your portfolio / health profile (only data you entered).</li>
+      <li>Recent web-search results (Tavily, when enabled).</li>
+    </ul>
+    <p>Google Gemini's API terms state that paid-tier inputs are <strong>not used to train models</strong>. Free-tier may be sampled for review per Google's policy. We use the paid tier where available.</p>
+    <p>You can review the exact system prompt and AI architecture in our public <a href="https://github.com/FinSightAI/wizelife/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a>.</p>
+  </section>
+
+  <section>
+    <h2>6. Cookies & Local Storage</h2>
+    <p>We use:</p>
+    <ul>
+      <li><strong>Functional storage</strong> (always on): <code>wl_token</code>, <code>wl_sso</code>, <code>wl_lang</code>, <code>wl_theme</code> — required to keep you logged in and remember your preferences.</li>
+      <li><strong>App data</strong> (always on): your portfolio, goals, etc. stored in browser localStorage so the app works offline.</li>
+      <li><strong>Analytics cookies</strong> (consent only): Google Analytics, Microsoft Clarity. Triggered after you accept the cookie banner.</li>
+    </ul>
+    <p>You can withdraw analytics consent at any time by clearing your browser's localStorage or using your browser's cookie controls.</p>
+  </section>
+
+  <section>
+    <h2>7. Your Rights</h2>
+    <p>Under Israeli Privacy Law and (where applicable) GDPR, you have the right to:</p>
+    <ul>
+      <li><strong>Access</strong> — request a copy of all data we hold about you.</li>
+      <li><strong>Rectification</strong> — correct inaccurate data.</li>
+      <li><strong>Erasure</strong> — delete your account and all associated data.</li>
+      <li><strong>Portability</strong> — export your data in a machine-readable format (JSON).</li>
+      <li><strong>Object/restrict processing</strong> — opt out of analytics, marketing emails.</li>
+      <li><strong>Withdraw consent</strong> — at any time, with no penalty to functionality you've already used.</li>
+      <li><strong>Complain</strong> — to the Israeli Privacy Protection Authority (<a href="https://www.gov.il/en/departments/the_privacy_protection_authority" target="_blank">www.gov.il</a>) or your local DPA in EU.</li>
+    </ul>
+    <p>To exercise any right, email <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a>. We respond within 30 days.</p>
+  </section>
+
+  <section>
+    <h2>8. Data Retention</h2>
+    <ul>
+      <li>Account data: retained until you delete your account.</li>
+      <li>Financial / health / tax data: retained as long as you have an active account; deleted within 30 days of account deletion.</li>
+      <li>Analytics: retained per Google Analytics defaults (14 months).</li>
+      <li>Session replays (Clarity): retained 90 days then auto-purged.</li>
+      <li>AI query logs: not retained beyond your active session unless required to debug a specific user-reported issue.</li>
     </ul>
   </section>
 
   <section>
-    <h2>3. Why We Collect It</h2>
+    <h2>9. Security</h2>
     <ul>
-      <li>To provide and personalise the service (account auth, syncing your data).</li>
-      <li>To enforce fair-use limits (daily AI quota per plan).</li>
-      <li>To understand how users interact with WizeLife so we can improve it (analytics, with your consent).</li>
+      <li>All traffic encrypted via HTTPS/TLS 1.2+.</li>
+      <li>Firestore security rules: each user can only read/write their own data.</li>
+      <li>Cloudflare DDoS + WAF protection.</li>
+      <li>API rate limits (slowapi) on backends.</li>
+      <li>Backend secrets stored only in Render/Vercel/GitHub encrypted secret stores.</li>
+      <li>No staff accesses user data without legal need.</li>
     </ul>
-    <p>We do <strong>not</strong> sell your data, share it with advertisers, or use it for any purpose other than operating the service.</p>
+    <p>If a data breach occurs, we will notify affected users within 72 hours, as required by Israeli Privacy Law and GDPR Article 33.</p>
   </section>
 
   <section>
-    <h2>4. Third-Party Services</h2>
-    <ul>
-      <li><strong>Google Firebase</strong> — Authentication &amp; Firestore database. Data stored on Google infrastructure (EU/US). <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy Policy</a>.</li>
-      <li><strong>Google Analytics</strong> — Used only with your explicit consent. Collects anonymised usage metrics. <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a>.</li>
-      <li><strong>AI APIs</strong> — Your queries are sent to AI processing services. Queries are not stored by us beyond your session.</li>
-    </ul>
+    <h2>10. Children's Privacy</h2>
+    <p>WizeLife is not intended for users under 18. We do not knowingly collect data from minors. If you believe a minor has created an account, contact us and we will delete it.</p>
   </section>
 
   <section>
-    <h2>5. Cookies</h2>
-    <p>We use a single first-party cookie to remember your cookie consent choice. Google Analytics cookies are set only after you click "Accept" in the cookie banner. You can withdraw consent at any time by clearing your browser's localStorage.</p>
+    <h2>11. Database Registration</h2>
+    <p>Once WizeLife exceeds 10,000 active users, we will register our user database with the Israeli Registrar of Databases (רשם מאגרי המידע) as required by the Privacy Law. Until then, the registration threshold is not met.</p>
   </section>
 
   <section>
-    <h2>6. Your Rights (GDPR)</h2>
-    <p>If you are in the EU/EEA, you have the right to:</p>
-    <ul>
-      <li>Access the personal data we hold about you.</li>
-      <li>Request correction or deletion of your data.</li>
-      <li>Withdraw consent for analytics at any time.</li>
-      <li>Lodge a complaint with your local data protection authority.</li>
-    </ul>
-    <p>To exercise these rights, email us at <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a>. We will respond within 30 days.</p>
+    <h2>12. Changes to This Policy</h2>
+    <p>We may update this policy occasionally. Material changes will be communicated by email and a banner on the site. Continued use after changes constitutes acceptance.</p>
   </section>
 
   <section>
-    <h2>7. Data Retention</h2>
-    <p>Your account data and Firestore records are retained until you delete your account. Deleting your account removes all associated data from our Firestore database within 30 days.</p>
-  </section>
-
-  <section>
-    <h2>8. Security</h2>
-    <p>All traffic is encrypted via HTTPS/TLS. Firestore security rules ensure each user can only access their own data. We use Cloudflare for DDoS protection and WAF.</p>
-  </section>
-
-  <section>
-    <h2>9. Changes to This Policy</h2>
-    <p>We may update this policy occasionally. Material changes will be noted at the top with a new date. Continued use of WizeLife after changes constitutes acceptance.</p>
-  </section>
-
-  <section>
-    <h2>10. Contact</h2>
+    <h2>13. Contact</h2>
     <p>Questions about this policy? Email <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a>.</p>
   </section>
 </div>

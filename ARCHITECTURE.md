@@ -403,6 +403,23 @@ All apps support **4 languages**: Hebrew (he, RTL), English (en), Portuguese (pt
 
 ---
 
+## 13.5. Legal & disclaimers
+
+**Terms of Service** (`/terms.html`) and **Privacy Policy** (`/privacy.html`)
+were rewritten 2026-05-09 (Version 2.0):
+- Strong limitation-of-liability clause (cap: NIS 100 for free users)
+- Binding arbitration in Israel + class-action waiver
+- App-specific disclaimers (medical / financial / tax / real estate)
+- Force majeure
+- Privacy: per-service cross-border data table, AI processing transparency, retention schedule, 18+ requirement
+
+**First-use disclaimer modal** (`/js/wize-disclaimer.js`):
+- Shared across all 5 apps. Gates auto-analysis until user checks "I understand"
+- Per-app copy: medical (WizeHealth), investment (WizeMoney advisor), tax (WizeTax), deal (WizeDeal)
+- Acceptance stored in `localStorage.wl_disclaimer_<app>_v<TOS_VERSION>` — re-prompts when version bumps
+- Decline → redirects user to wizelife.ai
+- WizeHealth additionally shows a permanent emergency banner ("🚨 חירום? חייג 101")
+
 ## 14. Security
 
 - All apps over HTTPS
