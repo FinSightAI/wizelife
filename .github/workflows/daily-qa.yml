@@ -164,18 +164,56 @@ jobs:
               body,
             });
 
+            // Rolling alert: keep at most ONE open qa-alert issue.
+            // Email fires only on the FIRST failure after a passing run.
+            const { data: openAlerts } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'qa-alert', per_page: 10,
+            });
+            const existing = openAlerts.find(i => !i.pull_request);
+            const today = new Date().toISOString().slice(0,10);
+
             if (fails > 0) {
-              await github.rest.issues.create({
+              const newTitle = `🚨 QA failures — ${fails} failing (last: ${today})`;
+              const newBody  = '@FinSightAI — QA is failing.\n\n_Last run_: ' + today
+                             + ' (' + context.runId + ')\n\n' + body
+                             + '\n\n> Auto-updated. This issue stays open as long as failures persist.';
+              if (existing) {
+                // Edit body → does NOT trigger an email. User already has the original.
+                await github.rest.issues.update({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: existing.number,
+                  title: newTitle, body: newBody,
+                });
+                console.log(`Updated existing alert #${existing.number} (no new email)`);
+              } else {
+                // First failure after a clean state — open a fresh issue (1 email)
+                await github.rest.issues.create({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  title: newTitle, body: newBody,
+                  labels: ['qa-alert', 'bug'],
+                  assignees: ['FinSightAI'],
+                });
+                console.log('Opened new alert issue (1 email).');
+              }
+            } else if (existing) {
+              // Failures resolved → close + comment
+              await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
-                title: `🚨 QA failures — ${new Date().toISOString().slice(0,10)} (${fails} failing)`,
-                body: '@FinSightAI — daily QA detected issues:\n\n' + body + '\n\n> Auto-opened. Reply with what to fix.',
-                labels: ['qa-alert', 'bug'],
-                assignees: ['FinSightAI'],
+                issue_number: existing.number,
+                body: `✅ All QA checks passed on ${today}. Auto-closing.`,
               });
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number,
+                state: 'closed',
+              });
+              console.log(`Closed alert #${existing.number} (failures resolved).`);
             }
 
-      - name: Fail workflow if anything failed
-        if: steps.combine.outputs.fails != '0'
+      - name: Summary
         run: |
           echo "Total failures: ${{ steps.combine.outputs.fails }}"
-          exit 1
+          # Workflow stays green even if QA found bugs — the rolling qa-alert
+          # issue is the canonical signal. This avoids GitHub's automatic
+          # "workflow failed" emails on top of the issue assignment email.
