@@ -464,12 +464,13 @@ requireAuth("auth.html").then(async (user) => {
     const plan = await getUserPlan(user.uid);
     renderPlan(plan, user);
 
-    // Catch the PayPal/Stripe upgrade path too: if the user was just bumped to
-    // pro/yolo (since last dashboard visit) AND has a referrer that hasn't been
-    // rewarded yet, the reward function will award the bonus and mark it sent.
+    // Catch the PayPal upgrade path: if the user is now pro/yolo and has an
+    // unsent referral, the server-side `awardReferral` function records the
+    // bonus for the referrer. Idempotent — server checks referralRewardSent.
     try {
-        if ((plan === 'pro' || plan === 'yolo') && typeof rewardReferrerOnUpgrade === 'function') {
-            await rewardReferrerOnUpgrade(user.uid, plan);
+        if (plan === 'pro' || plan === 'yolo') {
+            const fn = firebase.functions().httpsCallable('awardReferral');
+            await fn({ tier: plan });
         }
     } catch (e) { console.warn('post-upgrade referral reward failed', e); }
 
@@ -655,13 +656,9 @@ async function applyCode(uid) {
         const result = await fn({ code });
         if (result.data.valid) {
             const newPlan = result.data.plan;
-            // Award the referrer (if any) — function is in wizelife-auth.js.
-            // Best-effort: never block the success path on this.
-            try {
-                if (typeof rewardReferrerOnUpgrade === 'function') {
-                    await rewardReferrerOnUpgrade(uid, newPlan);
-                }
-            } catch (e) { console.warn('referral reward failed', e); }
+            // Server-side validateCode already calls _grantReferrerReward — no
+            // need to fire from the client. (Kept the post-load fallback above
+            // for the PayPal path which doesn't return through this codepath.)
             msg.style.color = "#6ee7b7";
             msg.textContent = `✓ ${newPlan === "yolo" ? "YOLO ⚡" : "Pro"} activated! Reloading…`;
             setTimeout(() => window.location.reload(), 1200);

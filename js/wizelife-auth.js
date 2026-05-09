@@ -20,11 +20,28 @@ googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 // Read user plan from Firestore
 async function getUserPlan(uid) {
-    // 1. Check Firestore (canonical source)
+    // 1. Check Firestore (canonical source) — respects planExpiresAt for
+    //    referral-bonus-granted plans. If expiry has passed, fall back to free.
     let firestorePlan = null;
     try {
         const doc = await wlDb.collection("users").doc(uid).get();
-        if (doc.exists && doc.data().plan) firestorePlan = doc.data().plan;
+        if (doc.exists) {
+            const d = doc.data() || {};
+            const raw = d.plan;
+            const expMs = d.planExpiresAt && d.planExpiresAt.toMillis
+                          ? d.planExpiresAt.toMillis()
+                          : (typeof d.planExpiresAt === 'number' ? d.planExpiresAt : 0);
+            if (raw === 'pro' || raw === 'yolo') {
+                if (expMs && expMs < Date.now() && !d.paypalSubscriptionId) {
+                    // Bonus expired and no paid subscription — back to free.
+                    firestorePlan = 'free';
+                } else {
+                    firestorePlan = raw;
+                }
+            } else if (raw) {
+                firestorePlan = raw;
+            }
+        }
     } catch {}
     // 2. Check localStorage (set by access codes redeemed in any app)
     let localPlan = null;
