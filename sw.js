@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v12';
+const CACHE = 'wizelife-v13';
 const SHELL = [
   // Core flow
   '/index.html',
@@ -16,6 +16,7 @@ const SHELL = [
   // Legal
   '/privacy.html',
   '/terms.html',
+  '/security.html',
   // Utility
   '/404.html',
   '/manifest.json',

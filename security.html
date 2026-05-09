@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security — WizeLife</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#6366f1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#03050e;--surf:#080d1a;--border:rgba(255,255,255,.08);--text:#eef2ff;--muted:#7888a8;--accent:#818cf8;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.75}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif}
+nav{position:sticky;top:0;z-index:100;background:rgba(3,5,14,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.2rem}
+.nav-logo em{color:var(--accent);font-style:normal}
+.nav-back{font-size:.85rem;color:var(--muted)}
+.nav-back:hover{color:var(--text)}
+.page{max-width:760px;margin:0 auto;padding:60px 32px 100px}
+.page-title{font-size:2.2rem;font-weight:800;margin-bottom:8px}
+.page-sub{color:var(--muted);margin-bottom:48px;font-size:.95rem}
+section{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+section:last-child{border-bottom:none}
+h2{font-size:1.15rem;font-weight:700;margin-bottom:12px;color:var(--accent)}
+h3{font-size:1rem;font-weight:700;margin:14px 0 8px}
+ul,ol{padding-inline-start:22px;margin:8px 0}
+li{margin:6px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.92rem}
+th,td{padding:9px 10px;text-align:start;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px}
+code{background:var(--surf);padding:2px 6px;border-radius:4px;font-family:ui-monospace,Menlo,monospace;font-size:.88em;color:#a5b4fc}
+footer{padding:32px;text-align:center;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border)}
+.hl{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);padding:14px 18px;border-radius:10px;margin:16px 0}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Wize<em>Life</em></a>
+  <a class="nav-back" href="index.html">← Back</a>
+</nav>
+
+<div class="page">
+  <h1 class="page-title">Security</h1>
+  <p class="page-sub">How we protect your data · Last updated: 2026-05-09</p>
+
+  <section>
+    <h2>1. The short version</h2>
+    <p>WizeLife handles sensitive data — financial, medical, tax. We follow modern, defense-in-depth practices: encrypted transport, encrypted storage, isolated user permissions, audited cloud providers, and a documented incident-response plan. We are a small team — we don't claim enterprise-grade certifications yet, but we apply the same engineering principles.</p>
+  </section>
+
+  <section>
+    <h2>2. Encryption</h2>
+    <ul>
+      <li><strong>In transit:</strong> all traffic is HTTPS/TLS 1.2+. HSTS preload, no mixed content.</li>
+      <li><strong>At rest:</strong> Firestore encrypts all data with Google-managed keys (AES-256). Render and Vercel encrypt their volumes. Browser localStorage is not encrypted by us — that's handled by the device's OS-level security.</li>
+      <li><strong>Secrets:</strong> API keys live only in Render / Vercel / GitHub encrypted secret stores. Never committed to git, never logged.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>3. Authentication &amp; access control</h2>
+    <ul>
+      <li>Email/password authentication via Firebase Authentication. Passwords are hashed with industry-standard algorithms (Firebase uses scrypt + per-user salt).</li>
+      <li>Google sign-in with OAuth 2.0.</li>
+      <li>Session tokens are JWT (Firebase ID tokens), short-lived, refreshed automatically.</li>
+      <li>Firestore security rules enforce: each user can read/write only their own documents. Verified continuously by automated tests.</li>
+      <li>Backend APIs require <code>Authorization: Bearer &lt;Firebase ID token&gt;</code>. Anonymous access is rate-limited per IP.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. Network &amp; perimeter</h2>
+    <ul>
+      <li><strong>Cloudflare</strong> in front of <code>wizelife.ai</code> and <code>tax.wizelife.ai</code>: DDoS mitigation, WAF (Web Application Firewall), bot detection.</li>
+      <li><strong>Security headers</strong> (HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, strict CSP) on all pages — verified daily by our QA workflow.</li>
+      <li><strong>Rate limiting</strong> on all backend AI endpoints (slowapi for FastAPI, custom middleware for Express).</li>
+      <li><strong>CORS</strong> tightly scoped — only known WizeLife origins can call our APIs.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. Data minimization</h2>
+    <p>We collect only what's required for each tool to work. We never collect:</p>
+    <ul>
+      <li>Government IDs, passport numbers (free text only — not stored as IDs)</li>
+      <li>Payment-card numbers (Stripe handles those directly when billing is live)</li>
+      <li>Biometric data</li>
+      <li>Geolocation beyond country level</li>
+      <li>Browser fingerprints or device IDs for tracking</li>
+    </ul>
+    <p>Health data and high-sensitivity financial data are stored in browser localStorage by default and only synced to Firestore if you explicitly opt in.</p>
+  </section>
+
+  <section>
+    <h2>6. AI processing</h2>
+    <p>When you query our AI:</p>
+    <ul>
+      <li>Your question + the structured profile context is sent over HTTPS to Google Gemini.</li>
+      <li>For real-time research, a derived query goes to Tavily.</li>
+      <li>Google's paid Gemini API does not use customer prompts to train models.</li>
+      <li>We do not retain AI conversation logs after the session, beyond what you explicitly save in your profile.</li>
+    </ul>
+    <p>Full architecture: <a href="https://github.com/FinSightAI/wizelife/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a> (public).</p>
+  </section>
+
+  <section>
+    <h2>7. Continuous monitoring</h2>
+    <ul>
+      <li><strong>Daily QA workflow</strong> (GitHub Actions, 06:00 UTC) — runs 13 tiers of checks against every deployed page: HTTP status, console errors, broken assets, security headers, SSL expiry, accessibility (axe-core), SEO meta tags, PWA validity, multi-viewport, cross-app SSO, i18n, third-party APIs, cold-start latency, end-to-end auth flow.</li>
+      <li><strong>Real-time uptime monitoring</strong> via UptimeRobot — every endpoint pinged every 5 minutes. Owner alerted within 5 minutes of an outage.</li>
+      <li><strong>Tax-law watcher</strong> (weekly) scans for regulatory changes that affect users.</li>
+      <li><strong>Service Worker auto-update</strong> across all apps — every 5 minutes, the browser checks for new code and offers a one-click upgrade.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>8. Incident response</h2>
+    <p>If a data breach occurs:</p>
+    <ol>
+      <li>Affected users are notified via email <strong>within 72 hours</strong> (per Israeli Privacy Law and GDPR Article 33).</li>
+      <li>The Israeli Privacy Protection Authority is notified, if required by the breach severity.</li>
+      <li>A post-mortem is published on this page.</li>
+      <li>Compromised credentials are forcibly rotated.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>9. Vendor due diligence</h2>
+    <p>Critical vendors and their compliance posture:</p>
+    <table>
+      <tr><th>Vendor</th><th>Role</th><th>Standards</th></tr>
+      <tr><td>Google Firebase / Cloud</td><td>Auth + database + AI</td><td>SOC 1/2/3, ISO 27001/17/18, HIPAA-eligible</td></tr>
+      <tr><td>Vercel</td><td>Frontend hosting</td><td>SOC 2 Type 2</td></tr>
+      <tr><td>Render</td><td>Backend hosting</td><td>SOC 2 Type 2</td></tr>
+      <tr><td>Cloudflare</td><td>DNS / WAF / DDoS</td><td>SOC 2, ISO 27001</td></tr>
+      <tr><td>Tavily</td><td>Web search for AI grounding</td><td>SOC 2 in progress</td></tr>
+      <tr><td>Microsoft Clarity</td><td>UX analytics (consent only)</td><td>SOC 2, GDPR-aligned</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>10. Reporting a vulnerability</h2>
+    <p class="hl">If you discovered a security issue, please email <a href="mailto:security@wizelife.ai">security@wizelife.ai</a> with details and steps to reproduce. We respond within 48 hours.</p>
+    <p>Please:</p>
+    <ul>
+      <li>Do <strong>not</strong> publicly disclose before we've had a chance to fix.</li>
+      <li>Do <strong>not</strong> access, modify, or delete other users' data.</li>
+      <li>Do <strong>not</strong> run automated scans that degrade service.</li>
+    </ul>
+    <p>We currently don't run a paid bug-bounty program, but we will publicly thank responsible reporters in this section.</p>
+  </section>
+
+  <section>
+    <h2>11. Limitations &amp; honest caveats</h2>
+    <p>Things we <strong>don't</strong> have yet — and you should know:</p>
+    <ul>
+      <li>No SOC 2 / ISO 27001 audit (small team — those audits cost ₪50-100K). We'll pursue them when enterprise customers require it.</li>
+      <li>No third-party penetration test on record (planned before 1,000-user milestone).</li>
+      <li>No DPO (Data Protection Officer) — owner acts as primary contact for privacy matters.</li>
+      <li>No HIPAA covered-entity status — WizeHealth is for personal information, not for clinical use.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>12. Contact</h2>
+    <p>Security questions or concerns: <a href="mailto:security@wizelife.ai">security@wizelife.ai</a><br>
+    General: <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a></p>
+  </section>
+</div>
+
+<footer>© 2026 WizeLife · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="security.html">Security</a></footer>
+
+</body>
+</html>

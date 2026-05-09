@@ -141,13 +141,28 @@
   }
 
   function recordAcceptance(app) {
+    const payload = {
+      accepted: true,
+      version: TOS_VERSION,
+      at: new Date().toISOString(),
+      ua: navigator.userAgent.slice(0, 200),
+      lang: getLang(),
+      pageUrl: location.href.slice(0, 300),
+    };
+    // 1. localStorage (fast, available offline)
+    try { localStorage.setItem(storageKey(app), JSON.stringify(payload)); } catch {}
+    // 2. Firestore audit trail (server-side legal evidence) — only if firebase is loaded + user signed in.
+    //    Stored as users/{uid}/disclaimers/{app}_v{N} so deletion of the user wipes it cleanly.
     try {
-      localStorage.setItem(storageKey(app), JSON.stringify({
-        accepted: true,
-        version: TOS_VERSION,
-        at: new Date().toISOString(),
-        ua: navigator.userAgent.slice(0, 200),
-      }));
+      if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+        const u = firebase.auth().currentUser;
+        if (u && u.uid) {
+          firebase.firestore()
+            .collection('users').doc(u.uid)
+            .collection('disclaimers').doc(`${app}_v${TOS_VERSION}`)
+            .set(payload, { merge: false });
+        }
+      }
     } catch {}
   }
 

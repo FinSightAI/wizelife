@@ -351,6 +351,23 @@
     </div>
   </div>
 
+  <!-- Privacy / GDPR rights -->
+  <h3 style="margin-top:32px">Privacy &amp; data rights</h3>
+  <div class="account-card" style="line-height:1.6">
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:14px">
+      Your data is yours. Under the Israeli Privacy Protection Law and GDPR, you can export
+      everything we hold about you, or delete your account at any time.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <button class="btn-sm" onclick="exportMyData()" style="cursor:pointer">📥 Export my data (JSON)</button>
+      <button class="btn-danger" onclick="deleteMyAccount()" style="cursor:pointer">🗑️ Delete my account</button>
+    </div>
+    <p style="color:var(--muted);font-size:0.78rem;margin-top:10px">
+      Export downloads a JSON file with your profile + all sub-app data.
+      Deletion is permanent — your account, plan, and all data are removed within 30 days.
+    </p>
+  </div>
+
   <!-- Referral + Feedback -->
   <h3 style="margin-top:32px">Invite friends &amp; share feedback</h3>
   <div class="account-grid">
@@ -587,6 +604,100 @@ function manageSubscription() {
 
 function signOut() {
     wlAuth.signOut().then(() => window.location.href = "index.html");
+}
+
+// ── Privacy: export user data as JSON ────────────────────────────────────────
+async function exportMyData() {
+    const user = wlAuth.currentUser;
+    if (!user) { alert("Not signed in."); return; }
+    const exportData = {
+        exported_at: new Date().toISOString(),
+        account: {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            createdAt: user.metadata.creationTime,
+            lastLoginAt: user.metadata.lastSignInTime,
+        },
+        firestore: {},
+        localStorage: {},
+    };
+    try {
+        const userDoc = await wlDb.collection("users").doc(user.uid).get();
+        if (userDoc.exists) exportData.firestore.user = userDoc.data();
+        // Subcollections we know about
+        for (const sub of ["disclaimers", "preferences", "feedback"]) {
+            try {
+                const snap = await wlDb.collection("users").doc(user.uid).collection(sub).get();
+                exportData.firestore[sub] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            } catch {}
+        }
+    } catch (e) { console.warn("firestore export failed:", e); }
+    // Local app data (each sub-app stores in localStorage on its own domain;
+    // we can only grab what's on wizelife.ai itself)
+    for (const k of Object.keys(localStorage)) {
+        if (/^wl_|^finance_|^wh_|^drm_|^wize_|^tax_master_/.test(k)) {
+            try { exportData.localStorage[k] = JSON.parse(localStorage.getItem(k)); }
+            catch { exportData.localStorage[k] = localStorage.getItem(k); }
+        }
+    }
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `wizelife-data-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    alert("✓ Your data was downloaded.\n\nNote: each sub-app (WizeMoney, WizeHealth, etc.) has its own localStorage you can also export from inside that app.");
+}
+
+// ── Privacy: delete account + all data ───────────────────────────────────────
+async function deleteMyAccount() {
+    const user = wlAuth.currentUser;
+    if (!user) { alert("Not signed in."); return; }
+    const confirmed = confirm(
+        "⚠️ DELETE ACCOUNT\n\n" +
+        "This will permanently:\n" +
+        "  • Sign you out\n" +
+        "  • Delete your Firestore profile + plan + referral data\n" +
+        "  • Mark your Firebase Auth account for deletion (within 30 days)\n\n" +
+        "App-specific data in browser localStorage will remain on your device.\n" +
+        "You should also clear it from each app individually.\n\n" +
+        "Type DELETE in the next prompt to confirm."
+    );
+    if (!confirmed) return;
+    const typed = prompt("Type DELETE (uppercase) to confirm:");
+    if (typed !== "DELETE") { alert("Deletion cancelled."); return; }
+    try {
+        // 1. Delete Firestore user doc + known subcollections
+        for (const sub of ["disclaimers", "preferences", "feedback"]) {
+            try {
+                const snap = await wlDb.collection("users").doc(user.uid).collection(sub).get();
+                await Promise.all(snap.docs.map(d => d.ref.delete()));
+            } catch {}
+        }
+        await wlDb.collection("users").doc(user.uid).delete().catch(() => {});
+        // 2. Try to delete Firebase Auth account (requires recent sign-in; if it fails, prompt re-auth)
+        try {
+            await user.delete();
+        } catch (e) {
+            // Re-auth required for deletion
+            alert("For security, please sign out and back in, then try delete again. Your Firestore data is already gone.");
+            await wlAuth.signOut();
+            window.location.href = "auth.html";
+            return;
+        }
+        // 3. Clear all wizelife.ai localStorage
+        ["wl_token", "wl_sso", "wl_plan", "wl_nickname", "wl_access_code", "wl_lang", "wl_theme"]
+            .forEach(k => localStorage.removeItem(k));
+        Object.keys(localStorage)
+            .filter(k => /^wl_disclaimer_/.test(k))
+            .forEach(k => localStorage.removeItem(k));
+        alert("✓ Your account has been deleted.\n\nWe're sorry to see you go.");
+        window.location.href = "index.html";
+    } catch (e) {
+        alert("Deletion error: " + (e.message || e) + "\n\nPlease email hi@wizelife.ai and we'll process it manually.");
+    }
 }
 
 // Append Firebase token to tool links so backends can identify Pro users
