@@ -1,9 +1,23 @@
-const CACHE = 'wizelife-v10';
+const CACHE = 'wizelife-v11';
 const SHELL = [
-  '/dashboard.html',
-  '/auth.html',
+  // Core flow
   '/index.html',
+  '/auth.html',
+  '/dashboard.html',
   '/feedback.html',
+  // Sub-app landing redirects
+  '/apps.html',
+  '/health.html',
+  '/travel.html',
+  '/wizetravel.html',
+  '/tax-compare.html',
+  '/web-apps.html',
+  '/wize-ai.html',
+  // Legal
+  '/privacy.html',
+  '/terms.html',
+  // Utility
+  '/404.html',
   '/manifest.json',
   '/js/wizelife-auth.js',
   '/js/sw-register.js',
@@ -13,8 +27,19 @@ const SHELL = [
 ];
 
 self.addEventListener('install', e => {
+  // Use individual fetch+put per asset (instead of cache.addAll) so a single
+  // missing/404 file doesn't abort the whole install.
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(async cache => {
+      await Promise.allSettled(
+        SHELL.map(url =>
+          fetch(url, { cache: 'no-cache' })
+            .then(res => res.ok && cache.put(url, res))
+            .catch(() => {})
+        )
+      );
+      return self.skipWaiting();
+    })
   );
 });
 
