@@ -321,37 +321,65 @@
     }
   }
 
+  async function finalizeGoogleSignIn(cred) {
+    const ref = wlDb.collection("users").doc(cred.user.uid);
+    const doc = await ref.get();
+    const nick = cred.user.displayName || (cred.user.email ? cred.user.email.split("@")[0] : "user");
+    if (!doc.exists) {
+      await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      try { await applyReferralOnSignup(cred.user.uid); } catch (refErr) { console.warn("Referral apply failed:", refErr); }
+    } else {
+      const d = doc.data();
+      if (!d.nickname) await ref.update({ nickname: nick });
+    }
+    localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
+    window.location.href = "dashboard.html";
+  }
+
   async function googleLogin() {
     try {
-      const cred = await wlAuth.signInWithPopup(googleProvider);
-      // First time? create user doc
-      const ref = wlDb.collection("users").doc(cred.user.uid);
-      const doc = await ref.get();
-      const nick = cred.user.displayName || cred.user.email.split("@")[0];
-      if (!doc.exists) {
-        await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-        try { await applyReferralOnSignup(cred.user.uid); } catch {}
-      } else {
-        // Update nickname if missing
-        const d = doc.data();
-        if (!d.nickname) await ref.update({ nickname: nick });
+      let cred;
+      try {
+        cred = await wlAuth.signInWithPopup(googleProvider);
+      } catch (popupErr) {
+        if (popupErr.code === "auth/popup-blocked" || popupErr.code === "auth/operation-not-supported-in-this-environment") {
+          await wlAuth.signInWithRedirect(googleProvider);
+          return;
+        }
+        throw popupErr;
       }
-      localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
-      window.location.href = "dashboard.html";
+      await finalizeGoogleSignIn(cred);
     } catch (e) {
-      alert(friendlyError(e.code));
+      console.error("Google sign-in failed:", e);
+      alert(friendlyError(e.code) + (e.code ? "\n(" + e.code + ")" : ""));
     }
   }
 
+  wlAuth.getRedirectResult().then(function(result) {
+    if (result && result.user) return finalizeGoogleSignIn(result);
+  }).catch(function(e) {
+    console.error("Google redirect sign-in failed:", e);
+    alert(friendlyError(e.code) + (e.code ? "\n(" + e.code + ")" : ""));
+  });
+
   function friendlyError(code) {
     const map = {
-      "auth/user-not-found":      "No account with this email.",
-      "auth/wrong-password":      "Wrong password.",
-      "auth/invalid-email":       "Invalid email address.",
-      "auth/email-already-in-use":"This email is already registered. Try signing in.",
-      "auth/weak-password":       "Password must be at least 8 characters with uppercase and special character.",
-      "auth/too-many-requests":   "Too many attempts. Try again later.",
-      "auth/popup-closed-by-user":"Sign-in cancelled.",
+      "auth/user-not-found":              "No account with this email.",
+      "auth/wrong-password":              "Wrong password.",
+      "auth/invalid-email":               "Invalid email address.",
+      "auth/email-already-in-use":        "This email is already registered. Try signing in.",
+      "auth/weak-password":               "Password must be at least 8 characters with uppercase and special character.",
+      "auth/too-many-requests":           "Too many attempts. Try again later.",
+      "auth/popup-closed-by-user":        "Sign-in cancelled.",
+      "auth/popup-blocked":               "Your browser blocked the sign-in popup. Please allow popups and try again.",
+      "auth/cancelled-popup-request":     "Sign-in cancelled — another popup is already open.",
+      "auth/account-exists-with-different-credential": "An account already exists with this email using a different sign-in method. Try signing in with email/password.",
+      "auth/network-request-failed":      "Network error. Check your connection and try again.",
+      "auth/operation-not-allowed":       "Google sign-in is not enabled. Please contact support.",
+      "auth/unauthorized-domain":         "This domain is not authorized for sign-in. Please contact support.",
+      "auth/internal-error":              "Authentication service error. Please try again in a moment.",
+      "auth/user-disabled":               "This account has been disabled.",
+      "auth/web-storage-unsupported":     "Your browser is blocking storage. Disable private mode or third-party cookie blocking.",
     };
     return map[code] || "Something went wrong. Please try again.";
   }
