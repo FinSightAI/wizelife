@@ -72,20 +72,20 @@
     var css = ''
       + '#wize-ham-btn{display:none;}'
       + '@media (max-width: 820px){'
-      + '  #wize-ham-btn{position:fixed;top:8px;right:10px;z-index:99996;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;}'
-      /* When the WizeBar (36px) is present, push the hamburger below it; otherwise float at the corner */
-      + '  body.wl-bar-loaded #wize-ham-btn{top:42px;}'
+      /* Sit ABOVE the 36px WizeBar (z-index 99999) so it's always tappable. */
+      + '  #wize-ham-btn{position:fixed;top:max(8px,env(safe-area-inset-top));right:10px;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
       + '  html[dir="rtl"] #wize-ham-btn{right:auto;left:10px;}'
       + '}'
-      + '#wize-ham-overlay{position:fixed;inset:0;z-index:99999;background:rgba(5,8,20,0.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s ease;}'
+      + '#wize-ham-overlay{position:fixed;inset:0;z-index:100002;background:rgba(5,8,20,0.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s ease;}'
       + '#wize-ham-overlay.open{opacity:1;pointer-events:auto;}'
-      + '#wize-ham-drawer{position:fixed;top:0;bottom:0;right:0;width:min(86vw,340px);z-index:100000;background:#0a0e1a;border-left:1px solid rgba(255,255,255,0.08);transform:translateX(100%);transition:transform .28s ease;display:flex;flex-direction:column;font-family:Inter,-apple-system,system-ui,sans-serif;}'
+      + '#wize-ham-drawer{position:fixed;top:0;bottom:0;right:0;width:min(86vw,340px);z-index:100003;background:#0a0e1a;border-left:1px solid rgba(255,255,255,0.08);transform:translateX(100%);transition:transform .28s ease;display:flex;flex-direction:column;font-family:Inter,-apple-system,system-ui,sans-serif;}'
       + 'html[dir="rtl"] #wize-ham-drawer{right:auto;left:0;border-left:none;border-right:1px solid rgba(255,255,255,0.08);transform:translateX(-100%);}'
       + '#wize-ham-drawer.open{transform:translateX(0);}'
       + '.wh-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 10px;}'
       + '.wh-title{font-size:18px;font-weight:800;color:#eef2ff;letter-spacing:-.4px;}'
       + '.wh-close{background:rgba(255,255,255,0.06);border:none;width:30px;height:30px;border-radius:8px;color:#cbd5e1;font-size:16px;cursor:pointer;font-family:inherit;line-height:1;}'
-      + '.wh-body{flex:1;overflow-y:auto;padding:6px 16px 24px;}'
+      /* Reserve room at the bottom so the per-app bottom-nav doesn't clip drawer content. */
+      + '.wh-body{flex:1;overflow-y:auto;padding:6px 16px calc(80px + env(safe-area-inset-bottom));}'
       + '.wh-section{margin:14px 0 6px;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:0 4px;}'
       + '.wh-row{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:10px;color:#e2e8f0;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;border:none;background:none;width:100%;text-align:start;font-family:inherit;}'
       + '.wh-row:hover,.wh-row:active{background:rgba(255,255,255,0.05);}'
@@ -111,15 +111,14 @@
       document.addEventListener('DOMContentLoaded', build);
       return;
     }
-    /* Detect a top WizeBar (36px) so we can offset the hamburger below it */
-    if (document.getElementById('wl-bar') || document.querySelector('.wl-bar-react') || document.querySelector('.wl-bar')) {
-      document.body.classList.add('wl-bar-loaded');
-    }
+
+    var cur = detectApp();
+    /* WizeLife portal IS the launcher — no need for an apps hamburger here. */
+    if (cur === 'portal') return;
 
     injectStyle();
     var lang = getLang();
     var t = T[lang] || T.en;
-    var cur = detectApp();
     var sso = getSso();
 
     /* Hamburger button — pin opposite the WizeLife brand (RTL→left, LTR→right). */
@@ -274,21 +273,30 @@
     document.body.appendChild(ov);
     document.body.appendChild(dr);
 
-    /* Behavior */
+    /* Behavior — bulletproof close paths so the drawer never gets "stuck". */
+    var prevBodyOverflow = '';
     function open() {
       ov.classList.add('open');
       dr.classList.add('open');
+      prevBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', onKey);
     }
     function closeFn() {
       ov.classList.remove('open');
       dr.classList.remove('open');
+      document.body.style.overflow = prevBodyOverflow || '';
       window.removeEventListener('keydown', onKey);
     }
     function onKey(e) { if (e.key === 'Escape') closeFn(); }
-    btn.addEventListener('click', function () { dr.classList.contains('open') ? closeFn() : open(); });
-    close.addEventListener('click', closeFn);
-    ov.addEventListener('click', closeFn);
+    function bind(el, fn) {
+      if (!el) return;
+      el.addEventListener('click', fn);
+      el.addEventListener('touchend', function (e) { e.preventDefault(); fn(); }, { passive: false });
+    }
+    bind(btn, function () { dr.classList.contains('open') ? closeFn() : open(); });
+    bind(close, closeFn);
+    bind(ov, closeFn);
 
     /* Swipe to close */
     var sx = 0;

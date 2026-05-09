@@ -47,6 +47,8 @@
 <link rel="dns-prefetch" href="https://vitara.onrender.com">
 <link rel="preconnect" href="https://master-backend-79jx.onrender.com" crossorigin>
 <link rel="dns-prefetch" href="https://master-backend-79jx.onrender.com">
+<link rel="preconnect" href="https://ofirofir-wizetravel.hf.space" crossorigin>
+<link rel="dns-prefetch" href="https://ofirofir-wizetravel.hf.space">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -884,8 +886,9 @@ document.head.appendChild(_swScript);
 (function prewarmBackends(){
   function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
   var TARGETS = [
-    'https://vitara.onrender.com/',                 // WizeHealth (Render free, 15min idle → spin-down)
-    'https://master-backend-79jx.onrender.com/health' // WizeTax backend (Render free)
+    'https://vitara.onrender.com/',                   // WizeHealth (Render free, sleeps at 15min)
+    'https://master-backend-79jx.onrender.com/health',// WizeTax backend (Render free)
+    'https://ofirofir-wizetravel.hf.space/'           // WizeTravel API (Hugging Face Spaces, also sleeps)
   ];
   // 1) Initial warm-up shortly after the dashboard becomes interactive
   setTimeout(function(){ TARGETS.forEach(ping); }, 1500);
@@ -898,7 +901,8 @@ document.head.appendChild(_swScript);
   function attachHover(){
     var map = {
       'tool-health': 'https://vitara.onrender.com/',
-      'tool-tax':    'https://master-backend-79jx.onrender.com/health'
+      'tool-tax':    'https://master-backend-79jx.onrender.com/health',
+      'tool-travel': 'https://ofirofir-wizetravel.hf.space/'
     };
     Object.keys(map).forEach(function(id){
       var el = document.getElementById(id);
