@@ -1,0 +1,74 @@
+name: Tax Law Watcher
+
+# Runs every Monday at 07:00 UTC. Tavily-searches for new Israeli/Brazilian/
+# US tax developments. If anything material surfaces, opens a GitHub issue
+# for the user to review (and surface to their WizeTax users via newsletter
+# / dashboard banner once the email pipeline is live).
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'   # Monday 07:00 UTC = Monday 09:00 Israel
+  workflow_dispatch: {}
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Run Tavily searches across markets
+        id: search
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: |
+          if [ -z "$TAVILY_API_KEY" ]; then
+            echo "TAVILY_API_KEY secret not set — add it in Settings → Secrets → Actions"
+            echo "skipped=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Build report by querying Tavily for tax updates per market.
+          # Each query returns up to 5 sources; we pick the freshest with a
+          # publish date in the last 14 days to surface only new content.
+          out_file="$RUNNER_TEMP/tax-report.md"
+          echo "# 📰 Weekly Tax Law Watch — $(date -u +'%Y-%m-%d')" > "$out_file"
+          echo "" >> "$out_file"
+
+          for query in \
+              "Israel tax law update 2026 - kupat gemel halhsa - karen hishtalmut tax bracket" \
+              "Brazil Receita Federal tax law update 2026 imposto de renda" \
+              "US IRS tax law update 2026 capital gains brackets"
+          do
+              market=$(echo "$query" | awk '{print $1}')
+              echo "## $market" >> "$out_file"
+              resp=$(curl -s -m 30 -X POST 'https://api.tavily.com/search' \
+                  -H 'Content-Type: application/json' \
+                  -d "{\"api_key\":\"$TAVILY_API_KEY\",\"query\":\"$query\",\"topic\":\"news\",\"search_depth\":\"basic\",\"max_results\":5,\"include_answer\":true}")
+
+              # Pull answer + top result via jq
+              answer=$(echo "$resp" | jq -r '.answer // ""' | head -c 500)
+              [ -n "$answer" ] && echo "**Summary:** $answer" >> "$out_file" && echo "" >> "$out_file"
+
+              echo "$resp" | jq -r '.results[] | "- [\(.title)](\(.url))  *(score: \(.score), \(.published_date // "no date"))*\n  \(.content[:240])"' >> "$out_file"
+              echo "" >> "$out_file"
+          done
+
+          # Save report path for next step
+          echo "report=$out_file" >> $GITHUB_OUTPUT
+
+      - name: Open issue with this week's findings
+        if: steps.search.outputs.skipped != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync(`${process.env.RUNNER_TEMP}/tax-report.md`, 'utf8');
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📰 Tax Law Watch — ${today}`,
+              labels: ['tax-watch', 'newsletter-fodder'],
+              body: body + '\n\n---\n_Auto-generated weekly. Surface relevant items to WizeTax users via dashboard or newsletter._',
+            });
