@@ -62,7 +62,8 @@
       + '@media (max-width: 820px) {'
       + '  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important; }'
       + '  #wize-bottom-nav {'
-      + '    position: fixed; bottom: 0; left: 0; right: 0;'
+      /* explicitly reset top — page-level nav{top:0} would otherwise win and pin our bar to the top */
+      + '    position: fixed !important; top: auto !important; bottom: 0 !important; left: 0 !important; right: 0 !important;'
       + '    background: rgba(13,21,40,0.95);'
       + '    -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);'
       + '    border-top: 1px solid rgba(255,255,255,0.08);'
