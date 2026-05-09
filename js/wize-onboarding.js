@@ -331,10 +331,15 @@
     // The WizeLife portal itself doesn't need an onboarding — that page IS
     // the launcher. Onboarding only fires inside the 5 sub-apps.
     if (appId === 'portal') return;
-    var key = 'wl_ob_' + appId;
-    var seen;
-    try { seen = localStorage.getItem(key); } catch (e) { seen = '1'; /* private mode → don't nag */ }
-    if (seen) return;
+    /* Allow forcing the modal via ?ob=force (great for testing or sharing) */
+    var force = false;
+    try { force = (new URLSearchParams(location.search).get('ob') === 'force'); } catch (e) {}
+    if (!force) {
+      var key = 'wl_ob_' + appId;
+      var seen;
+      try { seen = localStorage.getItem(key); } catch (e) { seen = '1'; /* private mode → don't nag */ }
+      if (seen) return;
+    }
     /* Wait a tick so the rest of the page has painted */
     setTimeout(function () { buildModal(appId); }, 600);
   }
