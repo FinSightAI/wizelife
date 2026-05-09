@@ -1,0 +1,59 @@
+name: Email Digest Worker
+
+# Runs the digest_worker.py from the tax master repo every day at 08:00 UTC.
+# Decides internally whether today is Sunday (weekly digest), if any tax
+# deadlines fall in the reminder window, and which users haven't logged in
+# for 30+ days (inactivity nudge).
+#
+# Required GitHub Secrets (add at /settings/secrets/actions):
+#   RESEND_API_KEY                       — from https://resend.com
+#   FIREBASE_SERVICE_ACCOUNT_JSON        — JSON blob from Firebase console
+#   DIGEST_FROM_EMAIL (optional)         — verified sender, e.g. noreply@wizelife.ai
+#                                          (if not set, falls back to onboarding@resend.dev)
+#
+# To test without sending real emails, push with workflow_dispatch + DIGEST_DRY_RUN=1.
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # daily 08:00 UTC = 11:00 Israel
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'weekly | deadlines | inactive | daily'
+        default: 'daily'
+      dry_run:
+        description: 'Set to 1 for dry run (no actual sends)'
+        default: '0'
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    if: ${{ vars.DIGEST_ENABLED == '1' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Checkout tax master (has the worker)
+        uses: actions/checkout@v4
+        with:
+          repository: FinSightAI/master
+          path: master
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install httpx firebase-admin
+
+      - name: Run digest
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          DIGEST_FROM_EMAIL: ${{ secrets.DIGEST_FROM_EMAIL }}
+          DIGEST_DRY_RUN: ${{ inputs.dry_run || '0' }}
+        run: |
+          if [ -z "$RESEND_API_KEY" ] || [ -z "$FIREBASE_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::warning::Email digest skipped — missing RESEND_API_KEY or FIREBASE_SERVICE_ACCOUNT_JSON"
+            exit 0
+          fi
+          cd master/backend
+          python digest_worker.py "${{ inputs.mode || 'daily' }}"
