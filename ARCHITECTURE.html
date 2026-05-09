@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>WizeLife — Architecture &amp; Specification</title>
+<style>
+@page { size: A4; margin: 18mm; }
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 880px; margin: 28px auto; padding: 0 28px;
+  color: #1e293b; background: #fff; line-height: 1.55; font-size: 14px;
+}
+h1 { font-size: 32px; font-weight: 900; letter-spacing: -1px; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 3px solid #6366f1; color: #1e293b; }
+h2 { font-size: 22px; font-weight: 800; margin: 32px 0 10px; color: #4338ca; }
+h3 { font-size: 17px; font-weight: 700; margin: 22px 0 8px; color: #1e293b; }
+h4 { font-size: 14px; font-weight: 700; margin: 14px 0 6px; color: #334155; text-transform: uppercase; letter-spacing: .4px; }
+p { margin: 8px 0; }
+ul, ol { margin: 8px 0 8px 22px; padding: 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px dashed #cbd5e1; margin: 28px 0; }
+code {
+  background: #f1f5f9; padding: 1px 6px; border-radius: 4px;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12.5px;
+  color: #c026d3;
+}
+pre {
+  background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 8px;
+  overflow-x: auto; font-size: 12.5px; line-height: 1.5;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  margin: 14px 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%; border-collapse: collapse; margin: 14px 0;
+  font-size: 13.5px; box-shadow: 0 0 0 1px #e2e8f0;
+  border-radius: 6px; overflow: hidden;
+}
+th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+th { background: #f8fafc; font-weight: 700; font-size: 12.5px; text-transform: uppercase; letter-spacing: .3px; color: #475569; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background: #fafbfc; }
+blockquote {
+  border-left: 3px solid #6366f1; margin: 12px 0; padding: 4px 14px;
+  background: rgba(99,102,241,.05); color: #475569; font-size: 13.5px;
+}
+a { color: #6366f1; text-decoration: none; }
+a:hover { text-decoration: underline; }
+input[type="checkbox"] { margin-right: 6px; }
+header.brand {
+  text-align: center; padding: 20px 0 30px; margin-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+header.brand .logo { font-size: 42px; font-weight: 900; letter-spacing: -1.5px; }
+header.brand .logo .grad {
+  background: linear-gradient(120deg,#6366f1 0%,#8b5cf6 30%,#a78bfa 50%,#c084fc 75%,#6366f1 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
+@media print {
+  body { font-size: 12px; }
+  h1 { page-break-before: always; }
+  h1:first-of-type { page-break-before: auto; }
+  pre, table { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="brand">
+  <div class="logo">Wize<span class="grad">Life</span></div>
+  <div class="sub">Architecture &amp; Specification · 2026-05-08</div>
+</header>
+<h1>WizeLife — Architecture &amp; Specification</h1>
+
+<blockquote>Last updated: 2026-05-08</blockquote>
+<blockquote>Owner: Ofir Shamir (FinSightAI)</blockquote>
+<blockquote>Domain: <code>wizelife.ai</code></blockquote>
+
+<hr/>
+
+<h2>1. What is WizeLife?</h2>
+
+<p>WizeLife is an <strong>AI-powered life suite</strong> — 5 specialized tools sharing a single</p>
+<p>account, plan, and brand. Each sub-app is independently deployed but</p>
+<p>authenticates through a unified SSO bridge.</p>
+
+<table>
+<tr><th>App</th><th>URL</th><th>Purpose</th></tr>
+<tr><td><strong>WizeLife</strong> (landing/dashboard)</td><td>https://wizelife.ai</td><td>Marketing + account portal</td></tr>
+<tr><td><strong>WizeMoney</strong></td><td>https://finsightai.github.io/finsight/</td><td>Personal finance dashboard</td></tr>
+<tr><td><strong>WizeTax</strong></td><td>https://tax.wizelife.ai</td><td>International tax advisor</td></tr>
+<tr><td><strong>WizeTravel</strong></td><td>https://nodedai.streamlit.app/</td><td>AI trip planner</td></tr>
+<tr><td><strong>WizeHealth</strong></td><td>https://vitara.onrender.com</td><td>Medical Q&amp;A + records</td></tr>
+<tr><td><strong>WizeDeal</strong></td><td>https://check-deal.vercel.app/</td><td>Real-estate deal analyzer</td></tr>
+</table>
+
+<hr/>
+
+<h2>2. Repos</h2>
+
+<table>
+<tr><th>App</th><th>GitHub repo</th><th>Local path</th></tr>
+<tr><td>WizeLife</td><td><code>FinSightAI/wizelife</code></td><td><code>TOTALIST/wizelife/</code></td></tr>
+<tr><td>WizeMoney</td><td><code>FinSightAI/finsight</code></td><td><code>finance dashboard/</code></td></tr>
+<tr><td>WizeTax (FE)</td><td><code>FinSightAI/master</code></td><td><code>tax master/frontend/</code></td></tr>
+<tr><td>WizeTax (BE)</td><td><code>FinSightAI/master</code></td><td><code>tax master/backend/</code></td></tr>
+<tr><td>WizeTravel (FE)</td><td><code>FinSightAI/wizetravel-next</code></td><td><code>wizetravel-app/</code></td></tr>
+<tr><td>WizeTravel (BE)</td><td>(mega traveller, separate)</td><td><code>mega traveller/</code></td></tr>
+<tr><td>WizeHealth</td><td><code>finsightai/vitara</code></td><td><code>RAMBAM/</code></td></tr>
+<tr><td>WizeDeal</td><td><code>finsightai/check-deal</code></td><td><code>Check Deal/</code></td></tr>
+</table>
+
+<hr/>
+
+<h2>3. Tech stack per app</h2>
+
+<table>
+<tr><th>App</th><th>Frontend</th><th>Backend</th><th>Hosting (FE)</th><th>Hosting (BE)</th></tr>
+<tr><td>WizeLife</td><td>Vanilla HTML/CSS/JS</td><td>Firebase</td><td>GitHub Pages</td><td>Firebase</td></tr>
+<tr><td>WizeMoney</td><td>Vanilla HTML/CSS/JS (PWA)</td><td>Firebase + Render</td><td>GitHub Pages</td><td>Firebase + Render</td></tr>
+<tr><td>WizeTax</td><td>Next.js 15</td><td>FastAPI (Python)</td><td>Vercel</td><td>Render</td></tr>
+<tr><td>WizeTravel</td><td>Next.js 15</td><td>FastAPI (Python)</td><td>Vercel</td><td>Render (separate from Tax)</td></tr>
+<tr><td>WizeHealth</td><td>Vanilla HTML/CSS/JS</td><td>Node.js (Express)</td><td>Render</td><td>Render (same node)</td></tr>
+<tr><td>WizeDeal</td><td>Next.js 15</td><td>Vercel API routes</td><td>Vercel</td><td>Vercel</td></tr>
+</table>
+
+<hr/>
+
+<h2>4. Backend services (Render)</h2>
+
+<h3>4.1 <code>master-backend</code> — shared FastAPI for Tax + Money advisor</h3>
+<ul>
+<li><strong>URL:</strong> <code>https://master-backend-79jx.onrender.com</code></li>
+<li><strong>Repo:</strong> <code>FinSightAI/master</code>, path <code>tax master/backend/</code></li>
+<li><strong>Endpoints:</strong></li>
+</ul>
+<p>  - <code>GET /health</code> — health probe (returns <code>{status:"ok",model:"gemini"}</code>)</p>
+<p>  - <code>POST /api/chat</code> — WizeTax SSE streaming chat (uses Tavily + Gemini)</p>
+<p>  - <code>POST /api/ai-proxy</code> — Generic Gemini proxy (used by WizeMoney advisor, supports <code>search:true</code> for Tavily)</p>
+<p>  - <code>POST /api/analyze</code> — tax bracket analysis</p>
+<p>  - <code>POST /api/savings</code> — exit-tax savings comparison</p>
+<p>  - <code>GET /api/countries</code>, <code>/api/regimes</code>, <code>/api/country/{code}</code> — static data lookups</p>
+<p>  - <code>POST /api/company</code>, <code>/api/israel</code> — country-specific calculators</p>
+<ul>
+<li><strong>Rate limits:</strong> 20/min on <code>/api/chat</code>, 30/min on <code>/api/ai-proxy</code>, 10/min on <code>/api/analyze</code></li>
+<li><strong>Sleeps:</strong> Free tier sleeps after 15 min idle. Mitigated by GitHub Actions keep-alive (every 10 min).</li>
+</ul>
+
+<h3>4.2 <code>vitara</code> — WizeHealth Node.js server</h3>
+<ul>
+<li><strong>URL:</strong> <code>https://vitara.onrender.com</code></li>
+<li><strong>Repo:</strong> <code>finsightai/vitara</code></li>
+<li><strong>Endpoints:</strong> <code>/api/chat</code> (streaming), <code>/api/auth/login</code>, <code>/api/auth/check</code>, <code>/api/config</code>, file upload</li>
+<li><strong>Auth:</strong> Bearer token (Firebase ID token via SSO) → server queries Firestore for plan</li>
+<li><strong>Plan limits:</strong> free 5/day, pro 20/day, yolo 40/day (per <code>AI_DAILY_LIMITS</code>)</li>
+</ul>
+
+<h3>4.3 <code>mega-traveller</code> — WizeTravel Python backend</h3>
+<ul>
+<li><strong>URL:</strong> <code>https://nodedai.streamlit.app</code> (mostly Streamlit, separate backend <code>app.py</code> + <code>server.py</code>)</li>
+<li><strong>Endpoints:</strong> <code>/api/visa-check</code> (passport + destination), <code>/api/exchange-rates</code>, <code>/api/true-cost</code>, <code>/api/deal-hunter</code>, etc.</li>
+</ul>
+
+<hr/>
+
+<h2>5. Authentication &amp; SSO</h2>
+
+<h3>5.1 Identity provider</h3>
+<ul>
+<li><strong>Firebase Auth</strong> project: <code>finzilla-7f1f9</code> (shared across all apps)</li>
+<li>Public Firebase config is intentionally exposed (security via Firestore rules)</li>
+</ul>
+
+<h3>5.2 SSO bridge (URL params)</h3>
+<p>WizeLife's dashboard generates per-user URLs to each sub-app:</p>
+
+<pre><code>https://&lt;app&gt;.com/?wl_token=&lt;firebase_id_token&gt;&amp;wl_nick=&lt;name&gt;&amp;wl_plan=&lt;free|pro|yolo&gt;</code></pre>
+
+<p>Each sub-app's bootstrap script reads these params, stores them in <code>localStorage.wl_sso</code>, and removes the params from the URL bar. Subsequent requests send <code>Authorization: Bearer &lt;wl_token&gt;</code> so backends can verify via <code>firebase.auth().verifyIdToken()</code>.</p>
+
+<h3>5.3 Plan resolution priority</h3>
+<ol>
+<li>URL param <code>wl_plan</code></li>
+<li><code>localStorage.wl_plan</code></li>
+<li>Firestore <code>users/{uid}.plan</code></li>
+<li>Default → <code>free</code></li>
+</ol>
+
+<p>Highest tier wins (yolo &gt; pro &gt; free).</p>
+
+<hr/>
+
+<h2>6. Plans &amp; monetization</h2>
+
+<table>
+<tr><th>Tier</th><th>Price</th><th>Limits</th><th>Access codes</th></tr>
+<tr><td>Free</td><td>$0</td><td>3-5 AI queries/day per tool</td><td>—</td></tr>
+<tr><td>Pro</td><td>$4.99/mo</td><td>20/day, full features</td><td>—</td></tr>
+<tr><td>YOLO</td><td>$9.99/mo</td><td>40/day, all tools, priority</td><td><code>WIZELIFE2026</code>, <code>BETA-ACCESS</code>, <code>FRIEND-PRO</code></td></tr>
+</table>
+
+<ul>
+<li><code>PAYWALL_ACTIVE = false</code> in <code>finance dashboard/js/plan.js</code> until Stripe is configured</li>
+<li>Stripe Customer Portal button hidden until billing is live</li>
+<li>Access codes redeem via paywall modal → set plan in Firestore + localStorage</li>
+<li>Referral system: friend signs up via <code>?ref=&lt;code&gt;</code> → upgrades to PRO/YOLO → referrer earns 30 days of matching tier</li>
+</ul>
+
+<hr/>
+
+<h2>7. AI providers</h2>
+
+<h3>7.1 Gemini (primary)</h3>
+<ul>
+<li>Project: same Google Cloud project (free tier or billing-enabled)</li>
+<li>Model: <code>gemini-2.5-flash-lite</code> ($0.10 input / $0.40 output per 1M tokens)</li>
+<li>Used by: all 5 apps directly or through <code>/api/ai-proxy</code></li>
+<li>Fallback chain: 2.5-flash-lite → flash-latest → 1.5-flash</li>
+</ul>
+
+<h3>7.2 Tavily (web search augmentation)</h3>
+<ul>
+<li>Used by: <code>master-backend</code> for <code>/api/chat</code> (Tax) and <code>/api/ai-proxy</code> with <code>search:true</code> (Money advisor)</li>
+<li>Tier: Dev (free, 1000 searches/month)</li>
+<li>Returns: top 5-6 sources, AI cites them as <code>(Source N)</code></li>
+</ul>
+
+<h3>7.3 Groq, OpenRouter, Anthropic (optional)</h3>
+<ul>
+<li>Configured in WizeHealth as alternative providers</li>
+<li>Auto-fallback if Gemini quota hit</li>
+</ul>
+
+<hr/>
+
+<h2>8. Environment variables</h2>
+
+<h3>8.1 <code>master-backend</code> (Render)</h3>
+<table>
+<tr><th>Var</th><th>Purpose</th></tr>
+<tr><td><code>GEMINI_API_KEY</code></td><td>Google AI (required for <code>/api/chat</code> and <code>/api/ai-proxy</code>)</td></tr>
+<tr><td><code>TAVILY_API_KEY</code></td><td>Web search for Tax + Money advisor</td></tr>
+<tr><td><code>ANTHROPIC_API_KEY</code></td><td>Claude fallback (optional)</td></tr>
+<tr><td><code>GROQ_API_KEY</code></td><td>Groq fallback (optional)</td></tr>
+<tr><td><code>FRONTEND_URL</code></td><td>CORS allowlist</td></tr>
+<tr><td><code>AI_PROXY_MODEL</code></td><td>Override default Gemini model (default: <code>gemini-2.5-flash-lite</code>)</td></tr>
+<tr><td><code>AI_CHAT_MODEL</code></td><td>Override Tax orchestrator model</td></tr>
+</table>
+
+<h3>8.2 <code>vitara</code> (Render)</h3>
+<table>
+<tr><th>Var</th><th>Purpose</th></tr>
+<tr><td><code>GEMINI_API_KEY</code></td><td>Health chat AI</td></tr>
+<tr><td><code>GROQ_API_KEY</code></td><td>Fallback</td></tr>
+<tr><td><code>OPENROUTER_API_KEY</code></td><td>Multi-model gateway</td></tr>
+<tr><td><code>ADMIN_PASSWORD_HASH</code></td><td>Optional gating (if set, requires login overlay)</td></tr>
+<tr><td><code>FIREBASE_SERVICE_ACCOUNT_JSON</code></td><td>Server-side Firebase admin for plan lookup</td></tr>
+<tr><td><code>HEALTH_GEMINI_MODEL</code></td><td>Override Gemini model (default <code>gemini-2.5-flash-lite</code>)</td></tr>
+</table>
+
+<h3>8.3 <code>master</code> Tax frontend (Vercel)</h3>
+<table>
+<tr><th>Var</th><th>Purpose</th></tr>
+<tr><td><code>NEXT_PUBLIC_BACKEND_URL</code></td><td><code>https://master-backend-79jx.onrender.com</code></td></tr>
+</table>
+
+<h3>8.4 <code>mega-traveller</code> (Render)</h3>
+<table>
+<tr><th>Var</th><th>Purpose</th></tr>
+<tr><td><code>GEMINI_API_KEY</code></td><td>Trip planner / visa / hidden city</td></tr>
+<tr><td><code>AMADEUS_CLIENT_ID</code>, <code>AMADEUS_CLIENT_SECRET</code></td><td>Flight search API</td></tr>
+<tr><td><code>FIREBASE_SERVICE_ACCOUNT_JSON</code></td><td>Plan-aware quota</td></tr>
+</table>
+
+<hr/>
+
+<h2>9. CI/CD</h2>
+
+<h3>9.1 Daily QA workflow</h3>
+<ul>
+<li><strong>Location:</strong> <code>wizelife/.github/workflows/daily-qa.yml</code></li>
+<li><strong>Schedule:</strong> every day at 06:00 UTC (09:00 Israel)</li>
+<li><strong>What it runs (13 tiers):</strong></li>
+</ul>
+<p>  1. HTTP/console-errors/broken-assets/security-headers/SSL via Playwright</p>
+<p>  2. Lighthouse on 4 key pages</p>
+<p>  3. Auth E2E (logs in with <code>QA_EMAIL</code>/<code>QA_PASSWORD</code> secrets, expects dashboard)</p>
+<p>  4. Accessibility deep scan (axe-core)</p>
+<p>  5. SEO meta tags</p>
+<p>  6. PWA validity</p>
+<p>  7. Multi-viewport (iPhone/iPad/desktop)</p>
+<p>  8. Cross-app SSO sanity</p>
+<p>  10. i18n coverage in 4 languages</p>
+<p>  11. Third-party APIs (Yahoo, Open-Meteo, Render)</p>
+<p>  12. Cold-start latency tracking</p>
+<p>  14. E2E user flows for all apps</p>
+<ul>
+<li><strong>Output:</strong> rolling GitHub issue (<code>📊 Daily QA Status</code>); failures auto-open alert issue (sends email via GitHub notifications)</li>
+<li><strong>Cloudflare bypass:</strong> all Playwright contexts identify as <code>WizeLife-QA/1.0</code>; CF WAF rule must allow this UA</li>
+</ul>
+
+<h3>9.2 Render keep-alive</h3>
+<ul>
+<li><strong>Location:</strong> <code>tax master/.github/workflows/keepalive.yml</code></li>
+<li><strong>Cron:</strong> every 10 min, hits <code>/health</code> of <code>master-backend</code> so Render free tier doesn't sleep</li>
+</ul>
+
+<h3>9.3 Service Worker auto-update</h3>
+<ul>
+<li>All 5 apps + WizeLife landing have a smart SW registration:</li>
+</ul>
+<p>  - Polls <code>registration.update()</code> every 5 min</p>
+<p>  - Also checks on tab focus</p>
+<p>  - Shows non-blocking banner when new SW installs</p>
+<p>  - Sends <code>SKIP_WAITING</code> message → controllerchange → reload</p>
+<ul>
+<li>Per-app pink/purple/yellow theming for the banner</li>
+</ul>
+
+<hr/>
+
+<h2>10. Monitoring</h2>
+
+<table>
+<tr><th>Tool</th><th>Purpose</th><th>Cost</th></tr>
+<tr><td><strong>GitHub Actions</strong></td><td>Daily QA + Render keep-alive</td><td>Free (well under 2000 min/month)</td></tr>
+<tr><td><strong>GitHub Issues</strong></td><td>QA alerts → email via notifications</td><td>Free</td></tr>
+<tr><td><strong>UptimeRobot</strong></td><td>5-min interval downtime check on all 6 endpoints</td><td>Free (50 monitors)</td></tr>
+<tr><td><strong>Microsoft Clarity</strong></td><td>Session replays + heatmaps</td><td>Free, project ID <code>wnvlwv7gu0</code></td></tr>
+<tr><td><strong>Google Analytics</strong></td><td>Traffic + events</td><td>Free, IDs: <code>G-MPRTN6CJ9K</code> (WizeLife), <code>G-DB63NWYGX5</code> (Money), <code>G-3W9ZZ0008E</code> (Tax), <code>G-6E5BE86WVT</code> (Deal)</td></tr>
+<tr><td><strong>Sentry</strong></td><td>Error tracking</td><td>Deferred until traffic justifies</td></tr>
+<tr><td><strong>PostHog</strong></td><td>Funnels + retention</td><td>Deferred</td></tr>
+</table>
+
+<hr/>
+
+<h2>11. WizeMoney internal architecture</h2>
+
+<p>WizeMoney is the most complex sub-app:</p>
+
+<h3>11.1 Pages (38 total in <code>pages/*.html</code>)</h3>
+<p>Categories: dashboard, bank, credit, my-funds, stocks, stock-analytics, sectors, investment-advisor, ai-chat, ai-story, goals, simulator, tax-optimizer, pension-optimizer, compare-funds, family-dashboard, etc.</p>
+
+<h3>11.2 Storage layer (<code>js/storage.js</code>)</h3>
+<ul>
+<li>Pure localStorage, with optional Firestore mirror when user is signed in</li>
+<li>Keys: <code>finance_bank_accounts</code>, <code>finance_my_funds</code>, <code>finance_stocks</code>, <code>finance_goals</code>, <code>finance_credit_cards</code>, <code>finance_subscriptions</code>, <code>finance_loans</code>, <code>finance_assets</code>, <code>finance_transactions</code></li>
+<li>Each domain has <code>getX</code>, <code>addX</code>, <code>updateX</code>, <code>deleteX</code> methods</li>
+</ul>
+
+<h3>11.3 Investment advisor (<code>pages/investment-advisor.html</code>)</h3>
+<ul>
+<li>Auto-analysis on page load using full portfolio context</li>
+<li>Hard budget constraint (free cash − ₪30K emergency fund, user-editable)</li>
+<li>System prompt: 3-market awareness (IL/US/BR), 2026 contribution limits, mandatory recommendation format</li>
+<li>Validation layer: budget overrun, unrealistic returns, allocation conflict, ticker existence (Yahoo Finance probe)</li>
+<li>Tavily-augmented for the auto-analysis (real-time fund returns/rates), Gemini-only for follow-ups</li>
+</ul>
+
+<h3>11.4 Stocks pipeline (<code>js/stock-api.js</code>)</h3>
+<ul>
+<li>Yahoo Finance via Cloudflare Worker proxy + direct fallback</li>
+<li>TASE (Tel Aviv) via static JSON snapshot</li>
+<li>10-min price cache + 24-hour historical cache in localStorage</li>
+</ul>
+
+<hr/>
+
+<h2>12. Languages (i18n)</h2>
+
+<p>All apps support <strong>4 languages</strong>: Hebrew (he, RTL), English (en), Portuguese (pt), Spanish (es).</p>
+<ul>
+<li>Switcher pills always UPPERCASE: <code>EN | ES | PT | HE</code></li>
+<li>Direction toggles via <code>&lt;html dir="rtl|ltr"&gt;</code></li>
+<li>Translation maps in:</li>
+</ul>
+<p>  - WizeMoney: <code>js/i18n.js</code> (large file, all keys)</p>
+<p>  - WizeTax: <code>app/wize-ui.tsx</code> slides + per-component <code>t4(lang, {he,en,pt,es})</code></p>
+<p>  - WizeTravel: <code>lib/i18n.ts</code></p>
+<p>  - WizeHealth: inline <code>TX = {he,en,pt,es}</code> in <code>index.html</code></p>
+<p>  - WizeLife: inline + per-component</p>
+
+<hr/>
+
+<h2>13. PWA &amp; cross-platform</h2>
+
+<ul>
+<li><strong>Manifest:</strong> each app has its own <code>manifest.json</code> with <code>start_url</code>, icons, theme color</li>
+<li><strong>Install on iPhone:</strong> Safari → Share → Add to Home Screen</li>
+<li><strong>Install on Android:</strong> Chrome shows install prompt automatically</li>
+<li><strong>Service Worker:</strong> smart auto-update banner (per app, color-themed)</li>
+<li><strong>Offline:</strong> cached shell + dynamic fetch fallback in SW</li>
+<li><strong>No native iOS/Android app yet</strong> — Capacitor wrapper is a future step</li>
+</ul>
+
+<hr/>
+
+<h2>14. Security</h2>
+
+<ul>
+<li>All apps over HTTPS</li>
+<li>Cloudflare proxy on <code>wizelife.ai</code> (orange cloud — works fine, leave it)</li>
+<li>WAF rule: allow User-Agent containing <code>WizeLife-QA</code> (for daily QA bypass)</li>
+<li>CSP headers on all pages</li>
+<li>HSTS, X-Frame-Options, X-Content-Type-Options enforced</li>
+<li>Firestore rules: users can only read/write their own data</li>
+<li>API rate limits via slowapi (FastAPI) and Express middleware (Node)</li>
+<li>No PII in URLs (token bridge cleans up after read)</li>
+<li>XSS-safe rendering (escape user input on tx.type, tx.description, goal.name)</li>
+</ul>
+
+<hr/>
+
+<h2>15. Known TODOs / not done</h2>
+
+<ul>
+<li><input type="checkbox"  disabled> Stripe Payment Link → paste in <code>paywall.js</code> + <code>dashboard.html</code></li>
+<li><input type="checkbox"  disabled> Firebase Blaze upgrade + <code>firebase deploy --only functions</code></li>
+<li><input type="checkbox"  disabled> Flip <code>PAYWALL_ACTIVE = true</code> in <code>js/plan.js</code></li>
+<li><input type="checkbox"  disabled> <code>wizelife.ai</code> DNS already on Cloudflare (orange) — works, don't touch</li>
+<li><input type="checkbox"  disabled> Sentry / PostHog integration (deferred until 100+ users)</li>
+<li><input type="checkbox"  disabled> Native iOS/Android via Capacitor (deferred until 10K+ users)</li>
+<li><input type="checkbox"  disabled> Real Garmin Health API integration (requires partner agreement, 1-2 months)</li>
+<li><input type="checkbox"  disabled> Apple HealthKit integration (requires Capacitor)</li>
+<li><input type="checkbox"  disabled> Direct kupat-cholim API (no public API exists in Israel — manual file upload + AI parse is the workaround)</li>
+</ul>
+
+<hr/>
+
+<h2>16. Operational runbook</h2>
+
+<h3>16.1 An app is down</h3>
+<ol>
+<li>Check UptimeRobot dashboard</li>
+<li>Check Render service logs (<code>master-backend</code>, <code>vitara</code>)</li>
+<li>If Gemini 429: rotate key in Render env vars</li>
+<li>If Cloudflare 502: temporarily set DNS-only (gray cloud) on the misbehaving subdomain</li>
+</ol>
+
+<h3>16.2 Daily QA failed</h3>
+<ol>
+<li>Open the GitHub issue in <code>wizelife</code> repo (auto-created)</li>
+<li>Open Claude Code, say "fix issue #N"</li>
+<li>Claude reviews, fixes, pushes; CI/SW handles propagation</li>
+</ol>
+
+<h3>16.3 New deployment</h3>
+<ul>
+<li>WizeMoney/WizeLife/WizeHealth (GitHub Pages): push to <code>main</code> → live in ~30s</li>
+<li>WizeTax/WizeDeal/WizeTravel (Vercel): push to <code>main</code> → live in ~1 min</li>
+<li><code>master-backend</code> (Render): push to <code>main</code> → live in ~3-5 min</li>
+<li><code>vitara</code> (Render): push to <code>main</code> → live in ~3-5 min</li>
+</ul>
+
+<hr/>
+
+<h2>17. Quick commands</h2>
+
+<pre><code># Trigger daily QA manually
+gh workflow run "Daily QA — All Apps" --repo FinSightAI/wizelife
+
+# Test ai-proxy
+curl -m 60 -X POST https://master-backend-79jx.onrender.com/api/ai-proxy \
+  -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"user","parts":[{"text":"hi"}]}]}'
+
+# Tail Render logs
+# (use Render dashboard, no CLI integration set up)
+
+# Check QA issue list
+gh issue list --repo FinSightAI/wizelife --label qa-alert</code></pre>
+
+<hr/>
+
+<p>_End of document. Update this file alongside any architectural change._</p>
+
+</body></html>
