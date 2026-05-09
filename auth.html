@@ -321,27 +321,70 @@
     }
   }
 
+  async function _finishGoogleAuth(cred) {
+    const ref = wlDb.collection("users").doc(cred.user.uid);
+    const doc = await ref.get();
+    const nick = cred.user.displayName || cred.user.email.split("@")[0];
+    if (!doc.exists) {
+      await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      try { await applyReferralOnSignup(cred.user.uid); } catch {}
+    } else {
+      const d = doc.data();
+      if (!d.nickname) await ref.update({ nickname: nick });
+    }
+    localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
+    window.location.href = "dashboard.html";
+  }
+
+  // Detect mobile / Safari / iOS — popups are blocked or unreliable there.
+  // Use redirect on those, popup on desktop where it's smoother.
+  function _shouldUseRedirect() {
+    const ua = navigator.userAgent || "";
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+    const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|EdgiOS/.test(ua);
+    return isMobile || isSafari;
+  }
+
   async function googleLogin() {
     try {
-      const cred = await wlAuth.signInWithPopup(googleProvider);
-      // First time? create user doc
-      const ref = wlDb.collection("users").doc(cred.user.uid);
-      const doc = await ref.get();
-      const nick = cred.user.displayName || cred.user.email.split("@")[0];
-      if (!doc.exists) {
-        await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-        try { await applyReferralOnSignup(cred.user.uid); } catch {}
-      } else {
-        // Update nickname if missing
-        const d = doc.data();
-        if (!d.nickname) await ref.update({ nickname: nick });
+      if (_shouldUseRedirect()) {
+        // Redirect flow — page reloads to Google, comes back via getRedirectResult below
+        await wlAuth.signInWithRedirect(googleProvider);
+        return;
       }
-      localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
-      window.location.href = "dashboard.html";
+      const cred = await wlAuth.signInWithPopup(googleProvider);
+      await _finishGoogleAuth(cred);
     } catch (e) {
-      alert(friendlyError(e.code));
+      console.error("Google login failed:", e);
+      // Show real Firebase error code so user can act / report
+      const code = e.code || "unknown";
+      const msg = (
+        code === "auth/popup-blocked"           ? "הדפדפן חסם את החלון. אפשר Google sign-in דרך redirect?" :
+        code === "auth/popup-closed-by-user"    ? "ביטלת את ההתחברות. נסה שוב." :
+        code === "auth/unauthorized-domain"     ? "הדומיין הזה לא מורשה ב-Firebase. כתוב לתמיכה." :
+        code === "auth/operation-not-allowed"   ? "Google sign-in לא מופעל ב-Firebase Console." :
+        code === "auth/network-request-failed"  ? "תקלת רשת. בדוק חיבור אינטרנט." :
+        friendlyError(code) || ("שגיאה: " + code)
+      );
+      // Auto-fallback: on popup-blocked, try redirect
+      if (code === "auth/popup-blocked") {
+        try { await wlAuth.signInWithRedirect(googleProvider); return; } catch {}
+      }
+      alert(msg);
     }
   }
+
+  // Handle the redirect return from Google (mobile / Safari path)
+  wlAuth.getRedirectResult().then(async (result) => {
+    if (result && result.user) {
+      try { await _finishGoogleAuth(result); } catch (e) { console.error(e); }
+    }
+  }).catch((e) => {
+    if (e && e.code && e.code !== "auth/null-user") {
+      console.error("Google redirect result error:", e);
+      alert("Google sign-in failed: " + e.code);
+    }
+  });
 
   function friendlyError(code) {
     const map = {
