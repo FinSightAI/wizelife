@@ -351,6 +351,19 @@
 
   </div>
 
+  <!-- Access code (always visible — codes redeem to Pro/YOLO instantly) -->
+  <h3 id="accessCodeHeading" style="margin-top:32px">🎟️ Access code</h3>
+  <div class="account-card" style="line-height:1.55">
+    <p id="accessCodeIntro" style="color:var(--muted);font-size:0.9rem;margin:0 0 14px">
+      Got a code from a friend, partner or campaign? Redeem here for instant Pro/YOLO.
+    </p>
+    <div class="code-row" style="margin-top:0">
+      <input class="code-input" id="accessCodeInput" placeholder="Have an access code?" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+      <button class="code-btn" id="accessCodeBtn" onclick="applyCodeFromHero()">Apply</button>
+    </div>
+    <div class="code-msg" id="codeMsg"></div>
+  </div>
+
   <!-- Account -->
   <h3>Account</h3>
   <div class="account-grid">
@@ -528,12 +541,9 @@ function renderPlan(plan, user) {
         : "Upgrade to unlock all 5 tools fully.";
     document.getElementById("acctPlan").innerHTML = `<span class="plan-badge ${badgeClass}">${isYolo ? "YOLO ⚡" : isPro ? "Pro" : "Free"}</span>`;
 
-    const codeRow = `
-        <div class="code-row" style="margin-top:12px;">
-            <input class="code-input" id="accessCodeInput" placeholder="Have an access code?" />
-            <button class="code-btn" onclick="applyCode('${user.uid}')">Apply</button>
-        </div>
-        <div class="code-msg" id="codeMsg"></div>`;
+    /* Access code input now lives in a dedicated, always-visible card above Account
+       (#accessCodeHeading). No need to duplicate it inside the Subscription card. */
+    const codeRow = '';
 
     if (isYolo) {
         document.getElementById("planAction").innerHTML =
@@ -575,6 +585,53 @@ function renderPlan(plan, user) {
             </a>
             ${codeRow}`;
     }
+}
+
+/* Localize the always-visible access-code card on first paint */
+(function localizeAccessCodeCard(){
+  var t = {
+    he: { h:'🎟️ קוד גישה', sub:'יש לך קוד מחבר, שותף או קמפיין? הזן כאן ותקבל Pro/YOLO מיידית.', ph:'הזן קוד גישה', btn:'הפעלה' },
+    en: { h:'🎟️ Access code', sub:'Got a code from a friend, partner or campaign? Redeem here for instant Pro/YOLO.', ph:'Have an access code?', btn:'Apply' },
+    pt: { h:'🎟️ Código de acesso', sub:'Tem um código de um amigo, parceiro ou campanha? Resgate aqui para Pro/YOLO instantâneo.', ph:'Tem um código de acesso?', btn:'Aplicar' },
+    es: { h:'🎟️ Código de acceso', sub:'¿Tienes un código de un amigo, socio o campaña? Canjéalo aquí para Pro/YOLO al instante.', ph:'¿Tienes un código de acceso?', btn:'Aplicar' }
+  };
+  function go() {
+    try {
+      var l = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+      var x = t[l] || t.en;
+      var H = document.getElementById('accessCodeHeading');
+      var I = document.getElementById('accessCodeIntro');
+      var IN = document.getElementById('accessCodeInput');
+      var B = document.getElementById('accessCodeBtn');
+      if (H) H.textContent = x.h;
+      if (I) I.textContent = x.sub;
+      if (IN) IN.placeholder = x.ph;
+      if (B) B.textContent = x.btn;
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
+  else go();
+})();
+
+/* Wrapper called by the always-visible access-code card. Reads the current
+   Firebase auth user so the input works regardless of plan / UI state. */
+async function applyCodeFromHero() {
+    var user = (firebase && firebase.auth && firebase.auth().currentUser) || null;
+    if (!user) {
+        var msg = document.getElementById("codeMsg");
+        if (msg) {
+            var l = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+            msg.style.color = "#f87171";
+            msg.textContent = ({
+                he: 'יש להתחבר תחילה.',
+                en: 'Please sign in first.',
+                pt: 'Faça login primeiro.',
+                es: 'Inicia sesión primero.'
+            })[l] || 'Please sign in first.';
+        }
+        return;
+    }
+    return applyCode(user.uid);
 }
 
 async function applyCode(uid) {
