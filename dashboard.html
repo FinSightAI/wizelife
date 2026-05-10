@@ -686,7 +686,31 @@ async function applyCode(uid) {
         }
     } catch(e) {
         msg.style.color = "#f87171";
-        msg.textContent = "Error. Please try again.";
+        var lang = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+        // Surface specific server errors so the user knows what to fix.
+        if (e && e.code === 'functions/failed-precondition' && /verify/i.test(e.message)) {
+            var verify = ({
+                he: 'יש לאמת את כתובת האימייל קודם. נשלח אלייך לינק לאימות?',
+                en: 'Please verify your email first. Send verification link now?',
+                pt: 'Verifique seu e-mail primeiro. Enviar link de verificação?',
+                es: 'Verifica tu correo primero. ¿Enviar enlace de verificación?',
+            })[lang] || 'Please verify your email first.';
+            msg.textContent = verify;
+            // Offer to (re)send the verification email immediately.
+            try {
+                var u = firebase.auth().currentUser;
+                if (u && !u.emailVerified) {
+                    u.sendEmailVerification().then(function () {
+                        msg.style.color = '#6ee7b7';
+                        msg.textContent = ({ he:'נשלח! בדוק את הספאם.', en:'Sent — check your spam folder.', pt:'Enviado — verifique o spam.', es:'Enviado — revisa el spam.' })[lang] || 'Sent.';
+                    }).catch(function () {});
+                }
+            } catch (err) {}
+        } else if (e && e.code === 'functions/resource-exhausted') {
+            msg.textContent = ({ he:'יותר מדי ניסיונות. חכה דקה.', en:'Too many attempts — wait a minute.', pt:'Muitas tentativas — aguarde 1 min.', es:'Demasiados intentos — espera 1 min.' })[lang] || 'Too many attempts.';
+        } else {
+            msg.textContent = ({ he:'שגיאה. נסה שוב.', en:'Error. Please try again.', pt:'Erro. Tente novamente.', es:'Error. Inténtalo de nuevo.' })[lang] || 'Error.';
+        }
     }
 }
 
