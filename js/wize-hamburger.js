@@ -61,10 +61,10 @@
   }
 
   var T = {
-    he: { menu:'תפריט', apps:'אפליקציות', lang:'שפה', theme:'ערכת נושא', dark:'כהה', light:'בהיר', account:'חשבון', back:'חזרה ל-WizeLife', signin:'כניסה', signout:'יציאה', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    en: { menu:'Menu', apps:'Apps', lang:'Language', theme:'Theme', dark:'Dark', light:'Light', account:'Account', back:'Back to WizeLife', signin:'Sign in', signout:'Sign out', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    pt: { menu:'Menu', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Escuro', light:'Claro', account:'Conta', back:'Voltar para WizeLife', signin:'Entrar', signout:'Sair', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    es: { menu:'Menú', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Oscuro', light:'Claro', account:'Cuenta', back:'Volver a WizeLife', signin:'Iniciar', signout:'Salir', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' }
+    he: { menu:'תפריט', apps:'אפליקציות', lang:'שפה', theme:'ערכת נושא', dark:'כהה', light:'בהיר', account:'חשבון', back:'חזרה ל-WizeLife', signin:'כניסה', signout:'יציאה', feedback:'משוב / דיווח באג', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
+    en: { menu:'Menu', apps:'Apps', lang:'Language', theme:'Theme', dark:'Dark', light:'Light', account:'Account', back:'Back to WizeLife', signin:'Sign in', signout:'Sign out', feedback:'Feedback / Report a bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
+    pt: { menu:'Menu', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Escuro', light:'Claro', account:'Conta', back:'Voltar para WizeLife', signin:'Entrar', signout:'Sair', feedback:'Feedback / Reportar bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
+    es: { menu:'Menú', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Oscuro', light:'Claro', account:'Cuenta', back:'Volver a WizeLife', signin:'Iniciar', signout:'Salir', feedback:'Feedback / Reportar bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' }
   };
 
   function injectStyle() {
@@ -249,6 +249,16 @@
     /* Account / footer links */
     var foot = document.createElement('div');
     foot.style.cssText = 'margin-top:18px;display:flex;flex-direction:column;gap:2px;';
+
+    /* Feedback / report — links to wizelife.ai/feedback.html with the
+       current app pre-selected and lang carried over. Opens in same tab so
+       the user can come back via Back. */
+    var fbRow = document.createElement('a');
+    fbRow.className = 'wh-row';
+    fbRow.href = 'https://wizelife.ai/feedback.html?app=' + encodeURIComponent(cur === 'portal' ? 'general' : cur) + '&lang=' + encodeURIComponent(lang);
+    fbRow.innerHTML = '<span class="wh-emoji">💬</span><span>' + t.feedback + '</span>';
+    foot.appendChild(fbRow);
+
     var backRow = document.createElement('a');
     backRow.className = 'wh-row';
     backRow.href = 'https://wizelife.ai/dashboard.html';
