@@ -250,13 +250,16 @@
     });
   }
 
-  // Persistent emergency banner for medical app — always visible, can't be dismissed
+  // Persistent emergency banner for medical app — RED, always visible
   function showEmergencyBanner(opts) {
     if (document.getElementById('wl-emergency-banner')) return;
     const lang = getLang();
-    const txt = lang === 'he'
-      ? '🚨 במקרה חירום רפואי חייג <strong>101</strong> מיד — אל תסתמך על האפליקציה'
-      : '🚨 Medical emergency? Call <strong>101</strong> (Israel) immediately — do NOT rely on this app';
+    const TR = {
+      he: '🚨 במקרה חירום רפואי חייג <strong>101</strong> מיד — אל תסתמך על האפליקציה',
+      en: '🚨 Medical emergency? Call <strong>101</strong> (Israel) / <strong>911</strong> (US) immediately — do NOT rely on this app',
+      pt: '🚨 Emergência médica? Ligue <strong>192</strong> (Brasil) / <strong>911</strong> imediatamente — NÃO confie neste app',
+      es: '🚨 ¿Emergencia médica? Llama al <strong>911</strong> de inmediato — NO dependas de esta app',
+    };
     const bar = document.createElement('div');
     bar.id = 'wl-emergency-banner';
     bar.style.cssText = [
@@ -265,9 +268,51 @@
       'letter-spacing:0.2px','line-height:1.4','position:relative','z-index:99998',
       'box-shadow:0 2px 6px rgba(220,38,38,0.3)',
     ].join(';');
-    bar.innerHTML = txt;
+    bar.innerHTML = TR[lang] || TR.en;
     document.body.insertBefore(bar, document.body.firstChild);
   }
 
-  root.WizeDisclaimer = { gate, showEmergencyBanner, TOS_VERSION };
+  // Persistent professional-disclaimer banner — AMBER, slim, always visible
+  // for finance / tax / real-estate where licensed-advisor caveat is needed.
+  function showProfessionalDisclaimer(opts) {
+    opts = opts || {};
+    if (document.getElementById('wl-pro-disclaimer')) return;
+    const lang = getLang();
+    const TR = {
+      tax: {
+        he: 'ℹ️ WizeTax הוא כלי AI לחקירה ולמידע — <strong>אינו ייעוץ מס מורשה</strong>. לפני כל פעולה היוועץ ביועץ מס/רו״ח.',
+        en: 'ℹ️ WizeTax is an AI research/info tool — <strong>NOT licensed tax advice</strong>. Consult a licensed CPA/tax advisor before acting.',
+        pt: 'ℹ️ WizeTax é uma ferramenta de IA para pesquisa/informação — <strong>NÃO é consultoria tributária licenciada</strong>. Consulte um contador antes de agir.',
+        es: 'ℹ️ WizeTax es una herramienta de IA de investigación/información — <strong>NO es asesoría fiscal licenciada</strong>. Consulta a un contador antes de actuar.',
+      },
+      money: {
+        he: 'ℹ️ WizeMoney הוא כלי AI לחקירה ולמידע — <strong>אינו ייעוץ השקעות מורשה</strong>. אין לראות בו תחליף ליועץ פיננסי.',
+        en: 'ℹ️ WizeMoney is an AI research/info tool — <strong>NOT licensed investment advice</strong>. Not a substitute for a financial advisor.',
+        pt: 'ℹ️ WizeMoney é uma ferramenta de IA de pesquisa/informação — <strong>NÃO é assessoria de investimentos licenciada</strong>.',
+        es: 'ℹ️ WizeMoney es una herramienta de IA de investigación/información — <strong>NO es asesoría de inversiones licenciada</strong>.',
+      },
+      deal: {
+        he: 'ℹ️ WizeDeal הוא כלי AI לחקירה ולמידע — <strong>אינו ייעוץ נדל״ן/השקעות מורשה</strong>. בדוק עם שמאי/עו״ד לפני רכישה.',
+        en: 'ℹ️ WizeDeal is an AI research/info tool — <strong>NOT licensed real-estate or investment advice</strong>. Verify with an appraiser/lawyer before buying.',
+        pt: 'ℹ️ WizeDeal é uma ferramenta de IA de pesquisa/informação — <strong>NÃO é consultoria imobiliária licenciada</strong>.',
+        es: 'ℹ️ WizeDeal es una herramienta de IA de investigación/información — <strong>NO es asesoría inmobiliaria licenciada</strong>.',
+      },
+    };
+    const tr = (TR[opts.app] && (TR[opts.app][lang] || TR[opts.app].en)) || '';
+    if (!tr) return;
+    const bar = document.createElement('div');
+    bar.id = 'wl-pro-disclaimer';
+    bar.style.cssText = [
+      'background:linear-gradient(90deg,#fef3c7,#fde68a)','color:#78350f',
+      'font:600 11.5px Inter,-apple-system,sans-serif','padding:6px 14px','text-align:center',
+      'letter-spacing:0.1px','line-height:1.45','position:relative','z-index:99997',
+      'border-bottom:1px solid #f59e0b55',
+    ].join(';');
+    bar.innerHTML = tr;
+    /* Insert just BELOW the WizeBar (top 36px). The WizeBar itself uses
+       z-index 99999, so this banner stays in normal flow underneath it. */
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  root.WizeDisclaimer = { gate, showEmergencyBanner, showProfessionalDisclaimer, TOS_VERSION };
 })(window);
