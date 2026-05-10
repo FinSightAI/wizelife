@@ -12,8 +12,43 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
+// ── Firebase App Check (reCAPTCHA v3) ──────────────────────────────────────────
+// Ensures only requests coming from our own pages can hit Firestore /
+// Cloud Functions. Without App Check enforcement, an attacker could call
+// our backend directly using the (intentionally public) Firebase API key.
+// reCAPTCHA v3 site key is public — verification happens server-side.
+//
+// To enable enforcement: Console → App Check → register each app domain
+// with a reCAPTCHA v3 site key, then turn on Enforcement. The line below
+// initializes the client; if no site key is set yet, App Check is in
+// monitoring mode and won't block anything (safe rollout).
+try {
+    if (firebase.appCheck && window.WIZELIFE_RECAPTCHA_SITE_KEY) {
+        firebase.appCheck().activate(
+            new firebase.appCheck.ReCaptchaV3Provider(window.WIZELIFE_RECAPTCHA_SITE_KEY),
+            true /* automatic refresh */
+        );
+    }
+} catch (e) { console.warn('App Check init failed', e); }
+
 const wlAuth = firebase.auth();
 const wlDb   = firebase.firestore();
+
+// Login alert — fire once per session when auth resolves to a signed-in user.
+// Backend dedupes per-device-fingerprint and only emails on a NEW device.
+wlAuth.onAuthStateChanged((user) => {
+    if (!user) return;
+    try {
+        if (sessionStorage.getItem('wl_login_alert_fired')) return;
+        sessionStorage.setItem('wl_login_alert_fired', '1');
+        const fn = firebase.functions().httpsCallable('notifyLoginAlert');
+        fn({
+            ua: navigator.userAgent.slice(0, 300),
+            platform: (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '',
+        }).catch(() => {});
+    } catch (e) {}
+});
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
