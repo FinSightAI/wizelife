@@ -79,17 +79,22 @@ const wlDb   = firebase.firestore();
 
 // Login alert — fire once per session when auth resolves to a signed-in user.
 // Backend dedupes per-device-fingerprint and only emails on a NEW device.
+// Heavily defensive: every step is wrapped, missing SDKs become silent no-ops
+// so the auth flow itself never breaks.
 wlAuth.onAuthStateChanged((user) => {
     if (!user) return;
     try {
         if (sessionStorage.getItem('wl_login_alert_fired')) return;
         sessionStorage.setItem('wl_login_alert_fired', '1');
+        // firebase.functions may be undefined if firebase-functions-compat.js
+        // didn't load on this page. Bail silently in that case.
+        if (typeof firebase.functions !== 'function') return;
         const fn = firebase.functions().httpsCallable('notifyLoginAlert');
         fn({
             ua: navigator.userAgent.slice(0, 300),
             platform: (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '',
         }).catch(() => {});
-    } catch (e) {}
+    } catch (e) { console.warn('login alert skipped', e); }
 });
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
