@@ -49,6 +49,19 @@
 <link rel="dns-prefetch" href="https://master-backend-79jx.onrender.com">
 <link rel="preconnect" href="https://ofirofir-wizetravel.hf.space" crossorigin>
 <link rel="dns-prefetch" href="https://ofirofir-wizetravel.hf.space">
+
+<!-- Eager prefetch: by the time the user taps a tool card, the browser
+     should already have the launcher HTML cached. Each tool also has its
+     own "as=document" prefetch so navigation feels instant. -->
+<link rel="prefetch" as="document" href="https://health.wizelife.ai/" crossorigin>
+<link rel="prefetch" as="document" href="https://travel.wizelife.ai/" crossorigin>
+<link rel="prefetch" as="document" href="https://tax.wizelife.ai/" crossorigin>
+<link rel="prefetch" as="document" href="https://deal.wizelife.ai/" crossorigin>
+<link rel="prefetch" as="document" href="https://money.wizelife.ai/" crossorigin>
+
+<!-- Also prefetch the underlying app HTML so the iframe inside the
+     launcher has the real page warmed up too. -->
+<link rel="prefetch" as="document" href="https://vitara.onrender.com/" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
