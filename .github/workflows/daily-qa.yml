@@ -112,6 +112,22 @@ jobs:
           node qa/runtime-health.js
           echo "fails=$(cat /tmp/runtime-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
 
+      - name: Tier 13d — Dead-handler / broken-link check
+        id: handlers
+        env:
+          NODE_PATH: /tmp/qa-deps/node_modules
+        continue-on-error: true
+        run: |
+          node qa/dead-handler-check.js
+          echo "fails=$(cat /tmp/handler-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+
+      - name: Tier 13e — API contract check
+        id: api
+        continue-on-error: true
+        run: |
+          node qa/api-contract-check.js
+          echo "fails=$(cat /tmp/api-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+
       - name: Combine reports
         id: combine
         run: |
@@ -128,6 +144,10 @@ jobs:
             cat security-report.md 2>/dev/null || echo '_security missing_'
             echo ""
             cat runtime-report.md 2>/dev/null || echo '_runtime missing_'
+            echo ""
+            cat dead-handler-report.md 2>/dev/null || echo '_handlers missing_'
+            echo ""
+            cat api-contract-report.md 2>/dev/null || echo '_api missing_'
           } > combined-report.md
           # GitHub UI truncates issue comments at 65k chars — trim if needed
           if [ "$(wc -c < combined-report.md)" -gt 60000 ]; then
@@ -139,7 +159,9 @@ jobs:
           e2e_fails=$(cat /tmp/e2e-fails 2>/dev/null || echo 0)
           sec_fails=$(cat /tmp/security-fails 2>/dev/null || echo 0)
           runtime_fails=$(cat /tmp/runtime-fails 2>/dev/null || echo 0)
-          total=$((comp_fails + e2e_fails + sec_fails + runtime_fails))
+          handler_fails=$(cat /tmp/handler-fails 2>/dev/null || echo 0)
+          api_fails=$(cat /tmp/api-fails 2>/dev/null || echo 0)
+          total=$((comp_fails + e2e_fails + sec_fails + runtime_fails + handler_fails + api_fails))
           echo "fails=$total" >> $GITHUB_OUTPUT
 
       - name: Upload artifact
@@ -153,6 +175,8 @@ jobs:
             e2e-report.md
             security-report.md
             runtime-report.md
+            dead-handler-report.md
+            api-contract-report.md
           retention-days: 30
 
       - name: Comment on rolling QA status issue
