@@ -32,8 +32,12 @@ async function getUserPlan(uid) {
                           ? d.planExpiresAt.toMillis()
                           : (typeof d.planExpiresAt === 'number' ? d.planExpiresAt : 0);
             if (raw === 'pro' || raw === 'yolo') {
-                if (expMs && expMs < Date.now() && !d.paypalSubscriptionId) {
-                    // Bonus expired and no paid subscription — back to free.
+                // Only auto-downgrade if the ONLY reason this user has the
+                // plan is a referral/bug bonus that has now expired. Access
+                // codes (`accessCode`) and paid subs (`paypalSubscriptionId`)
+                // never auto-expire.
+                const hasPaidProof = !!(d.accessCode || d.paypalSubscriptionId);
+                if (expMs && expMs < Date.now() && !hasPaidProof) {
                     firestorePlan = 'free';
                 } else {
                     firestorePlan = raw;
