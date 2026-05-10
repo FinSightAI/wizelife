@@ -15,22 +15,64 @@ firebase.initializeApp(firebaseConfig);
 
 // ── Firebase App Check (reCAPTCHA v3) ──────────────────────────────────────────
 // Ensures only requests coming from our own pages can hit Firestore /
-// Cloud Functions. Without App Check enforcement, an attacker could call
-// our backend directly using the (intentionally public) Firebase API key.
-// reCAPTCHA v3 site key is public — verification happens server-side.
-//
-// To enable enforcement: Console → App Check → register each app domain
-// with a reCAPTCHA v3 site key, then turn on Enforcement. The line below
-// initializes the client; if no site key is set yet, App Check is in
-// monitoring mode and won't block anything (safe rollout).
+// Cloud Functions. reCAPTCHA v3 site key is public — verification happens
+// server-side. If activation fails (old browser cache / blocker / etc),
+// `__wlAppCheckActive` stays false and we show a "please refresh" banner.
+window.__wlAppCheckActive = false;
 try {
     if (firebase.appCheck && window.WIZELIFE_RECAPTCHA_SITE_KEY) {
         firebase.appCheck().activate(
             new firebase.appCheck.ReCaptchaV3Provider(window.WIZELIFE_RECAPTCHA_SITE_KEY),
             true /* automatic refresh */
         );
+        window.__wlAppCheckActive = true;
     }
 } catch (e) { console.warn('App Check init failed', e); }
+
+// ── "Please refresh" banner ────────────────────────────────────────────────────
+// Triggered when:
+//  (a) a new SW takes control (controllerchange) — handled in sw-register.js
+//  (b) App Check failed to activate but the constant is set — meaning the
+//      browser is running an older cached copy of this very file
+//  (c) explicitly via window.wlShowUpdateBanner()
+window.wlShowUpdateBanner = function (reason) {
+    if (document.getElementById('wl-update-banner')) return;
+    var lang = (function () { try { return (localStorage.getItem('wl_lang') || 'he').slice(0,2); } catch (e) { return 'he'; } })();
+    var T = {
+      he: { msg: '✨ גרסה חדשה זמינה — רענן כדי לקבל אותה', btn: 'רענן' },
+      en: { msg: '✨ New version available — refresh to get it',  btn: 'Refresh' },
+      pt: { msg: '✨ Nova versão disponível — atualize',         btn: 'Atualizar' },
+      es: { msg: '✨ Nueva versión disponible — actualiza',      btn: 'Actualizar' },
+    };
+    var t = T[lang] || T.en;
+    var b = document.createElement('div');
+    b.id = 'wl-update-banner';
+    b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:100002;background:linear-gradient(90deg,#6366f1,#8b5cf6);color:#fff;padding:10px 16px;text-align:center;font-family:Inter,-apple-system,sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:14px;box-shadow:0 2px 12px rgba(0,0,0,0.2);animation:wl-up-slide .3s ease';
+    b.innerHTML = '<span>' + t.msg + '</span>'
+                + '<button style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 14px;border-radius:99px;font:700 12px inherit;cursor:pointer">' + t.btn + '</button>';
+    if (!document.getElementById('wl-up-anim')) {
+        var s = document.createElement('style');
+        s.id = 'wl-up-anim';
+        s.textContent = '@keyframes wl-up-slide{from{transform:translateY(-100%)}to{transform:translateY(0)}}';
+        document.head.appendChild(s);
+    }
+    b.querySelector('button').addEventListener('click', function () {
+        // Hard-reload bypasses HTTP cache too.
+        location.reload();
+    });
+    if (document.body) document.body.appendChild(b);
+    else document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(b); });
+    console.log('wlShowUpdateBanner triggered, reason:', reason);
+};
+
+// If we have a site key but App Check failed to activate after a few seconds
+// → the user is running a stale wizelife-auth.js that doesn't know the new
+// init path. Prompt them to refresh.
+setTimeout(function () {
+    if (window.WIZELIFE_RECAPTCHA_SITE_KEY && !window.__wlAppCheckActive) {
+        window.wlShowUpdateBanner('stale-script');
+    }
+}, 3000);
 
 const wlAuth = firebase.auth();
 const wlDb   = firebase.firestore();

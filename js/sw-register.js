@@ -1,15 +1,22 @@
 /**
- * Service Worker registration + SILENT auto-update pattern.
+ * Service Worker registration + aggressive auto-update pattern.
  *
- * Goal: every push reaches users with zero action required.
- * - Polls for updates every 5 min and on tab focus.
- * - When a new SW is installed, immediately posts SKIP_WAITING (no banner).
- * - On controllerchange, defers the reload until the page is hidden or
- *   becomes idle, so we never yank the page out from under an active user
- *   mid-form / mid-chat. They come back to the new version automatically.
+ * Goal: every push reaches users with zero action required, fast.
+ * Strategy:
+ *  - On page load: call reg.update() immediately + every 60s while open.
+ *  - When a new SW is installed, post SKIP_WAITING immediately.
+ *  - On controllerchange, reload right away unless the user is actively
+ *    typing (input/textarea/contenteditable). If they are, show a non-
+ *    blocking "Refresh ready" banner with a one-tap button + auto-reload
+ *    once the user stops typing.
  */
 (function () {
     if (!('serviceWorker' in navigator)) return;
+
+    function userIsTyping() {
+        const a = document.activeElement;
+        return !!(a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable));
+    }
 
     navigator.serviceWorker.register('/sw.js').then(reg => {
         // 1. New SW detected → activate it silently
@@ -23,32 +30,45 @@
             });
         });
 
-        // 2. Poll for updates while page is open + on focus
-        setInterval(() => { try { reg.update(); } catch (e) {} }, 5 * 60 * 1000);
-        window.addEventListener('focus', () => { try { reg.update(); } catch (e) {} });
+        // 2. Force-check on every page load (catches PWA reopens quickly)
+        try { reg.update(); } catch (e) {}
+
+        // 3. Poll every 60s while page is open + on focus
+        setInterval(() => { try { reg.update(); } catch (e) {} }, 60 * 1000);
+        window.addEventListener('focus',           () => { try { reg.update(); } catch (e) {} });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                try { reg.update(); } catch (e) {}
+            }
+        });
     }).catch(err => console.warn('SW register failed', err));
 
-    // 3. New SW took control → reload, but defer to a non-disruptive moment
+    // 4. New SW took control → reload as quickly as is safe
     let _scheduled = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (_scheduled) return;
         _scheduled = true;
-        const reload = () => location.reload();
-        const safeReload = () => {
-            // Don't interrupt active typing in inputs/textareas/contenteditable
-            const a = document.activeElement;
-            const isTyping = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable);
-            if (isTyping) return; // try again next tick
-            reload();
+
+        // Hidden tab? Reload instantly.
+        if (document.visibilityState === 'hidden') return location.reload();
+
+        // Not typing? Reload instantly.
+        if (!userIsTyping()) return location.reload();
+
+        // User is typing — show the global update banner (defined in
+        // wizelife-auth.js) with a one-tap refresh button, AND set up a
+        // listener to reload as soon as they stop typing.
+        if (typeof window.wlShowUpdateBanner === 'function') {
+            window.wlShowUpdateBanner('sw-controllerchange');
+        }
+        const finish = () => {
+            if (!userIsTyping()) {
+                location.reload();
+            }
         };
-        // If the page is already hidden, reload now
-        if (document.visibilityState === 'hidden') return reload();
-        // Otherwise wait for the next tab-hide (user switched tab/app)
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') reload();
-            else safeReload();
-        }, { once: false });
-        // Also reload after 30 minutes of pure idle as a safety floor
-        setTimeout(safeReload, 30 * 60 * 1000);
+        document.addEventListener('blur',     finish, true);
+        document.addEventListener('focusout', finish, true);
+        // Safety net: every 10s, check if they stopped typing.
+        const poll = setInterval(() => { if (!userIsTyping()) { clearInterval(poll); location.reload(); } }, 10 * 1000);
     });
 })();
