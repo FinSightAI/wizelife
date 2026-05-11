@@ -128,6 +128,22 @@ jobs:
           node qa/api-contract-check.js
           echo "fails=$(cat /tmp/api-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
 
+      - name: Tier 13f/h/i/j — Extended checks (SW cache, DNS, rate-limit, open-redirect)
+        id: extended
+        continue-on-error: true
+        run: |
+          node qa/extended-checks.js
+          echo "fails=$(cat /tmp/extended-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+
+      - name: Tier 13k — Integration suite (Playwright, all 6 apps)
+        id: integration
+        env:
+          NODE_PATH: /tmp/qa-deps/node_modules
+        continue-on-error: true
+        run: |
+          node qa/integration-suite.js
+          echo "fails=$(cat /tmp/integration-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+
       - name: Combine reports
         id: combine
         run: |
@@ -148,6 +164,10 @@ jobs:
             cat dead-handler-report.md 2>/dev/null || echo '_handlers missing_'
             echo ""
             cat api-contract-report.md 2>/dev/null || echo '_api missing_'
+            echo ""
+            cat extended-report.md 2>/dev/null || echo '_extended missing_'
+            echo ""
+            cat integration-report.md 2>/dev/null || echo '_integration missing_'
           } > combined-report.md
           # GitHub UI truncates issue comments at 65k chars — trim if needed
           if [ "$(wc -c < combined-report.md)" -gt 60000 ]; then
@@ -161,7 +181,9 @@ jobs:
           runtime_fails=$(cat /tmp/runtime-fails 2>/dev/null || echo 0)
           handler_fails=$(cat /tmp/handler-fails 2>/dev/null || echo 0)
           api_fails=$(cat /tmp/api-fails 2>/dev/null || echo 0)
-          total=$((comp_fails + e2e_fails + sec_fails + runtime_fails + handler_fails + api_fails))
+          extended_fails=$(cat /tmp/extended-fails 2>/dev/null || echo 0)
+          integration_fails=$(cat /tmp/integration-fails 2>/dev/null || echo 0)
+          total=$((comp_fails + e2e_fails + sec_fails + runtime_fails + handler_fails + api_fails + extended_fails + integration_fails))
           echo "fails=$total" >> $GITHUB_OUTPUT
 
       - name: Upload artifact
@@ -177,6 +199,8 @@ jobs:
             runtime-report.md
             dead-handler-report.md
             api-contract-report.md
+            extended-report.md
+            integration-report.md
           retention-days: 30
 
       - name: Comment on rolling QA status issue

@@ -59,7 +59,7 @@ gtag('js',new Date());
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <!-- Pre-warm the Render-hosted backends so they're awake by the time a user
      taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
-     The actual wake-up GET is fired below in <script>. -->
+     The actual wake-up GET is fired below in a JS block. -->
 <link rel="preconnect" href="https://vitara.onrender.com" crossorigin>
 <link rel="dns-prefetch" href="https://vitara.onrender.com">
 <link rel="preconnect" href="https://master-backend-79jx.onrender.com" crossorigin>
@@ -1890,13 +1890,11 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
 /* Even on the public landing page, fire a single warm-up GET to Vitara so
    that by the time the user signs in and clicks Health, it's already up. */
 (function prewarmBackends(){
-  try {
-    setTimeout(function(){
-      ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'].forEach(function(u){
-        try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){}
-      });
-    }, 2500);
-  } catch(e) {}
+  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+  var TARGETS = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'];
+  // Fire immediately + every 30 s while landing page is open.
+  TARGETS.forEach(ping);
+  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
 </body>

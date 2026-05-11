@@ -515,14 +515,12 @@ function setAuthLang(v) {
    sign in and head to the dashboard / a tool — start the wake-up now so the
    30–60s Render cold-start finishes before they tap a card. */
 (function prewarmBackends(){
-  try {
-    var targets = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'];
-    setTimeout(function(){
-      targets.forEach(function(u){
-        try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){}
-      });
-    }, 800);
-  } catch(e) {}
+  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+  var TARGETS = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'];
+  // Fire immediately on auth page load + every 30 s. By the time user
+  // signs in and reaches dashboard, every backend is hot.
+  TARGETS.forEach(ping);
+  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
 </body>

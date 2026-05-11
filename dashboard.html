@@ -929,12 +929,16 @@ document.head.appendChild(_swScript);
     'https://master-backend-79jx.onrender.com/health',// WizeTax backend (Render free)
     'https://ofirofir-wizetravel.hf.space/'           // WizeTravel API (Hugging Face Spaces, also sleeps)
   ];
-  // 1) Initial warm-up shortly after the dashboard becomes interactive
-  setTimeout(function(){ TARGETS.forEach(ping); }, 1500);
-  // 2) Re-ping every 4 min while the dashboard is foregrounded (Render sleeps at 15min)
+  // 1) Initial warm-up IMMEDIATELY (was 1.5s, was too late)
+  TARGETS.forEach(ping);
+  // 2) Re-ping every 30 SECONDS while the dashboard is foregrounded.
+  //    GitHub-Actions cron schedules slip to ~50 min in practice (vs the
+  //    requested 5 min) so the keepalive cron alone isn't enough — Render
+  //    falls asleep between cron runs. While a user is on WizeLife the
+  //    frontend itself keeps every backend awake.
   setInterval(function(){
     if (document.visibilityState === 'visible') TARGETS.forEach(ping);
-  }, 4 * 60 * 1000);
+  }, 30 * 1000);
   // 3) Last-mile boost: when the user hovers/touches a Render-backed card,
   //    ping the matching backend so the final cold start finishes by tap-time.
   function attachHover(){
