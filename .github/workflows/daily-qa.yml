@@ -144,6 +144,26 @@ jobs:
           node qa/integration-suite.js
           echo "fails=$(cat /tmp/integration-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
 
+      - name: Tier 13l/m — Static extras (secret scan + cookie audit)
+        id: staticextra
+        continue-on-error: true
+        run: |
+          node qa/static-extra.js
+          echo "fails=$(cat /tmp/static-extra-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+
+      - name: Tier 13n-s — Browser extras (i18n, layout-diff, cross-browser, PWA, auth E2E, SSO)
+        id: browserextra
+        env:
+          NODE_PATH: /tmp/qa-deps/node_modules
+          QA_EMAIL: ${{ secrets.QA_EMAIL }}
+          QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+        continue-on-error: true
+        run: |
+          # WebKit isn't preinstalled — best-effort, skip silently if missing
+          npx --prefix /tmp/qa-deps playwright install webkit --with-deps 2>/dev/null || true
+          node qa/browser-extra.js
+          echo "fails=$(cat /tmp/browser-extra-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+
       - name: Combine reports
         id: combine
         run: |
@@ -168,6 +188,10 @@ jobs:
             cat extended-report.md 2>/dev/null || echo '_extended missing_'
             echo ""
             cat integration-report.md 2>/dev/null || echo '_integration missing_'
+            echo ""
+            cat static-extra-report.md 2>/dev/null || echo '_static-extra missing_'
+            echo ""
+            cat browser-extra-report.md 2>/dev/null || echo '_browser-extra missing_'
           } > combined-report.md
           # GitHub UI truncates issue comments at 65k chars — trim if needed
           if [ "$(wc -c < combined-report.md)" -gt 60000 ]; then
@@ -183,7 +207,9 @@ jobs:
           api_fails=$(cat /tmp/api-fails 2>/dev/null || echo 0)
           extended_fails=$(cat /tmp/extended-fails 2>/dev/null || echo 0)
           integration_fails=$(cat /tmp/integration-fails 2>/dev/null || echo 0)
-          total=$((comp_fails + e2e_fails + sec_fails + runtime_fails + handler_fails + api_fails + extended_fails + integration_fails))
+          static_extra_fails=$(cat /tmp/static-extra-fails 2>/dev/null || echo 0)
+          browser_extra_fails=$(cat /tmp/browser-extra-fails 2>/dev/null || echo 0)
+          total=$((comp_fails + e2e_fails + sec_fails + runtime_fails + handler_fails + api_fails + extended_fails + integration_fails + static_extra_fails + browser_extra_fails))
           echo "fails=$total" >> $GITHUB_OUTPUT
 
       - name: Upload artifact
@@ -201,6 +227,8 @@ jobs:
             api-contract-report.md
             extended-report.md
             integration-report.md
+            static-extra-report.md
+            browser-extra-report.md
           retention-days: 30
 
       - name: Comment on rolling QA status issue
