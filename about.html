@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){try{
+  var t=localStorage.getItem('wl_theme');
+  var isLight=t==='light';
+  document.documentElement.setAttribute('data-theme',isLight?'light':'dark');
+  document.documentElement.classList.add(isLight?'light':'dark');
+}catch(e){}})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — WizeLife</title>
+<meta name="description" content="WizeLife was built from a real place of frustration — the chaos of managing money, health, taxes, travel and real estate with no single source of truth. Here's our story.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap">
+<style>
+  :root {
+    --bg:       #060810;
+    --surface:  #0d1117;
+    --border:   rgba(255,255,255,0.07);
+    --text:     #e2e8f0;
+    --muted:    #64748b;
+    --accent:   #6366f1;
+    --accent2:  #8b5cf6;
+    --pink:     #ec4899;
+    --green:    #10b981;
+    --yellow:   #fbbf24;
+  }
+  [data-theme="light"] {
+    --bg:      #f8fafc;
+    --surface: #ffffff;
+    --border:  rgba(0,0,0,0.08);
+    --text:    #0f172a;
+    --muted:   #64748b;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+  /* ── Nav ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,8,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+  [data-theme="light"] nav{background:rgba(248,250,252,0.9)}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .nav-logo svg{flex-shrink:0}
+  .nav-logo span{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;color:var(--text);letter-spacing:-.3px}
+  .nav-links{display:flex;align-items:center;gap:24px}
+  .nav-links a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .15s}
+  .nav-links a:hover,.nav-links a.active{color:var(--text)}
+  .nav-cta{background:var(--accent);color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s}
+  .nav-cta:hover{background:var(--accent2)}
+
+  /* ── Hero ── */
+  .hero{padding:140px 24px 80px;text-align:center;max-width:760px;margin:0 auto}
+  .hero-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);padding:5px 14px;border-radius:99px;margin-bottom:24px}
+  .hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(36px,6vw,58px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;color:#f1f5f9;margin-bottom:24px}
+  [data-theme="light"] .hero h1{color:#0f172a}
+  .hero h1 em{background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+  .hero-lead{font-size:clamp(16px,2.2vw,20px);color:var(--muted);max-width:600px;margin:0 auto;line-height:1.7}
+
+  /* ── Section ── */
+  section{padding:72px 24px;max-width:900px;margin:0 auto}
+  .section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.8px;margin-bottom:20px;color:var(--text)}
+  p{color:var(--muted);font-size:16px;line-height:1.8;margin-bottom:16px}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--text);font-weight:600}
+
+  /* ── Origin card ── */
+  .origin-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;margin-bottom:32px;position:relative;overflow:hidden}
+  .origin-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--pink))}
+  .origin-card blockquote{font-size:18px;line-height:1.75;color:var(--text);font-style:italic;border:none;padding:0;margin-bottom:16px}
+  .origin-card blockquote::before{content:'\201C';font-size:48px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;line-height:.8;display:block;margin-bottom:12px}
+
+  /* ── Tools grid ── */
+  .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
+  .tool-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color .2s,transform .2s}
+  .tool-card:hover{border-color:rgba(99,102,241,0.4);transform:translateY(-2px)}
+  .tool-emoji{font-size:28px;margin-bottom:12px;display:block}
+  .tool-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:var(--text);margin-bottom:4px}
+  .tool-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+  /* ── Values ── */
+  .values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:32px}
+  .value-item{padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+  .value-icon{font-size:22px;margin-bottom:10px;display:block}
+  .value-title{font-weight:700;font-size:14px;color:var(--text);margin-bottom:6px}
+  .value-text{font-size:13px;color:var(--muted);line-height:1.55}
+
+  /* ── CTA ── */
+  .cta-section{text-align:center;padding:80px 24px;max-width:600px;margin:0 auto}
+  .cta-section h2{margin-bottom:16px}
+  .cta-section p{margin-bottom:32px}
+  .cta-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:14px 32px;border-radius:12px;font-weight:700;font-size:15px;text-decoration:none;transition:opacity .15s;box-shadow:0 8px 24px rgba(99,102,241,0.35)}
+  .cta-btn:hover{opacity:.9}
+
+  /* ── Footer ── */
+  footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:13px;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--text)}
+
+  /* ── Divider ── */
+  .divider{width:48px;height:3px;background:linear-gradient(90deg,var(--accent),var(--pink));border-radius:99px;margin:20px 0 32px}
+
+  @media(max-width:600px){
+    .nav-links{display:none}
+    .hero{padding:110px 20px 60px}
+    section{padding:52px 20px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <svg width="28" height="28" viewBox="0 0 100 100"><defs><linearGradient id="wlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="100" height="100" rx="22" fill="url(#wlg)"/><text x="50" y="72" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="white">W</text></svg>
+    <span>WizeLife</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/about.html" class="active">About</a>
+    <a href="/security.html">Security</a>
+    <a href="/dashboard.html">Dashboard</a>
+  </div>
+  <a class="nav-cta" href="/auth.html">Get started free</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Our story</div>
+  <h1>Built from <em>real frustration.</em><br>Designed for real life.</h1>
+  <p class="hero-lead">WizeLife didn't start in a boardroom. It started with the same headache you probably know — too many spreadsheets, too many browser tabs, and too many decisions made on incomplete information.</p>
+</div>
+
+<!-- Origin story -->
+<section>
+  <div class="section-label">Why we built this</div>
+  <h2>Life is complex. Your tools shouldn't be.</h2>
+  <div class="divider"></div>
+
+  <div class="origin-card">
+    <blockquote>Managing your money, health, taxes, travel and real estate shouldn't feel like a second job.</blockquote>
+    <p>WizeLife was born from a simple, frustrating truth: the most important decisions in life — where to live, how to invest, when to see a doctor, whether that apartment is actually a good deal — require data that's scattered across dozens of apps, documents, and mental notes.</p>
+    <p>We kept asking the same question: <strong>why isn't there one intelligent place that pulls it all together?</strong></p>
+  </div>
+
+  <p>So we built it. Not a feature, not a plugin — a full suite of AI-powered tools, each focused on a different domain of life, all connected under one roof. Every tool is designed to take raw, confusing data and turn it into a clear recommendation you can actually act on.</p>
+  <p>The goal has never changed: <strong>help people make better decisions, faster, with less stress</strong> — regardless of their financial background, language, or technical skill.</p>
+</section>
+
+<!-- The 5 tools -->
+<section>
+  <div class="section-label">What we built</div>
+  <h2>Five tools. One platform.</h2>
+  <div class="divider"></div>
+  <p>Each WizeLife tool tackles a specific area where complexity gets in the way of good decisions. They work independently and shine even brighter together.</p>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <span class="tool-emoji">💰</span>
+      <div class="tool-name">WizeMoney</div>
+      <div class="tool-desc">Track income, expenses, investments and net worth — with AI that explains what the numbers mean for your future.</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-emoji">📊</span>
+      <div class="tool-name">WizeTax</div>
+      <div class="tool-desc">Navigate tax rules, optimize deductions and get plain-language answers to complex tax questions — in your language.</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-emoji">❤️</span>
+      <div class="tool-name">WizeHealth</div>
+      <div class="tool-desc">Your AI health companion. Analyze blood tests, ask medical questions and get research-based guidance — not generic advice.</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-emoji">✈️</span>
+      <div class="tool-name">WizeTravel</div>
+      <div class="tool-desc">Plan smarter trips: compare costs, find the cheapest routes and get local intelligence before you book anything.</div>
+    </div>
+    <div class="tool-card">
+      <span class="tool-emoji">🏠</span>
+      <div class="tool-name">WizeDeal</div>
+      <div class="tool-desc">Evaluate any real estate deal in seconds — price analysis, rental yield, financing scenarios and red-flag detection.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section>
+  <div class="section-label">What we stand for</div>
+  <h2>Principles, not just features.</h2>
+  <div class="divider"></div>
+
+  <div class="values-grid">
+    <div class="value-item">
+      <span class="value-icon">🔒</span>
+      <div class="value-title">Your data stays yours</div>
+      <div class="value-text">We don't sell your data. Ever. Firestore rules enforce that only you can read your own documents.</div>
+    </div>
+    <div class="value-item">
+      <span class="value-icon">🌍</span>
+      <div class="value-title">Built for everyone</div>
+      <div class="value-text">Every tool supports Hebrew, English, Portuguese and Spanish — because good decisions shouldn't require a specific language.</div>
+    </div>
+    <div class="value-item">
+      <span class="value-icon">⚡</span>
+      <div class="value-title">Free by default</div>
+      <div class="value-text">3–5 AI answers per day, per tool, forever. No credit card, no trial countdown, no dark patterns.</div>
+    </div>
+    <div class="value-item">
+      <span class="value-icon">🤖</span>
+      <div class="value-title">AI with guardrails</div>
+      <div class="value-text">Our AI tools include built-in safety disclaimers. We surface information to help you decide — not to replace professional advice.</div>
+    </div>
+    <div class="value-item">
+      <span class="value-icon">🛡️</span>
+      <div class="value-title">Security, A to Z</div>
+      <div class="value-text">Security wasn't an afterthought. HSTS, App Check, rate limiting, branch protection and daily automated audits — all in place from day one. Your data is never shared with third parties.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-label" style="text-align:center">Ready to start?</div>
+  <h2>One account. All five tools.</h2>
+  <p>Create a free account in under 30 seconds. No credit card. No commitments. Just better decisions, starting today.</p>
+  <a class="cta-btn" href="/auth.html">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    Get started free
+  </a>
+</div>
+
+<footer>
+  <div style="margin-bottom:12px">
+    <a href="/">Home</a>
+    <a href="/about.html">About</a>
+    <a href="/security.html">Security</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="mailto:wizelife.ai@gmail.com">Contact</a>
+  </div>
+  <div>© 2025 WizeLife · Built with obsession, not VC money.</div>
+</footer>
+
+</body>
+</html>
