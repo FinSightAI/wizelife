@@ -6,7 +6,10 @@ name: Daily QA — All Apps
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    # 03:00 UTC = 06:00 Israel during IDT (Mar-Oct) / 05:00 during IST (winter).
+    # GitHub Actions cron is UTC-only and doesn't observe DST, so winter runs
+    # arrive an hour earlier than nominal — acceptable for a pre-launch QA cron.
+    - cron: '0 3 * * *'
   workflow_dispatch: {}
 
 jobs:
