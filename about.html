@@ -54,12 +54,19 @@
   .nav-cta:hover{background:var(--accent2)}
 
   /* ── Hero ── */
-  .hero{padding:140px 24px 80px;text-align:center;max-width:760px;margin:0 auto}
+  .hero{padding:140px 24px 60px;text-align:center;max-width:760px;margin:0 auto}
   .hero-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);padding:5px 14px;border-radius:99px;margin-bottom:24px}
   .hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(36px,6vw,58px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;color:#f1f5f9;margin-bottom:24px}
   [data-theme="light"] .hero h1{color:#0f172a}
   .hero h1 em{background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
   .hero-lead{font-size:clamp(16px,2.2vw,20px);color:var(--muted);max-width:600px;margin:0 auto;line-height:1.7}
+
+  /* ── Stats bar ── */
+  .stats-bar{display:flex;justify-content:center;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0;padding:0;background:var(--surface)}
+  .stat-item{display:flex;flex-direction:column;align-items:center;padding:24px 32px;border-right:1px solid var(--border);flex:1;min-width:130px}
+  .stat-item:last-child{border-right:none}
+  .stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-top:4px;text-align:center}
 
   /* ── Section ── */
   section{padding:72px 24px;max-width:900px;margin:0 auto}
@@ -73,7 +80,31 @@
   .origin-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;margin-bottom:32px;position:relative;overflow:hidden}
   .origin-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--pink))}
   .origin-card blockquote{font-size:18px;line-height:1.75;color:var(--text);font-style:italic;border:none;padding:0;margin-bottom:16px}
-  .origin-card blockquote::before{content:'\201C';font-size:48px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;line-height:.8;display:block;margin-bottom:12px}
+  .origin-card blockquote::before{content:'"\2018';font-size:48px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;line-height:.8;display:block;margin-bottom:12px}
+
+  /* ── Who card ── */
+  .who-card{display:flex;gap:28px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;margin-top:32px}
+  .who-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+  .who-body h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:18px;color:var(--text);margin-bottom:8px}
+  .who-body p{font-size:14.5px;color:var(--muted);line-height:1.7;margin-bottom:0}
+  .who-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.5px;background:rgba(99,102,241,0.12);color:var(--accent);border:1px solid rgba(99,102,241,0.2);padding:3px 10px;border-radius:99px;margin-bottom:12px}
+
+  /* ── Obsession banner ── */
+  .obsession-banner{max-width:900px;margin:0 auto;padding:0 24px 64px}
+  .obsession-inner{background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(236,72,153,0.08));border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:40px;text-align:center;position:relative;overflow:hidden}
+  .obsession-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--pink))}
+  .obsession-inner blockquote{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(20px,3.5vw,30px);font-weight:900;letter-spacing:-.5px;color:var(--text);font-style:normal;margin-bottom:12px}
+  .obsession-inner blockquote em{background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+  .obsession-sub{font-size:15px;color:var(--muted);max-width:540px;margin:0 auto}
+
+  /* ── Security section ── */
+  .security-section{max-width:900px;margin:0 auto;padding:0 24px 64px}
+  .security-card{background:var(--surface);border:1px solid rgba(99,102,241,0.25);border-radius:20px;padding:40px;position:relative;overflow:hidden}
+  .security-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899)}
+  .security-badges{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 24px}
+  .sec-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;background:rgba(99,102,241,0.1);color:var(--accent);border:1px solid rgba(99,102,241,0.2);padding:5px 12px;border-radius:99px}
+  .security-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;transition:gap .15s}
+  .security-link:hover{gap:10px}
 
   /* ── Tools grid ── */
   .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
@@ -109,6 +140,10 @@
     .nav-links{display:none}
     .hero{padding:110px 20px 60px}
     section{padding:52px 20px}
+    .stat-item{padding:18px 16px;min-width:100px}
+    .stat-num{font-size:24px}
+    .who-card{flex-direction:column;gap:16px}
+    .obsession-banner,.security-section{padding:0 20px 48px}
   }
 </style>
 </head>
@@ -135,6 +170,26 @@
   <p class="hero-lead">WizeLife didn't start in a boardroom. It started with the same headache you probably know — too many spreadsheets, too many browser tabs, and too many decisions made on incomplete information.</p>
 </div>
 
+<!-- Stats bar (1) -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">5</div>
+    <div class="stat-label">AI-powered tools</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4</div>
+    <div class="stat-label">Languages supported</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3–5</div>
+    <div class="stat-label">Free AI answers/day</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Data sold. Ever.</div>
+  </div>
+</div>
+
 <!-- Origin story -->
 <section>
   <div class="section-label">Why we built this</div>
@@ -149,7 +204,44 @@
 
   <p>So we built it. Not a feature, not a plugin — a full suite of AI-powered tools, each focused on a different domain of life, all connected under one roof. Every tool is designed to take raw, confusing data and turn it into a clear recommendation you can actually act on.</p>
   <p>The goal has never changed: <strong>help people make better decisions, faster, with less stress</strong> — regardless of their financial background, language, or technical skill.</p>
+
+  <!-- Who's behind this (2) -->
+  <div class="who-card">
+    <div class="who-avatar">🧑‍💻</div>
+    <div class="who-body">
+      <span class="who-tag">Independent project</span>
+      <h3>One person. No VC funding. No team of 50.</h3>
+      <p>WizeLife is built and maintained by a solo developer. There's no startup behind it, no investor roadmap, no growth-at-all-costs agenda. Just one person who got tired of the chaos and decided to build a better set of tools — and who cares deeply that they actually work, stay private, and stay honest.</p>
+    </div>
+  </div>
 </section>
+
+<!-- "Built with obsession" banner (4) -->
+<div class="obsession-banner">
+  <div class="obsession-inner">
+    <blockquote>Built with <em>obsession</em>, not VC money.</blockquote>
+    <p class="obsession-sub">No funding rounds. No growth-hacking. No selling your data to cover runway. Just a product that gets better because the person who built it actually uses it every day.</p>
+  </div>
+</div>
+
+<!-- Security section (3 — moved higher) -->
+<div class="security-section">
+  <div class="security-card">
+    <div class="section-label">🛡️ Security</div>
+    <h2 style="margin-bottom:12px">Security taken seriously, from day one.</h2>
+    <p style="font-size:15px;max-width:680px">This isn't a startup that ships first and hardens later. Strict security protocols are baked in from the beginning — not bolted on after a breach.</p>
+    <div class="security-badges">
+      <span class="sec-badge">✓ HSTS preload</span>
+      <span class="sec-badge">✓ App Check + reCAPTCHA</span>
+      <span class="sec-badge">✓ Rate limiting</span>
+      <span class="sec-badge">✓ Branch protection</span>
+      <span class="sec-badge">✓ Daily automated audits</span>
+      <span class="sec-badge">✓ No third-party data sharing</span>
+    </div>
+    <p style="font-size:14px;margin-bottom:0">Your data is encrypted in transit, protected by Firestore rules that ensure only <em>you</em> can read your own documents, and never shared with third parties. We run daily automated security scans and treat every vulnerability report as a priority.</p>
+    <a class="security-link" href="/security.html">Read the full security overview →</a>
+  </div>
+</div>
 
 <!-- The 5 tools -->
 <section>
@@ -213,11 +305,6 @@
       <span class="value-icon">🤖</span>
       <div class="value-title">AI with guardrails</div>
       <div class="value-text">Our AI tools include built-in safety disclaimers. We surface information to help you decide — not to replace professional advice.</div>
-    </div>
-    <div class="value-item">
-      <span class="value-icon">🛡️</span>
-      <div class="value-title">Security, A to Z</div>
-      <div class="value-text">Security wasn't an afterthought. Strict protocols — HSTS, App Check, rate limiting, branch protection and daily automated security audits — are enforced from day one. Your data is never shared with third parties.</div>
     </div>
   </div>
 </section>
