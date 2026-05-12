@@ -211,13 +211,24 @@
 
     var card = document.createElement('div');
     card.style.cssText = [
-      'position:relative','width:100%','max-width:340px',
-      'background:linear-gradient(180deg,#0f1426 0%,#0a0e1a 100%)',
-      'border:1px solid rgba(255,255,255,0.08)','border-radius:20px',
-      'padding:28px 24px 22px','box-sizing:border-box',
-      'box-shadow:0 32px 96px rgba(0,0,0,0.55), 0 0 0 1px ' + color + '22',
-      'animation:wbo-pop .3s ease','overflow:hidden'
+      'position:relative','width:100%','max-width:420px',
+      'background:linear-gradient(180deg,#0f1426 0%,#080b16 100%)',
+      'border:1px solid rgba(255,255,255,0.10)','border-radius:24px',
+      'padding:36px 32px 28px','box-sizing:border-box',
+      // Stronger color-aware halo behind card
+      'box-shadow:0 40px 120px rgba(0,0,0,0.65), 0 0 0 1px ' + color + '33, 0 0 80px ' + color + '22',
+      'animation:wbo-pop .4s cubic-bezier(.16,1,.3,1)','overflow:hidden'
     ].join(';');
+
+    /* Aurora blob behind icon */
+    var aurora = document.createElement('div');
+    aurora.style.cssText = [
+      'position:absolute','top:-80px','inset-inline-start:50%','transform:translateX(-50%)',
+      'width:280px','height:280px','border-radius:50%',
+      'background:radial-gradient(circle, ' + color + '40 0%, ' + color + '10 40%, transparent 70%)',
+      'filter:blur(40px)','pointer-events:none','z-index:0'
+    ].join(';');
+    card.appendChild(aurora);
 
     /* keyframes once */
     if (!document.getElementById('wbo-anim')) {
@@ -237,7 +248,7 @@
     slides.forEach(function (_, i) {
       var d = document.createElement('span');
       d.dataset.i = String(i);
-      d.style.cssText = 'width:18px;height:3px;border-radius:99px;background:rgba(255,255,255,0.12);transition:background .2s';
+      d.style.cssText = 'width:24px;height:4px;border-radius:99px;background:rgba(255,255,255,0.14);transition:all .3s';
       dots.appendChild(d);
     });
     var closeBtn = document.createElement('button');
@@ -252,11 +263,18 @@
 
     /* Slide content */
     var iconWrap = document.createElement('div');
-    iconWrap.style.cssText = 'width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin:8px auto 18px;font-size:30px;';
+    iconWrap.style.cssText = [
+      'width:88px','height:88px','border-radius:24px',
+      'background:linear-gradient(135deg, ' + color + '30, ' + color + '10)',
+      'border:1px solid ' + color + '40',
+      'display:flex','align-items:center','justify-content:center',
+      'margin:12px auto 22px','font-size:42px','position:relative','z-index:1',
+      'box-shadow:0 12px 32px ' + color + '25, inset 0 1px 0 rgba(255,255,255,0.1)',
+    ].join(';');
     var titleEl = document.createElement('h3');
-    titleEl.style.cssText = 'margin:0 0 8px;color:#f0f4ff;font-size:18px;font-weight:800;text-align:center;letter-spacing:-0.4px;';
+    titleEl.style.cssText = 'margin:0 0 10px;color:#f0f4ff;font-size:22px;font-weight:900;text-align:center;letter-spacing:-0.6px;position:relative;z-index:1;';
     var subEl = document.createElement('p');
-    subEl.style.cssText = 'margin:0 0 22px;color:rgba(255,255,255,0.6);font-size:13.5px;line-height:1.55;text-align:center;';
+    subEl.style.cssText = 'margin:0 0 28px;color:rgba(255,255,255,0.7);font-size:15px;line-height:1.65;text-align:center;position:relative;z-index:1;';
     card.appendChild(iconWrap);
     card.appendChild(titleEl);
     card.appendChild(subEl);
@@ -268,7 +286,7 @@
     skipBtn.style.cssText = 'background:none;border:none;color:rgba(255,255,255,0.45);font-size:13px;cursor:pointer;padding:8px 12px;font-family:inherit;border-radius:8px;';
     skipBtn.textContent = lb.skip;
     var nextBtn = document.createElement('button');
-    nextBtn.style.cssText = 'background:' + color + ';border:none;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;padding:10px 20px;border-radius:99px;font-family:inherit;box-shadow:0 6px 20px ' + color + '55;';
+    nextBtn.style.cssText = 'background:linear-gradient(135deg,' + color + ',' + color + 'dd);border:none;color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;padding:12px 26px;border-radius:99px;font-family:inherit;box-shadow:0 10px 30px ' + color + '70, inset 0 1px 0 rgba(255,255,255,0.2);transition:transform .15s, box-shadow .15s;letter-spacing:.2px;';
     bottom.appendChild(skipBtn);
     bottom.appendChild(nextBtn);
     card.appendChild(bottom);
