@@ -157,49 +157,49 @@
     <span>WizeLife</span>
   </a>
   <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/about.html" class="active">About</a>
-    <a href="/security.html">Security</a>
-    <a href="/dashboard.html">Dashboard</a>
+    <a href="/" data-i18n="nav_home">Home</a>
+    <a href="/about.html" class="active" data-i18n="nav_about">About</a>
+    <a href="/security.html" data-i18n="nav_security">Security</a>
+    <a href="/dashboard.html" data-i18n="nav_dashboard">Dashboard</a>
   </div>
-  <a class="nav-cta" href="/auth.html">Get started free</a>
+  <a class="nav-cta" href="/auth.html" data-i18n="nav_cta">Get started free</a>
 </nav>
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow">Our story</div>
-  <h1>Built from <em>real frustration.</em><br>Designed for real life.</h1>
-  <p class="hero-lead">WizeLife didn't start in a boardroom. It started with the same headache you probably know — too many spreadsheets, too many browser tabs, and too many decisions made on incomplete information.</p>
+  <div class="hero-eyebrow" data-i18n="hero_eyebrow">Our story</div>
+  <h1 data-i18n-html="hero_title">Built from <em>real frustration.</em><br>Designed for real life.</h1>
+  <p class="hero-lead" data-i18n="hero_lead">WizeLife didn't start in a boardroom. It started with the same headache you probably know — too many spreadsheets, too many browser tabs, and too many decisions made on incomplete information.</p>
 </div>
 
 <!-- Stats bar (1) -->
 <div class="stats-bar">
   <div class="stat-item">
     <div class="stat-num">5</div>
-    <div class="stat-label">AI-powered tools</div>
+    <div class="stat-label" data-i18n="stat_tools">AI-powered tools</div>
   </div>
   <div class="stat-item">
     <div class="stat-num">4</div>
-    <div class="stat-label">Languages supported</div>
+    <div class="stat-label" data-i18n="stat_langs">Languages supported</div>
   </div>
   <div class="stat-item">
     <div class="stat-num">3–5</div>
-    <div class="stat-label">Free AI answers/day</div>
+    <div class="stat-label" data-i18n="stat_free">Free AI answers/day</div>
   </div>
   <div class="stat-item">
     <div class="stat-num">0</div>
-    <div class="stat-label">Data sold. Ever.</div>
+    <div class="stat-label" data-i18n="stat_data">Data sold. Ever.</div>
   </div>
 </div>
 
 <!-- Origin story -->
 <section>
-  <div class="section-label">Why we built this</div>
-  <h2>Life is complex. Your tools shouldn't be.</h2>
+  <div class="section-label" data-i18n="why_label">Why we built this</div>
+  <h2 data-i18n="why_title">Life is complex. Your tools shouldn't be.</h2>
   <div class="divider"></div>
 
   <div class="origin-card">
-    <blockquote>Managing your money, health, taxes, travel and real estate shouldn't feel like a second job.</blockquote>
+    <blockquote data-i18n="why_quote">Managing your money, health, taxes, travel and real estate shouldn't feel like a second job.</blockquote>
     <p>WizeLife was born from a simple, frustrating truth: the most important decisions in life — where to live, how to invest, when to see a doctor, whether that apartment is actually a good deal — require data that's scattered across dozens of apps, documents, and mental notes.</p>
     <p>We kept asking the same question: <strong>why isn't there one intelligent place that pulls it all together?</strong></p>
   </div>
@@ -211,8 +211,8 @@
   <div class="who-card">
     <div class="who-avatar">🧑‍💻</div>
     <div class="who-body">
-      <span class="who-tag">Independent project</span>
-      <h3>Built by people who actually use it.</h3>
+      <span class="who-tag" data-i18n="who_tag">Independent project</span>
+      <h3 data-i18n="who_title">Built by people who actually use it.</h3>
       <p>Most apps are built by teams optimizing for growth metrics. WizeLife is built by people optimizing for usefulness.</p>
       <p>No investors means no one pressuring us to add ads, sell your data, or lock features behind paywalls to hit a quarterly number. No roadmap committee means if something is broken, we fix it — not in the next sprint, now. And when you reach out, we actually read it.</p>
       <p>We built these tools because we needed them and couldn't find anything good enough. If you feel the same way, you're exactly who this is for.</p>
@@ -223,16 +223,16 @@
 <!-- "Built with obsession" banner (4) -->
 <div class="obsession-banner">
   <div class="obsession-inner">
-    <blockquote>Built with <em>obsession</em>, not VC money.</blockquote>
-    <p class="obsession-sub">No funding rounds. No growth-hacking. No selling your data to cover runway. Just a product that gets better because the person who built it actually uses it every day.</p>
+    <blockquote data-i18n-html="obs_title">Built with <em>obsession</em>, not VC money.</blockquote>
+    <p class="obsession-sub" data-i18n="obs_sub">No funding rounds. No growth-hacking. No selling your data to cover runway. Just a product that gets better because the person who built it actually uses it every day.</p>
   </div>
 </div>
 
 <!-- Security section (3 — moved higher) -->
 <div class="security-section">
   <div class="security-card">
-    <div class="section-label">🛡️ Security</div>
-    <h2 style="margin-bottom:12px">Security taken seriously, from day one.</h2>
+    <div class="section-label" data-i18n="sec_label">🛡️ Security</div>
+    <h2 style="margin-bottom:12px" data-i18n="sec_title">Security taken seriously, from day one.</h2>
     <p style="font-size:15px;max-width:680px">This isn't a startup that ships first and hardens later. Strict security protocols are baked in from the beginning — not bolted on after a breach.</p>
     <div class="security-badges">
       <span class="sec-badge">✓ HSTS preload</span>
@@ -243,14 +243,14 @@
       <span class="sec-badge">✓ No third-party data sharing</span>
     </div>
     <p style="font-size:14px;margin-bottom:0">Your data is encrypted in transit, protected by Firestore rules that ensure only <em>you</em> can read your own documents, and never shared with third parties. We run daily automated security scans and treat every vulnerability report as a priority.</p>
-    <a class="security-link" href="/security.html">Read the full security overview →</a>
+    <a class="security-link" href="/security.html" data-i18n="sec_link">Read the full security overview →</a>
   </div>
 </div>
 
 <!-- The 5 tools -->
 <section>
-  <div class="section-label">What we built</div>
-  <h2>Five tools. One platform.</h2>
+  <div class="section-label" data-i18n="tools_label">What we built</div>
+  <h2 data-i18n="tools_title">Five tools. One platform.</h2>
   <div class="divider"></div>
   <p>Each WizeLife tool tackles a specific area where complexity gets in the way of good decisions. They work independently and shine even brighter together.</p>
 
@@ -258,69 +258,69 @@
     <div class="tool-card" style="--c:#10b981">
       <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg></div>
       <div class="tool-name">WizeMoney</div>
-      <div class="tool-desc">Track income, expenses, investments and net worth — with AI that explains what the numbers mean for your future.</div>
+      <div class="tool-desc" data-i18n="tool_money">Track income, expenses, investments and net worth — with AI that explains what the numbers mean for your future.</div>
     </div>
     <div class="tool-card" style="--c:#f59e0b">
       <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
       <div class="tool-name">WizeTax</div>
-      <div class="tool-desc">Navigate tax rules, optimize deductions and get plain-language answers to complex tax questions — in your language.</div>
+      <div class="tool-desc" data-i18n="tool_tax">Navigate tax rules, optimize deductions and get plain-language answers to complex tax questions — in your language.</div>
     </div>
     <div class="tool-card" style="--c:#ec4899">
       <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
       <div class="tool-name">WizeHealth</div>
-      <div class="tool-desc">Your AI health companion. Analyze blood tests, ask medical questions and get research-based guidance — not generic advice.</div>
+      <div class="tool-desc" data-i18n="tool_health">Your AI health companion. Analyze blood tests, ask medical questions and get research-based guidance — not generic advice.</div>
     </div>
     <div class="tool-card" style="--c:#3b82f6">
       <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.16 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8a16 16 0 0 0 6.29 6.29l.42-.42a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.28 16z"/></svg></div>
       <div class="tool-name">WizeTravel</div>
-      <div class="tool-desc">Plan smarter trips: compare costs, find the cheapest routes and get local intelligence before you book anything.</div>
+      <div class="tool-desc" data-i18n="tool_travel">Plan smarter trips: compare costs, find the cheapest routes and get local intelligence before you book anything.</div>
     </div>
     <div class="tool-card" style="--c:#8b5cf6">
       <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       <div class="tool-name">WizeDeal</div>
-      <div class="tool-desc">Evaluate any real estate deal in seconds — price analysis, rental yield, financing scenarios and red-flag detection.</div>
+      <div class="tool-desc" data-i18n="tool_deal">Evaluate any real estate deal in seconds — price analysis, rental yield, financing scenarios and red-flag detection.</div>
     </div>
   </div>
 </section>
 
 <!-- Values -->
 <section>
-  <div class="section-label">What we stand for</div>
-  <h2>Principles, not just features.</h2>
+  <div class="section-label" data-i18n="vals_label">What we stand for</div>
+  <h2 data-i18n="vals_title">Principles, not just features.</h2>
   <div class="divider"></div>
 
   <div class="values-grid">
     <div class="value-item">
       <span class="value-icon">🔒</span>
-      <div class="value-title">Your data stays yours</div>
-      <div class="value-text">We don't sell your data. Ever. Firestore rules enforce that only you can read your own documents.</div>
+      <div class="value-title" data-i18n="val1_t">Your data stays yours</div>
+      <div class="value-text" data-i18n="val1_d">We don't sell your data. Ever. Firestore rules enforce that only you can read your own documents.</div>
     </div>
     <div class="value-item">
       <span class="value-icon">🌍</span>
-      <div class="value-title">Built for everyone</div>
-      <div class="value-text">Every tool supports Hebrew, English, Portuguese and Spanish — because good decisions shouldn't require a specific language.</div>
+      <div class="value-title" data-i18n="val2_t">Built for everyone</div>
+      <div class="value-text" data-i18n="val2_d">Every tool supports Hebrew, English, Portuguese and Spanish — because good decisions shouldn't require a specific language.</div>
     </div>
     <div class="value-item">
       <span class="value-icon">⚡</span>
-      <div class="value-title">Free by default</div>
-      <div class="value-text">3–5 AI answers per day, per tool, forever. No credit card, no trial countdown, no dark patterns.</div>
+      <div class="value-title" data-i18n="val3_t">Free by default</div>
+      <div class="value-text" data-i18n="val3_d">3–5 AI answers per day, per tool, forever. No credit card, no trial countdown, no dark patterns.</div>
     </div>
     <div class="value-item">
       <span class="value-icon">🤖</span>
-      <div class="value-title">AI with guardrails</div>
-      <div class="value-text">Our AI tools include built-in safety disclaimers. We surface information to help you decide — not to replace professional advice.</div>
+      <div class="value-title" data-i18n="val4_t">AI with guardrails</div>
+      <div class="value-text" data-i18n="val4_d">Our AI tools include built-in safety disclaimers. We surface information to help you decide — not to replace professional advice.</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <div class="cta-section">
-  <div class="section-label" style="text-align:center">Ready to start?</div>
-  <h2>One account. All five tools.</h2>
-  <p>Create a free account in under 30 seconds. No credit card. No commitments. Just better decisions, starting today.</p>
+  <div class="section-label" style="text-align:center" data-i18n="cta_label">Ready to start?</div>
+  <h2 data-i18n="cta_title">One account. All five tools.</h2>
+  <p data-i18n="cta_sub">Create a free account in under 30 seconds. No credit card. No commitments. Just better decisions, starting today.</p>
   <a class="cta-btn" href="/auth.html">
     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-    Get started free
+    <span data-i18n="cta_btn">Get started free</span>
   </a>
 </div>
 
@@ -333,8 +333,179 @@
     <a href="/terms.html">Terms</a>
     <a href="mailto:wizelife.ai@gmail.com">Contact</a>
   </div>
-  <div>© 2025 WizeLife · Built with obsession, not VC money.</div>
+  <div><span data-i18n="footer_text">© 2025 WizeLife · Built with obsession, not VC money.</span></div>
 </footer>
 
+
+<style>
+  .lang-pills { display:flex; gap:4px; margin-inline-start:16px }
+  .lang-pills button {
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    padding:3px 8px; border-radius:6px; font-size:11px; font-weight:600;
+    cursor:pointer; transition:all .15s; letter-spacing:.5px;
+  }
+  .lang-pills button.active, .lang-pills button:hover { color:var(--text); border-color:var(--accent); background:rgba(99,102,241,0.1) }
+  html[dir="rtl"] body { font-family:'Inter','Heebo','Rubik',sans-serif }
+</style>
+<script>
+(function () {
+  const ABOUT_TR = {
+    he: {
+      page_title: 'אודות — WizeLife',
+      nav_home: 'בית', nav_about: 'אודות', nav_security: 'אבטחה', nav_dashboard: 'דשבורד', nav_cta: 'התחל בחינם',
+      hero_eyebrow: 'הסיפור שלנו',
+      hero_title: 'נבנה מתוך <em>תסכול אמיתי.</em><br>עוצב לחיים אמיתיים.',
+      hero_lead: 'WizeLife לא נולדה בחדר ישיבות. היא נולדה מאותו כאב ראש שגם אתה מכיר — יותר מדי גליונות אקסל, יותר מדי טאבים פתוחים בדפדפן, ויותר מדי החלטות שמתקבלות על בסיס מידע חלקי.',
+      stat_tools: 'כלים מבוססי AI', stat_langs: 'שפות נתמכות', stat_free: 'תשובות AI חינם ביום', stat_data: 'מכרנו נתונים. אי פעם.',
+      why_label: 'למה בנינו את זה',
+      why_title: 'החיים מורכבים. הכלים שלך לא צריכים להיות.',
+      why_quote: 'ניהול הכסף, הבריאות, המסים, הנסיעות והנדל"ן שלך — לא צריך להרגיש כמו עבודה שנייה.',
+      who_tag: 'פרויקט עצמאי',
+      who_title: 'נבנה על ידי אנשים שמשתמשים בו באמת.',
+      obs_title: 'נבנה באובססיה. <em>לא בכסף של VC.</em>',
+      obs_sub: 'בלי סבבי גיוס. בלי growth-hacking. בלי למכור את הנתונים שלך לכסות שכר. רק מוצר שמשתפר כי האדם שבנה אותו משתמש בו כל יום.',
+      sec_label: '🛡️ אבטחה',
+      sec_title: 'אבטחה ברצינות, מהיום הראשון.',
+      sec_link: 'קרא את סקירת האבטחה המלאה ←',
+      tools_label: 'מה בנינו',
+      tools_title: 'חמישה כלים. פלטפורמה אחת.',
+      tool_money: 'עקוב אחר הכנסות, הוצאות, השקעות ושווי נטו — עם AI שמסביר מה המספרים אומרים על העתיד שלך.',
+      tool_tax: 'נווט בכללי המס, מטב ניכויים וקבל תשובות בשפה פשוטה לשאלות מס מורכבות — בשפה שלך.',
+      tool_health: 'המלווה הבריאותי שלך מבוסס AI. ניתוח בדיקות דם, שאלות רפואיות והכוונה מבוססת מחקר — לא עצות כלליות.',
+      tool_travel: 'תכנן טיולים חכמים יותר: השווה עלויות, מצא מסלולים זולים יותר וקבל מידע מקומי לפני כל הזמנה.',
+      tool_deal: 'הערך כל עסקת נדל"ן בשניות — ניתוח מחיר, תשואת שכירות, תרחישי מימון וזיהוי דגלים אדומים.',
+      vals_label: 'במה אנחנו דוגלים',
+      vals_title: 'עקרונות, לא רק פיצ\'רים.',
+      val1_t: 'הנתונים שלך נשארים שלך', val1_d: 'אנחנו לא מוכרים נתונים. לעולם. כללי Firestore אוכפים שרק אתה יכול לקרוא את המסמכים שלך.',
+      val2_t: 'נבנה לכולם', val2_d: 'כל כלי תומך בעברית, אנגלית, פורטוגזית וספרדית — כי החלטות טובות לא צריכות לדרוש שפה מסוימת.',
+      val3_t: 'חינם כברירת מחדל', val3_d: '3-5 תשובות AI ביום, לכל כלי, לתמיד. בלי כרטיס אשראי, בלי טיימר ניסיון, בלי דפוסים אפלים.',
+      val4_t: 'AI עם מגבלות בטיחות', val4_d: 'כלי ה-AI שלנו כוללים הצהרות בטיחות מובנות. אנחנו חושפים מידע שיעזור לך להחליט — לא להחליף ייעוץ מקצועי.',
+      cta_label: 'מוכן להתחיל?',
+      cta_title: 'חשבון אחד. כל חמשת הכלים.',
+      cta_sub: 'צור חשבון חינם בפחות מ-30 שניות. בלי כרטיס אשראי. בלי התחייבויות. רק החלטות טובות יותר, החל מהיום.',
+      cta_btn: 'התחל בחינם',
+      footer_text: '© 2026 WizeLife · נבנה באובססיה, לא בכסף של VC.',
+    },
+    en: null, // English is the source — keep page text as-is
+    pt: {
+      page_title: 'Sobre — WizeLife',
+      nav_home: 'Início', nav_about: 'Sobre', nav_security: 'Segurança', nav_dashboard: 'Painel', nav_cta: 'Começar grátis',
+      hero_eyebrow: 'Nossa história',
+      hero_title: 'Construído pela <em>frustração real.</em><br>Projetado para a vida real.',
+      hero_lead: 'WizeLife não começou em uma sala de diretoria. Começou com a mesma dor de cabeça que você provavelmente conhece — planilhas demais, abas do navegador demais e decisões demais tomadas com informações incompletas.',
+      stat_tools: 'Ferramentas com IA', stat_langs: 'Idiomas suportados', stat_free: 'Respostas IA grátis/dia', stat_data: 'Dados vendidos. Nunca.',
+      why_label: 'Por que construímos isso',
+      why_title: 'A vida é complexa. Suas ferramentas não deveriam ser.',
+      why_quote: 'Gerenciar seu dinheiro, saúde, impostos, viagens e imóveis não deveria parecer um segundo emprego.',
+      who_tag: 'Projeto independente',
+      who_title: 'Construído por quem realmente usa.',
+      obs_title: 'Construído com <em>obsessão</em>, não com dinheiro de VC.',
+      obs_sub: 'Sem rodadas de financiamento. Sem growth-hacking. Sem vender seus dados para cobrir custos. Apenas um produto que melhora porque quem o construiu realmente o usa todos os dias.',
+      sec_label: '🛡️ Segurança',
+      sec_title: 'Segurança levada a sério, desde o primeiro dia.',
+      sec_link: 'Leia a visão geral completa de segurança →',
+      tools_label: 'O que construímos',
+      tools_title: 'Cinco ferramentas. Uma plataforma.',
+      tool_money: 'Acompanhe receitas, despesas, investimentos e patrimônio — com IA que explica o que os números significam para seu futuro.',
+      tool_tax: 'Navegue pelas regras tributárias, otimize deduções e obtenha respostas em linguagem simples — no seu idioma.',
+      tool_health: 'Seu companheiro de saúde com IA. Analise exames, faça perguntas médicas e obtenha orientação baseada em pesquisa.',
+      tool_travel: 'Planeje viagens mais inteligentes: compare custos, encontre rotas mais baratas e obtenha inteligência local antes de reservar.',
+      tool_deal: 'Avalie qualquer negócio imobiliário em segundos — análise de preço, rendimento de aluguel, cenários de financiamento e bandeiras vermelhas.',
+      vals_label: 'No que acreditamos',
+      vals_title: 'Princípios, não apenas recursos.',
+      val1_t: 'Seus dados continuam seus', val1_d: 'Não vendemos seus dados. Nunca. As regras do Firestore garantem que só você pode ler seus próprios documentos.',
+      val2_t: 'Feito para todos', val2_d: 'Cada ferramenta suporta hebraico, inglês, português e espanhol — porque boas decisões não deveriam exigir um idioma específico.',
+      val3_t: 'Grátis por padrão', val3_d: '3-5 respostas IA por dia, por ferramenta, para sempre. Sem cartão de crédito, sem contagem regressiva, sem padrões obscuros.',
+      val4_t: 'IA com proteções', val4_d: 'Nossas ferramentas de IA incluem isenções de segurança integradas. Surgem informações para ajudar você a decidir — não para substituir conselho profissional.',
+      cta_label: 'Pronto para começar?',
+      cta_title: 'Uma conta. Todas as cinco ferramentas.',
+      cta_sub: 'Crie uma conta grátis em menos de 30 segundos. Sem cartão de crédito. Sem compromissos. Apenas decisões melhores, a partir de hoje.',
+      cta_btn: 'Começar grátis',
+      footer_text: '© 2026 WizeLife · Construído com obsessão, não com dinheiro de VC.',
+    },
+    es: {
+      page_title: 'Acerca de — WizeLife',
+      nav_home: 'Inicio', nav_about: 'Acerca', nav_security: 'Seguridad', nav_dashboard: 'Panel', nav_cta: 'Empezar gratis',
+      hero_eyebrow: 'Nuestra historia',
+      hero_title: 'Construido por <em>frustración real.</em><br>Diseñado para la vida real.',
+      hero_lead: 'WizeLife no comenzó en una sala de juntas. Comenzó con el mismo dolor de cabeza que probablemente conoces — demasiadas hojas de cálculo, demasiadas pestañas y demasiadas decisiones tomadas con información incompleta.',
+      stat_tools: 'Herramientas con IA', stat_langs: 'Idiomas soportados', stat_free: 'Respuestas IA gratis/día', stat_data: 'Datos vendidos. Nunca.',
+      why_label: 'Por qué lo construimos',
+      why_title: 'La vida es compleja. Tus herramientas no deberían serlo.',
+      why_quote: 'Gestionar tu dinero, salud, impuestos, viajes e inmuebles no debería sentirse como un segundo trabajo.',
+      who_tag: 'Proyecto independiente',
+      who_title: 'Hecho por personas que realmente lo usan.',
+      obs_title: 'Construido con <em>obsesión</em>, no con dinero de VC.',
+      obs_sub: 'Sin rondas de financiación. Sin growth-hacking. Sin vender tus datos para cubrir costos. Solo un producto que mejora porque quien lo construyó realmente lo usa todos los días.',
+      sec_label: '🛡️ Seguridad',
+      sec_title: 'Seguridad tomada en serio, desde el primer día.',
+      sec_link: 'Lee el resumen completo de seguridad →',
+      tools_label: 'Lo que construimos',
+      tools_title: 'Cinco herramientas. Una plataforma.',
+      tool_money: 'Rastrea ingresos, gastos, inversiones y patrimonio — con IA que explica qué significan los números para tu futuro.',
+      tool_tax: 'Navega las reglas fiscales, optimiza deducciones y obtén respuestas en lenguaje simple — en tu idioma.',
+      tool_health: 'Tu compañero de salud con IA. Analiza análisis de sangre, haz preguntas médicas y obtén orientación basada en investigación.',
+      tool_travel: 'Planea viajes más inteligentes: compara costos, encuentra rutas más baratas y obtén inteligencia local antes de reservar.',
+      tool_deal: 'Evalúa cualquier negocio inmobiliario en segundos — análisis de precio, rendimiento de alquiler, escenarios de financiación y banderas rojas.',
+      vals_label: 'En qué creemos',
+      vals_title: 'Principios, no solo características.',
+      val1_t: 'Tus datos siguen siendo tuyos', val1_d: 'No vendemos tus datos. Nunca. Las reglas de Firestore aseguran que solo tú puedes leer tus propios documentos.',
+      val2_t: 'Hecho para todos', val2_d: 'Cada herramienta admite hebreo, inglés, portugués y español — porque las buenas decisiones no deberían requerir un idioma específico.',
+      val3_t: 'Gratis por defecto', val3_d: '3-5 respuestas IA por día, por herramienta, para siempre. Sin tarjeta de crédito, sin cuenta regresiva, sin patrones oscuros.',
+      val4_t: 'IA con barreras de seguridad', val4_d: 'Nuestras herramientas de IA incluyen avisos de seguridad integrados. Surgen información para ayudarte a decidir — no para reemplazar consejo profesional.',
+      cta_label: '¿Listo para empezar?',
+      cta_title: 'Una cuenta. Todas las cinco herramientas.',
+      cta_sub: 'Crea una cuenta gratis en menos de 30 segundos. Sin tarjeta de crédito. Sin compromisos. Solo mejores decisiones, desde hoy.',
+      cta_btn: 'Empezar gratis',
+      footer_text: '© 2026 WizeLife · Construido con obsesión, no con dinero de VC.',
+    },
+  };
+
+  function getLang() {
+    try { return (localStorage.getItem('wl_lang') || 'he').slice(0, 2); }
+    catch (e) { return 'he'; }
+  }
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+    const tr = ABOUT_TR[lang];
+    if (!tr) return; // English source
+    if (tr.page_title) document.title = tr.page_title;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (tr[key]) el.textContent = tr[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if (tr[key]) el.innerHTML = tr[key];
+    });
+  }
+  function setLang(lang) {
+    try { localStorage.setItem('wl_lang', lang); } catch {}
+    applyLang(lang);
+    document.querySelectorAll('.lang-pills button').forEach(b => {
+      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+    });
+  }
+
+  // Inject language pills into the nav (before the CTA button)
+  document.addEventListener('DOMContentLoaded', function() {
+    const nav = document.querySelector('nav .nav-links');
+    if (nav) {
+      const pills = document.createElement('div');
+      pills.className = 'lang-pills';
+      ['HE', 'EN', 'PT', 'ES'].forEach(L => {
+        const b = document.createElement('button');
+        b.textContent = L;
+        b.setAttribute('data-lang', L.toLowerCase());
+        b.onclick = () => setLang(L.toLowerCase());
+        pills.appendChild(b);
+      });
+      nav.appendChild(pills);
+    }
+    setLang(getLang());
+  });
+})();
+</script>
 </body>
 </html>
