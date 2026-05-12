@@ -1,7 +1,7 @@
 # WizeLife — Architecture & Specification
 
 > Last updated: 2026-05-08
-> Owner: Ofir Shamir (FinSightAI)
+> Owner: WizeLife / FinSightAI
 > Domain: `wizelife.ai`
 
 ---
