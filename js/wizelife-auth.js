@@ -56,9 +56,28 @@ window.wlShowUpdateBanner = function (reason) {
         s.textContent = '@keyframes wl-up-slide{from{transform:translateY(-100%)}to{transform:translateY(0)}}';
         document.head.appendChild(s);
     }
-    b.querySelector('button').addEventListener('click', function () {
-        // Hard-reload bypasses HTTP cache too.
-        location.reload();
+    b.querySelector('button').addEventListener('click', async function () {
+        // 1. Tell any waiting SW to activate (skip-waiting)
+        try {
+            if ('serviceWorker' in navigator) {
+                const regs = await navigator.serviceWorker.getRegistrations();
+                for (const r of regs) {
+                    if (r.waiting) r.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    try { await r.update(); } catch (e) {}
+                }
+            }
+        } catch (e) {}
+        // 2. Clear all Cache Storage (PWA shell caches)
+        try {
+            if ('caches' in window) {
+                const names = await caches.keys();
+                await Promise.all(names.map(n => caches.delete(n)));
+            }
+        } catch (e) {}
+        // 3. Force-reload with cache-busting query so HTTP cache misses too
+        const url = new URL(location.href);
+        url.searchParams.set('_v', Date.now());
+        location.replace(url.toString());
     });
     if (document.body) document.body.appendChild(b);
     else document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(b); });

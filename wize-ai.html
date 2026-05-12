@@ -236,13 +236,31 @@ wlAuth.onAuthStateChanged(async user => {
     return;
   }
   document.getElementById('mainLayout').style.display = 'flex';
-  _plan = await getUserPlan(user.uid);
+  // Detect plan from BOTH localStorage (fast) and Firestore (canonical)
+  try {
+    _plan = await getUserPlan(user.uid);
+  } catch (e) {
+    console.error('getUserPlan failed:', e);
+    _plan = (function(){ try { return localStorage.getItem('wl_plan') || 'free'; } catch { return 'free'; } })();
+  }
+  // Safety: if Firestore returned 'free' but localStorage says higher, trust localStorage
+  try {
+    const lp = localStorage.getItem('wl_plan');
+    if (lp === 'yolo' || (lp === 'pro' && _plan === 'free')) _plan = lp;
+  } catch {}
+  console.log('WizeAI plan detected:', _plan);
   updatePlanBadge();
   if (_plan !== 'yolo') {
     showPaywall();
     return;
   }
-  await loadContext();
+  try {
+    await loadContext();
+  } catch (e) {
+    console.error('loadContext failed:', e);
+    const msgs = document.getElementById('messages');
+    if (msgs) msgs.innerHTML = '<div style="padding:20px;color:#fbbf24;text-align:center;font-size:14px">⏳ ' + (e.message || 'Context loading…') + '</div>';
+  }
 });
 
 function updatePlanBadge() {
