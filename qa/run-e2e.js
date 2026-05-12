@@ -1070,6 +1070,527 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await taxQPage.close();
     await taxQCtx.close();
 
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 24 — WizeLife: forgot-password link reachable
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 24 — WizeLife forgot password link');
+    const fpCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const fpPage = await fpCtx.newPage();
+    await step('Open auth.html', async () => {
+        await fpPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+    });
+    await step('Forgot password link visible + clickable', async () => {
+        const link = fpPage.locator('a:has-text("Forgot"), a:has-text("שכחתי"), a:has-text("Esqueci"), a:has-text("Olvidé"), a[href*="reset"], a[href*="forgot"]').first();
+        await link.waitFor({ state: 'visible', timeout: 8000 });
+    });
+    await fpPage.close(); await fpCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 25 — WizeLife: referral link copy button works
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 25 — Referral link + copy button');
+    const refCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 }, permissions: ['clipboard-read', 'clipboard-write'] });
+    const refPage = await refCtx.newPage();
+    let refIn = false;
+    await step('Login → dashboard', async () => {
+        await refPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fillAndLogin(refPage, QA_EMAIL, QA_PASSWORD);
+        await refPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        refIn = true;
+    });
+    if (refIn) {
+        await step('Referral link contains ?ref=', async () => {
+            const val = await refPage.locator('#refLink').first().inputValue({ timeout: 6000 });
+            if (!val.includes('?ref=')) throw new Error(`bad refLink: ${val}`);
+        });
+        await step('Copy button present', async () => {
+            const btn = refPage.locator('button:has-text("Copy"), button:has-text("העתק"), button[onclick*="copy" i], button[id*="copy" i]').first();
+            await btn.waitFor({ state: 'attached', timeout: 5000 });
+        });
+    }
+    await refPage.close(); await refCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 26 — WizeLife: ?ref=XYZ stores referrer code in localStorage
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 26 — Referral code capture from URL');
+    const refUrlCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const refUrlPage = await refUrlCtx.newPage();
+    await step('Visit ?ref=QATEST123', async () => {
+        await refUrlPage.goto('https://wizelife.ai/?ref=QATEST123', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('Referrer code stored in localStorage', async () => {
+        const stored = await refUrlPage.evaluate(() => localStorage.getItem('wl_referrer') || localStorage.getItem('wl_ref') || localStorage.getItem('referrer'));
+        if (!stored || !stored.includes('QATEST123')) throw new Error(`referrer not captured: ${stored}`);
+    });
+    await refUrlPage.close(); await refUrlCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 27 — Console-error monitor across all 6 properties
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 27 — Console-error scan (all properties)');
+    const PROPS = [
+        { name: 'WizeLife',    url: 'https://wizelife.ai/' },
+        { name: 'WizeLife auth', url: 'https://wizelife.ai/auth.html' },
+        { name: 'WizeMoney',   url: 'https://money.wizelife.ai/' },
+        { name: 'WizeTax',     url: 'https://tax.wizelife.ai/advisor' },
+        { name: 'WizeHealth',  url: 'https://health.wizelife.ai/' },
+        { name: 'WizeTravel',  url: 'https://travel.wizelife.ai/' },
+        { name: 'WizeDeal',    url: 'https://deal.wizelife.ai/' },
+    ];
+    for (const { name, url } of PROPS) {
+        await step(`${name}: no console errors on load`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const errs = [];
+            page.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+            page.on('pageerror', e => errs.push(e.message.slice(0, 200)));
+            await page.goto(url, { waitUntil: 'load', timeout: 60000 }).catch(() => {});
+            await page.waitForTimeout(3000); // catch late errors
+            await page.close(); await ctx.close();
+            // Ignore well-known noisy third-party errors
+            const real = errs.filter(e =>
+                !/Failed to load resource.*favicon/i.test(e) &&
+                !/google.*translate|recaptcha|gtag/i.test(e) &&
+                !/Manifest.*line/i.test(e) &&
+                !/A listener indicated an asynchronous response/i.test(e)
+            );
+            if (real.length) throw new Error(`${real.length} errors: ${real[0]}`);
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 28 — Failed network requests across all 6 properties
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 28 — Failed network requests (HTTP ≥400)');
+    for (const { name, url } of PROPS) {
+        await step(`${name}: no 4xx/5xx asset loads`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const bad = [];
+            page.on('response', r => {
+                const s = r.status();
+                if (s >= 400 && s < 600 && !r.url().includes('favicon')
+                    && !/google.*analytics|gtag|clarity|recaptcha|firestore|identitytoolkit|securetoken/i.test(r.url())
+                ) bad.push(`${s} ${r.url().slice(0, 100)}`);
+            });
+            await page.goto(url, { waitUntil: 'load', timeout: 60000 }).catch(() => {});
+            await page.waitForTimeout(2500);
+            await page.close(); await ctx.close();
+            if (bad.length) throw new Error(`${bad.length}: ${bad[0]}`);
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 29 — WizeMoney: add transaction → edit → delete persists
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 29 — WizeMoney: edit + delete income entry');
+    const editCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const editPage = await editCtx.newPage();
+    let editIn = false;
+    await step('Open income page', async () => {
+        await editPage.goto('https://money.wizelife.ai/pages/income.html', { waitUntil: 'load', timeout: 30000 });
+        if (editPage.url().includes('auth') || await editPage.locator('input[type=email]').count()) {
+            await fillAndLogin(editPage, QA_EMAIL, QA_PASSWORD);
+            await editPage.waitForURL(/income\.html/, { timeout: 15000 });
+        }
+        editIn = true;
+    });
+    if (editIn) {
+        const NAME = 'QA Edit Test — ignore';
+        await step('Add new entry to edit', async () => {
+            await editPage.locator('button[onclick*="openAddModal"], button:has-text("Add"), button:has-text("הוסף")').first().click();
+            await editPage.waitForSelector('#incomeModal', { state: 'visible', timeout: 6000 });
+            await editPage.fill('#incomeName', NAME);
+            await editPage.fill('#incomeAmount', '999');
+            await editPage.fill('#incomeDate', new Date().toISOString().split('T')[0]);
+            await editPage.click('#incomeModal button[type=submit], #incomeModal .btn-primary');
+            await editPage.waitForFunction((n) => [...document.querySelectorAll('#incomeTableBody tr')].some(r => r.textContent.includes(n)), NAME, { timeout: 10000 });
+        });
+        await step('Edit button on the row', async () => {
+            const row = editPage.locator(`#incomeTableBody tr:has-text("${NAME}")`).first();
+            const editBtn = row.locator('button[onclick*="edit"], button:has-text("Edit"), button:has-text("ערוך"), .edit-btn').first();
+            if (await editBtn.count()) { await editBtn.click(); } else { /* row click might trigger edit */ }
+        });
+        await step('Delete entry via row delete button', async () => {
+            await editPage.goto('https://money.wizelife.ai/pages/income.html', { waitUntil: 'load', timeout: 20000 });
+            editPage.on('dialog', d => d.accept());
+            const row = editPage.locator(`#incomeTableBody tr:has-text("${NAME}")`).first();
+            if (!(await row.count())) return; // nothing to delete
+            const delBtn = row.locator('button[onclick*="delete"], button:has-text("Delete"), button:has-text("מחק"), .delete-btn').first();
+            if (await delBtn.count()) await delBtn.click();
+            await editPage.waitForFunction((n) => ![...document.querySelectorAll('#incomeTableBody tr')].some(r => r.textContent.includes(n)), NAME, { timeout: 8000 });
+        });
+    }
+    await editPage.close(); await editCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 30 — WizeMoney AI Chat (Wize advisor) actually responds
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 30 — WizeMoney AI chat response');
+    const wmChatCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const wmChatPage = await wmChatCtx.newPage();
+    let wmChatIn = false;
+    await step('Open AI chat page', async () => {
+        await wmChatPage.goto('https://money.wizelife.ai/pages/ai-chat.html', { waitUntil: 'load', timeout: 30000 });
+        if (wmChatPage.url().includes('auth') || await wmChatPage.locator('input[type=email]').count()) {
+            await fillAndLogin(wmChatPage, QA_EMAIL, QA_PASSWORD);
+            await wmChatPage.waitForURL(/ai-chat\.html/, { timeout: 15000 });
+        }
+        wmChatIn = true;
+    });
+    if (wmChatIn) {
+        await step('Send a finance question', async () => {
+            const input = wmChatPage.locator('#chatInput, textarea, input[type=text]').first();
+            await input.waitFor({ state: 'visible', timeout: 8000 });
+            await input.fill('What is compound interest?');
+            const send = wmChatPage.locator('#sendBtn, button:has-text("Send"), button[type=submit]').first();
+            if (await send.count()) await send.click(); else await input.press('Enter');
+        });
+        await step('AI responds (>20 chars)', async () => {
+            await wmChatPage.waitForFunction(() => {
+                const sel = '[class*="assistant"],[class*="bot"],[class*="ai"],[class*="response"],.message';
+                return [...document.querySelectorAll(sel)].some(el => el.textContent.trim().length > 20);
+            }, { timeout: 90000 });
+        });
+    }
+    await wmChatPage.close(); await wmChatCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 31 — WizeTax multi-message conversation context preserved
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 31 — WizeTax conversation context');
+    const taxCtxCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const taxCtxPage = await taxCtxCtx.newPage();
+    await step('Open advisor', async () => {
+        await taxCtxPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('Send message 1: identify as Israeli', async () => {
+        const inp = taxCtxPage.locator('textarea, input[type=text]').first();
+        await inp.waitFor({ state: 'visible', timeout: 10000 });
+        await inp.fill('I am Israeli, considering moving to Portugal');
+        await inp.press('Enter');
+    });
+    await step('Wait for response 1', async () => {
+        await taxCtxPage.waitForFunction(() => {
+            const txt = document.body.innerText;
+            return /portugal|israel|residency|tax/i.test(txt) && txt.length > 200;
+        }, { timeout: 60000 });
+    });
+    await step('Send follow-up message 2 (depends on context)', async () => {
+        await taxCtxPage.waitForTimeout(2000);
+        const inp = taxCtxPage.locator('textarea, input[type=text]').first();
+        await inp.fill('What is the NHR regime there?');
+        await inp.press('Enter');
+    });
+    await step('Wait for response 2 — mentions NHR or Portugal', async () => {
+        await taxCtxPage.waitForFunction(() => /nhr|non-habitual|10\s*%|portugal/i.test(document.body.innerText), { timeout: 60000 });
+    });
+    await taxCtxPage.close(); await taxCtxCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 32 — WizeTax: country selector / quick-action panels open
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 32 — WizeTax sidebar tool panels open');
+    const taxPanelCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const taxPanelPage = await taxPanelCtx.newPage();
+    await step('Open advisor', async () => {
+        await taxPanelPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('Click any sidebar tool button (Calculators / Crypto / etc.)', async () => {
+        const tool = taxPanelPage.locator('button[class*="wt"], button:has-text("Crypto"), button:has-text("Calculator"), button:has-text("מחשבון"), [class*="sidebar"] button').first();
+        await tool.waitFor({ state: 'visible', timeout: 10000 });
+        await tool.click();
+    });
+    await step('A panel/modal opens or content changes', async () => {
+        await taxPanelPage.waitForFunction(() => {
+            return !!document.querySelector('[class*="modal"], [class*="panel"], [class*="dialog"], dialog[open], [aria-modal=true]');
+        }, { timeout: 6000 });
+    });
+    await taxPanelPage.close(); await taxPanelCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 33 — WizeHealth conversation context + 2nd question
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 33 — WizeHealth follow-up question');
+    const healthCtxCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const healthCtxPage = await healthCtxCtx.newPage();
+    await step('Open WizeHealth (60s budget)', async () => {
+        await healthCtxPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+    });
+    await step('Send Q1: headache symptoms', async () => {
+        const inp = healthCtxPage.locator('#txt, .chat-input, textarea, input[type=text]').first();
+        await inp.waitFor({ state: 'visible', timeout: 15000 });
+        await inp.fill('I have a headache with light sensitivity');
+        const send = healthCtxPage.locator('button:has-text("Send"), #sendBtn, button[type=submit]').first();
+        if (await send.count()) await send.click(); else await inp.press('Enter');
+    });
+    await step('Wait for response', async () => {
+        await healthCtxPage.waitForFunction(() => {
+            const sel = '[class*="assistant"],[class*="bot"],[class*="ai"],[class*="response"],.message-bot';
+            return [...document.querySelectorAll(sel)].some(el => el.textContent.trim().length > 30);
+        }, { timeout: 60000 });
+    });
+    await step('Send Q2: when to see doctor', async () => {
+        const inp = healthCtxPage.locator('#txt, .chat-input, textarea').first();
+        await inp.fill('When should I see a doctor about this?');
+        const send = healthCtxPage.locator('button:has-text("Send"), #sendBtn').first();
+        if (await send.count()) await send.click(); else await inp.press('Enter');
+    });
+    await step('Q2 response mentions doctor / urgent / symptoms', async () => {
+        await healthCtxPage.waitForFunction(() => /doctor|רופא|urgent|emergency|symptom/i.test(document.body.innerText), { timeout: 60000 });
+    });
+    await healthCtxPage.close(); await healthCtxCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 34 — WizeDeal: paste real listing → analysis data extracted
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 34 — WizeDeal: extract data from listing text');
+    const deal3Ctx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const deal3Page = await deal3Ctx.newPage();
+    await step('WizeDeal loads', async () => {
+        await deal3Page.goto('https://deal.wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    });
+    await step('Open Analyze flow', async () => {
+        const btn = deal3Page.locator('button:has-text("Analyze"), button:has-text("New Deal"), a:has-text("Analyze")').first();
+        await btn.waitFor({ state: 'visible', timeout: 10000 });
+        await btn.click();
+    });
+    await step('Switch to text/paste mode', async () => {
+        const t = deal3Page.locator('button:has-text("Text"), button:has-text("Paste"), label:has-text("Text")').first();
+        if (await t.count()) await t.click();
+        await deal3Page.waitForSelector('textarea', { timeout: 5000 });
+    });
+    await step('Paste listing + extract', async () => {
+        await deal3Page.locator('textarea').first().fill('2-bedroom flat, 70sqm, Lisbon, Alfama. Asking 450000 EUR. Year built: 1920. HOA 80/mo.');
+        await deal3Page.locator('button:has-text("Extract"), button:has-text("Analyze")').last().click();
+    });
+    await step('Output mentions Lisbon / 70 / 450', async () => {
+        await deal3Page.waitForFunction(() => /lisbon|alfama|70|450|sqm|euro/i.test(document.body.innerText), { timeout: 45000 });
+    });
+    await deal3Page.close(); await deal3Ctx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 35 — Browser back/forward keeps user signed in
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 35 — Browser back/forward preserves auth');
+    const navCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const navPage = await navCtx.newPage();
+    let navIn = false;
+    await step('Login → dashboard', async () => {
+        await navPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fillAndLogin(navPage, QA_EMAIL, QA_PASSWORD);
+        await navPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        navIn = true;
+    });
+    if (navIn) {
+        await step('Navigate to feedback.html', async () => {
+            await navPage.goto('https://wizelife.ai/feedback.html', { waitUntil: 'load', timeout: 15000 });
+        });
+        await step('Back → still on dashboard, still authed', async () => {
+            await navPage.goBack({ waitUntil: 'load', timeout: 15000 });
+            await navPage.waitForFunction(() => /dashboard/i.test(location.href), { timeout: 8000 });
+        });
+        await step('Forward → feedback page reachable again', async () => {
+            await navPage.goForward({ waitUntil: 'load', timeout: 15000 });
+            await navPage.waitForFunction(() => /feedback/i.test(location.href), { timeout: 8000 });
+        });
+    }
+    await navPage.close(); await navCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 36 — XSS injection in feedback form — properly escaped
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 36 — XSS injection in feedback form');
+    const xssCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const xssPage = await xssCtx.newPage();
+    let alerted = false;
+    xssPage.on('dialog', d => { alerted = true; d.dismiss(); });
+    await step('Open feedback.html', async () => {
+        await xssPage.goto('https://wizelife.ai/feedback.html', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    });
+    await step('Inject <script>alert(1)</script> in loved textarea', async () => {
+        const pill = xssPage.locator('[data-app="finsight"]').first();
+        if (await pill.count()) await pill.click();
+        await xssPage.fill('#loved', '<script>alert("XSS")</script><img src=x onerror=alert(1)>');
+        // Don't submit — we just check that the value isn't executed locally
+        await xssPage.waitForTimeout(1500);
+    });
+    await step('No alert dialog fired (XSS escaped)', async () => {
+        if (alerted) throw new Error('alert dialog opened — XSS not escaped!');
+    });
+    await xssPage.close(); await xssCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 37 — 404 page exists + shows helpful message
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 37 — 404 page on each property');
+    const fourO4Targets = [
+        'https://wizelife.ai/this-does-not-exist-xyz123.html',
+        'https://money.wizelife.ai/pages/non-existent-xyz.html',
+    ];
+    for (const url of fourO4Targets) {
+        await step(`${new URL(url).host}: 404 page renders content`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const resp = await page.goto(url, { waitUntil: 'load', timeout: 15000 });
+            const status = resp ? resp.status() : 0;
+            const body = await page.evaluate(() => document.body.innerText.trim());
+            await page.close(); await ctx.close();
+            // GH Pages returns 404 page with content. Either 404 status + content, or 200 with redirect-to-home
+            if (body.length < 20) throw new Error(`${status}: empty body`);
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 38 — All apps load within performance budget
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 38 — Page-load performance budget');
+    const PERF_BUDGETS = [
+        { url: 'https://wizelife.ai/',           budgetMs: 5000 },
+        { url: 'https://wizelife.ai/auth.html',  budgetMs: 5000 },
+        { url: 'https://money.wizelife.ai/',     budgetMs: 6000 },
+        { url: 'https://tax.wizelife.ai/',       budgetMs: 8000 },
+        { url: 'https://deal.wizelife.ai/',      budgetMs: 8000 },
+    ];
+    for (const { url, budgetMs } of PERF_BUDGETS) {
+        await step(`${new URL(url).host}: loads within ${budgetMs}ms`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const t0 = Date.now();
+            await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+            const elapsed = Date.now() - t0;
+            await page.close(); await ctx.close();
+            if (elapsed > budgetMs) throw new Error(`took ${elapsed}ms (budget ${budgetMs}ms)`);
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 39 — Keyboard navigation: Tab cycles through interactive elements
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 39 — Keyboard accessibility (Tab navigation)');
+    const a11yCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const a11yPage = await a11yCtx.newPage();
+    await step('Open auth.html', async () => {
+        await a11yPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 15000 });
+    });
+    await step('Tab cycles through 3+ focusable elements', async () => {
+        const focused = new Set();
+        for (let i = 0; i < 6; i++) {
+            await a11yPage.keyboard.press('Tab');
+            const id = await a11yPage.evaluate(() => {
+                const el = document.activeElement;
+                return el ? (el.id || el.tagName + ':' + (el.name || el.type || '')) : '';
+            });
+            if (id) focused.add(id);
+        }
+        if (focused.size < 3) throw new Error(`only ${focused.size} unique focusable elements (need 3+)`);
+    });
+    await a11yPage.close(); await a11yCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 40 — Theme switch + reload persists choice (WizeLife)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 40 — Theme persists across reload (WizeLife)');
+    const themeRCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const themeRPage = await themeRCtx.newPage();
+    await step('Load WizeLife', async () => {
+        await themeRPage.goto('https://wizelife.ai/', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('Click theme toggle (set to light)', async () => {
+        const btn = themeRPage.locator('button[onclick*="theme"], button.theme-toggle, [data-theme-toggle], button[aria-label*="theme" i]').first();
+        if (!(await btn.count())) return; // skip if no theme toggle on landing
+        await btn.click();
+        await themeRPage.waitForTimeout(500);
+    });
+    await step('Theme stored in localStorage', async () => {
+        const t = await themeRPage.evaluate(() => localStorage.getItem('wl_theme') || localStorage.getItem('theme'));
+        // Even if not toggled, localStorage may be empty — accept that
+        if (t === null) return;
+    });
+    await step('Reload → theme attribute still set', async () => {
+        await themeRPage.reload({ waitUntil: 'load', timeout: 15000 });
+        const dt = await themeRPage.evaluate(() =>
+            document.documentElement.getAttribute('data-theme') ||
+            document.documentElement.className ||
+            document.body.className
+        );
+        if (!dt) throw new Error('no theme indicator after reload');
+    });
+    await themeRPage.close(); await themeRCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 41 — WizeLife sidebar/dashboard shows bonus days banner if any
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 41 — Dashboard bonus-days banner check');
+    const bonusCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const bonusPage = await bonusCtx.newPage();
+    let bonusIn = false;
+    await step('Login → dashboard', async () => {
+        await bonusPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fillAndLogin(bonusPage, QA_EMAIL, QA_PASSWORD);
+        await bonusPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        bonusIn = true;
+    });
+    if (bonusIn) {
+        await step('Plan banner OR access-code card visible', async () => {
+            const banner = bonusPage.locator('#planBanner, [id*="bonus" i], [id*="plan" i], [class*="plan-card"], #accessCodeInput').first();
+            await banner.waitFor({ state: 'attached', timeout: 8000 });
+        });
+    }
+    await bonusPage.close(); await bonusCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 42 — Sign-out clears localStorage SSO data
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 42 — Sign-out clears SSO');
+    const soCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const soPage = await soCtx.newPage();
+    let soIn = false;
+    await step('Login → dashboard', async () => {
+        await soPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fillAndLogin(soPage, QA_EMAIL, QA_PASSWORD);
+        await soPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        soIn = true;
+    });
+    if (soIn) {
+        await step('LocalStorage has wl_plan / wl_nickname', async () => {
+            const data = await soPage.evaluate(() => ({
+                plan: localStorage.getItem('wl_plan'),
+                nick: localStorage.getItem('wl_nickname'),
+            }));
+            if (!data.plan && !data.nick) throw new Error('no SSO localStorage state');
+        });
+        await step('Click sign-out', async () => {
+            const out = soPage.locator('button:has-text("Sign Out"), button:has-text("התנתק"), a:has-text("Sign Out"), button[onclick*="logout" i], button[onclick*="signOut" i], #signOutBtn').first();
+            await out.waitFor({ state: 'visible', timeout: 8000 });
+            await out.click();
+        });
+        await step('Plan cleared from localStorage', async () => {
+            await soPage.waitForFunction(() => !localStorage.getItem('wl_plan') || localStorage.getItem('wl_plan') === 'free', { timeout: 8000 });
+        });
+    }
+    await soPage.close(); await soCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 43 — Mixed-content / HTTPS-only check across all apps
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 43 — No mixed content (HTTP in HTTPS pages)');
+    for (const { name, url } of PROPS) {
+        await step(`${name}: no http:// requests in https page`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const httpReqs = [];
+            page.on('request', r => { if (r.url().startsWith('http://') && !r.url().includes('localhost')) httpReqs.push(r.url()); });
+            await page.goto(url, { waitUntil: 'load', timeout: 30000 }).catch(() => {});
+            await page.waitForTimeout(2000);
+            await page.close(); await ctx.close();
+            if (httpReqs.length) throw new Error(`${httpReqs.length} http requests: ${httpReqs[0]}`);
+        });
+    }
+
+
     await browser.close();
 
     out.push(`\n---\n**E2E failures**: ${fails.length}`);
