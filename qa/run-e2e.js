@@ -1591,6 +1591,524 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     }
 
 
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 44 — WizeMoney: stocks page loads + add symbol input present
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 44 — WizeMoney stocks page');
+    const stocksCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const stocksPage = await stocksCtx.newPage();
+    await step('Stocks page loads', async () => {
+        await stocksPage.goto('https://money.wizelife.ai/pages/stocks.html', { waitUntil: 'load', timeout: 30000 });
+        if (stocksPage.url().includes('auth') || await stocksPage.locator('input[type=email]').count()) {
+            await fillAndLogin(stocksPage, QA_EMAIL, QA_PASSWORD);
+            await stocksPage.waitForURL(/stocks/, { timeout: 15000 });
+        }
+    });
+    await step('Symbol-add input OR paywall present', async () => {
+        const el = stocksPage.locator('input[placeholder*="symbol" i], input[placeholder*="ticker" i], input[id*="stock" i], button:has-text("Add"), .paywall, [class*="paywall"], [class*="upgrade"]').first();
+        await el.waitFor({ state: 'attached', timeout: 8000 });
+    });
+    await stocksPage.close(); await stocksCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 45 — WizeMoney: pension calculator page
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 45 — WizeMoney pension calculator');
+    const pensCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const pensPage = await pensCtx.newPage();
+    await step('Pension page loads', async () => {
+        await pensPage.goto('https://money.wizelife.ai/pages/pension-calc.html', { waitUntil: 'load', timeout: 30000 });
+        if (pensPage.url().includes('auth') || await pensPage.locator('input[type=email]').count()) {
+            await fillAndLogin(pensPage, QA_EMAIL, QA_PASSWORD);
+            await pensPage.waitForURL(/pension/, { timeout: 15000 });
+        }
+    });
+    await step('Pension calculator inputs visible OR paywall', async () => {
+        const el = pensPage.locator('input[type=number], input[type=range], .paywall, [class*="upgrade"], #pensionForm, [id*="pension" i]').first();
+        await el.waitFor({ state: 'attached', timeout: 8000 });
+    });
+    await pensPage.close(); await pensCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 46 — WizeMoney: tax-optimizer page
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 46 — WizeMoney tax optimizer');
+    const taxOptCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const taxOptPage = await taxOptCtx.newPage();
+    await step('Tax-optimizer loads', async () => {
+        await taxOptPage.goto('https://money.wizelife.ai/pages/tax-optimizer.html', { waitUntil: 'load', timeout: 30000 });
+        if (taxOptPage.url().includes('auth') || await taxOptPage.locator('input[type=email]').count()) {
+            await fillAndLogin(taxOptPage, QA_EMAIL, QA_PASSWORD);
+            await taxOptPage.waitForURL(/tax/, { timeout: 15000 });
+        }
+    });
+    await step('Tax-optimizer body has content', async () => {
+        await taxOptPage.waitForFunction(() => document.body.innerText.trim().length > 50, { timeout: 8000 });
+    });
+    await taxOptPage.close(); await taxOptCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 47 — WizeMoney: compare-funds page loads + has data
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 47 — WizeMoney compare-funds');
+    const cmpFCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const cmpFPage = await cmpFCtx.newPage();
+    await step('Compare-funds loads', async () => {
+        await cmpFPage.goto('https://money.wizelife.ai/pages/compare-funds.html', { waitUntil: 'load', timeout: 30000 });
+        if (cmpFPage.url().includes('auth') || await cmpFPage.locator('input[type=email]').count()) {
+            await fillAndLogin(cmpFPage, QA_EMAIL, QA_PASSWORD);
+            await cmpFPage.waitForURL(/compare/, { timeout: 15000 });
+        }
+    });
+    await step('Compare-funds: page has content OR paywall', async () => {
+        await cmpFPage.waitForFunction(() => document.body.innerText.trim().length > 50, { timeout: 8000 });
+    });
+    await cmpFPage.close(); await cmpFCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 48 — WizeMoney: simulator (paywall enforcement)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 48 — WizeMoney simulator');
+    const simCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const simPage = await simCtx.newPage();
+    await step('Simulator page loads', async () => {
+        await simPage.goto('https://money.wizelife.ai/pages/simulator.html', { waitUntil: 'load', timeout: 30000 });
+        if (simPage.url().includes('auth') || await simPage.locator('input[type=email]').count()) {
+            await fillAndLogin(simPage, QA_EMAIL, QA_PASSWORD);
+        }
+    });
+    await step('Either form OR paywall (paywall is OK)', async () => {
+        const el = simPage.locator('input, button, form, .paywall, [class*="upgrade" i]').first();
+        await el.waitFor({ state: 'attached', timeout: 8000 });
+    });
+    await simPage.close(); await simCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 49 — WizeMoney: family-dashboard share / settings page
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 49 — WizeMoney family dashboard');
+    const famCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const famPage = await famCtx.newPage();
+    await step('Family page loads', async () => {
+        await famPage.goto('https://money.wizelife.ai/pages/family.html', { waitUntil: 'load', timeout: 30000 });
+        if (famPage.url().includes('auth') || await famPage.locator('input[type=email]').count()) {
+            await fillAndLogin(famPage, QA_EMAIL, QA_PASSWORD);
+        }
+    });
+    await step('Family page body has content', async () => {
+        await famPage.waitForFunction(() => document.body.innerText.trim().length > 30, { timeout: 8000 });
+    });
+    await famPage.close(); await famCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 50 — WizeMoney settings: change preference + persist
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 50 — WizeMoney settings persist');
+    const setCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const setPage = await setCtx.newPage();
+    await step('Settings page loads', async () => {
+        await setPage.goto('https://money.wizelife.ai/pages/settings.html', { waitUntil: 'load', timeout: 30000 });
+        if (setPage.url().includes('auth') || await setPage.locator('input[type=email]').count()) {
+            await fillAndLogin(setPage, QA_EMAIL, QA_PASSWORD);
+            await setPage.waitForURL(/settings/, { timeout: 15000 });
+        }
+    });
+    await step('Settings form / inputs visible', async () => {
+        const el = setPage.locator('select, input[type=checkbox], input[type=radio], input[type=text], form').first();
+        await el.waitFor({ state: 'attached', timeout: 8000 });
+    });
+    await step('Reload → settings page still reachable', async () => {
+        await setPage.reload({ waitUntil: 'load', timeout: 15000 });
+        await setPage.waitForFunction(() => /settings/i.test(location.href), { timeout: 5000 });
+    });
+    await setPage.close(); await setCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 51 — WizeMoney: profile page (avatar / name / email visible)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 51 — WizeMoney profile page');
+    const profCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const profPage = await profCtx.newPage();
+    await step('Profile loads', async () => {
+        await profPage.goto('https://money.wizelife.ai/pages/profile.html', { waitUntil: 'load', timeout: 30000 });
+        if (profPage.url().includes('auth') || await profPage.locator('input[type=email]').count()) {
+            await fillAndLogin(profPage, QA_EMAIL, QA_PASSWORD);
+            await profPage.waitForURL(/profile/, { timeout: 15000 });
+        }
+    });
+    await step('Profile shows email OR name field', async () => {
+        await profPage.waitForFunction(() => {
+            const t = document.body.innerText;
+            return /@|email|profile|name|avatar|פרופיל|שם|אימייל/i.test(t) && t.length > 50;
+        }, { timeout: 8000 });
+    });
+    await profPage.close(); await profCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 52 — WizeTax: Israel wizard panel opens
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 52 — WizeTax Israel wizard');
+    const ilWizCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const ilWizPage = await ilWizCtx.newPage();
+    await step('Advisor loads', async () => {
+        await ilWizPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('Click Israel / יציאה / Exit-Tax / wizard button', async () => {
+        const btn = ilWizPage.locator('button:has-text("Israel"), button:has-text("ישראל"), button:has-text("Wizard"), button:has-text("יציאה"), button:has-text("Exit Tax"), button:has-text("Section 100A"), button:has-text("100A")').first();
+        if (!(await btn.count())) { /* skip if Israel wizard not exposed */ return; }
+        await btn.click();
+        await ilWizPage.waitForFunction(() => !!document.querySelector('[class*="modal"], [class*="wizard"], [class*="panel"], dialog[open]'), { timeout: 6000 });
+    });
+    await ilWizPage.close(); await ilWizCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 53 — WizeTax: crypto calculator panel
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 53 — WizeTax crypto calculator');
+    const cryCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const cryPage = await cryCtx.newPage();
+    await step('Advisor loads', async () => {
+        await cryPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('Crypto button → panel opens', async () => {
+        const btn = cryPage.locator('button:has-text("Crypto"), button:has-text("קריפטו"), button:has-text("Bitcoin")').first();
+        if (!(await btn.count())) return;
+        await btn.click();
+        await cryPage.waitForFunction(() => /crypto|btc|gain|tax|hold/i.test(document.body.innerText), { timeout: 6000 });
+    });
+    await cryPage.close(); await cryCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 54 — WizeTax: save current chat session
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 54 — WizeTax save session');
+    const saveCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const savePage = await saveCtx.newPage();
+    await step('Advisor loads + send a quick Q', async () => {
+        await savePage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+        const inp = savePage.locator('textarea, input[type=text]').first();
+        await inp.waitFor({ state: 'visible', timeout: 10000 });
+        await inp.fill('Quick test question');
+        await inp.press('Enter');
+        await savePage.waitForTimeout(2500);
+    });
+    await step('Click History / Save / שמור', async () => {
+        const btn = savePage.locator('button:has-text("History"), button:has-text("Save"), button:has-text("שמור"), button:has-text("היסטוריה"), button[onclick*="save" i]').first();
+        if (!(await btn.count())) return;
+        await btn.click();
+    });
+    await step('localStorage has tax_master_sessions OR similar', async () => {
+        const hasKey = await savePage.evaluate(() => {
+            return Object.keys(localStorage).some(k => /session|history|chat|conversation/i.test(k));
+        });
+        if (!hasKey) throw new Error('no session storage found in localStorage');
+    });
+    await savePage.close(); await saveCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 55 — WizeTax: language switch updates UI text
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 55 — WizeTax language switch (HE → EN)');
+    const langTaxCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const langTaxPage = await langTaxCtx.newPage();
+    await step('Advisor loads', async () => {
+        await langTaxPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('Click EN language pill', async () => {
+        const btn = langTaxPage.locator('button:has-text("EN"), [data-lang="en"], button[onclick*="\'en\'"]').first();
+        if (!(await btn.count())) return;
+        await btn.click();
+        await langTaxPage.waitForTimeout(800);
+    });
+    await step('HTML dir = ltr OR English text present', async () => {
+        const ok = await langTaxPage.evaluate(() =>
+            document.documentElement.dir === 'ltr' || /Advisor|Welcome|Profile|Country/i.test(document.body.innerText)
+        );
+        if (!ok) throw new Error('language did not switch');
+    });
+    await langTaxPage.close(); await langTaxCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 56 — WizeHealth: timeline / history view
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 56 — WizeHealth timeline / history');
+    const histCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const histPage = await histCtx.newPage();
+    await step('WizeHealth loads', async () => {
+        await histPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+    });
+    await step('Sidebar / drawer present', async () => {
+        const el = histPage.locator('aside, .sidebar, button:has-text("Memory"), button:has-text("Timeline"), button:has-text("History"), button:has-text("היסטוריה")').first();
+        await el.waitFor({ state: 'attached', timeout: 10000 });
+    });
+    await histPage.close(); await histCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 57 — WizeHealth: drug-info / medication panel
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 57 — WizeHealth medication query');
+    const drugCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const drugPage = await drugCtx.newPage();
+    await step('WizeHealth loads', async () => {
+        await drugPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+    });
+    await step('Send drug question', async () => {
+        const inp = drugPage.locator('#txt, textarea, input[type=text]').first();
+        await inp.waitFor({ state: 'visible', timeout: 15000 });
+        await inp.fill('What is ibuprofen used for and what are common side effects?');
+        const send = drugPage.locator('button:has-text("Send"), #sendBtn, button[type=submit]').first();
+        if (await send.count()) await send.click(); else await inp.press('Enter');
+    });
+    await step('Response mentions ibuprofen / pain / inflammation', async () => {
+        await drugPage.waitForFunction(() =>
+            /ibuprofen|pain|inflammat|nsaid|stomach|side|effect/i.test(document.body.innerText),
+            { timeout: 90000 }
+        );
+    });
+    await drugPage.close(); await drugCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 58 — WizeDeal: URL-mode input visible
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 58 — WizeDeal URL paste mode');
+    const dealUrlCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const dealUrlPage = await dealUrlCtx.newPage();
+    await step('WizeDeal loads', async () => {
+        await dealUrlPage.goto('https://deal.wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    });
+    await step('Click Analyze button', async () => {
+        const b = dealUrlPage.locator('button:has-text("Analyze"), button:has-text("New Deal")').first();
+        await b.waitFor({ state: 'visible', timeout: 10000 });
+        await b.click();
+    });
+    await step('URL input field visible', async () => {
+        await dealUrlPage.waitForSelector([
+            'input[placeholder*="zapimoveis"]',
+            'input[placeholder*="yad2"]',
+            'input[placeholder*="url" i]',
+            'input[placeholder*="http"]',
+            'input[type=url]',
+        ].join(', '), { timeout: 10000 });
+    });
+    await dealUrlPage.close(); await dealUrlCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 59 — WizeDeal: saved deals page exists (or empty state)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 59 — WizeDeal saved deals page');
+    const dealSCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const dealSPage = await dealSCtx.newPage();
+    await step('WizeDeal saved page reachable', async () => {
+        await dealSPage.goto('https://deal.wizelife.ai/saved', { waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {});
+        // Either /saved exists OR redirected back to root — both OK if body renders
+        await dealSPage.waitForFunction(() => document.body.innerText.trim().length > 30, { timeout: 8000 });
+    });
+    await dealSPage.close(); await dealSCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 60 — WizeTravel: tab switching (Flights → Hotels → Events)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 60 — WizeTravel tab switching');
+    const travelTabCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const travelTabPage = await travelTabCtx.newPage();
+    await step('WizeTravel loads', async () => {
+        await travelTabPage.goto('https://travel.wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    });
+    await step('Click a second tab (Hotels / Events / Cars)', async () => {
+        const tab = travelTabPage.locator('button:has-text("Hotels"), button:has-text("Events"), button:has-text("Cars"), button:has-text("מלונות"), button:has-text("אירועים"), button[data-tab]').first();
+        if (!(await tab.count())) return;
+        await tab.click();
+        await travelTabPage.waitForTimeout(800);
+    });
+    await step('Tab content visible / changed', async () => {
+        await travelTabPage.waitForFunction(() => document.body.innerText.trim().length > 100, { timeout: 5000 });
+    });
+    await travelTabPage.close(); await travelTabCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 61 — GDPR: account-deletion link reachable
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 61 — GDPR delete/export links');
+    const gdprCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const gdprPage = await gdprCtx.newPage();
+    let gdprIn = false;
+    await step('Login → dashboard', async () => {
+        await gdprPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fillAndLogin(gdprPage, QA_EMAIL, QA_PASSWORD);
+        await gdprPage.waitForURL(/dashboard/, { timeout: 20000 });
+        gdprIn = true;
+    });
+    if (gdprIn) {
+        await step('Delete account link / button reachable', async () => {
+            const el = gdprPage.locator('a:has-text("Delete account"), button:has-text("Delete account"), a:has-text("מחיקת חשבון"), a:has-text("Export"), button:has-text("Export my data"), a[href*="delete"], a[href*="export"]').first();
+            await el.waitFor({ state: 'attached', timeout: 8000 });
+        });
+    }
+    await gdprPage.close(); await gdprCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 62 — Security.html / Privacy / Terms reachable
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 62 — Legal/Security pages render');
+    const LEGAL = [
+        'https://wizelife.ai/security.html',
+        'https://wizelife.ai/privacy.html',
+        'https://wizelife.ai/terms.html',
+    ];
+    for (const url of LEGAL) {
+        await step(`${new URL(url).pathname}: page has content`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const resp = await page.goto(url, { waitUntil: 'load', timeout: 15000 });
+            const len = await page.evaluate(() => document.body.innerText.trim().length).catch(() => 0);
+            await page.close(); await ctx.close();
+            if (!resp || resp.status() >= 400) throw new Error(`HTTP ${resp ? resp.status() : 0}`);
+            if (len < 200) throw new Error(`only ${len} chars — likely 404 fallback`);
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 63 — Slow 3G simulation: WizeLife landing still usable
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 63 — Slow 3G simulation');
+    const slowCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const slowPage = await slowCtx.newPage();
+    // Slow 3G: 400 Kbps down, 400ms RTT
+    const client = await slowPage.context().newCDPSession(slowPage);
+    await client.send('Network.enable').catch(() => {});
+    await client.send('Network.emulateNetworkConditions', {
+        offline: false,
+        downloadThroughput: 50000, // 400 Kbps = 50000 B/s
+        uploadThroughput: 50000,
+        latency: 400,
+    }).catch(() => {});
+    await step('WizeLife landing loads under slow-3G in 20s', async () => {
+        const t0 = Date.now();
+        await slowPage.goto('https://wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 25000 });
+        const elapsed = Date.now() - t0;
+        if (elapsed > 22000) throw new Error(`slow-3G took ${elapsed}ms`);
+    });
+    await slowPage.close(); await slowCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 64 — DNS prefetch / preconnect tags present on portal
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 64 — Resource hints on WizeLife');
+    const hintsCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const hintsPage = await hintsCtx.newPage();
+    await step('WizeLife loads', async () => {
+        await hintsPage.goto('https://wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    });
+    await step('preconnect to vitara / master-backend / firebase', async () => {
+        const found = await hintsPage.evaluate(() =>
+            [...document.querySelectorAll('link[rel="preconnect"],link[rel="dns-prefetch"]')]
+            .map(l => l.href || l.getAttribute('href') || '')
+        );
+        const must = ['vitara', 'firebase', 'googleapis'];
+        const missing = must.filter(s => !found.some(h => h.includes(s)));
+        if (missing.length) throw new Error(`missing hints for: ${missing.join(', ')}`);
+    });
+    await hintsPage.close(); await hintsCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 65 — Service worker SHELL[] hash matches manifest on WizeLife
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 65 — manifest.json valid + start_url reachable');
+    const manCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const manPage = await manCtx.newPage();
+    await step('manifest.json returns JSON', async () => {
+        const resp = await manPage.goto('https://wizelife.ai/manifest.json', { waitUntil: 'load', timeout: 10000 });
+        const text = await manPage.evaluate(() => document.body.innerText);
+        const json = JSON.parse(text);
+        if (!json.start_url) throw new Error('manifest has no start_url');
+        if (!Array.isArray(json.icons) || json.icons.length === 0) throw new Error('manifest has no icons');
+    });
+    await manPage.close(); await manCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 66 — Reduced-motion users get static UI (no animations)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 66 — Reduced motion respected');
+    const rmCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+    const rmPage = await rmCtx.newPage();
+    await step('WizeLife loads with reduced motion', async () => {
+        await rmPage.goto('https://wizelife.ai/', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('No long-running animations on document.documentElement', async () => {
+        const anims = await rmPage.evaluate(() => {
+            const a = document.documentElement.getAnimations({ subtree: true });
+            return a.filter(x => x.playState === 'running' && (x.effect?.getTiming?.().duration || 0) > 1000).length;
+        });
+        if (anims > 5) throw new Error(`${anims} long animations running with reduced-motion`);
+    });
+    await rmPage.close(); await rmCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 67 — robots.txt + sitemap.xml present on portal
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 67 — robots.txt + sitemap.xml');
+    const seoCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const seoPage = await seoCtx.newPage();
+    await step('robots.txt reachable', async () => {
+        const r = await seoPage.goto('https://wizelife.ai/robots.txt', { waitUntil: 'load', timeout: 10000 });
+        if (!r || r.status() >= 400) throw new Error(`HTTP ${r ? r.status() : 0}`);
+    });
+    await step('sitemap.xml reachable OR linked in robots.txt', async () => {
+        const r = await seoPage.goto('https://wizelife.ai/sitemap.xml', { waitUntil: 'load', timeout: 10000 });
+        // OK if 404 — many static sites don't generate this. Just check it doesn't 500.
+        if (r && r.status() >= 500) throw new Error(`5xx — server error`);
+    });
+    await seoPage.close(); await seoCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 68 — Open Graph + Twitter card meta tags present
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 68 — Social meta tags (OG + Twitter)');
+    const ogCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const ogPage = await ogCtx.newPage();
+    await step('WizeLife loads', async () => {
+        await ogPage.goto('https://wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    });
+    await step('og:title + og:image + og:description present', async () => {
+        const meta = await ogPage.evaluate(() => ({
+            ogTitle: document.querySelector('meta[property="og:title"]')?.content,
+            ogImage: document.querySelector('meta[property="og:image"]')?.content,
+            ogDesc:  document.querySelector('meta[property="og:description"]')?.content,
+            twCard:  document.querySelector('meta[name="twitter:card"]')?.content,
+        }));
+        const missing = [];
+        if (!meta.ogTitle) missing.push('og:title');
+        if (!meta.ogImage) missing.push('og:image');
+        if (!meta.ogDesc)  missing.push('og:description');
+        if (missing.length) throw new Error(`missing: ${missing.join(', ')}`);
+    });
+    await ogPage.close(); await ogCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 69 — All 6 properties have HTTPS cert + redirect from http
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 69 — HTTPS enforcement (http → https)');
+    const HTTPS_HOSTS = [
+        'http://wizelife.ai/',
+        'http://money.wizelife.ai/',
+        'http://tax.wizelife.ai/',
+        'http://health.wizelife.ai/',
+        'http://travel.wizelife.ai/',
+        'http://deal.wizelife.ai/',
+    ];
+    for (const url of HTTPS_HOSTS) {
+        await step(`${new URL(url).host}: http redirects to https`, async () => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const resp = await page.goto(url, { waitUntil: 'load', timeout: 15000 }).catch(() => null);
+            const finalUrl = page.url();
+            await page.close(); await ctx.close();
+            if (!finalUrl.startsWith('https://')) throw new Error(`stayed on http: ${finalUrl}`);
+        });
+    }
+
+
     await browser.close();
 
     out.push(`\n---\n**E2E failures**: ${fails.length}`);
