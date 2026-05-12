@@ -246,7 +246,7 @@
   <div id="signupForm" style="display:none;">
     <div class="form-group">
       <label>Full Name</label>
-      <input type="text" id="signupName" placeholder="כינוי — איך לקרוא לך? (Ofi, נועה, 007…)" autocomplete="nickname">
+      <input type="text" id="signupName" placeholder="כינוי — איך לקרוא לך? (Ofi, נועה, 007…)" autocomplete="nickname" required minlength="2" maxlength="40">
     </div>
     <div class="form-group">
       <label>Email</label>
@@ -337,6 +337,16 @@
     const pass  = document.getElementById("signupPassword").value.trim();
     document.getElementById("signupError").textContent = "";
 
+    if (!name || name.length < 2) {
+      document.getElementById("signupError").textContent = "Please enter a nickname (at least 2 characters).";
+      document.getElementById("signupName").focus();
+      return;
+    }
+    if (name.includes('@')) {
+      document.getElementById("signupError").textContent = "Nickname can't be an email — pick a name you want to be called.";
+      document.getElementById("signupName").focus();
+      return;
+    }
     const passError = validatePassword(pass);
     if (passError) {
       document.getElementById("signupError").textContent = passError;
