@@ -99,7 +99,9 @@ async function tier13() {
     for (const url of PAGES) {
         try {
             const r = await fetchText(url);
-            if (/WIZELIFE_RECAPTCHA_SITE_KEY\s*=\s*['"]6L/i.test(r.body)) {
+            const isCfChallenge = r.status === 403 || r.body.includes('Just a moment') || r.body.includes('cf-browser-verification') || (r.body.length < 2000 && r.body.includes('Cloudflare'));
+            if (isCfChallenge) { warn(`reCAPTCHA check skipped for ${url.replace('https://wizelife.ai', '') || '/'} — Cloudflare challenge page returned`, 'CF is protecting the page; key exists locally', 'admin'); }
+            else if (/WIZELIFE_RECAPTCHA_SITE_KEY\s*=\s*['"]6L/i.test(r.body)) {
                 pass(`reCAPTCHA site key found in ${url.replace('https://wizelife.ai', '')}`);
             } else {
                 fail(`reCAPTCHA site key MISSING in ${url}`, 'Re-add <script>window.WIZELIFE_RECAPTCHA_SITE_KEY=...</script> before js/wizelife-auth.js', 'claude');

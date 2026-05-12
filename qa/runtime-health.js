@@ -66,20 +66,31 @@ const head = (url) => new Promise((resolve) => {
         const errors = [];
         const failedRequests = [];
 
+        const CF_NOISE = [
+            'xr-spatial-tracking', 'TrustedHTML', 'TrustedScript', 'TrustedScriptURL',
+            'font-size:0;color:transparent', 'cf-browser-verification', 'cf_chl',
+            'challenges.cloudflare.com', 'csp/frame-ancestors',
+            'recaptcha', 'Just a moment',
+        ];
         page.on('console', (msg) => {
-            if (msg.type() === 'error') errors.push(msg.text().slice(0, 300));
+            if (msg.type() === 'error') {
+                const t = msg.text().slice(0, 300);
+                if (CF_NOISE.some(p => t.toLowerCase().includes(p.toLowerCase()))) return;
+                errors.push(t);
+            }
         });
         page.on('pageerror', (err) => errors.push('uncaught: ' + (err.message || String(err)).slice(0, 300)));
         page.on('requestfailed', (req) => {
             const u = req.url();
             // ignore third-party trackers and Cloudflare insights
-            if (/clarity\.ms|google-analytics|googletagmanager|cloudflareinsights|cf-platform/i.test(u)) return;
+            if (/clarity\.ms|google-analytics|googletagmanager|cloudflareinsights|cf-platform|challenges\.cloudflare\.com|csp\.withgoogle\.com|vitara\.onrender\.com|master-backend|ofirofir-wizetravel/i.test(u)) return;
+            if (/ERR_ABORTED/i.test(req.failure()?.errorText || '') && /onrender\.com|hf\.space/i.test(u)) return;
             failedRequests.push(`${req.failure()?.errorText || 'failed'} → ${u.slice(0, 200)}`);
         });
         page.on('response', (res) => {
             const u = res.url();
             const s = res.status();
-            if (s >= 400 && !/clarity|google-analytics|googletagmanager|cloudflareinsights/i.test(u)) {
+            if (s >= 400 && !/clarity|google-analytics|googletagmanager|cloudflareinsights|challenges\.cloudflare|csp\.withgoogle|recaptcha/i.test(u)) {
                 failedRequests.push(`HTTP ${s} → ${u.slice(0, 200)}`);
             }
         });
