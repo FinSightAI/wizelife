@@ -241,7 +241,16 @@ body{display:flex;flex-direction:column;align-items:center}
 <script>
 const _params = new URLSearchParams(window.location.search);
 const _token = _params.get('wl_token');
-const TARGET = 'https://health.wizelife.ai' + (_token ? '?wl_token=' + encodeURIComponent(_token) : '');
+const _plan  = _params.get('wl_plan');
+const _nick  = _params.get('wl_nick');
+(function () {
+  const qs = new URLSearchParams();
+  if (_token) qs.set('wl_token', _token);
+  if (_plan)  qs.set('wl_plan',  _plan);
+  if (_nick)  qs.set('wl_nick',  _nick);
+  window._healthTarget = 'https://health.wizelife.ai' + (qs.toString() ? '/?' + qs.toString() : '/');
+})();
+const TARGET = window._healthTarget;
 
 const STATUSES = [
   'מאתחל את מנוע הבריאות...',
