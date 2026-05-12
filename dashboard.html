@@ -481,6 +481,32 @@ requireAuth("auth.html").then(async (user) => {
     const plan = await getUserPlan(user.uid);
     renderPlan(plan, user);
 
+    // Bonus days banner
+    try {
+        const uDoc = await wlDb.collection("users").doc(user.uid).get();
+        const uData = uDoc.exists ? uDoc.data() : {};
+        const rewards = Array.isArray(uData.referralRewards) ? uData.referralRewards : [];
+        const pendingDays = rewards.filter(r => r && !r.applied).reduce((s, r) => s + (r.days || 0), 0);
+        const expMs = uData.planExpiresAt && uData.planExpiresAt.toMillis
+            ? uData.planExpiresAt.toMillis() : (uData.planExpiresAt || 0);
+        const futureDays = expMs > Date.now() ? Math.ceil((expMs - Date.now()) / 86400000) : 0;
+        const bonusDays = pendingDays || futureDays;
+        if (bonusDays > 0) {
+            const lang = (localStorage.getItem('wl_lang') || 'he').slice(0, 2);
+            const msgs = {
+                he: `🎁 יש לך <b>${bonusDays} ימי בונוס</b> שמורים — יופעלו אוטומטית אחרי תום המנוי.`,
+                en: `🎁 You have <b>${bonusDays} bonus days</b> saved — they activate automatically when your subscription ends.`,
+                pt: `🎁 Você tem <b>${bonusDays} dias bônus</b> salvos — ativados automaticamente quando a assinatura terminar.`,
+                es: `🎁 Tienes <b>${bonusDays} días de bono</b> guardados — se activan automáticamente al finalizar tu suscripción.`,
+            };
+            const bonusBanner = document.createElement('div');
+            bonusBanner.style.cssText = 'background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(239,68,68,0.08));border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:12px 16px;margin:12px 0;font-size:0.88rem;color:#fbbf24;line-height:1.5;';
+            bonusBanner.innerHTML = msgs[lang] || msgs.en;
+            const planBanner = document.getElementById('planBanner');
+            if (planBanner) planBanner.after(bonusBanner);
+        }
+    } catch(e) {}
+
     // Catch the PayPal upgrade path: if the user is now pro/yolo and has an
     // unsent referral, the server-side `awardReferral` function records the
     // bonus for the referrer. Idempotent — server checks referralRewardSent.
