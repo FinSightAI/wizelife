@@ -453,6 +453,228 @@ Monthly rent potential: ₪7,500. HOA: ₪500/mo. Property tax: ₪400/mo.`;
     await langPage.close();
     await langCtx.close();
 
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 10 — Sign up: new account creation
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 10 — Sign up (new account)');
+    const signupCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const signupPage = await signupCtx.newPage();
+    const testEmail = `qa+${Date.now()}@wizelife.ai`;
+
+    await step('auth.html loads', async () => {
+        await signupPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('Switch to Create Account tab', async () => {
+        await signupPage.click('#tabSignup');
+        await signupPage.waitForSelector('#signupForm:not([style*="none"])', { timeout: 5000 });
+    });
+    await step('Fill name + email + password', async () => {
+        await signupPage.fill('#signupName',     'QA Test User');
+        await signupPage.fill('#signupEmail',    testEmail);
+        await signupPage.fill('#signupPassword', 'QAtest123!');
+    });
+    await step('Submit → dashboard or verify-email screen', async () => {
+        await signupPage.click('#signupBtn');
+        // Accept either: reached dashboard, OR email-verification prompt shown
+        await signupPage.waitForFunction(() =>
+            window.location.href.includes('dashboard') ||
+            document.body.innerText.match(/verify|verification|אמת|נשלח/i),
+            { timeout: 20000 }
+        );
+    });
+    await signupPage.close();
+    await signupCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 11 — Protected page without auth → redirect to auth
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 11 — Protected page without auth → redirect');
+    const anonCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const anonPage = await anonCtx.newPage();
+
+    await step('WizeMoney income.html — no auth', async () => {
+        await anonPage.goto('https://finsightai.github.io/finsight/pages/income.html', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('Redirected to login / auth UI shown', async () => {
+        // Either URL changes to auth page, or login form appears inline
+        const isRedirected = anonPage.url().includes('auth') || anonPage.url().includes('login');
+        const hasAuthForm  = await anonPage.locator('input[type=email], #email, input[type=password]').count() > 0;
+        if (!isRedirected && !hasAuthForm) throw new Error(`still on income page, no auth wall (url: ${anonPage.url()})`);
+    });
+    await step('WizeLife dashboard.html — no auth', async () => {
+        await anonPage.goto('https://wizelife.ai/dashboard.html', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('Redirected to auth.html', async () => {
+        await anonPage.waitForURL(/auth\.html|index\.html/, { timeout: 10000 });
+    });
+    await anonPage.close();
+    await anonCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 12 — SSO bridge: WizeLife login → WizeMoney with token → logged in
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 12 — SSO bridge (WizeLife → WizeMoney)');
+    const ssoCtx   = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const ssoWize  = await ssoCtx.newPage();
+    let ssoToken   = '';
+
+    await step('Login on WizeLife', async () => {
+        await ssoWize.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fillAndLogin(ssoWize, QA_EMAIL, QA_PASSWORD);
+        await ssoWize.waitForURL(/dashboard\.html/, { timeout: 20000 });
+    });
+    await step('Dashboard wires SSO token into WizeMoney href', async () => {
+        // Wait for attachTokensToTools() to run
+        await ssoWize.waitForFunction(() => {
+            const a = document.getElementById('tool-finsight');
+            return a && a.href && a.href.includes('wl_token=');
+        }, { timeout: 10000 });
+        const href = await ssoWize.locator('#tool-finsight').getAttribute('href');
+        ssoToken = new URL(href).searchParams.get('wl_token') || '';
+        if (!ssoToken) throw new Error('wl_token missing from WizeMoney link');
+    });
+    await step('Navigate to WizeMoney with token → wl_sso stored', async () => {
+        const moneyUrl = `https://money.wizelife.ai/?wl_token=${encodeURIComponent(ssoToken)}&wl_nick=QA&wl_plan=yolo`;
+        const ssoMoney = await ssoCtx.newPage();
+        await ssoMoney.goto(moneyUrl, { waitUntil: 'load', timeout: 30000 });
+        // sidebar.js reads wl_token from URL → stores in wl_sso localStorage
+        const sso = await ssoMoney.evaluate(() => {
+            try { return JSON.parse(localStorage.getItem('wl_sso') || '{}'); } catch { return {}; }
+        });
+        if (!sso.token) throw new Error('wl_sso.token not stored after bridge');
+        await ssoMoney.close();
+    });
+    await ssoWize.close();
+    await ssoCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 13 — WizeMoney: add expense (credit.html)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 13 — WizeMoney: add expense');
+    const expCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const expPage = await expCtx.newPage();
+    let expOk = false;
+
+    await step('Open WizeMoney', async () => {
+        await expPage.goto('https://finsightai.github.io/finsight/', { waitUntil: 'load', timeout: 30000 });
+    });
+    expOk = await step('Auth handled', async () => {
+        const hasDash = await expPage.locator('.sidebar, .app-container').count();
+        if (hasDash) return;
+        const hasEmail = await expPage.locator('input[type=email], #email').count();
+        if (!hasEmail) throw new Error('no dashboard or auth form');
+        await fillAndLogin(expPage, QA_EMAIL, QA_PASSWORD);
+        await expPage.waitForSelector('.sidebar, .app-container', { timeout: 15000 });
+    });
+    if (expOk !== false) {
+        await step('Open credit/expense page', async () => {
+            await expPage.goto('https://finsightai.github.io/finsight/pages/credit.html', { waitUntil: 'load', timeout: 20000 });
+            if (expPage.url().includes('auth')) {
+                await fillAndLogin(expPage, QA_EMAIL, QA_PASSWORD);
+                await expPage.waitForURL(/credit\.html/, { timeout: 15000 });
+            }
+        });
+        await step('Click "הוסף הוצאה" button', async () => {
+            await expPage.locator('button[onclick*="openExpenseModal"], button:has-text("הוסף הוצאה")').first().click();
+            await expPage.waitForSelector('#expenseModal:not(.hide), #expenseModal.active, #expenseModal:not([style*="none"])', { timeout: 6000 });
+        });
+        await step('Fill expense form', async () => {
+            const today = new Date().toISOString().split('T')[0];
+            await expPage.fill('#expenseDate',        today);
+            await expPage.fill('#expenseAmount',      '250');
+            // Category is a select — pick first non-empty option
+            await expPage.locator('#expenseCategory option:not([value=""])').first().evaluate(o => o.selected = true);
+            await expPage.dispatchEvent('#expenseCategory', 'change');
+            const descField = expPage.locator('#expenseDescription');
+            if (await descField.count()) await descField.fill('QA Expense — ignore');
+        });
+        await step('Save expense → modal closes', async () => {
+            await expPage.click('button[onclick*="saveExpense"], #expenseModal button[type=submit], #expenseModal .btn-primary');
+            await expPage.waitForFunction(() => {
+                const m = document.getElementById('expenseModal');
+                return !m || m.style.display === 'none' || !m.classList.contains('active');
+            }, { timeout: 8000 });
+        });
+    } else { out.push('_skipped — auth failed_'); }
+    await expPage.close();
+    await expCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 14 — Paywall gate: Pro feature shows upgrade prompt for free user
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 14 — Paywall gate');
+    const pwCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const pwPage = await pwCtx.newPage();
+
+    await step('WizeMoney loads (no auth → free tier)', async () => {
+        await pwPage.goto('https://finsightai.github.io/finsight/', { waitUntil: 'load', timeout: 30000 });
+    });
+    await step('Navigate to Pro-only page (simulator.html)', async () => {
+        await pwPage.goto('https://finsightai.github.io/finsight/pages/simulator.html', { waitUntil: 'load', timeout: 20000 });
+    });
+    await step('Paywall modal OR auth redirect shown (Pro feature gated)', async () => {
+        // Either: redirect to auth (not logged in) OR paywall modal visible (logged in as free)
+        const isAuth = pwPage.url().includes('auth');
+        const hasPaywall = await pwPage.locator('#paywallBox, .paywall-modal, [class*="paywall"], .upgrade-modal').count() > 0;
+        const hasProBadge = await pwPage.locator('.pro-badge, .locked, [class*="locked"], [class*="pro-gate"]').count() > 0;
+        if (!isAuth && !hasPaywall && !hasProBadge)
+            throw new Error('Pro page accessible without auth/paywall check');
+    });
+    await pwPage.close();
+    await pwCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 15 — WizeDeal: analyze text → "Use These Details" → data applied
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 15 — WizeDeal: analyze + apply deal');
+    const deal2Ctx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const deal2Page = await deal2Ctx.newPage();
+    const LISTING = `3 bedroom apartment, 85sqm, Tel Aviv, Florentin.
+Asking price: 2900000 ILS. Floor 3/6, elevator, parking.
+Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
+
+    await step('WizeDeal loads', async () => {
+        await deal2Page.goto('https://deal.wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    });
+    await step('Click New Deal / Analyze', async () => {
+        const btn = deal2Page.locator([
+            'button:has-text("Analyze")', 'button:has-text("New Deal")',
+            'button:has-text("Add Deal")', 'a:has-text("New Deal")',
+        ].join(', ')).first();
+        await btn.waitFor({ state: 'visible', timeout: 10000 });
+        await btn.click();
+    });
+    await step('Switch to text mode', async () => {
+        const textMode = deal2Page.locator('button:has-text("Text"), button:has-text("Paste"), label:has-text("Text")').first();
+        if (await textMode.count()) await textMode.click();
+        await deal2Page.waitForSelector('textarea', { timeout: 5000 });
+    });
+    await step('Paste listing + submit', async () => {
+        await deal2Page.locator('textarea').first().fill(LISTING);
+        await deal2Page.locator('button:has-text("Extract"), button:has-text("Analyze"), button:has-text("Extract Property")').last().click();
+    });
+    await step('Analysis result visible', async () => {
+        await deal2Page.waitForFunction(() =>
+            /\d{3,}|sqm|roi|yield|extracted|שטח|מחיר/i.test(document.body.innerText),
+            { timeout: 45000 }
+        );
+    });
+    await step('"Use These Details" button appears + click', async () => {
+        const applyBtn = deal2Page.locator('button:has-text("Use These Details"), button:has-text("Apply"), button:has-text("השתמש")').first();
+        await applyBtn.waitFor({ state: 'visible', timeout: 10000 });
+        await applyBtn.click();
+    });
+    await step('Deal wizard populated with extracted data', async () => {
+        // After applying, the deal wizard/form should show extracted values
+        await deal2Page.waitForFunction(() =>
+            document.body.innerText.match(/Tel Aviv|Florentin|85|2[,.]?900[,.]?000/i),
+            { timeout: 10000 }
+        );
+    });
+    await deal2Page.close();
+    await deal2Ctx.close();
+
     await browser.close();
 
     out.push(`\n---\n**E2E failures**: ${fails.length}`);
