@@ -124,6 +124,32 @@ async function main() {
     });
     await page.close();
 
+    // ── Flow 5b: Feedback form — real Firestore write ──
+    out.push('\n## Flow 5b — Feedback form (real submit)');
+    page = await ctx.newPage();
+    await step('Open feedback', async () => {
+        await page.goto('https://wizelife.ai/feedback.html', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    });
+    await step('Select app pill (WizeMoney)', async () => {
+        const pill = page.locator('[data-app="finsight"]').first();
+        await pill.waitFor({ timeout: 5000 });
+        await pill.click();
+    });
+    await step('Fill loved field', async () => {
+        await page.fill('#loved', 'QA automated test — please ignore');
+    });
+    await step('Submit feedback form', async () => {
+        await page.click('[type="submit"]');
+    });
+    await step('Success message visible (proves Firestore write worked)', async () => {
+        // The ok-msg div appears only after a successful Firestore add()
+        const ok = page.locator('.ok-msg');
+        await ok.waitFor({ timeout: 10000 });
+        const txt = await ok.textContent();
+        if (!txt || txt.trim().length < 3) throw new Error('success message empty');
+    });
+    await page.close();
+
     // ── Flow 6: WizeHealth ──
     out.push('\n## Flow 6 — WizeHealth');
     page = await ctx.newPage();
@@ -132,6 +158,32 @@ async function main() {
     });
     await step('Welcome screen + chat input', async () => {
         await page.waitForSelector('#txt, .chat-input, textarea', { timeout: 15000 });
+    });
+    await page.close();
+
+    // ── Flow 7b: WizeTax chat — real streaming response ──
+    out.push('\n## Flow 7b — WizeTax chat (real API call)');
+    page = await ctx.newPage();
+    await step('WizeTax advisor loads', async () => {
+        await page.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 20000 });
+    });
+    await step('Chat input present', async () => {
+        await page.waitForSelector('textarea, input[type="text"], [contenteditable]', { timeout: 10000 });
+    });
+    await step('Send a simple tax question', async () => {
+        const input = page.locator('textarea, input[type="text"]').first();
+        await input.fill('What is VAT?');
+        await input.press('Enter');
+    });
+    await step('Response streams in (proves backend alive + LLM responding)', async () => {
+        // Wait for at least one assistant message to appear in the DOM
+        await page.waitForFunction(
+            () => {
+                const msgs = document.querySelectorAll('[class*="assistant"], [class*="bot"], [class*="response"], [class*="message"]');
+                return [...msgs].some(el => el.textContent && el.textContent.trim().length > 20);
+            },
+            { timeout: 45000 }
+        );
     });
     await page.close();
 
