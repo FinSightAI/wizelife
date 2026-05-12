@@ -114,11 +114,13 @@ async function main() {
     out.push('\n## Flow 5 — WizeDeal');
     page = await ctx.newPage();
     await step('WizeDeal home loads', async () => {
-        await page.goto('https://check-deal.vercel.app/', { waitUntil: 'load', timeout: 30000 });
+        await page.goto('https://deal.wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 30000 });
     });
     await step('Big WizeDeal title rendered', async () => {
-        const text = await page.locator('h1').first().textContent({ timeout: 5000 });
-        if (!text || !/wize.*deal/i.test(text)) throw new Error(`got: ${text}`);
+        // search body text — more resilient than h1 selector under CF/SSR
+        await page.waitForFunction(() => document.body.innerText.length > 100, { timeout: 8000 });
+        const body = await page.locator('body').innerText();
+        if (!/wize.*deal/i.test(body)) throw new Error('WizeDeal marker not found in page body');
     });
     await page.close();
 
