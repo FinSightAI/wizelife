@@ -256,7 +256,7 @@
       <label>Password</label>
       <div class="pw-wrap">
         <div style="position:relative;">
-        <input type="password" id="signupPassword" placeholder="Min. 8 chars, uppercase &amp; special char" autocomplete="new-password" style="padding-inline-end:38px;">
+        <input type="password" id="signupPassword" placeholder="8+ chars, A-Z, a-z, 0-9, special" autocomplete="new-password" style="padding-inline-end:38px;">
         <button type="button" onclick="togglePw('signupPassword', this)" aria-label="Show password"
           style="position:absolute; inset-inline-end:8px; top:50%; transform:translateY(-50%); background:none; border:0; color:var(--muted); cursor:pointer; padding:4px 8px; font-size:16px;">👁</button>
       </div>
@@ -324,7 +324,9 @@
 
   function validatePassword(pass) {
     if (pass.length < 8)             return "Password must be at least 8 characters.";
-    if (!/[A-Z]/.test(pass))         return "Password must contain at least one uppercase letter.";
+    if (!/[A-Z]/.test(pass))         return "Password must contain at least one uppercase letter (A-Z).";
+    if (!/[a-z]/.test(pass))         return "Password must contain at least one lowercase letter (a-z).";
+    if (!/[0-9]/.test(pass))         return "Password must contain at least one digit (0-9).";
     if (!/[^A-Za-z0-9]/.test(pass))  return "Password must contain at least one special character (!@#$% etc.).";
     return null;
   }

@@ -2187,6 +2187,56 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await fpwPage.close(); await fpwCtx.close();
 
 
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 73 — Weak passwords are rejected on signup (matches Firebase policy)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 73 — Signup rejects weak passwords (5 rules)');
+    const weakCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const weakPage = await weakCtx.newPage();
+    await step('Open auth.html → signup tab', async () => {
+        await weakPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        const signupTab = weakPage.locator('#tabSignup, button:has-text("Sign Up"), button:has-text("הרשמה")').first();
+        if (await signupTab.count()) await signupTab.click();
+        await weakPage.waitForSelector('#signupPassword', { timeout: 8000 });
+    });
+    const fillSignup = async (pw) => {
+        await weakPage.fill('#signupName', 'QA Test');
+        await weakPage.fill('#signupEmail', `qa-weakpass-${Date.now()}@example.com`);
+        await weakPage.fill('#signupPassword', pw);
+        await weakPage.locator('#signupBtn, button[type=submit]').first().click();
+    };
+    const expectErrorMatching = async (regex, label) => {
+        await weakPage.waitForFunction(() => {
+            const t = (document.getElementById('signupError')?.textContent || '');
+            return t.length > 3;
+        }, { timeout: 5000 });
+        const errTxt = (await weakPage.locator('#signupError').textContent() || '').toLowerCase();
+        if (!regex.test(errTxt)) throw new Error(`${label}: expected match ${regex}, got "${errTxt}"`);
+    };
+    await step('"short" (5 chars) rejected — too short', async () => {
+        await fillSignup('Abc1!');
+        await expectErrorMatching(/8 character|length|short/i, 'short');
+    });
+    await step('"alllowercase1!" rejected — no uppercase', async () => {
+        await fillSignup('alllowercase1!');
+        await expectErrorMatching(/uppercase|A-Z/i, 'no uppercase');
+    });
+    await step('"ALLUPPER1!" rejected — no lowercase', async () => {
+        await fillSignup('ALLUPPER1!');
+        await expectErrorMatching(/lowercase|a-z/i, 'no lowercase');
+    });
+    await step('"NoDigitsHere!" rejected — no digit', async () => {
+        await fillSignup('NoDigitsHere!');
+        await expectErrorMatching(/digit|number|0-9/i, 'no digit');
+    });
+    await step('"NoSpecial123" rejected — no special char', async () => {
+        await fillSignup('NoSpecial123');
+        await expectErrorMatching(/special/i, 'no special');
+    });
+    await weakPage.close(); await weakCtx.close();
+
+
     await browser.close();
 
     out.push(`\n---\n**E2E failures**: ${fails.length}`);
