@@ -2109,6 +2109,84 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     }
 
 
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 70 — Wrong-password message is user-friendly + show-pw works
+    // (Regression: real user got reset email but couldn't log in.
+    //  Most common cause: trailing space in copy/paste or modern Firebase
+    //  error code unmapped → showed generic "Something went wrong".)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 70 — Wrong password UX (regression)');
+    const wpCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const wpPage = await wpCtx.newPage();
+    await step('Open auth.html', async () => {
+        await wpPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+    });
+    await step('Show-password 👁 button visible', async () => {
+        const btn = wpPage.locator('button[onclick*="togglePw"]').first();
+        await btn.waitFor({ state: 'visible', timeout: 5000 });
+    });
+    await step('Try login with wrong password → friendly error (not generic)', async () => {
+        await wpPage.fill('#loginEmail', QA_EMAIL);
+        await wpPage.fill('#loginPassword', 'definitelyWrongPassword!!XYZ123');
+        await wpPage.locator('#loginBtn, button:has-text("Sign In"), button[type=submit]').first().click();
+        await wpPage.waitForFunction(() => {
+            const t = (document.getElementById('loginError')?.textContent || '').toLowerCase();
+            return /wrong|invalid|password|email/.test(t) && t.length > 5;
+        }, { timeout: 15000 });
+        const errTxt = (await wpPage.locator('#loginError').textContent() || '').toLowerCase();
+        // Must NOT be the generic fallback
+        if (errTxt.includes('something went wrong') && !errTxt.includes('wrong password') && !errTxt.includes('check for caps')) {
+            throw new Error(`generic error shown: "${errTxt}"`);
+        }
+    });
+    await step('Click 👁 toggle → password becomes visible (type=text)', async () => {
+        await wpPage.locator('button[onclick*="togglePw"]').first().click();
+        const t = await wpPage.locator('#loginPassword').getAttribute('type');
+        if (t !== 'text') throw new Error(`expected type=text after toggle, got ${t}`);
+    });
+    await wpPage.close(); await wpCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 71 — Password with trailing space still works (trimmed)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 71 — Trailing-space password trimmed before submit');
+    const trimCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const trimPage = await trimCtx.newPage();
+    await step('Login with password + trailing space', async () => {
+        await trimPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await trimPage.fill('#loginEmail', QA_EMAIL);
+        await trimPage.fill('#loginPassword', QA_PASSWORD + '   '); // trailing spaces
+        await trimPage.locator('#loginBtn, button[type=submit]').first().click();
+        await trimPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+    });
+    await trimPage.close(); await trimCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 72 — Forgot-password sends reset email (no error)
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 72 — Forgot-password flow (send email)');
+    const fpwCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const fpwPage = await fpwCtx.newPage();
+    await step('Open auth.html + type email + click Forgot', async () => {
+        await fpwPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+        await fpwPage.fill('#loginEmail', QA_EMAIL);
+        await fpwPage.locator('a[onclick*="forgotPassword"], .forgot a').first().click();
+    });
+    await step('Reset email confirmation shown (or rate-limited gracefully)', async () => {
+        await fpwPage.waitForFunction(() => {
+            const t = (document.getElementById('loginError')?.textContent || '').toLowerCase();
+            return /sent|inbox|reset|check|wait|many|too|נשלח|בדוק/i.test(t) && t.length > 5;
+        }, { timeout: 15000 });
+        const txt = (await fpwPage.locator('#loginError').textContent() || '');
+        // Should NOT show the generic fallback
+        if (/something went wrong/i.test(txt) && !/sent|inbox|reset|wait|many/i.test(txt)) {
+            throw new Error(`generic error on forgot-password: "${txt}"`);
+        }
+    });
+    await fpwPage.close(); await fpwCtx.close();
+
+
     await browser.close();
 
     out.push(`\n---\n**E2E failures**: ${fails.length}`);

@@ -229,7 +229,11 @@
     <div class="form-group">
       <label>Password</label>
       <div class="pw-wrap">
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+        <div style="position:relative;">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" style="padding-inline-end:38px;">
+        <button type="button" onclick="togglePw('loginPassword', this)" aria-label="Show password"
+          style="position:absolute; inset-inline-end:8px; top:50%; transform:translateY(-50%); background:none; border:0; color:var(--muted); cursor:pointer; padding:4px 8px; font-size:16px;">👁</button>
+      </div>
         <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
       </div>
     </div>
@@ -251,7 +255,11 @@
     <div class="form-group">
       <label>Password</label>
       <div class="pw-wrap">
-        <input type="password" id="signupPassword" placeholder="Min. 8 chars, uppercase &amp; special char" autocomplete="new-password">
+        <div style="position:relative;">
+        <input type="password" id="signupPassword" placeholder="Min. 8 chars, uppercase &amp; special char" autocomplete="new-password" style="padding-inline-end:38px;">
+        <button type="button" onclick="togglePw('signupPassword', this)" aria-label="Show password"
+          style="position:absolute; inset-inline-end:8px; top:50%; transform:translateY(-50%); background:none; border:0; color:var(--muted); cursor:pointer; padding:4px 8px; font-size:16px;">👁</button>
+      </div>
         <button type="button" class="pw-toggle" onclick="togglePw('signupPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
       </div>
     </div>
@@ -293,9 +301,16 @@
     document.getElementById(btnId).textContent = loading ? "Please wait…" : (btnId === "loginBtn" ? "Sign In" : "Create Account");
   }
 
+  function togglePw(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.type === 'password') { el.type = 'text';  btn.textContent = '🙈'; }
+    else                        { el.type = 'password'; btn.textContent = '👁'; }
+  }
+
   async function emailLogin() {
     const email = document.getElementById("loginEmail").value.trim();
-    const pass  = document.getElementById("loginPassword").value;
+    const pass  = document.getElementById("loginPassword").value.trim();
     document.getElementById("loginError").textContent = "";
     setLoading("loginBtn", true);
     try {
@@ -317,7 +332,7 @@
   async function emailSignup() {
     const name  = document.getElementById("signupName").value.trim();
     const email = document.getElementById("signupEmail").value.trim();
-    const pass  = document.getElementById("signupPassword").value;
+    const pass  = document.getElementById("signupPassword").value.trim();
     document.getElementById("signupError").textContent = "";
 
     const passError = validatePassword(pass);
@@ -416,15 +431,22 @@
 
   function friendlyError(code) {
     const map = {
-      "auth/user-not-found":      "No account with this email.",
-      "auth/wrong-password":      "Wrong password.",
-      "auth/invalid-email":       "Invalid email address.",
-      "auth/email-already-in-use":"This email is already registered. Try signing in.",
-      "auth/weak-password":       "Password must be at least 8 characters with uppercase and special character.",
-      "auth/too-many-requests":   "Too many attempts. Try again later.",
-      "auth/popup-closed-by-user":"Sign-in cancelled.",
+      "auth/user-not-found":           "No account with this email.",
+      "auth/wrong-password":           "Wrong password — check for caps-lock or trailing spaces.",
+      "auth/invalid-credential":       "Wrong email or password — check for caps-lock or trailing spaces.",
+      "auth/invalid-login-credentials":"Wrong email or password — check for caps-lock or trailing spaces.",
+      "auth/invalid-email":            "Invalid email address.",
+      "auth/email-already-in-use":     "This email is already registered. Try signing in.",
+      "auth/weak-password":            "Password must be at least 8 characters with uppercase and special character.",
+      "auth/too-many-requests":        "Too many attempts. Try again in a few minutes — or use \"Forgot password\".",
+      "auth/popup-closed-by-user":     "Sign-in cancelled.",
+      "auth/network-request-failed":   "Network problem — check your connection.",
+      "auth/user-disabled":            "This account is disabled. Contact support.",
+      "auth/operation-not-allowed":    "Email/password sign-in is disabled.",
+      "auth/expired-action-code":      "This reset link expired. Click \"Forgot password\" to get a new one.",
+      "auth/invalid-action-code":      "This reset link is invalid or already used. Request a new one.",
     };
-    return map[code] || "Something went wrong. Please try again.";
+    return map[code] || ("Something went wrong (" + (code || "unknown") + "). Please try again.");
   }
 
   function togglePw(inputId, btn) {
