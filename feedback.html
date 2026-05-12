@@ -285,18 +285,26 @@ form.addEventListener('submit', async (e) => {
   btn.disabled = true;
   const payload = {
     app: state.app,
-    rating: state.rating || null,
-    pay: state.pay || null,
-    loved: document.getElementById('loved').value.trim() || null,
-    missing: document.getElementById('missing').value.trim() || null,
-    email: document.getElementById('email').value.trim() || null,
-    uid: wlAuth.currentUser?.uid || null,
-    plan: localStorage.getItem('wl_plan') || null,
     lang,
     ua: navigator.userAgent.slice(0, 200),
     ts: firebase.firestore.FieldValue.serverTimestamp(),
-    referrer: document.referrer.slice(0, 200) || null,
   };
+  // Only include optional fields when they have a real value —
+  // Firestore rules reject null-typed fields that expect string/number.
+  if (state.rating)  payload.rating  = state.rating;
+  if (state.pay)     payload.pay     = state.pay;
+  const loved   = document.getElementById('loved').value.trim();
+  const missing = document.getElementById('missing').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const uid     = wlAuth.currentUser?.uid;
+  const plan    = localStorage.getItem('wl_plan');
+  const ref     = document.referrer.slice(0, 200);
+  if (loved)   payload.loved    = loved;
+  if (missing) payload.missing  = missing;
+  if (email)   payload.email    = email;
+  if (uid)     payload.uid      = uid;
+  if (plan)    payload.plan     = plan;
+  if (ref)     payload.referrer = ref;
   try {
     await wlDb.collection('feedback').add(payload);
     msg.innerHTML = `<div class="ok-msg">${t('msg.ok')}</div>`;
