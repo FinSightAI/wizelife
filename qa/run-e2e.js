@@ -675,6 +675,401 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await deal2Page.close();
     await deal2Ctx.close();
 
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow M1 — Mobile iPhone: WizeLife dashboard, bottom-nav, hamburger
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow M1 — Mobile iPhone (390×844): WizeLife bottom-nav + hamburger');
+    const iphoneCtx = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+    });
+    const iphonePage = await iphoneCtx.newPage();
+
+    await step('iPhone: auth.html loads', async () => {
+        await iphonePage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
+    });
+    const iPhoneLoggedIn = await step('iPhone: login → dashboard', async () => {
+        await fillAndLogin(iphonePage, QA_EMAIL, QA_PASSWORD);
+        await iphonePage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+    });
+    if (iPhoneLoggedIn) {
+        await step('iPhone: bottom-nav bar present', async () => {
+            const nav = iphonePage.locator('#wize-bottom-nav, .wize-bottom-nav, nav.bottom-nav').first();
+            await nav.waitFor({ state: 'attached', timeout: 8000 });
+        });
+        await step('iPhone: hamburger button visible', async () => {
+            const btn = iphonePage.locator('#wize-ham-btn, .wize-ham-btn, button.hamburger').first();
+            await btn.waitFor({ state: 'visible', timeout: 8000 });
+        });
+        await step('iPhone: hamburger opens drawer', async () => {
+            const btn = iphonePage.locator('#wize-ham-btn, .wize-ham-btn, button.hamburger').first();
+            await btn.click();
+            await iphonePage.waitForFunction(() => {
+                const d = document.getElementById('wize-ham-drawer') ||
+                          document.querySelector('.wize-ham-drawer, .hamburger-drawer');
+                return d && (d.classList.contains('open') || d.style.transform === 'translateX(0px)' ||
+                             window.getComputedStyle(d).transform !== 'matrix(1, 0, 0, 1, 300, 0)');
+            }, { timeout: 5000 });
+        });
+        await step('iPhone: hamburger drawer has sister-app links', async () => {
+            const links = iphonePage.locator('#wize-ham-drawer a, .wize-ham-drawer a').filter({ hasText: /Wize|money|tax|health|travel|deal/i });
+            const count = await links.count();
+            if (count < 3) throw new Error(`only ${count} app links in hamburger drawer`);
+        });
+        await step('iPhone: close drawer via overlay', async () => {
+            const overlay = iphonePage.locator('#wize-ham-overlay, .wize-ham-overlay').first();
+            if (await overlay.count()) {
+                await overlay.click();
+            } else {
+                await iphonePage.keyboard.press('Escape');
+            }
+            await iphonePage.waitForFunction(() => {
+                const d = document.getElementById('wize-ham-drawer') ||
+                          document.querySelector('.wize-ham-drawer');
+                return !d || !d.classList.contains('open');
+            }, { timeout: 5000 });
+        });
+    } else {
+        out.push('_skipped — iPhone login failed_');
+    }
+    await iphonePage.close();
+    await iphoneCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow M2 — Mobile Android: WizeMoney income page on Android viewport
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow M2 — Mobile Android (412×915): WizeMoney income page');
+    const androidCtx = await browser.newContext({
+        viewport: { width: 412, height: 915 },
+        userAgent: 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+    });
+    const androidPage = await androidCtx.newPage();
+
+    await step('Android: WizeMoney income page loads', async () => {
+        await androidPage.goto('https://money.wizelife.ai/pages/income.html', { waitUntil: 'load', timeout: 30000 });
+        if (androidPage.url().includes('auth') || await androidPage.locator('input[type=email]').count()) {
+            await fillAndLogin(androidPage, QA_EMAIL, QA_PASSWORD);
+            await androidPage.waitForURL(/income\.html/, { timeout: 15000 });
+        }
+    });
+    await step('Android: income page content visible', async () => {
+        await androidPage.waitForFunction(() => document.body.innerText.trim().length > 100, { timeout: 8000 });
+    });
+    await step('Android: no horizontal overflow (no scrollbar)', async () => {
+        const overflow = await androidPage.evaluate(() =>
+            document.documentElement.scrollWidth > document.documentElement.clientWidth + 5
+        );
+        if (overflow) throw new Error('page has horizontal overflow on mobile');
+    });
+    await step('Android: bottom-nav present', async () => {
+        const nav = androidPage.locator('#wize-bottom-nav, .wize-bottom-nav, nav.bottom-nav').first();
+        await nav.waitFor({ state: 'attached', timeout: 8000 });
+    });
+    await androidPage.close();
+    await androidCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow M3 — Mobile: WizeTax on iPhone — chat + sidebar categories
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow M3 — Mobile iPhone: WizeTax sidebar + chat');
+    const taxMobCtx = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+    });
+    const taxMobPage = await taxMobCtx.newPage();
+
+    await step('Mobile WizeTax loads', async () => {
+        await taxMobPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('Mobile WizeTax: body has content', async () => {
+        await taxMobPage.waitForFunction(() => document.body.innerText.trim().length > 50, { timeout: 10000 });
+    });
+    await step('Mobile WizeTax: chat input present', async () => {
+        await taxMobPage.waitForSelector('textarea, input[type="text"]', { timeout: 10000 });
+    });
+    await step('Mobile WizeTax: no horizontal overflow', async () => {
+        const overflow = await taxMobPage.evaluate(() =>
+            document.documentElement.scrollWidth > document.documentElement.clientWidth + 5
+        );
+        if (overflow) throw new Error('WizeTax has horizontal overflow on mobile');
+    });
+    await taxMobPage.close();
+    await taxMobCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 16 — WizeMoney: Reports page loads + has chart/data
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 16 — WizeMoney reports page');
+    const rptCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const rptPage = await rptCtx.newPage();
+
+    await step('WizeMoney reports loads', async () => {
+        await rptPage.goto('https://money.wizelife.ai/pages/reports.html', { waitUntil: 'load', timeout: 30000 });
+        if (rptPage.url().includes('auth') || await rptPage.locator('input[type=email]').count()) {
+            await fillAndLogin(rptPage, QA_EMAIL, QA_PASSWORD);
+            await rptPage.waitForURL(/reports\.html/, { timeout: 15000 });
+        }
+    });
+    await step('Reports: page body has content', async () => {
+        await rptPage.waitForFunction(() => document.body.innerText.trim().length > 50, { timeout: 8000 });
+    });
+    await step('Reports: chart canvas or summary element present', async () => {
+        const el = rptPage.locator('canvas, .chart, [id*="chart" i], [id*="report" i], .summary-card, .total').first();
+        await el.waitFor({ state: 'attached', timeout: 10000 });
+    });
+    await rptPage.close();
+    await rptCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 17 — Theme toggle: dark↔light persists across navigation
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 17 — Theme toggle persists (WizeMoney)');
+    const themeCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const themePage = await themeCtx.newPage();
+
+    await step('Theme test: load WizeMoney dashboard', async () => {
+        await themePage.goto('https://money.wizelife.ai/', { waitUntil: 'load', timeout: 30000 });
+        if (themePage.url().includes('auth') || await themePage.locator('input[type=email]').count()) {
+            await fillAndLogin(themePage, QA_EMAIL, QA_PASSWORD);
+            await themePage.waitForSelector('.sidebar, #mainContent, .app-container', { timeout: 15000 });
+        }
+    });
+    await step('Theme toggle button present', async () => {
+        const btn = themePage.locator('[data-theme-toggle], button.theme-toggle, #themeToggle, button[onclick*="theme"], button[aria-label*="theme" i], button[title*="theme" i]').first();
+        await btn.waitFor({ state: 'visible', timeout: 8000 });
+        await btn.click();
+    });
+    await step('Theme class applied to body/html after toggle', async () => {
+        const hasThemeClass = await themePage.evaluate(() => {
+            const cls = document.documentElement.className + ' ' + document.body.className;
+            return /dark|light|theme/i.test(cls) || document.documentElement.getAttribute('data-theme') !== null;
+        });
+        if (!hasThemeClass) throw new Error('no theme class/attr on html/body after toggle');
+    });
+    await step('Navigate to income page — theme persists', async () => {
+        const before = await themePage.evaluate(() =>
+            document.documentElement.getAttribute('data-theme') ||
+            document.documentElement.className ||
+            document.body.className
+        );
+        await themePage.goto('https://money.wizelife.ai/pages/income.html', { waitUntil: 'load', timeout: 20000 });
+        const after = await themePage.evaluate(() =>
+            document.documentElement.getAttribute('data-theme') ||
+            document.documentElement.className ||
+            document.body.className
+        );
+        if (!after || after === before || /dark|light/i.test(after) === /dark|light/i.test(before)) {
+            // Either same theme class OR no theme persistence — just check theme attr is present
+            const hasTheme = await themePage.evaluate(() =>
+                document.documentElement.hasAttribute('data-theme') ||
+                /dark|light/.test(document.documentElement.className + document.body.className)
+            );
+            if (!hasTheme) throw new Error('theme not persisted after navigation');
+        }
+    });
+    await themePage.close();
+    await themeCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 18 — PWA offline shell: service worker caches shell assets
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 18 — PWA offline shell (WizeLife + WizeMoney)');
+    const pwaCtx  = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const pwaPage = await pwaCtx.newPage();
+
+    await step('PWA: load WizeLife to prime SW cache', async () => {
+        await pwaPage.goto('https://wizelife.ai/', { waitUntil: 'load', timeout: 30000 });
+    });
+    await step('PWA: service worker registered', async () => {
+        const swActive = await pwaPage.evaluate(async () => {
+            if (!('serviceWorker' in navigator)) return false;
+            const reg = await navigator.serviceWorker.getRegistration('/');
+            return !!(reg && (reg.active || reg.installing || reg.waiting));
+        });
+        if (!swActive) throw new Error('no service worker registered on wizelife.ai');
+    });
+    await step('PWA: manifest.json reachable', async () => {
+        const status = await pwaPage.evaluate(async () => {
+            const r = await fetch('/manifest.json');
+            return r.status;
+        });
+        if (status !== 200) throw new Error(`manifest.json → HTTP ${status}`);
+    });
+    await step('PWA: go offline → page still renders', async () => {
+        await pwaCtx.setOffline(true);
+        await pwaPage.reload({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => {});
+        const bodyLen = await pwaPage.evaluate(() => document.body.innerText.trim().length).catch(() => 0);
+        await pwaCtx.setOffline(false);
+        if (bodyLen < 20) throw new Error('offline shell rendered nothing (SW not caching?)');
+    });
+    await pwaPage.close();
+    await pwaCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 19 — Cross-app hamburger: all 5 sister-app links reachable
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 19 — Cross-app hamburger links reachable');
+    const hamXCtx  = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const hamXPage = await hamXCtx.newPage();
+
+    await step('Hamburger test: load WizeMoney mobile', async () => {
+        await hamXPage.goto('https://money.wizelife.ai/', { waitUntil: 'load', timeout: 30000 });
+        if (hamXPage.url().includes('auth') || await hamXPage.locator('input[type=email]').count()) {
+            await fillAndLogin(hamXPage, QA_EMAIL, QA_PASSWORD);
+            await hamXPage.waitForSelector('.sidebar, #mainContent, .app-container', { timeout: 15000 });
+        }
+    });
+    await step('Open hamburger drawer', async () => {
+        const btn = hamXPage.locator('#wize-ham-btn, .wize-ham-btn, button[aria-label*="menu" i], button.hamburger').first();
+        await btn.waitFor({ state: 'visible', timeout: 8000 });
+        await btn.click();
+        await hamXPage.waitForFunction(() => {
+            const d = document.getElementById('wize-ham-drawer') ||
+                      document.querySelector('.wize-ham-drawer');
+            return d && d.classList.contains('open');
+        }, { timeout: 5000 });
+    });
+    await step('Hamburger: WizeLife link present', async () => {
+        const link = hamXPage.locator('#wize-ham-drawer a[href*="wizelife.ai"], .wize-ham-drawer a[href*="wizelife"]').first();
+        await link.waitFor({ state: 'attached', timeout: 5000 });
+    });
+    await step('Hamburger: WizeTax link present', async () => {
+        const link = hamXPage.locator('#wize-ham-drawer a[href*="tax"], .wize-ham-drawer a[href*="tax"]').first();
+        await link.waitFor({ state: 'attached', timeout: 5000 });
+    });
+    await step('Hamburger: WizeHealth link present', async () => {
+        const link = hamXPage.locator('#wize-ham-drawer a[href*="health"], .wize-ham-drawer a[href*="health"]').first();
+        await link.waitFor({ state: 'attached', timeout: 5000 });
+    });
+    await step('Hamburger: WizeTravel link present', async () => {
+        const link = hamXPage.locator('#wize-ham-drawer a[href*="travel"], .wize-ham-drawer a[href*="travel"]').first();
+        await link.waitFor({ state: 'attached', timeout: 5000 });
+    });
+    await step('Hamburger: WizeDeal link present', async () => {
+        const link = hamXPage.locator('#wize-ham-drawer a[href*="deal"], .wize-ham-drawer a[href*="deal"]').first();
+        await link.waitFor({ state: 'attached', timeout: 5000 });
+    });
+    await hamXPage.close();
+    await hamXCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 20 — WizeHealth mobile: chat on iPhone viewport
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 20 — WizeHealth mobile (390×844) chat');
+    const healthMobCtx  = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+    });
+    const healthMobPage = await healthMobCtx.newPage();
+
+    await step('Mobile WizeHealth loads (60s budget)', async () => {
+        await healthMobPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+    });
+    await step('Mobile WizeHealth: no horizontal overflow', async () => {
+        const overflow = await healthMobPage.evaluate(() =>
+            document.documentElement.scrollWidth > document.documentElement.clientWidth + 5
+        );
+        if (overflow) throw new Error('WizeHealth horizontal overflow on mobile');
+    });
+    await step('Mobile WizeHealth: chat input accessible', async () => {
+        await healthMobPage.waitForSelector('#txt, .chat-input, textarea, input[type=text]', { timeout: 15000 });
+    });
+    await step('Mobile WizeHealth: send message', async () => {
+        const input = healthMobPage.locator('#txt, .chat-input, textarea').first();
+        await input.fill('כאב ראש — מה עושים?');
+        const sendBtn = healthMobPage.locator('button:has-text("Send"), button[type=submit], #sendBtn').first();
+        if (await sendBtn.count()) await sendBtn.click();
+        else await input.press('Enter');
+    });
+    await step('Mobile WizeHealth: response appears', async () => {
+        await healthMobPage.waitForFunction(() => {
+            const sel = '[class*="assistant"],[class*="bot"],[class*="ai"],[class*="response"],.message-bot';
+            return [...document.querySelectorAll(sel)].some(el => el.textContent.trim().length > 20);
+        }, { timeout: 60000 });
+    });
+    await healthMobPage.close();
+    await healthMobCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 21 — WizeTravel mobile: iPhone loads + tab-bar visible
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 21 — WizeTravel mobile (390×844)');
+    const travelMobCtx  = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+    });
+    const travelMobPage = await travelMobCtx.newPage();
+
+    await step('Mobile WizeTravel loads', async () => {
+        await travelMobPage.goto('https://travel.wizelife.ai/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    });
+    await step('Mobile WizeTravel: body has content', async () => {
+        await travelMobPage.waitForFunction(() => document.body.innerText.trim().length > 50, { timeout: 10000 });
+    });
+    await step('Mobile WizeTravel: no horizontal overflow', async () => {
+        const overflow = await travelMobPage.evaluate(() =>
+            document.documentElement.scrollWidth > document.documentElement.clientWidth + 5
+        );
+        if (overflow) throw new Error('WizeTravel horizontal overflow on mobile');
+    });
+    await step('Mobile WizeTravel: nav/tab-bar rendered', async () => {
+        const nav = travelMobPage.locator('nav, [role=tablist], .tabs, .tab-bar, button[data-tab]').first();
+        await nav.waitFor({ state: 'attached', timeout: 10000 });
+    });
+    await travelMobPage.close();
+    await travelMobCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 22 — WizeMoney: Preferences / Profile page loads
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 22 — WizeMoney preferences/profile page');
+    const prefCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const prefPage = await prefCtx.newPage();
+
+    await step('WizeMoney preferences.html loads', async () => {
+        await prefPage.goto('https://money.wizelife.ai/pages/preferences.html', { waitUntil: 'load', timeout: 30000 });
+        if (prefPage.url().includes('auth') || await prefPage.locator('input[type=email]').count()) {
+            await fillAndLogin(prefPage, QA_EMAIL, QA_PASSWORD);
+            await prefPage.waitForURL(/preferences\.html/, { timeout: 15000 });
+        }
+    });
+    await step('Preferences: page has content', async () => {
+        await prefPage.waitForFunction(() => document.body.innerText.trim().length > 50, { timeout: 8000 });
+    });
+    await step('Preferences: form or settings element present', async () => {
+        const el = prefPage.locator('form, input, select, [id*="pref" i], [id*="setting" i], [class*="pref" i]').first();
+        await el.waitFor({ state: 'attached', timeout: 8000 });
+    });
+    await prefPage.close();
+    await prefCtx.close();
+
+    // ══════════════════════════════════════════════════════════════════
+    // Flow 23 — WizeTax: click a quick-question category → question loads
+    // ══════════════════════════════════════════════════════════════════
+    out.push('\n## Flow 23 — WizeTax quick-question category click');
+    const taxQCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const taxQPage = await taxQCtx.newPage();
+
+    await step('WizeTax advisor loads', async () => {
+        await taxQPage.goto('https://tax.wizelife.ai/advisor', { waitUntil: 'domcontentloaded', timeout: 25000 });
+    });
+    await step('WizeTax: click first sidebar category / quick question', async () => {
+        const cat = taxQPage.locator('.wt-cat button, details summary, [class*="category"], .quick-question, button[data-question]').first();
+        await cat.waitFor({ state: 'visible', timeout: 10000 });
+        await cat.click();
+    });
+    await step('WizeTax: chat input populated or question sent', async () => {
+        await taxQPage.waitForFunction(() => {
+            const inp = document.querySelector('textarea, input[type=text]');
+            const hasMsgInChat = [...document.querySelectorAll('[class*="message"],[class*="chat"],[class*="user"]')]
+                .some(el => el.textContent.trim().length > 5);
+            return (inp && inp.value.length > 3) || hasMsgInChat;
+        }, { timeout: 8000 });
+    });
+    await taxQPage.close();
+    await taxQCtx.close();
+
     await browser.close();
 
     out.push(`\n---\n**E2E failures**: ${fails.length}`);

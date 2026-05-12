@@ -48,7 +48,7 @@ async function tier13f() {
     const SW_URLS = [
         { sw: 'https://wizelife.ai/sw.js',                   origin: 'https://wizelife.ai' },
         { sw: 'https://money.wizelife.ai/sw.js',             origin: 'https://money.wizelife.ai' },
-        { sw: 'https://health.wizelife.ai/sw.js',            origin: 'https://health.wizelife.ai' },
+        // health.wizelife.ai is a launcher (iframe-only, no SW — skip)
     ];
     for (const { sw, origin } of SW_URLS) {
         try {
