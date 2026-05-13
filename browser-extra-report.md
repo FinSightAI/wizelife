@@ -20,7 +20,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# Browser-extra checks — 2026-05-12T23:25:26.762Z
+# Browser-extra checks — 2026-05-12T23:52:49.747Z
 
 ## Tier 13n — i18n missing-key detector
 

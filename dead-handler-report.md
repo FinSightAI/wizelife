@@ -52,7 +52,7 @@
 ---
 _<details><summary>Full per-page detail</summary>_
 
-# Dead-handler check — 2026-05-12T23:25:26.769Z
+# Dead-handler check — 2026-05-12T23:52:49.741Z
 
 ## https://wizelife.ai/
 - ✅ 12 link(s) all reachable
