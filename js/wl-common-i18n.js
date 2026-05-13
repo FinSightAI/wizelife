@@ -150,6 +150,21 @@
     tr('🇪🇪 אסטוניה', '🇪🇪 Estonia', '🇪🇪 Estônia', '🇪🇪 Estonia');
     tr('🇵🇱 פולין', '🇵🇱 Poland', '🇵🇱 Polônia', '🇵🇱 Polonia');
     tr('🇨🇿 צ\'כיה', '🇨🇿 Czechia', '🇨🇿 Tchéquia', '🇨🇿 Chequia');
+    tr('🇸🇬 סינגפור', '🇸🇬 Singapore', '🇸🇬 Singapura', '🇸🇬 Singapur');
+    tr('🇨🇦 קנדה (פדרלי)', '🇨🇦 Canada (federal)', '🇨🇦 Canadá (federal)', '🇨🇦 Canadá (federal)');
+    tr('🇦🇺 אוסטרליה', '🇦🇺 Australia', '🇦🇺 Austrália', '🇦🇺 Australia');
+    tr('🇳🇿 ניו זילנד', '🇳🇿 New Zealand', '🇳🇿 Nova Zelândia', '🇳🇿 Nueva Zelanda');
+    tr('🇯🇵 יפן', '🇯🇵 Japan', '🇯🇵 Japão', '🇯🇵 Japón');
+    tr('🇰🇷 דרום קוריאה', '🇰🇷 South Korea', '🇰🇷 Coreia do Sul', '🇰🇷 Corea del Sur');
+    tr('🇨🇾 קפריסין', '🇨🇾 Cyprus', '🇨🇾 Chipre', '🇨🇾 Chipre');
+    tr('🇲🇹 מלטה', '🇲🇹 Malta', '🇲🇹 Malta', '🇲🇹 Malta');
+    tr('🇲🇽 מקסיקו', '🇲🇽 Mexico', '🇲🇽 México', '🇲🇽 México');
+    tr('🇧🇷 ברזיל', '🇧🇷 Brazil', '🇧🇷 Brasil', '🇧🇷 Brasil');
+
+    // Travel flight UI extras
+    tr('15–22 מרץ', 'Mar 15 – 22', '15–22 mar', '15–22 mar');
+    tr('נוסעים', 'passengers', 'passageiros', 'pasajeros');
+    tr('2 מבוגרים', '2 adults', '2 adultos', '2 adultos');
 
     // ── Flight UI (travel.html) ──
     tr('חברת תעופה', 'Airline', 'Companhia aérea', 'Aerolínea');
