@@ -1,57 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
   <defs>
-    <!-- Gradient for the W letter -->
-    <linearGradient id="wlg-w" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%"   stop-color="#22d3ee"/>
-      <stop offset="50%"  stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#c026d3"/>
+    <linearGradient id="wlbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
     </linearGradient>
-    <!-- Gradient for the rings -->
-    <linearGradient id="wlg-ring" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%"   stop-color="#22d3ee" stop-opacity="0.9"/>
-      <stop offset="50%"  stop-color="#6366f1" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#c026d3" stop-opacity="0.9"/>
-    </linearGradient>
-    <!-- Soft glow -->
-    <filter id="wlg-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
   </defs>
-
-  <!-- Black background circle (optional — remove if transparent on dark theme) -->
-  <circle cx="100" cy="100" r="100" fill="#030508"/>
-
-  <!-- Outer dashed/segmented HUD ring -->
-  <g stroke="url(#wlg-ring)" fill="none" stroke-linecap="round">
-    <circle cx="100" cy="100" r="92" stroke-width="1" stroke-dasharray="6 4 12 6 4 8" opacity="0.85"/>
-    <circle cx="100" cy="100" r="86" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.5"/>
-    <circle cx="100" cy="100" r="80" stroke-width="1.5" stroke-dasharray="14 6 4 6" opacity="0.95" filter="url(#wlg-glow)"/>
-    <circle cx="100" cy="100" r="74" stroke-width="0.4" stroke-dasharray="2 2" opacity="0.4"/>
-    <circle cx="100" cy="100" r="68" stroke-width="1" stroke-dasharray="20 6 4 4 8 6" opacity="0.75"/>
-    <circle cx="100" cy="100" r="62" stroke-width="0.5" stroke-dasharray="4 2" opacity="0.5"/>
-  </g>
-
-  <!-- Sparkle dots scattered around the rings -->
-  <g fill="url(#wlg-ring)">
-    <circle cx="170" cy="100" r="1.2" opacity="0.9"/>
-    <circle cx="30"  cy="100" r="1.2" opacity="0.9"/>
-    <circle cx="100" cy="20"  r="1.0" opacity="0.85"/>
-    <circle cx="100" cy="180" r="1.0" opacity="0.85"/>
-    <circle cx="155" cy="45"  r="0.8" opacity="0.7"/>
-    <circle cx="45"  cy="155" r="0.8" opacity="0.7"/>
-    <circle cx="155" cy="155" r="0.8" opacity="0.7"/>
-    <circle cx="45"  cy="45"  r="0.8" opacity="0.7"/>
-  </g>
-
-  <!-- The W letter — clean, bold, gradient -->
-  <text x="100" y="138"
+  <rect width="200" height="200" rx="44" fill="url(#wlbg)"/>
+  <text x="100" y="144"
         text-anchor="middle"
-        font-family="Plus Jakarta Sans, Arial Black, sans-serif"
+        font-family="Arial Black, system-ui, sans-serif"
         font-weight="900"
-        font-size="110"
-        letter-spacing="-4"
-        fill="url(#wlg-w)"
-        filter="url(#wlg-glow)">W</text>
+        font-size="116"
+        fill="white">W</text>
 </svg>
