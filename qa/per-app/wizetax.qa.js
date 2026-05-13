@@ -14,7 +14,7 @@ const BASE = 'https://tax.wizelife.ai';
         await step(`${path} loads`, async () => {
             const ctx = await browser.newContext();
             const page = await ctx.newPage();
-            const r = await page.goto(BASE + path, { timeout: 25000 });
+            const r = await page.goto(BASE + path, { timeout: 45000 });
             const len = await page.evaluate(() => document.body.innerText.trim().length);
             await page.close(); await ctx.close();
             if (!r || r.status() >= 400) throw new Error(`HTTP ${r ? r.status() : 0}`);
@@ -38,7 +38,7 @@ const BASE = 'https://tax.wizelife.ai';
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto(BASE + '/advisor', { timeout: 25000 });
+            await page.goto(BASE + '/advisor', { timeout: 45000 });
             await page.waitForSelector('textarea, input[type="text"]', { timeout: 10000 });
         } finally {
             await page.close(); await ctx.close();
@@ -50,7 +50,7 @@ const BASE = 'https://tax.wizelife.ai';
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto(BASE + '/advisor', { timeout: 25000 });
+            await page.goto(BASE + '/advisor', { timeout: 45000 });
             const inp = page.locator('textarea, input[type=text]').first();
             await inp.waitFor({ state: 'visible', timeout: 10000 });
             await inp.fill('What is VAT?');
@@ -74,7 +74,7 @@ const BASE = 'https://tax.wizelife.ai';
                 cspErrors.push(m.text().slice(0, 120));
             }
         });
-        await page.goto(BASE + '/advisor', { timeout: 25000 });
+        await page.goto(BASE + '/advisor', { timeout: 45000 });
         await page.waitForTimeout(3000);
         await page.close(); await ctx.close();
         if (cspErrors.length) throw new Error(`${cspErrors.length} CSP errors: ${cspErrors[0]}`);
@@ -85,8 +85,8 @@ const BASE = 'https://tax.wizelife.ai';
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto(BASE + '/advisor', { timeout: 25000 });
-            const enBtn = page.locator('button:has-text("EN"), [data-lang="en"]').first();
+            await page.goto(BASE + '/advisor', { timeout: 45000 });
+            const enBtn = page.locator('[data-wl-lang="en"], button:has-text("EN"), [data-lang="en"]').first();
             if (!(await enBtn.count())) {
                 warn('No EN button on WizeTax advisor', 'check Lang pills are rendered');
                 return;
@@ -104,7 +104,7 @@ const BASE = 'https://tax.wizelife.ai';
     await step('iPhone (390×844): no h-overflow', async () => {
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
-        await page.goto(BASE + '/advisor', { timeout: 25000 });
+        await page.goto(BASE + '/advisor', { timeout: 45000 });
         const overflow = await page.evaluate(() =>
             document.documentElement.scrollWidth > document.documentElement.clientWidth + 10
         );

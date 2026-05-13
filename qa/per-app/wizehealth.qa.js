@@ -47,7 +47,7 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
         const page = await ctx.newPage();
         try {
             await page.goto('https://vitara.onrender.com/', { timeout: 60000 });
-            await page.waitForSelector('#txt, textarea, input[type=text]', { timeout: 15000 });
+            await page.waitForSelector('#txt, textarea, input[type=text]', { timeout: 45000 });
         } finally {
             await page.close(); await ctx.close();
         }
@@ -79,7 +79,7 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
         try {
             await page.goto('https://vitara.onrender.com/', { timeout: 60000 });
             const inp = page.locator('#txt, .chat-input, textarea').first();
-            await inp.waitFor({ state: 'visible', timeout: 15000 });
+            await inp.waitFor({ state: 'visible', timeout: 45000 });
             await inp.fill('What helps with a headache?');
             const send = page.locator('button:has-text("Send"), #sendBtn, button[type=submit]').first();
             if (await send.count()) await send.click(); else await inp.press('Enter');

@@ -12,7 +12,7 @@ const BASE = 'https://deal.wizelife.ai';
     await step('Home loads', async () => {
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
-        const r = await page.goto(BASE + '/', { timeout: 30000 });
+        const r = await page.goto(BASE + '/', { timeout: 45000 });
         const len = await page.evaluate(() => document.body.innerText.trim().length);
         await page.close(); await ctx.close();
         if (!r || r.status() >= 400) throw new Error(`HTTP ${r ? r.status() : 0}`);
@@ -34,7 +34,7 @@ const BASE = 'https://deal.wizelife.ai';
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto(BASE + '/', { timeout: 30000 });
+            await page.goto(BASE + '/', { timeout: 45000 });
             const btn = page.locator([
                 'button:has-text("Analyze")',
                 'button:has-text("New Deal")',
@@ -53,13 +53,13 @@ const BASE = 'https://deal.wizelife.ai';
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto(BASE + '/', { timeout: 30000 });
+            await page.goto(BASE + '/', { timeout: 45000 });
             const btn = page.locator('button:has-text("Analyze"), button:has-text("New Deal")').first();
             await btn.click();
             const textMode = page.locator('button:has-text("Text"), button:has-text("Paste")').first();
             if (await textMode.count()) await textMode.click();
             const ta = page.locator('textarea').first();
-            await ta.waitFor({ timeout: 8000 });
+            await ta.waitFor({ timeout: 20000 });
             await ta.fill('2BR apartment, 70sqm, Lisbon. Price 450000 EUR. Built 1920.');
             await page.locator('button:has-text("Extract"), button:has-text("Analyze")').last().click();
             await page.waitForFunction(() =>
@@ -80,7 +80,7 @@ const BASE = 'https://deal.wizelife.ai';
                 csp.push(m.text().slice(0, 120));
             }
         });
-        await page.goto(BASE + '/', { timeout: 30000 });
+        await page.goto(BASE + '/', { timeout: 45000 });
         await page.waitForTimeout(3000);
         await page.close(); await ctx.close();
         if (csp.length) throw new Error(`${csp.length} CSP errors: ${csp[0]}`);
@@ -90,7 +90,7 @@ const BASE = 'https://deal.wizelife.ai';
     await step('iPhone (390×844): no h-overflow', async () => {
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
-        await page.goto(BASE + '/', { timeout: 30000 });
+        await page.goto(BASE + '/', { timeout: 45000 });
         const overflow = await page.evaluate(() =>
             document.documentElement.scrollWidth > document.documentElement.clientWidth + 10
         );

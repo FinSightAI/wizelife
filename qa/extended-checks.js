@@ -105,11 +105,11 @@ async function tier13h() {
 
     // DKIM — Google uses google._domainkey; we just check presence
     try {
-        const txts = (await dns.resolveTxt('google._domainkey.wizelife.ai').catch(() => [])).map(r => r.join(''));
-        const dkim = txts.find(t => t.toLowerCase().includes('v=dkim1'));
-        if (dkim) pass('DKIM (google._domainkey) found');
-        else warn('DKIM MISSING for google._domainkey.wizelife.ai',
-                  'enable in Gmail Admin Console (or your wizelife.ai@gmail.com — only works with Google Workspace)',
+        const txts = (await dns.resolveTxt('resend._domainkey.wizelife.ai').catch(() => [])).map(r => r.join(''));
+        const dkim = txts.find(t => /v=dkim|p=[A-Za-z0-9]/i.test(t));
+        if (dkim) pass('DKIM (resend._domainkey) found');
+        else warn('DKIM MISSING for resend._domainkey.wizelife.ai',
+                  'verify in Resend dashboard → Domains → wizelife.ai (auto-configured when domain verified)',
                   'admin');
     } catch (e) { warn(`DKIM lookup failed: ${e.code || e.message}`, '', 'admin'); }
     add('');
