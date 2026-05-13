@@ -1,0 +1,67 @@
+name: Lighthouse CI
+
+# Runs Lighthouse audits on every push to main + daily at 03:30 UTC
+# Reports: Performance, Accessibility, Best Practices, SEO, PWA per URL.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - 'js/**'
+      - 'css/**'
+  schedule:
+    - cron: '30 3 * * *'   # daily — runs 30 min after main daily-qa
+  workflow_dispatch: {}
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Lighthouse on 6 URLs
+        run: |
+          npm install -g @lhci/cli@0.13.x
+          cat > .lighthouserc.json <<'EOF'
+          {
+            "ci": {
+              "collect": {
+                "url": [
+                  "https://wizelife.ai/",
+                  "https://wizelife.ai/auth.html",
+                  "https://wizelife.ai/about.html",
+                  "https://wizelife.ai/dashboard.html",
+                  "https://money.wizelife.ai/",
+                  "https://tax.wizelife.ai/"
+                ],
+                "numberOfRuns": 1,
+                "settings": {
+                  "preset": "desktop",
+                  "throttlingMethod": "simulate",
+                  "skipAudits": ["uses-http2"]
+                }
+              },
+              "assert": {
+                "preset": "lighthouse:no-pwa",
+                "assertions": {
+                  "categories:performance":   ["warn", { "minScore": 0.70 }],
+                  "categories:accessibility": ["warn", { "minScore": 0.85 }],
+                  "categories:best-practices":["warn", { "minScore": 0.85 }],
+                  "categories:seo":           ["warn", { "minScore": 0.90 }]
+                }
+              },
+              "upload": { "target": "temporary-public-storage" }
+            }
+          }
+          EOF
+          lhci autorun || true
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 14
