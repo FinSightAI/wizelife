@@ -61,6 +61,12 @@
 
   function injectPills() {
     if (document.getElementById('wl-lang-pills')) return; // already there
+    // Skip if page already has its own language switcher (avoid duplicate)
+    if (document.querySelector('[data-wl-lang], [data-lang-switcher], #langSwitcher, .lang-pills, [onclick*="setDashLang"], [onclick*="setLanguage"], button[onclick*="wl_lang"]')) {
+      return;
+    }
+    // Skip if a known lang-setter function exists
+    if (typeof window.setDashLang === 'function') return;
 
     var pills = document.createElement('div');
     pills.id = 'wl-lang-pills';
