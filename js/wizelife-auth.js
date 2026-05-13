@@ -84,14 +84,11 @@ window.wlShowUpdateBanner = function (reason) {
     console.log('wlShowUpdateBanner triggered, reason:', reason);
 };
 
-// If we have a site key but App Check failed to activate after a few seconds
-// → the user is running a stale wizelife-auth.js that doesn't know the new
-// init path. Prompt them to refresh.
-setTimeout(function () {
-    if (window.WIZELIFE_RECAPTCHA_SITE_KEY && !window.__wlAppCheckActive) {
-        window.wlShowUpdateBanner('stale-script');
-    }
-}, 3000);
+// Note: previously fired a "stale script" banner if App Check didn't activate
+// in 3 s. Disabled — reCAPTCHA v3 can fail to fetch a token from headless /
+// ad-blocked / throttled clients even when the script is current, producing
+// repeating false-positive refresh prompts. SW updates still trigger the
+// banner via sw-register.js, which is the only correct signal.
 
 const wlAuth = firebase.auth();
 const wlDb   = firebase.firestore();
