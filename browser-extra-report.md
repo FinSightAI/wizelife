@@ -1,4 +1,4 @@
-# 🚨 Browser-extra action items — 2026-05-12
+# 🚨 Browser-extra action items — 2026-05-13
 
 **2 failure(s), 1 warning(s), 13 pass.**
 
@@ -20,7 +20,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# Browser-extra checks — 2026-05-12T23:52:49.747Z
+# Browser-extra checks — 2026-05-13T00:01:06.200Z
 
 ## Tier 13n — i18n missing-key detector
 

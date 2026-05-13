@@ -1,4 +1,4 @@
-# 🚨 Dead-handler action items — 2026-05-12
+# 🚨 Dead-handler action items — 2026-05-13
 
 **36 failure(s), 0 warning(s), 8 pass.**
 
@@ -52,7 +52,7 @@
 ---
 _<details><summary>Full per-page detail</summary>_
 
-# Dead-handler check — 2026-05-12T23:52:49.741Z
+# Dead-handler check — 2026-05-13T00:01:06.198Z
 
 ## https://wizelife.ai/
 - ✅ 12 link(s) all reachable

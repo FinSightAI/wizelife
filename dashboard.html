@@ -284,19 +284,7 @@
       <span class="user-name" id="navUserName" style="color:#eef2ff;font-weight:600;">Loading…</span>
     </div>
     <a class="btn-upgrade" id="navUpgradeBtn" href="#" style="display:none;" data-i18n="upgrade_pro">שדרג ל-Pro</a>
-    <div id="dashLangBtn" class="lang-pills-row" style="display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;">
-      <button class="dash-lang-pill" data-lang="he" onclick="setDashLang('he')" title="עברית" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">HE</button>
-      <button class="dash-lang-pill" data-lang="en" onclick="setDashLang('en')" title="English" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">EN</button>
-      <button class="dash-lang-pill" data-lang="pt" onclick="setDashLang('pt')" title="Português" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">PT</button>
-      <button class="dash-lang-pill" data-lang="es" onclick="setDashLang('es')" title="Español" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px;">ES</button>
-    </div>
-    <!-- Compact native select shown only on mobile (≤700px) -->
-    <select id="dashLangSelect" class="lang-select-mobile" onchange="setDashLang(this.value)" aria-label="Language" style="display:none;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;border-radius:8px;padding:6px 10px;font:700 12px Inter,sans-serif;cursor:pointer">
-      <option value="he">🇮🇱 HE</option>
-      <option value="en">🇺🇸 EN</option>
-      <option value="pt">🇧🇷 PT</option>
-      <option value="es">🇪🇸 ES</option>
-    </select>
+    <!-- dash lang pills removed — wl-lang-switcher.js handles language switching -->
     <button class="btn-sm" onclick="signOut()" data-i18n="sign_out">התנתק</button>
   </div>
 </nav>

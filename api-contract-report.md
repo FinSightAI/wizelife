@@ -1,10 +1,10 @@
-# 🚨 API action items — 2026-05-12
+# 🚨 API action items — 2026-05-13
 
 ✅ **6 contract checks passed — every Cloud Function rejects bad input the expected way.**
 ---
 _<details><summary>Full detail</summary>_
 
-# API contract — 2026-05-12T23:52:49.581Z
+# API contract — 2026-05-13T00:01:06.072Z
 
 - ✅ validateCode rejects no-auth (UNAUTHENTICATED).
 - ✅ awardReferral rejects no-auth (UNAUTHENTICATED).

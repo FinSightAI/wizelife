@@ -1,4 +1,4 @@
-# 🚨 Integration action items — 2026-05-12
+# 🚨 Integration action items — 2026-05-13
 
 **0 failure(s), 6 warning(s), 27 pass.**
 
@@ -13,24 +13,24 @@
 ---
 _<details><summary>Full per-app detail</summary>_
 
-# Integration suite — 2026-05-12T23:52:49.737Z
+# Integration suite — 2026-05-13T00:01:06.200Z
 
 ## WizeLife (https://wizelife.ai/dashboard.html)
-- ✅ WizeLife: loaded in 2419ms (budget 8s)
+- ✅ WizeLife: loaded in 2570ms (budget 8s)
 - ✅ WizeLife: marker text rendered
 - ⚠️  WizeLife: no hamburger button found (selector "#wize-ham-btn, .mobile-menu-toggle, .mobile-header-toggle, [aria-label*="enu"]")
 - ⚠️  WizeLife: no #wize-bottom-nav buttons in DOM
 - ✅ WizeLife: onboarding skipped on portal (by design)
 
 ## WizeMoney (https://money.wizelife.ai/)
-- ✅ WizeMoney: loaded in 4855ms (budget 12s)
+- ✅ WizeMoney: loaded in 2910ms (budget 12s)
 - ✅ WizeMoney: marker text rendered
 - ⚠️  WizeMoney: hamburger clicked but drawer didn't open
 - ✅ WizeMoney: bottom-nav has 5 items
 - ✅ WizeMoney: onboarding shows with ?ob=force
 
 ## WizeTax (https://tax.wizelife.ai/)
-- ✅ WizeTax: loaded in 2129ms (budget 25s)
+- ✅ WizeTax: loaded in 2264ms (budget 25s)
 - ✅ WizeTax: marker text rendered
 - ✅ WizeTax: hamburger opens drawer
 - ✅ WizeTax: Escape closes drawer
@@ -38,14 +38,14 @@ _<details><summary>Full per-app detail</summary>_
 - ⚠️  WizeTax: ?ob=force did not trigger onboarding
 
 ## WizeHealth (https://health.wizelife.ai/)
-- ✅ WizeHealth: loaded in 2025ms (budget 25s)
+- ✅ WizeHealth: loaded in 2009ms (budget 25s)
 - ✅ WizeHealth: marker text rendered
 - ⚠️  WizeHealth: no hamburger button found (selector "#wize-ham-btn, .mobile-menu-toggle, .mobile-header-toggle, [aria-label*="enu"]")
 - ⚠️  WizeHealth: no #wize-bottom-nav buttons in DOM
 - ✅ WizeHealth: onboarding shows with ?ob=force
 
 ## WizeTravel (https://travel.wizelife.ai/)
-- ✅ WizeTravel: loaded in 2108ms (budget 25s)
+- ✅ WizeTravel: loaded in 2140ms (budget 25s)
 - ✅ WizeTravel: marker text rendered
 - ✅ WizeTravel: hamburger opens drawer
 - ✅ WizeTravel: Escape closes drawer
@@ -53,7 +53,7 @@ _<details><summary>Full per-app detail</summary>_
 - ✅ WizeTravel: onboarding shows with ?ob=force
 
 ## WizeDeal (https://deal.wizelife.ai/)
-- ✅ WizeDeal: loaded in 2155ms (budget 12s)
+- ✅ WizeDeal: loaded in 2054ms (budget 12s)
 - ✅ WizeDeal: marker text rendered
 - ✅ WizeDeal: hamburger opens drawer
 - ✅ WizeDeal: Escape closes drawer
