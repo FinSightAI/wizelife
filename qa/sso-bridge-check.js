@@ -14,7 +14,7 @@ const APPS = [
     { name: 'WizeTax',    expectedHost: 'tax.wizelife.ai' },
     { name: 'WizeDeal',   expectedHost: 'deal.wizelife.ai' },
     { name: 'WizeTravel', expectedHost: 'travel.wizelife.ai' },
-    { name: 'WizeHealth', expectedHost: 'vitara.onrender.com' },
+    { name: 'WizeHealth', expectedHost: 'health.wizelife.ai' },
 ];
 
 const { step, warn, finalize } = makeReporter('SSO-Bridge');
