@@ -98,5 +98,97 @@
     tr('✓ נתונים מאומתים 2025', '✓ Verified 2025 data', '✓ Dados verificados 2025', '✓ Datos verificados 2025');
     tr('מקורות: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס רשמיות', 'Sources: PwC Worldwide Tax Summaries · OECD · KPMG · official tax authorities', 'Fontes: PwC Worldwide Tax Summaries · OECD · KPMG · autoridades fiscais oficiais', 'Fuentes: PwC Worldwide Tax Summaries · OECD · KPMG · autoridades fiscales oficiales');
 
+    // ── COMMON UI VOCABULARY (cross-page, deepest leak fix) ─────────────────
+    tr('שלח', 'Send', 'Enviar', 'Enviar');
+    tr('ביטול', 'Cancel', 'Cancelar', 'Cancelar');
+    tr('הוסף', 'Add', 'Adicionar', 'Agregar');
+    tr('דלג', 'Skip', 'Pular', 'Saltar');
+    tr('הבנתי', 'Got it', 'Entendi', 'Entendido');
+    tr('שם', 'Name', 'Nome', 'Nombre');
+    tr('יעד', 'Destination', 'Destino', 'Destino');
+    tr('סוג', 'Type', 'Tipo', 'Tipo');
+    tr('צבע', 'Color', 'Cor', 'Color');
+    tr('משך', 'Duration', 'Duração', 'Duración');
+    tr('פרופיל', 'Profile', 'Perfil', 'Perfil');
+    tr('זיכרון', 'Memory', 'Memória', 'Memoria');
+    tr('אמוג\'י', 'Emoji', 'Emoji', 'Emoji');
+    tr('🛠 כלים', '🛠 Tools', '🛠 Ferramentas', '🛠 Herramientas');
+    tr('-- בחר --', '-- Select --', '-- Selecionar --', '-- Seleccionar --');
+    tr('בחר הכל', 'Select all', 'Selecionar tudo', 'Seleccionar todo');
+    tr('לוחית.', 'Plate.', 'Placa.', 'Placa.');
+    tr('או מ-', 'Or from', 'Ou de', 'O de');
+    tr('הורד:', 'Download:', 'Baixar:', 'Descargar:');
+    tr('הפעל:', 'Run:', 'Executar:', 'Ejecutar:');
+    tr('מודל:', 'Model:', 'Modelo:', 'Modelo:');
+    tr('ללא', 'None', 'Nenhum', 'Ninguno');
+
+    // ── Family / household onboarding (WizeMoney) ──
+    tr('דשבורד משפחתי', 'Family dashboard', 'Painel familiar', 'Panel familiar');
+    tr('👨‍👩‍👧‍👦 הוסף בן משפחה', '👨‍👩‍👧‍👦 Add family member', '👨‍👩‍👧‍👦 Adicionar membro da família', '👨‍👩‍👧‍👦 Agregar familiar');
+    tr('👤 מבוגר', '👤 Adult', '👤 Adulto', '👤 Adulto');
+    tr('👧 ילד/ה', '👧 Child', '👧 Criança', '👧 Niño/a');
+    tr('ילדים', 'Children', 'Filhos', 'Hijos');
+    tr('📋 העתק', '📋 Copy', '📋 Copiar', '📋 Copiar');
+
+    // ── Family / marital status ──
+    tr('מצב משפחתי', 'Family status', 'Estado civil', 'Estado civil');
+    tr('רווק/ה', 'Single', 'Solteiro(a)', 'Soltero/a');
+    tr('נשוי/אה', 'Married', 'Casado(a)', 'Casado/a');
+
+    // ── Country names with flags (tax-compare landing) ──
+    tr('🇮🇱 ישראל', '🇮🇱 Israel', '🇮🇱 Israel', '🇮🇱 Israel');
+    tr('🇺🇸 ארה"ב (פדרלי בלבד)', '🇺🇸 USA (federal only)', '🇺🇸 EUA (federal apenas)', '🇺🇸 EE.UU. (solo federal)');
+    tr('🇨🇭 שווייץ (ממוצע קנטון)', '🇨🇭 Switzerland (cantonal avg)', '🇨🇭 Suíça (média cantonal)', '🇨🇭 Suiza (promedio cantonal)');
+    tr('🇦🇪 איחוד האמירויות', '🇦🇪 UAE', '🇦🇪 Emirados Árabes Unidos', '🇦🇪 Emiratos Árabes Unidos');
+    tr('🇵🇹 פורטוגל', '🇵🇹 Portugal', '🇵🇹 Portugal', '🇵🇹 Portugal');
+    tr('🇪🇸 ספרד', '🇪🇸 Spain', '🇪🇸 Espanha', '🇪🇸 España');
+    tr('🇫🇷 צרפת', '🇫🇷 France', '🇫🇷 França', '🇫🇷 Francia');
+    tr('🇩🇪 גרמניה', '🇩🇪 Germany', '🇩🇪 Alemanha', '🇩🇪 Alemania');
+    tr('🇬🇧 בריטניה', '🇬🇧 UK', '🇬🇧 Reino Unido', '🇬🇧 Reino Unido');
+    tr('🇳🇱 הולנד', '🇳🇱 Netherlands', '🇳🇱 Países Baixos', '🇳🇱 Países Bajos');
+    tr('🇮🇪 אירלנד', '🇮🇪 Ireland', '🇮🇪 Irlanda', '🇮🇪 Irlanda');
+    tr('🇪🇪 אסטוניה', '🇪🇪 Estonia', '🇪🇪 Estônia', '🇪🇪 Estonia');
+    tr('🇵🇱 פולין', '🇵🇱 Poland', '🇵🇱 Polônia', '🇵🇱 Polonia');
+    tr('🇨🇿 צ\'כיה', '🇨🇿 Czechia', '🇨🇿 Tchéquia', '🇨🇿 Chequia');
+
+    // ── Flight UI (travel.html) ──
+    tr('חברת תעופה', 'Airline', 'Companhia aérea', 'Aerolínea');
+    tr('יציאה', 'Departure', 'Saída', 'Salida');
+    tr('הגעה', 'Arrival', 'Chegada', 'Llegada');
+    tr('ישיר', '1 stop', 'Direto', 'Directo');
+    tr('1 עצירה', '1 stop', '1 escala', '1 escala');
+    tr('עצירות', 'stops', 'escalas', 'escalas');
+    tr('הכי זול', 'Cheapest', 'Mais barato', 'Más barato');
+    tr('מחיר הכי זול', 'Lowest price', 'Menor preço', 'Precio más bajo');
+    tr('מחיר לנוסע', 'Price per traveler', 'Preço por passageiro', 'Precio por viajero');
+    tr('זול ביותר', 'Cheapest', 'Mais barato', 'Más barato');
+    tr('זולות בממוצע', 'cheaper on average', 'mais baratas em média', 'más baratas en promedio');
+    tr('−18% ממוצע', '−18% average', '−18% média', '−18% promedio');
+    tr('↑ 23 חדש', '↑ 23 new', '↑ 23 novos', '↑ 23 nuevos');
+    tr('שלישי בבוקר', 'Tuesday morning', 'Terça-feira de manhã', 'Martes por la mañana');
+    tr('טיסות ביום', 'flights/day', 'voos/dia', 'vuelos/día');
+    tr('הטיסה של', 'Flight of', 'Voo de', 'Vuelo de');
+    tr('תאריכים', 'Dates', 'Datas', 'Fechas');
+
+    // ── Misc (medical, network, reports) ──
+    tr('דוח PDF', 'PDF report', 'Relatório PDF', 'Informe PDF');
+    tr('ציר זמן', 'Timeline', 'Linha do tempo', 'Línea de tiempo');
+    tr('תמליל השיחה', 'Conversation transcript', 'Transcrição da conversa', 'Transcripción de la conversación');
+    tr('ניתוח דימות', 'Imaging analysis', 'Análise de imagem', 'Análisis de imagen');
+    tr('🫁 רנטגן', '🫁 X-ray', '🫁 Raio-X', '🫁 Rayos X');
+    tr('🔊 אולטרסאונד', '🔊 Ultrasound', '🔊 Ultrassom', '🔊 Ultrasonido');
+    tr('🔬 עור', '🔬 Skin', '🔬 Pele', '🔬 Piel');
+    tr('שיתוף עם רופא', 'Share with doctor', 'Compartilhar com médico', 'Compartir con médico');
+    tr('בדיקת תרופות', 'Drug check', 'Verificação de medicamentos', 'Verificación de medicamentos');
+    tr('לניתוח תמונות:', 'For image analysis:', 'Para análise de imagens:', 'Para análisis de imágenes:');
+    tr('העלה בדיקה כדי לחשב', 'Upload a test to calculate', 'Envie um exame para calcular', 'Sube un examen para calcular');
+    tr('Mistral 7B (חינמי)', 'Mistral 7B (free)', 'Mistral 7B (grátis)', 'Mistral 7B (gratis)');
+    tr('Mistral 7B (חינמי', 'Mistral 7B (free', 'Mistral 7B (grátis', 'Mistral 7B (gratis');
+
+    // ── Connectivity / data freshness ──
+    tr('אין חיבור לאינטרנט — האפליקציה פועלת במצב מקוון-לא', 'No internet connection — the app is working in offline mode', 'Sem conexão à internet — o app está funcionando em modo offline', 'Sin conexión a internet — la app funciona en modo offline');
+    tr('נתוני TheMarker עודכנו לדצמבר 2025', 'TheMarker data updated to December 2025', 'Dados do TheMarker atualizados para dezembro de 2025', 'Datos de TheMarker actualizados a diciembre de 2025');
+    tr('נתוני iGemel-Net עודכנו לדצמבר 2025', 'iGemel-Net data updated to December 2025', 'Dados iGemel-Net atualizados para dezembro de 2025', 'Datos iGemel-Net actualizados a diciembre de 2025');
+
     window.WL_TR = existing;
 })();
