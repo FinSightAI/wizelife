@@ -160,6 +160,27 @@
     tr('🇲🇹 מלטה', '🇲🇹 Malta', '🇲🇹 Malta', '🇲🇹 Malta');
     tr('🇲🇽 מקסיקו', '🇲🇽 Mexico', '🇲🇽 México', '🇲🇽 México');
     tr('🇧🇷 ברזיל', '🇧🇷 Brazil', '🇧🇷 Brasil', '🇧🇷 Brasil');
+    tr('🇹🇭 תאילנד', '🇹🇭 Thailand', '🇹🇭 Tailândia', '🇹🇭 Tailandia');
+    tr('🇬🇷 יוון', '🇬🇷 Greece', '🇬🇷 Grécia', '🇬🇷 Grecia');
+    tr('🇮🇹 איטליה', '🇮🇹 Italy', '🇮🇹 Itália', '🇮🇹 Italia');
+    tr('🇧🇪 בלגיה', '🇧🇪 Belgium', '🇧🇪 Bélgica', '🇧🇪 Bélgica');
+    tr('🇸🇪 שוודיה', '🇸🇪 Sweden', '🇸🇪 Suécia', '🇸🇪 Suecia');
+    tr('🇳🇴 נורווגיה', '🇳🇴 Norway', '🇳🇴 Noruega', '🇳🇴 Noruega');
+    tr('🇩🇰 דנמרק', '🇩🇰 Denmark', '🇩🇰 Dinamarca', '🇩🇰 Dinamarca');
+    tr('🇫🇮 פינלנד', '🇫🇮 Finland', '🇫🇮 Finlândia', '🇫🇮 Finlandia');
+    tr('🇮🇸 איסלנד', '🇮🇸 Iceland', '🇮🇸 Islândia', '🇮🇸 Islandia');
+    tr('🇺🇾 אורוגוואי', '🇺🇾 Uruguay', '🇺🇾 Uruguai', '🇺🇾 Uruguay');
+    tr('🇦🇷 ארגנטינה', '🇦🇷 Argentina', '🇦🇷 Argentina', '🇦🇷 Argentina');
+    tr('🇨🇱 צ\'ילה', '🇨🇱 Chile', '🇨🇱 Chile', '🇨🇱 Chile');
+    tr('🇨🇴 קולומביה', '🇨🇴 Colombia', '🇨🇴 Colômbia', '🇨🇴 Colombia');
+
+    // Common form labels
+    tr('מדינה', 'Country', 'País', 'País');
+    tr('מחלקה', 'Class', 'Classe', 'Clase');
+    tr('מטבע', 'Currency', 'Moeda', 'Moneda');
+    tr('שפה', 'Language', 'Idioma', 'Idioma');
+    tr('מין', 'Gender', 'Gênero', 'Género');
+    tr('גיל', 'Age', 'Idade', 'Edad');
 
     // Travel flight UI extras
     tr('15–22 מרץ', 'Mar 15 – 22', '15–22 mar', '15–22 mar');

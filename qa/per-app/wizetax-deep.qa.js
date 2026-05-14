@@ -90,7 +90,16 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }) {
         const { ctx, page } = await fresh(browser);
         try {
             const pills = await page.evaluate(() => {
-                return ['en','pt','es','he'].filter(l => document.querySelector(`[data-wl-lang="${l}"], [data-lang="${l}"], button:has-text("${l.toUpperCase()}")`)).length;
+                const langs = new Set(['en', 'pt', 'es', 'he']);
+                const found = new Set();
+                ['en', 'pt', 'es', 'he'].forEach(l => {
+                    if (document.querySelector(`[data-wl-lang="${l}"], [data-lang="${l}"]`)) found.add(l);
+                });
+                document.querySelectorAll('button, .pill, .lang-pill').forEach(b => {
+                    const t = (b.textContent || '').trim().toLowerCase();
+                    if (langs.has(t)) found.add(t);
+                });
+                return found.size;
             });
             if (pills < 4) warn(`Only ${pills}/4 lang pills found`, 'pills may use different selector');
         } finally { await page.close(); await ctx.close(); }

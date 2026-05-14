@@ -71,9 +71,20 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }, base = BA
     await step('Lang pills HE/EN/PT/ES present', async () => {
         const { ctx, page } = await fresh(browser);
         try {
-            const pills = await page.evaluate(() =>
-                ['en','pt','es','he'].filter(l => document.querySelector(`[data-wl-lang="${l}"], [data-lang="${l}"], button.wh-pill:has-text("${l.toUpperCase()}")`)).length
-            );
+            // querySelector doesn't support Playwright's :has-text pseudo —
+            // detect EN/PT/ES/HE pills by walking buttons + checking text.
+            const pills = await page.evaluate(() => {
+                const langs = new Set(['en', 'pt', 'es', 'he']);
+                const found = new Set();
+                ['en', 'pt', 'es', 'he'].forEach(l => {
+                    if (document.querySelector(`[data-wl-lang="${l}"], [data-lang="${l}"]`)) found.add(l);
+                });
+                document.querySelectorAll('button.wh-pill, button.lang-pill, .pill, button').forEach(b => {
+                    const t = (b.textContent || '').trim().toLowerCase();
+                    if (langs.has(t)) found.add(t);
+                });
+                return found.size;
+            });
             if (pills < 3) warn(`Only ${pills}/4 lang pills found`, '');
         } finally { await page.close(); await ctx.close(); }
     });
