@@ -182,6 +182,32 @@
     tr('מין', 'Gender', 'Gênero', 'Género');
     tr('גיל', 'Age', 'Idade', 'Edad');
 
+    // ── WizeLife dashboard (logged-in main page) ────────────────────────────
+    tr('הכלים שלך', 'Your tools', 'Suas ferramentas', 'Tus herramientas');
+    tr('דשבורד פיננסי', 'Financial dashboard', 'Painel financeiro', 'Panel financiero');
+    tr('יועץ מס גלובלי', 'Global tax advisor', 'Consultor fiscal global', 'Consejero fiscal global');
+    tr('מתכנן טיולים AI', 'AI trip planner', 'Planejador de viagens IA', 'Planificador de viajes IA');
+    tr('מעקב בריאות', 'Health tracker', 'Monitor de saúde', 'Monitor de salud');
+    tr('מנתח נדל"ן', 'Real-estate analyzer', 'Analisador imobiliário', 'Analizador inmobiliario');
+    tr('יועץ רב-תחומי', 'Multi-domain advisor', 'Consultor multidomínio', 'Consejero multidominio');
+    tr('AI שמכיר את הנתונים שלך מכל 5 האפליקציות — שאל כל דבר.', "AI that knows your data across all 5 apps — ask anything.", 'IA que conhece seus dados em todos os 5 apps — pergunte qualquer coisa.', 'IA que conoce tus datos en las 5 apps — pregunta lo que quieras.');
+    tr('חשבון', 'Account', 'Conta', 'Cuenta');
+    tr('פרופיל', 'Profile', 'Perfil', 'Perfil');
+    tr('אימייל', 'Email', 'Email', 'Correo');
+    tr('חבר מאז', 'Member since', 'Membro desde', 'Miembro desde');
+    tr('תוכנית', 'Plan', 'Plano', 'Plan');
+    tr('חינם', 'Free', 'Grátis', 'Gratis');
+    tr('שדרג ל-Pro', 'Upgrade to Pro', 'Atualizar para Pro', 'Actualizar a Pro');
+    tr('הפעל', 'Activate', 'Ativar', 'Activar');
+    tr('יש לך קוד מחבר, שותף או קמפיין? הפעל כאן ל-Pro/YOLO מיידי.', 'Have a friend, partner or campaign code? Redeem here for instant Pro/YOLO.', 'Tem um código de amigo, parceiro ou campanha? Resgate aqui para Pro/YOLO instantâneo.', '¿Tienes un código de amigo, socio o campaña? Canjéalo aquí para Pro/YOLO instantáneo.');
+    tr('מנוי', 'Subscription', 'Assinatura', 'Suscripción');
+    tr('הזמן חברים ושתף משוב', 'Invite friends & share feedback', 'Convide amigos & compartilhe feedback', 'Invita amigos & comparte feedback');
+    tr('שתף את הקישור שלך. כשחבר משדרג ל-PRO, אתה מקבל חודש PRO חינם.', 'Share your link. When a friend upgrades to PRO, you get a free month of PRO.', 'Compartilhe seu link. Quando um amigo atualizar para PRO, você ganha um mês PRO grátis.', 'Comparte tu link. Cuando un amigo se actualice a PRO, recibes un mes de PRO gratis.');
+    tr('ספר לנו מה עובד ומה חסר. כל הערה נקראת על ידי הצוות שלנו.', "Tell us what works and what's missing. Every comment is read by our team.", 'Conte-nos o que funciona e o que falta. Cada comentário é lido pela nossa equipe.', 'Cuéntanos qué funciona y qué falta. Cada comentario es leído por nuestro equipo.');
+    tr('פרטיות וזכויות נתונים', 'Privacy & data rights', 'Privacidade & direitos de dados', 'Privacidad & derechos de datos');
+    tr('הנתונים שלך — שלך. תחת חוק הגנת הפרטיות הישראלי וה-GDPR, אתה יכול לייצא', 'Your data — yours. Under Israeli Privacy Protection Law and GDPR, you can export', 'Seus dados — seus. Sob a Lei de Privacidade Israelense e o GDPR, você pode exportar', 'Tus datos — tuyos. Bajo la Ley Israelí de Privacidad y el GDPR, puedes exportar');
+    tr('התנתק', 'Sign out', 'Sair', 'Cerrar sesión');
+
     // Travel flight UI extras
     tr('15–22 מרץ', 'Mar 15 – 22', '15–22 mar', '15–22 mar');
     tr('נוסעים', 'passengers', 'passageiros', 'pasajeros');
