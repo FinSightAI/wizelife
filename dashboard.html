@@ -743,99 +743,134 @@ function showUpgradeCompareModal() {
     const lang = (function(){ try { return (localStorage.getItem('wl_lang') || 'he').slice(0,2); } catch { return 'he'; } })();
     const T = {
         he: {
-            title: 'בחר את התוכנית המתאימה לך',
-            sub: 'אפשר לעבור בין תוכניות בכל עת. ביטול בלחיצה אחת.',
-            pro_title: 'Pro',
-            pro_price: '$4.99',
-            pro_per: '/חודש',
-            pro_features: ['כל 5 הכלים פתוחים', '20 תשובות AI ביום לכל כלי', 'AI Story, Chat ודוחות', 'ייצוא CSV ו-PDF', 'מניות, מייעל מס, פנסיה', 'עסקאות ומטרות ללא הגבלה', 'עיבוד עדיפות'],
+            title: 'הקלף החזק יותר ל-WizeLife שלך',
+            sub: 'אפשר לעבור בין תוכניות בכל עת. ביטול בלחיצה אחת. תשלום מאובטח דרך PayPal.',
+            pro_title: 'Pro', pro_price: '$4.99', pro_per: '/חודש',
+            pro_tagline: 'הבסיס. טוב לשימוש מתון.',
+            pro_features: ['כל 5 הכלים פתוחים', '20 תשובות AI ביום לכל כלי', 'CSV ו-PDF', 'מניות, מייעל מס, פנסיה'],
+            pro_locked: ['ללא WizeAI חוצה-אפליקציות', 'הגבלת 20 תשובות AI/יום', 'ללא עדיפות בתורי AI'],
             pro_btn: 'בחר Pro',
-            yolo_title: 'YOLO',
-            yolo_price: '$9.99',
-            yolo_per: '/חודש',
-            yolo_badge: '⚡ הכי פופולרי',
-            yolo_features: ['כל מה שב-Pro, ועוד:', 'WizeAI יועץ חוצה-אפליקציות', 'תשובות AI ללא הגבלה', 'גישה ראשונה לפיצ\'רים חדשים', 'תמיכת מייל בעדיפות', 'תג Power User בפרופיל'],
-            yolo_btn: 'בחר YOLO',
+            yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/חודש',
+            yolo_badge: '⚡ הכי משתלם',
+            yolo_tagline: '+$5 שמשנים הכל. AI ללא הגבלה + יועץ חכם שמכיר את כל הנתונים שלך.',
+            yolo_features: ['🌟 WizeAI — היחיד שמדבר עם 5 האפליקציות יחד', '∞ תשובות AI ללא הגבלה (לא 20)', '⚡ עדיפות בתור — תשובה תוך שניות', '🎯 ניתוחים חוצי-תחומים: "האם אני יכול לטוס?"', '✨ גישה ראשונה לכל פיצ\'ר חדש', '🥇 תג Power User על הפרופיל'],
+            yolo_value: 'רק <strong>$5 ליום נוסף</strong> = AI ללא הגבלה + יועץ אישי',
+            yolo_btn: 'קח YOLO →',
+            yolo_savings: 'משלם רק $0.33/יום על AI ללא הגבלה',
             close: 'סגור',
-            secure: '🔒 תשלום מאובטח דרך PayPal',
+            why: 'למה רוב המשתמשים בוחרים YOLO?',
+            why_reason: 'תשובה אחת של WizeAI יכולה לחסוך אלפי שקלים בנדל"ן, מיסים או טיסות — שכר חודש שלם של YOLO על שאלה אחת.',
         },
         en: {
-            title: 'Choose the plan that fits you',
-            sub: 'Switch plans anytime. One-click cancel.',
+            title: 'The stronger card for your WizeLife',
+            sub: 'Switch plans anytime. One-click cancel. Secure checkout via PayPal.',
             pro_title: 'Pro', pro_price: '$4.99', pro_per: '/mo',
-            pro_features: ['All 5 tools unlocked', '20 AI answers/day per tool', 'AI Story, Chat & Reports', 'CSV & PDF export', 'Stocks, Tax Optimizer, Pension', 'Unlimited transactions & goals', 'Priority processing'],
+            pro_tagline: 'The basics. Good for moderate use.',
+            pro_features: ['All 5 tools unlocked', '20 AI answers/day per tool', 'CSV & PDF export', 'Stocks, Tax Optimizer, Pension'],
+            pro_locked: ['No cross-app WizeAI', '20 AI answers/day cap', 'No AI queue priority'],
             pro_btn: 'Choose Pro',
             yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/mo',
-            yolo_badge: '⚡ Most popular',
-            yolo_features: ['Everything in Pro, plus:', 'WizeAI cross-app advisor', 'Unlimited AI answers', 'First access to new features', 'Priority email support', 'Power User badge'],
-            yolo_btn: 'Choose YOLO',
+            yolo_badge: '⚡ Best value',
+            yolo_tagline: '+$5 that changes everything. Unlimited AI + an advisor that knows all your data.',
+            yolo_features: ['🌟 WizeAI — the only AI talking to all 5 apps at once', '∞ Unlimited AI answers (not 20)', '⚡ Queue priority — answer in seconds', '🎯 Cross-domain queries: "Can I afford to fly?"', '✨ First access to every new feature', '🥇 Power User badge on profile'],
+            yolo_value: 'Just <strong>$5/mo more</strong> = unlimited AI + personal advisor',
+            yolo_btn: 'Go YOLO →',
+            yolo_savings: 'Only $0.33/day for unlimited AI',
             close: 'Close',
-            secure: '🔒 Secure checkout via PayPal',
+            why: 'Why most users choose YOLO',
+            why_reason: 'One WizeAI answer can save thousands on real-estate, tax or flights — a year of YOLO paid for by a single question.',
         },
         pt: {
-            title: 'Escolha o plano que se encaixa em você',
-            sub: 'Mude de plano a qualquer momento. Cancele em um clique.',
+            title: 'O plano mais forte para sua WizeLife',
+            sub: 'Mude de plano a qualquer momento. Cancele em um clique. Pagamento seguro via PayPal.',
             pro_title: 'Pro', pro_price: '$4.99', pro_per: '/mês',
-            pro_features: ['Todas as 5 ferramentas liberadas', '20 respostas IA/dia por ferramenta', 'IA Story, Chat e Relatórios', 'Exportação CSV e PDF', 'Ações, Otimizador Fiscal, Pensão', 'Transações e metas ilimitadas', 'Processamento prioritário'],
+            pro_tagline: 'O básico. Bom para uso moderado.',
+            pro_features: ['Todas as 5 ferramentas liberadas', '20 respostas IA/dia por ferramenta', 'Exportação CSV e PDF', 'Ações, Otimizador Fiscal, Pensão'],
+            pro_locked: ['Sem WizeAI multi-app', 'Limite de 20 respostas IA/dia', 'Sem prioridade na fila IA'],
             pro_btn: 'Escolher Pro',
             yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/mês',
-            yolo_badge: '⚡ Mais popular',
-            yolo_features: ['Tudo do Pro, mais:', 'WizeAI consultor multi-app', 'Respostas IA ilimitadas', 'Acesso antecipado a novidades', 'Suporte por email prioritário', 'Selo Power User'],
-            yolo_btn: 'Escolher YOLO',
+            yolo_badge: '⚡ Melhor valor',
+            yolo_tagline: '+$5 que mudam tudo. IA ilimitada + consultor que conhece todos os seus dados.',
+            yolo_features: ['🌟 WizeAI — a única IA que fala com todos os 5 apps', '∞ Respostas IA ilimitadas (não 20)', '⚡ Prioridade na fila — resposta em segundos', '🎯 Consultas multi-domínio: "Posso me dar ao luxo de voar?"', '✨ Acesso antecipado a todo novo recurso', '🥇 Selo Power User no perfil'],
+            yolo_value: 'Apenas <strong>+$5/mês</strong> = IA ilimitada + consultor pessoal',
+            yolo_btn: 'Vai YOLO →',
+            yolo_savings: 'Só $0,33/dia por IA ilimitada',
             close: 'Fechar',
-            secure: '🔒 Pagamento seguro via PayPal',
+            why: 'Por que a maioria escolhe YOLO',
+            why_reason: 'Uma resposta do WizeAI pode economizar milhares em imóveis, impostos ou voos — um ano de YOLO pago em uma pergunta.',
         },
         es: {
-            title: 'Elige el plan que mejor te queda',
-            sub: 'Cambia de plan en cualquier momento. Cancela con un clic.',
+            title: 'El plan más fuerte para tu WizeLife',
+            sub: 'Cambia de plan en cualquier momento. Cancela con un clic. Pago seguro vía PayPal.',
             pro_title: 'Pro', pro_price: '$4.99', pro_per: '/mes',
-            pro_features: ['Las 5 herramientas desbloqueadas', '20 respuestas IA/día por herramienta', 'IA Story, Chat e Informes', 'Exportación CSV y PDF', 'Acciones, Optimizador Fiscal, Pensión', 'Transacciones y metas ilimitadas', 'Procesamiento prioritario'],
+            pro_tagline: 'Lo básico. Bueno para uso moderado.',
+            pro_features: ['Las 5 herramientas desbloqueadas', '20 respuestas IA/día por herramienta', 'Exportación CSV y PDF', 'Acciones, Optimizador Fiscal, Pensión'],
+            pro_locked: ['Sin WizeAI multi-app', 'Límite de 20 respuestas IA/día', 'Sin prioridad en la cola de IA'],
             pro_btn: 'Elegir Pro',
             yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/mes',
-            yolo_badge: '⚡ Más popular',
-            yolo_features: ['Todo lo de Pro, además:', 'WizeAI asesor multi-app', 'Respuestas IA ilimitadas', 'Acceso anticipado a novedades', 'Soporte email prioritario', 'Insignia Power User'],
-            yolo_btn: 'Elegir YOLO',
+            yolo_badge: '⚡ Mejor valor',
+            yolo_tagline: '+$5 que lo cambian todo. IA ilimitada + asesor que conoce todos tus datos.',
+            yolo_features: ['🌟 WizeAI — la única IA que habla con las 5 apps a la vez', '∞ Respuestas IA ilimitadas (no 20)', '⚡ Prioridad en la cola — respuesta en segundos', '🎯 Consultas multi-dominio: "¿Puedo permitirme volar?"', '✨ Acceso anticipado a cada nueva función', '🥇 Insignia Power User en el perfil'],
+            yolo_value: 'Solo <strong>+$5/mes</strong> = IA ilimitada + asesor personal',
+            yolo_btn: 'Ir YOLO →',
+            yolo_savings: 'Solo $0.33/día por IA ilimitada',
             close: 'Cerrar',
-            secure: '🔒 Pago seguro vía PayPal',
+            why: 'Por qué la mayoría elige YOLO',
+            why_reason: 'Una respuesta de WizeAI puede ahorrar miles en inmuebles, impuestos o vuelos — un año de YOLO pagado por una sola pregunta.',
         },
     };
     const t = T[lang] || T.en;
     const isRtl = lang === 'he';
     const check = '<span style="color:#10b981;margin-' + (isRtl ? 'left' : 'right') + ':6px;font-weight:900">✓</span>';
 
+    const greenCheck = '<span style="color:#10b981;margin-' + (isRtl?'left':'right') + ':8px;font-weight:900;flex-shrink:0">✓</span>';
+    const redX = '<span style="color:#64748b;margin-' + (isRtl?'left':'right') + ':8px;font-weight:900;flex-shrink:0">✕</span>';
+
     const html = `
-      <div id="wl-upgrade-modal" style="position:fixed;inset:0;background:rgba(3,5,8,0.85);backdrop-filter:blur(8px);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif;direction:${isRtl?'rtl':'ltr'};overflow-y:auto" onclick="if(event.target===this)this.remove()">
-        <div style="background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(3,5,8,0.98));border:1px solid rgba(255,255,255,0.1);border-radius:20px;max-width:920px;width:100%;padding:32px 28px;box-shadow:0 24px 80px rgba(99,102,241,0.25);position:relative;animation:wl-up-in .25s ease">
-          <button onclick="document.getElementById('wl-upgrade-modal').remove()" aria-label="${t.close}" style="position:absolute;top:14px;${isRtl?'left':'right'}:14px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;cursor:pointer;font-size:18px;line-height:1">✕</button>
-          <div style="text-align:center;margin-bottom:24px">
-            <h2 style="font:800 24px 'Plus Jakarta Sans',sans-serif;color:#fff;margin:0 0 6px;letter-spacing:-0.5px">${t.title}</h2>
-            <p style="color:#94a3b8;font-size:13px;margin:0">${t.sub}</p>
+      <div id="wl-upgrade-modal" style="position:fixed;inset:0;background:rgba(3,5,8,0.92);backdrop-filter:blur(10px);z-index:100000;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;font-family:Inter,sans-serif;direction:${isRtl?'rtl':'ltr'};overflow-y:auto" onclick="if(event.target===this)this.remove()">
+        <div style="background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(3,5,8,0.98));border:1px solid rgba(255,255,255,0.1);border-radius:24px;max-width:980px;width:100%;padding:36px 28px 28px;box-shadow:0 24px 80px rgba(245,158,11,0.18),0 12px 40px rgba(99,102,241,0.15);position:relative;animation:wl-up-in .3s ease;margin:auto">
+          <button onclick="document.getElementById('wl-upgrade-modal').remove()" aria-label="${t.close}" style="position:absolute;top:16px;${isRtl?'left':'right'}:16px;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;cursor:pointer;font-size:18px;line-height:1">✕</button>
+          <div style="text-align:center;margin-bottom:28px">
+            <h2 style="font:800 26px 'Plus Jakarta Sans',sans-serif;color:#fff;margin:0 0 8px;letter-spacing:-0.5px">${t.title}</h2>
+            <p style="color:#94a3b8;font-size:13px;margin:0;max-width:520px;margin-inline:auto;line-height:1.5">${t.sub}</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-            <!-- Pro card -->
-            <div style="background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:22px;display:flex;flex-direction:column">
-              <div style="font:800 22px 'Plus Jakarta Sans',sans-serif;color:#a5b4fc;margin-bottom:4px">${t.pro_title}</div>
-              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:18px"><span style="font:900 36px 'Plus Jakarta Sans',sans-serif;color:#fff">${t.pro_price}</span><span style="color:#64748b;font-size:13px">${t.pro_per}</span></div>
-              <ul style="list-style:none;padding:0;margin:0 0 22px;flex:1">
-                ${t.pro_features.map(f => `<li style="color:#cbd5e1;font-size:13px;line-height:1.7;display:flex">${check}<span>${f}</span></li>`).join('')}
+          <div style="display:grid;grid-template-columns:1fr 1.25fr;gap:18px;align-items:stretch">
+            <!-- Pro card — intentionally understated -->
+            <div style="background:rgba(99,102,241,0.04);border:1px solid rgba(99,102,241,0.18);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;opacity:.88">
+              <div style="font:800 20px 'Plus Jakarta Sans',sans-serif;color:#a5b4fc;margin-bottom:2px">${t.pro_title}</div>
+              <div style="color:#64748b;font-size:11.5px;margin-bottom:14px;font-style:italic">${t.pro_tagline}</div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:18px"><span style="font:900 32px 'Plus Jakarta Sans',sans-serif;color:#cbd5e1">${t.pro_price}</span><span style="color:#64748b;font-size:13px">${t.pro_per}</span></div>
+              <ul style="list-style:none;padding:0;margin:0 0 14px;flex:1">
+                ${t.pro_features.map(f => `<li style="color:#94a3b8;font-size:12.5px;line-height:1.7;display:flex;align-items:flex-start;margin-bottom:2px">${greenCheck}<span>${f}</span></li>`).join('')}
               </ul>
-              <a href="${paypalUrl(uid)}" target="_blank" rel="noopener" onclick="setTimeout(()=>document.getElementById('wl-upgrade-modal')?.remove(),500)" style="display:block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none">${t.pro_btn} →</a>
+              <ul style="list-style:none;padding:12px 0 0;margin:0 0 18px;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0">
+                ${t.pro_locked.map(f => `<li style="color:#475569;font-size:11.5px;line-height:1.6;display:flex;align-items:flex-start;margin-bottom:2px">${redX}<span>${f}</span></li>`).join('')}
+              </ul>
+              <a href="${paypalUrl(uid)}" target="_blank" rel="noopener" onclick="setTimeout(()=>document.getElementById('wl-upgrade-modal')?.remove(),500)" style="display:block;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc;text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none">${t.pro_btn}</a>
             </div>
-            <!-- YOLO card -->
-            <div style="background:rgba(245,158,11,0.06);border:2px solid rgba(245,158,11,0.45);border-radius:14px;padding:22px;display:flex;flex-direction:column;position:relative">
-              <div style="position:absolute;top:-11px;${isRtl?'right':'left'}:18px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;font-size:10px;font-weight:800;padding:4px 10px;border-radius:99px;letter-spacing:.5px">${t.yolo_badge}</div>
-              <div style="font:800 22px 'Plus Jakarta Sans',sans-serif;color:#fbbf24;margin-bottom:4px">⚡ ${t.yolo_title}</div>
-              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:18px"><span style="font:900 36px 'Plus Jakarta Sans',sans-serif;color:#fff">${t.yolo_price}</span><span style="color:#64748b;font-size:13px">${t.yolo_per}</span></div>
-              <ul style="list-style:none;padding:0;margin:0 0 22px;flex:1">
-                ${t.yolo_features.map(f => `<li style="color:#cbd5e1;font-size:13px;line-height:1.7;display:flex">${check}<span>${f}</span></li>`).join('')}
+
+            <!-- YOLO card — hero treatment -->
+            <div style="background:linear-gradient(165deg,rgba(245,158,11,0.18) 0%,rgba(239,68,68,0.10) 50%,rgba(245,158,11,0.06) 100%);border:2px solid rgba(245,158,11,0.55);border-radius:16px;padding:26px 22px;display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 4px rgba(245,158,11,0.06),0 12px 40px rgba(245,158,11,0.25);transform:scale(1.02)">
+              <div style="position:absolute;top:-13px;${isRtl?'right':'left'}:22px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;letter-spacing:.4px;box-shadow:0 4px 14px rgba(245,158,11,0.5)">${t.yolo_badge}</div>
+              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:2px"><span style="font:900 26px 'Plus Jakarta Sans',sans-serif;color:#fbbf24">⚡ ${t.yolo_title}</span></div>
+              <div style="color:#fcd34d;font-size:12.5px;margin-bottom:14px;line-height:1.5;font-weight:600">${t.yolo_tagline}</div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:6px"><span style="font:900 42px 'Plus Jakarta Sans',sans-serif;color:#fff;letter-spacing:-1px">${t.yolo_price}</span><span style="color:#94a3b8;font-size:14px">${t.yolo_per}</span></div>
+              <div style="color:#94a3b8;font-size:11px;margin-bottom:18px;font-style:italic">${t.yolo_savings}</div>
+              <ul style="list-style:none;padding:0;margin:0 0 16px;flex:1">
+                ${t.yolo_features.map(f => `<li style="color:#e2e8f0;font-size:13px;line-height:1.7;display:flex;align-items:flex-start;margin-bottom:4px"><span style="margin-${isRtl?'left':'right'}:8px;flex-shrink:0">${greenCheck.replace('color:#10b981','color:#fbbf24')}</span><span>${f}</span></li>`).join('')}
               </ul>
-              <a href="${paypalYoloUrl(uid)}" target="_blank" rel="noopener" onclick="setTimeout(()=>document.getElementById('wl-upgrade-modal')?.remove(),500)" style="display:block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none">${t.yolo_btn} →</a>
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;margin-bottom:14px;color:#e2e8f0;font-size:12.5px;text-align:center;line-height:1.4">${t.yolo_value}</div>
+              <a href="${paypalYoloUrl(uid)}" target="_blank" rel="noopener" onclick="setTimeout(()=>document.getElementById('wl-upgrade-modal')?.remove(),500)" style="display:block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;text-align:center;padding:15px;border-radius:11px;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 8px 20px rgba(245,158,11,0.35);letter-spacing:.2px">${t.yolo_btn}</a>
             </div>
           </div>
-          <p style="text-align:center;color:#64748b;font-size:11px;margin:18px 0 0">${t.secure}</p>
+          <div style="margin-top:22px;padding:16px 18px;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.15);border-radius:12px">
+            <div style="color:#fbbf24;font-size:12px;font-weight:700;margin-bottom:4px">💡 ${t.why}</div>
+            <div style="color:#94a3b8;font-size:12.5px;line-height:1.55">${t.why_reason}</div>
+          </div>
         </div>
       </div>
-      <style>@keyframes wl-up-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}</style>
+      <style>@keyframes wl-up-in{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+      @media (max-width:680px){#wl-upgrade-modal>div>div[style*="grid-template-columns"]{grid-template-columns:1fr !important}#wl-upgrade-modal>div>div>div[style*="scale(1.02)"]{transform:none !important}}</style>
     `;
     document.body.insertAdjacentHTML('beforeend', html);
 }
