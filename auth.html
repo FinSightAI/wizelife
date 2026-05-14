@@ -13,6 +13,12 @@
     document.body.classList.add(isLight?'light':'dark');
     document.body.classList.remove(isLight?'dark':'light');
   });
+  // Apply saved language direction before paint to prevent RTL flash for non-Hebrew users.
+  var v = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+  if(['he','en','pt','es'].indexOf(v)>=0){
+    document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
+    document.documentElement.lang = v;
+  }
 }catch(e){}})();
 </script>
 

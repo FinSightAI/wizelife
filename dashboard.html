@@ -14,6 +14,12 @@
     document.body.classList.add(isLight?'light':'dark');
     document.body.classList.remove(isLight?'dark':'light');
   });
+  // Apply saved language direction before paint to prevent RTL flash for non-Hebrew users.
+  var v = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+  if(['he','en','pt','es'].indexOf(v)>=0){
+    document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
+    document.documentElement.lang = v;
+  }
 }catch(e){}})();
 </script>
 <meta charset="utf-8"/>
@@ -349,9 +355,9 @@
 </a>
 </div>
 <!-- Access code (always visible — codes redeem to Pro/YOLO instantly) -->
-<h3 id="accessCodeHeading" style="margin-top:32px">🎟️ Access code</h3>
+<h3 id="accessCodeHeading" data-i18n="access_code_heading" style="margin-top:40px">🎟️ Access code</h3>
 <div class="account-card" style="line-height:1.55">
-<p data-i18n="_" id="accessCodeIntro" style="color:var(--muted);font-size:0.9rem;margin:0 0 14px">
+<p data-i18n="access_code_intro" id="accessCodeIntro" style="color:var(--muted);font-size:0.9rem;margin:0 0 14px">
       יש לך קוד מחבר, שותף או קמפיין? הפעל כאן ל-Pro/YOLO מיידי.
     </p>
 <div class="code-row" style="margin-top:0">
@@ -376,47 +382,46 @@
 </div>
 </div>
 <!-- Privacy / GDPR rights -->
-<h3 data-i18n="privacy_title" style="margin-top:32px">פרטיות וזכויות נתונים</h3>
+<h3 data-i18n="privacy_title" style="margin-top:40px">🔒 פרטיות וזכויות נתונים</h3>
 <div class="account-card" style="line-height:1.6">
-<p data-i18n="__2" style="color:var(--muted);font-size:0.9rem;margin-bottom:14px">
-      הנתונים שלך — שלך. תחת חוק הגנת הפרטיות הישראלי וה-GDPR, אתה יכול לייצא
-      everything we hold about you, or delete your account at any time.
+<p data-i18n="privacy_intro" style="color:var(--muted);font-size:0.9rem;margin-bottom:14px">
+      הנתונים שלך — שלך. תחת חוק הגנת הפרטיות הישראלי וה-GDPR, אתה יכול לייצא את כל המידע שלך או למחוק את החשבון בכל עת.
     </p>
 <div style="display:flex;flex-wrap:wrap;gap:10px">
-<button class="btn-sm" onclick="exportMyData()" style="cursor:pointer">📥 Export my data (JSON)</button>
-<button class="btn-danger" onclick="deleteMyAccount()" style="cursor:pointer">🗑️ Delete my account</button>
+<button class="btn-sm" data-i18n="export_btn" onclick="exportMyData()" style="cursor:pointer">📥 ייצוא הנתונים שלי (JSON)</button>
+<button class="btn-danger" data-i18n="delete_btn" onclick="deleteMyAccount()" style="cursor:pointer">🗑️ מחק את החשבון שלי</button>
 </div>
-<p style="color:var(--muted);font-size:0.78rem;margin-top:10px">
-      Export downloads a JSON file with your profile + all sub-app data.
-      Deletion is permanent — your account, plan, and all data are removed within 30 days.
+<p data-i18n="privacy_footnote" style="color:var(--muted);font-size:0.78rem;margin-top:10px">
+      הייצוא מוריד קובץ JSON עם הפרופיל שלך + נתוני כל האפליקציות.
+      המחיקה סופית — החשבון, התוכנית וכל הנתונים יוסרו תוך 30 ימים.
     </p>
 </div>
 <!-- Referral + Feedback -->
-<h3 data-i18n="invite_share" style="margin-top:32px">הזמן חברים ושתף משוב</h3>
+<h3 data-i18n="invite_share" style="margin-top:40px">🤝 הזמן חברים ושתף משוב</h3>
 <div class="account-grid">
 <div class="account-card">
-<h4 style="display:flex;align-items:center;gap:8px">🎁 Refer a friend</h4>
-<p data-i18n="__3" style="color:var(--muted);font-size:0.9rem;margin:8px 0 12px;line-height:1.5">
+<h4 data-i18n="refer_title" style="display:flex;align-items:center;gap:8px">🎁 הזמן חבר</h4>
+<p data-i18n="refer_intro" style="color:var(--muted);font-size:0.9rem;margin:8px 0 12px;line-height:1.5">
         שתף את הקישור שלך. כשחבר משדרג ל-PRO, אתה מקבל חודש PRO חינם.
         אם הם בוחרים YOLO, אתה מקבל חודש YOLO חינם.
       </p>
 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
 <input id="refLink" readonly="" style="flex:1;min-width:200px;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:ui-monospace,monospace" type="text" value="—"/>
-<button class="btn-sm" id="refCopyBtn" style="cursor:pointer">📋 Copy</button>
-<button class="btn-sm" id="refShareBtn" style="cursor:pointer">↗ Share</button>
+<button class="btn-sm" data-i18n="copy_btn" id="refCopyBtn" style="cursor:pointer">📋 העתק</button>
+<button class="btn-sm" data-i18n="share_btn" id="refShareBtn" style="cursor:pointer">↗ שתף</button>
 </div>
 <div id="refStats" style="margin-top:14px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:0.85rem;color:var(--muted);display:none">
-<span style="color:var(--text);font-weight:700"><span id="refCount">0</span></span> friends joined ·
-        <span style="color:var(--success);font-weight:700"><span id="refDays">0</span> days</span> earned
+<span style="color:var(--text);font-weight:700"><span id="refCount">0</span></span> <span data-i18n="friends_joined">חברים הצטרפו</span> ·
+        <span style="color:var(--success);font-weight:700"><span id="refDays">0</span> <span data-i18n="days_earned">ימים</span></span> <span data-i18n="earned">נצברו</span>
       </div>
 </div>
 <div class="account-card">
-<h4 style="display:flex;align-items:center;gap:8px">💬 Feedback</h4>
-<p data-i18n="__4" style="color:var(--muted);font-size:0.9rem;margin:8px 0 12px;line-height:1.5">
+<h4 data-i18n="feedback_title" style="display:flex;align-items:center;gap:8px">💬 משוב</h4>
+<p data-i18n="feedback_intro" style="color:var(--muted);font-size:0.9rem;margin:8px 0 12px;line-height:1.5">
         ספר לנו מה עובד ומה חסר. כל הערה נקראת על ידי הצוות שלנו.
       </p>
-<a class="btn-upgrade" href="feedback.html" style="display:inline-block;text-align:center;text-decoration:none">
-        Send feedback →
+<a class="btn-upgrade" data-i18n="send_feedback_btn" href="feedback.html" style="display:inline-block;text-align:center;text-decoration:none">
+        שלח משוב →
       </a>
 </div>
 </div>
