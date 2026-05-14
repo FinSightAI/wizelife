@@ -679,12 +679,51 @@ async function applyCode(uid) {
         const result = await fn({ code });
         if (result.data.valid) {
             const newPlan = result.data.plan;
-            // Server-side validateCode already calls _grantReferrerReward — no
-            // need to fire from the client. (Kept the post-load fallback above
-            // for the PayPal path which doesn't return through this codepath.)
+            // Server-side validateCode already calls _grantReferrerReward.
+            try { localStorage.setItem('wl_plan', newPlan); } catch {}
             msg.style.color = "#6ee7b7";
-            msg.textContent = `✓ ${newPlan === "yolo" ? "YOLO ⚡" : "Pro"} activated! Reloading…`;
-            setTimeout(() => window.location.reload(), 1200);
+            const lang = (function(){ try { return (localStorage.getItem('wl_lang') || 'he').slice(0,2); } catch { return 'he'; } })();
+            const isYolo = newPlan === 'yolo';
+            const T = {
+                he: { proTitle: 'ברוך הבא ל-Pro!',   yoloTitle: 'ברוך הבא ל-YOLO!', sub: 'התוכנית שלך פעילה. כל הכלים פתוחים עכשיו.', subYolo: 'התוכנית שלך פעילה. WizeAI ו-AI ללא הגבלה — נפתחים עכשיו.', reload: 'טוען מחדש...', short: '✓ הופעל!' },
+                en: { proTitle: 'Welcome to Pro!',    yoloTitle: 'Welcome to YOLO!', sub: 'Your plan is active. All tools unlocked.',                                  subYolo: 'Your plan is active. WizeAI and unlimited AI are now unlocked.',                                                  reload: 'Reloading…',  short: '✓ Activated!' },
+                pt: { proTitle: 'Bem-vindo ao Pro!',  yoloTitle: 'Bem-vindo ao YOLO!', sub: 'Seu plano está ativo. Todas as ferramentas liberadas.',                  subYolo: 'Seu plano está ativo. WizeAI e IA ilimitada agora liberados.',                                                   reload: 'Recarregando…', short: '✓ Ativado!' },
+                es: { proTitle: 'Bienvenido a Pro!',  yoloTitle: 'Bienvenido a YOLO!', sub: 'Tu plan está activo. Todas las herramientas desbloqueadas.',             subYolo: 'Tu plan está activo. WizeAI e IA ilimitada ahora desbloqueados.',                                                reload: 'Recargando…',   short: '✓ Activado!' },
+            };
+            const t = T[lang] || T.en;
+            const title = isYolo ? t.yoloTitle : t.proTitle;
+            const sub   = isYolo ? t.subYolo   : t.sub;
+            const icon  = isYolo ? '⚡' : '✦';
+            const bg    = isYolo
+                ? 'linear-gradient(135deg,#f59e0b,#ef4444)'
+                : 'linear-gradient(135deg,#10b981,#059669)';
+            msg.textContent = t.short;
+            // Inject full-screen celebration
+            const overlay = document.createElement('div');
+            overlay.id = 'wl-upgrade-celebrate';
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(3,5,8,0.92);backdrop-filter:blur(10px);z-index:100001;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;direction:' + (lang === 'he' ? 'rtl' : 'ltr') + ';animation:wl-cel-in .4s ease';
+            overlay.innerHTML = `
+                <div style="text-align:center;max-width:480px;padding:36px 28px;background:linear-gradient(180deg,rgba(17,24,39,0.95),rgba(3,5,8,0.95));border:1px solid rgba(245,158,11,0.3);border-radius:20px;box-shadow:0 24px 80px rgba(245,158,11,0.3)">
+                    <div style="font-size:72px;line-height:1;margin-bottom:14px;filter:drop-shadow(0 8px 24px rgba(245,158,11,0.4))">${icon}</div>
+                    <h2 style="font:900 28px 'Plus Jakarta Sans',sans-serif;color:#fff;margin:0 0 10px;letter-spacing:-0.5px">${title}</h2>
+                    <p style="color:#cbd5e1;font-size:14.5px;line-height:1.55;margin:0 0 24px">${sub}</p>
+                    <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:${bg};border-radius:99px;color:white;font-weight:800;font-size:13px;letter-spacing:.3px;box-shadow:0 8px 24px rgba(245,158,11,0.4)">${icon} ${isYolo ? 'YOLO' : 'PRO'}</div>
+                    <div style="margin-top:24px;color:#64748b;font-size:11px">${t.reload}</div>
+                </div>
+                <style>
+                    @keyframes wl-cel-in{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+                    @keyframes wl-confetti{from{transform:translateY(-100vh) rotate(0)}to{transform:translateY(100vh) rotate(720deg)}}
+                </style>
+            `;
+            // Confetti emoji burst
+            for (let i = 0; i < 14; i++) {
+                const c = document.createElement('span');
+                c.textContent = ['🎉','✨','⚡','🎊','💫'][i % 5];
+                c.style.cssText = `position:fixed;top:-30px;left:${Math.random() * 100}%;font-size:${20 + Math.random() * 14}px;animation:wl-confetti ${2 + Math.random() * 2}s ${Math.random() * 0.6}s linear forwards;z-index:100002`;
+                overlay.appendChild(c);
+            }
+            document.body.appendChild(overlay);
+            setTimeout(() => window.location.reload(), 3800);
         } else {
             msg.style.color = "#f87171";
             msg.textContent = "Invalid access code.";
