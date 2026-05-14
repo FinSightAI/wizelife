@@ -162,9 +162,8 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
    it, an animated hue-rotate filter cycles the colors through the brand
    palette in lock-step with the WizeLife text. Simple, no mask, no
    overlay — the PNG keeps its visual identity and the colors animate. */
-.logo-icon,.logo-icon-alt{display:inline-block;width:52px;height:52px;flex-shrink:0;background-position:center;background-size:contain;background-repeat:no-repeat;animation:logoHue 8s ease infinite}
-.logo-icon{background-image:url('assets/wizelife-icon.png?v=2026-05-14')}
-.logo-icon-alt{background-image:url('assets/wizelife-icon-hud.png?v=2026-05-14')}
+/* old logo-icon CSS removed; see wl-logo-icon-style */
+
 @keyframes logoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
 .hero-sub{font-size:1.2rem;color:var(--muted2);max-width:540px;margin-bottom:48px;font-weight:400;line-height:1.65;animation:fadeUp .7s .2s ease both}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s .3s ease both}
@@ -575,13 +574,17 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "wnvlwv7gu0");
 </script>
+
+<style id="wl-logo-icon-style">
+.logo-icon,.wl-logo-icon{display:inline-block;width:36px;height:36px;flex-shrink:0;background:url('https://wizelife.ai/assets/wizelife-icon.png?v=2026-05-14') center/contain no-repeat;animation:wlLogoHue 8s ease infinite;vertical-align:middle;margin-inline-end:6px}
+@keyframes wlLogoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
+/* WL_LOGO_MOBILE */ @media(max-width:600px){.wl-logo-icon,.logo-icon{width:26px;height:26px}}
+</style>
 </head>
 <body>
 <!-- NAV -->
 <nav id="nav">
-<a class="logo" href="#" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:inherit;">
-<span class="logo-icon-alt" aria-hidden="true"></span>
-    WizeLife
+<a class="logo" href="#" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:inherit;"><span class="wl-logo-icon" aria-hidden="true"></span>WizeLife
   </a>
 <div class="nav-links">
 <a data-i18n="_" href="#products">מוצרים</a>
