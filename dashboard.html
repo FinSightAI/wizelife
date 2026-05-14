@@ -598,22 +598,23 @@ function renderPlan(plan, user) {
             </a>
             ${codeRow}`;
     } else {
+        // Free user: route every "Upgrade" click through the Pro-vs-YOLO compare
+        // modal first, so the user picks the plan with full context before
+        // landing on PayPal. Avoids the prior UX of two stacked CTAs.
         const navBtn = document.getElementById("navUpgradeBtn");
         navBtn.style.display = "";
-        navBtn.href = paypalUrl(user.uid);
+        navBtn.href = "#";
+        navBtn.onclick = function(e){ e.preventDefault(); showUpgradeCompareModal(); };
         document.getElementById("planAction").innerHTML =
-            `<a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank">Upgrade to Pro — $4.99/mo</a>`;
+            `<a class="btn-upgrade" href="#" onclick="event.preventDefault();showUpgradeCompareModal()">Upgrade</a>`;
         ["badge-tax","badge-travel","badge-health","badge-deal"].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = "";
         });
         document.getElementById("subContent").innerHTML = `
             <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Unlock all 5 tools for one flat monthly fee.</p>
-            <a class="btn-upgrade" href="${paypalUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-bottom:8px;">
-                Upgrade to Pro — $4.99/mo
-            </a>
-            <a class="btn-upgrade" href="${paypalYoloUrl(user.uid)}" target="_blank" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;background:linear-gradient(135deg,#f59e0b,#ef4444);">
-                ⚡ Upgrade to YOLO — $9.99/mo
+            <a class="btn-upgrade" href="#" onclick="event.preventDefault();showUpgradeCompareModal()" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-bottom:8px;">
+                Compare Pro &amp; YOLO →
             </a>
             ${codeRow}`;
     }
@@ -728,6 +729,117 @@ function paypalUrl(uid) {
     const base = `https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=${PAYPAL_PLAN_ID}`;
     return uid ? `${base}&custom_id=${encodeURIComponent(uid)}` : base;
 }
+
+/**
+ * Show a side-by-side Pro vs YOLO comparison modal before sending the user
+ * to PayPal. Free users hit this when they click "Upgrade" — they pick a
+ * plan inside the modal, and only then is the matching PayPal Plan ID
+ * opened. Eliminates the prior UX where Free users saw two stacked CTAs
+ * with no explanation of the difference.
+ */
+function showUpgradeCompareModal() {
+    if (document.getElementById('wl-upgrade-modal')) return;
+    const uid = (typeof wlAuth !== 'undefined' && wlAuth.currentUser && wlAuth.currentUser.uid) || '';
+    const lang = (function(){ try { return (localStorage.getItem('wl_lang') || 'he').slice(0,2); } catch { return 'he'; } })();
+    const T = {
+        he: {
+            title: 'בחר את התוכנית המתאימה לך',
+            sub: 'אפשר לעבור בין תוכניות בכל עת. ביטול בלחיצה אחת.',
+            pro_title: 'Pro',
+            pro_price: '$4.99',
+            pro_per: '/חודש',
+            pro_features: ['כל 5 הכלים פתוחים', '20 תשובות AI ביום לכל כלי', 'AI Story, Chat ודוחות', 'ייצוא CSV ו-PDF', 'מניות, מייעל מס, פנסיה', 'עסקאות ומטרות ללא הגבלה', 'עיבוד עדיפות'],
+            pro_btn: 'בחר Pro',
+            yolo_title: 'YOLO',
+            yolo_price: '$9.99',
+            yolo_per: '/חודש',
+            yolo_badge: '⚡ הכי פופולרי',
+            yolo_features: ['כל מה שב-Pro, ועוד:', 'WizeAI יועץ חוצה-אפליקציות', 'תשובות AI ללא הגבלה', 'גישה ראשונה לפיצ\'רים חדשים', 'תמיכת מייל בעדיפות', 'תג Power User בפרופיל'],
+            yolo_btn: 'בחר YOLO',
+            close: 'סגור',
+            secure: '🔒 תשלום מאובטח דרך PayPal',
+        },
+        en: {
+            title: 'Choose the plan that fits you',
+            sub: 'Switch plans anytime. One-click cancel.',
+            pro_title: 'Pro', pro_price: '$4.99', pro_per: '/mo',
+            pro_features: ['All 5 tools unlocked', '20 AI answers/day per tool', 'AI Story, Chat & Reports', 'CSV & PDF export', 'Stocks, Tax Optimizer, Pension', 'Unlimited transactions & goals', 'Priority processing'],
+            pro_btn: 'Choose Pro',
+            yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/mo',
+            yolo_badge: '⚡ Most popular',
+            yolo_features: ['Everything in Pro, plus:', 'WizeAI cross-app advisor', 'Unlimited AI answers', 'First access to new features', 'Priority email support', 'Power User badge'],
+            yolo_btn: 'Choose YOLO',
+            close: 'Close',
+            secure: '🔒 Secure checkout via PayPal',
+        },
+        pt: {
+            title: 'Escolha o plano que se encaixa em você',
+            sub: 'Mude de plano a qualquer momento. Cancele em um clique.',
+            pro_title: 'Pro', pro_price: '$4.99', pro_per: '/mês',
+            pro_features: ['Todas as 5 ferramentas liberadas', '20 respostas IA/dia por ferramenta', 'IA Story, Chat e Relatórios', 'Exportação CSV e PDF', 'Ações, Otimizador Fiscal, Pensão', 'Transações e metas ilimitadas', 'Processamento prioritário'],
+            pro_btn: 'Escolher Pro',
+            yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/mês',
+            yolo_badge: '⚡ Mais popular',
+            yolo_features: ['Tudo do Pro, mais:', 'WizeAI consultor multi-app', 'Respostas IA ilimitadas', 'Acesso antecipado a novidades', 'Suporte por email prioritário', 'Selo Power User'],
+            yolo_btn: 'Escolher YOLO',
+            close: 'Fechar',
+            secure: '🔒 Pagamento seguro via PayPal',
+        },
+        es: {
+            title: 'Elige el plan que mejor te queda',
+            sub: 'Cambia de plan en cualquier momento. Cancela con un clic.',
+            pro_title: 'Pro', pro_price: '$4.99', pro_per: '/mes',
+            pro_features: ['Las 5 herramientas desbloqueadas', '20 respuestas IA/día por herramienta', 'IA Story, Chat e Informes', 'Exportación CSV y PDF', 'Acciones, Optimizador Fiscal, Pensión', 'Transacciones y metas ilimitadas', 'Procesamiento prioritario'],
+            pro_btn: 'Elegir Pro',
+            yolo_title: 'YOLO', yolo_price: '$9.99', yolo_per: '/mes',
+            yolo_badge: '⚡ Más popular',
+            yolo_features: ['Todo lo de Pro, además:', 'WizeAI asesor multi-app', 'Respuestas IA ilimitadas', 'Acceso anticipado a novedades', 'Soporte email prioritario', 'Insignia Power User'],
+            yolo_btn: 'Elegir YOLO',
+            close: 'Cerrar',
+            secure: '🔒 Pago seguro vía PayPal',
+        },
+    };
+    const t = T[lang] || T.en;
+    const isRtl = lang === 'he';
+    const check = '<span style="color:#10b981;margin-' + (isRtl ? 'left' : 'right') + ':6px;font-weight:900">✓</span>';
+
+    const html = `
+      <div id="wl-upgrade-modal" style="position:fixed;inset:0;background:rgba(3,5,8,0.85);backdrop-filter:blur(8px);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif;direction:${isRtl?'rtl':'ltr'};overflow-y:auto" onclick="if(event.target===this)this.remove()">
+        <div style="background:linear-gradient(180deg,rgba(17,24,39,0.98),rgba(3,5,8,0.98));border:1px solid rgba(255,255,255,0.1);border-radius:20px;max-width:920px;width:100%;padding:32px 28px;box-shadow:0 24px 80px rgba(99,102,241,0.25);position:relative;animation:wl-up-in .25s ease">
+          <button onclick="document.getElementById('wl-upgrade-modal').remove()" aria-label="${t.close}" style="position:absolute;top:14px;${isRtl?'left':'right'}:14px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;cursor:pointer;font-size:18px;line-height:1">✕</button>
+          <div style="text-align:center;margin-bottom:24px">
+            <h2 style="font:800 24px 'Plus Jakarta Sans',sans-serif;color:#fff;margin:0 0 6px;letter-spacing:-0.5px">${t.title}</h2>
+            <p style="color:#94a3b8;font-size:13px;margin:0">${t.sub}</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+            <!-- Pro card -->
+            <div style="background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:22px;display:flex;flex-direction:column">
+              <div style="font:800 22px 'Plus Jakarta Sans',sans-serif;color:#a5b4fc;margin-bottom:4px">${t.pro_title}</div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:18px"><span style="font:900 36px 'Plus Jakarta Sans',sans-serif;color:#fff">${t.pro_price}</span><span style="color:#64748b;font-size:13px">${t.pro_per}</span></div>
+              <ul style="list-style:none;padding:0;margin:0 0 22px;flex:1">
+                ${t.pro_features.map(f => `<li style="color:#cbd5e1;font-size:13px;line-height:1.7;display:flex">${check}<span>${f}</span></li>`).join('')}
+              </ul>
+              <a href="${paypalUrl(uid)}" target="_blank" rel="noopener" onclick="setTimeout(()=>document.getElementById('wl-upgrade-modal')?.remove(),500)" style="display:block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none">${t.pro_btn} →</a>
+            </div>
+            <!-- YOLO card -->
+            <div style="background:rgba(245,158,11,0.06);border:2px solid rgba(245,158,11,0.45);border-radius:14px;padding:22px;display:flex;flex-direction:column;position:relative">
+              <div style="position:absolute;top:-11px;${isRtl?'right':'left'}:18px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;font-size:10px;font-weight:800;padding:4px 10px;border-radius:99px;letter-spacing:.5px">${t.yolo_badge}</div>
+              <div style="font:800 22px 'Plus Jakarta Sans',sans-serif;color:#fbbf24;margin-bottom:4px">⚡ ${t.yolo_title}</div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:18px"><span style="font:900 36px 'Plus Jakarta Sans',sans-serif;color:#fff">${t.yolo_price}</span><span style="color:#64748b;font-size:13px">${t.yolo_per}</span></div>
+              <ul style="list-style:none;padding:0;margin:0 0 22px;flex:1">
+                ${t.yolo_features.map(f => `<li style="color:#cbd5e1;font-size:13px;line-height:1.7;display:flex">${check}<span>${f}</span></li>`).join('')}
+              </ul>
+              <a href="${paypalYoloUrl(uid)}" target="_blank" rel="noopener" onclick="setTimeout(()=>document.getElementById('wl-upgrade-modal')?.remove(),500)" style="display:block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none">${t.yolo_btn} →</a>
+            </div>
+          </div>
+          <p style="text-align:center;color:#64748b;font-size:11px;margin:18px 0 0">${t.secure}</p>
+        </div>
+      </div>
+      <style>@keyframes wl-up-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}</style>
+    `;
+    document.body.insertAdjacentHTML('beforeend', html);
+}
+window.showUpgradeCompareModal = showUpgradeCompareModal;
 
 function manageSubscription() {
     // TODO: redirect to Stripe Customer Portal
