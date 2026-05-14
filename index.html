@@ -158,13 +158,14 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
    glow, and W shape stay intact) while letting the hue cycle through
    indigo → purple → pink → orange every 8 s — synced with the text. */
 .logo{gap:6px !important}
-/* PNG used as LUMINANCE MASK — gradient is the only color source, so
-   colors are mathematically identical to the WizeLife text. mask-mode
-   MUST come AFTER the mask shorthand (the shorthand otherwise resets it
-   to match-source = alpha = whole rect visible = solid block bug). */
-.logo-icon,.logo-icon-alt{display:inline-block;width:52px;height:52px;flex-shrink:0;background:linear-gradient(120deg,#818cf8 0%,#c4b5fd 40%,#f472b6 75%,#fbbf24 100%);background-size:200% 200%;animation:gradShift 8s ease infinite;filter:brightness(1.5) saturate(1.3) drop-shadow(0 0 10px rgba(167,139,250,.7)) drop-shadow(0 0 18px rgba(236,72,153,.45))}
-.logo-icon{-webkit-mask-image:url('assets/wizelife-icon.png?v=2026-05-14');mask-image:url('assets/wizelife-icon.png?v=2026-05-14');-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-mode:luminance;mask-mode:luminance}
-.logo-icon-alt{-webkit-mask-image:url('assets/wizelife-icon-hud.png?v=2026-05-14');mask-image:url('assets/wizelife-icon-hud.png?v=2026-05-14');-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-mode:luminance;mask-mode:luminance}
+/* Logo: original PNG (full glow + rings + W + colors as designed). Above
+   it, an animated hue-rotate filter cycles the colors through the brand
+   palette in lock-step with the WizeLife text. Simple, no mask, no
+   overlay — the PNG keeps its visual identity and the colors animate. */
+.logo-icon,.logo-icon-alt{display:inline-block;width:52px;height:52px;flex-shrink:0;background-position:center;background-size:contain;background-repeat:no-repeat;animation:logoHue 8s ease infinite}
+.logo-icon{background-image:url('assets/wizelife-icon.png?v=2026-05-14')}
+.logo-icon-alt{background-image:url('assets/wizelife-icon-hud.png?v=2026-05-14')}
+@keyframes logoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
 .hero-sub{font-size:1.2rem;color:var(--muted2);max-width:540px;margin-bottom:48px;font-weight:400;line-height:1.65;animation:fadeUp .7s .2s ease both}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s .3s ease both}
 .btn-primary{background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff;border:none;padding:16px 30px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 30px rgba(99,102,241,.4)}
