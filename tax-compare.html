@@ -17,6 +17,12 @@
 </script>
 
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico?v=2026-05-14" sizes="any">
+<link rel="icon" href="/favicon.svg?v=2026-05-14" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=2026-05-14">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2026-05-14">
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png?v=2026-05-14">
+<link rel="apple-touch-icon" sizes="256x256" href="/icon-256.png?v=2026-05-14">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WizeTax — השוואת מסים בין מדינות | WizeLife</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -30,9 +36,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="/favicon.ico?v=51" sizes="any">
-<link rel="icon" href="/favicon.svg?v=51" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#030508;color:#e2e8f0;font-family:'Inter',sans-serif}
@@ -179,12 +182,16 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </style>
 
 
+<style id="wl-logo-icon-style">
+.wl-logo-icon{display:inline-block;width:20px;height:20px;flex-shrink:0;background:url('/assets/wizelife-icon.png?v=2026-05-14') center/contain no-repeat;animation:wlLogoHue 8s ease infinite;vertical-align:middle;margin-inline-end:6px}
+@keyframes wlLogoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
+</style>
 </head>
 <body>
 
 <div class="topbar">
 
-  <span class="topbar-title">Wize<span>Tax</span></span>
+  <span class="wl-logo-icon" aria-hidden="true"></span><span class="topbar-title">Wize<span>Tax</span></span>
   <span id="planBadge" class="topbar-badge">Free</span>
 </div>
 
