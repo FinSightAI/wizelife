@@ -148,12 +148,12 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
 .gradient-text{background:linear-gradient(120deg,#6366f1 0%,#a78bfa 35%,#ec4899 65%,#f59e0b 100%);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 8s ease infinite}
 @keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 /* Logo icon — PNG carved by luminance mask, filled with the gradient.
-   The icon AND text BOTH use background-attachment:fixed so the gradient
+   The icon AND text BOTH use background-attachment:scroll so the gradient
    is positioned relative to the VIEWPORT (not each element) → they share
    one continuous gradient surface and show contiguous slices = identical
    colors at the seam between icon and text. */
-.logo{gap:6px !important;background-attachment:fixed !important}
-.logo-icon,.logo-icon-alt{position:relative;display:inline-block;width:52px;height:52px;flex-shrink:0;background:linear-gradient(120deg,#6366f1 0%,#a78bfa 40%,#ec4899 75%,#f59e0b 100%);background-size:200% 200%;background-attachment:fixed;animation:gradShift 8s ease infinite;-webkit-mask-mode:luminance;mask-mode:luminance}
+.logo{gap:6px !important;background-attachment:scroll !important}
+.logo-icon,.logo-icon-alt{position:relative;display:inline-block;width:52px;height:52px;flex-shrink:0;background:linear-gradient(120deg,#6366f1 0%,#a78bfa 40%,#ec4899 75%,#f59e0b 100%);background-size:200% 200%;background-attachment:scroll;animation:gradShift 8s ease infinite;-webkit-mask-mode:luminance;mask-mode:luminance}
 .logo-icon{-webkit-mask:url('assets/wizelife-icon.png?v=2026-05-14') center/contain no-repeat;mask:url('assets/wizelife-icon.png?v=2026-05-14') center/contain no-repeat}
 .logo-icon-alt{-webkit-mask:url('assets/wizelife-icon-hud.png?v=2026-05-14') center/contain no-repeat;mask:url('assets/wizelife-icon-hud.png?v=2026-05-14') center/contain no-repeat}
 .hero-sub{font-size:1.2rem;color:var(--muted2);max-width:540px;margin-bottom:48px;font-weight:400;line-height:1.65;animation:fadeUp .7s .2s ease both}
