@@ -152,7 +152,9 @@ body{display:flex;flex-direction:column}
   <div class="ela-text">WizeAI</div>
 </div>
 <script>
-  // Hide loader as soon as main content is ready (mainLayout shows OR paywall shows OR authWall shows)
+  // Hide loader as soon as main content is ready (mainLayout shows OR paywall shows OR authWall shows).
+  // Safety fallback at 6 s: if nothing is ready yet, force the auth-wall to show so the user is
+  // never staring at a blank dark screen — they can always retry login from there.
   (function(){
     function hide() {
       var el = document.getElementById('wize-ai-early-loader');
@@ -162,8 +164,16 @@ body{display:flex;flex-direction:column}
       var ready = document.querySelector('#mainLayout[style*="flex"], #wizeaiPaywall:not(.hidden), #authWall:not([style*="none"])');
       if (ready) { clearInterval(poll); hide(); }
     }, 200);
-    // Safety: hide after 8 seconds no matter what
-    setTimeout(function(){ clearInterval(poll); hide(); }, 8000);
+    setTimeout(function(){
+      clearInterval(poll);
+      // If we're past the safety budget and nothing is wired up yet, surface auth-wall.
+      var anyReady = document.querySelector('#mainLayout[style*="flex"], #wizeaiPaywall:not(.hidden), #authWall:not([style*="none"])');
+      if (!anyReady) {
+        var aw = document.getElementById('authWall');
+        if (aw) aw.style.display = 'flex';
+      }
+      hide();
+    }, 6000);
   })();
 </script>
 
@@ -258,37 +268,50 @@ function showPaywall() {
 }
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
+// Optimistic plan flow: render UI from cached plan in localStorage immediately,
+// then verify with Firestore in the background. Cuts first-paint from 10-30 s
+// (Firestore + Cloud Function cold-start) to <1 s on returning visits.
 wlAuth.onAuthStateChanged(async user => {
   if (!user) {
     document.getElementById('authWall').style.display = 'flex';
     return;
   }
-  document.getElementById('mainLayout').style.display = 'flex';
-  // Detect plan from BOTH localStorage (fast) and Firestore (canonical)
-  try {
-    _plan = await getUserPlan(user.uid);
-  } catch (e) {
-    console.error('getUserPlan failed:', e);
-    _plan = (function(){ try { return localStorage.getItem('wl_plan') || 'free'; } catch { return 'free'; } })();
-  }
-  // Safety: if Firestore returned 'free' but localStorage says higher, trust localStorage
-  try {
-    const lp = localStorage.getItem('wl_plan');
-    if (lp === 'yolo' || (lp === 'pro' && _plan === 'free')) _plan = lp;
-  } catch {}
-  console.log('WizeAI plan detected:', _plan);
+
+  // 1. INSTANT: render the right UI from cached plan.
+  const cached = (function(){ try { return localStorage.getItem('wl_plan') || 'free'; } catch { return 'free'; } })();
+  _plan = cached;
   updatePlanBadge();
-  if (_plan !== 'yolo') {
+  if (_plan === 'yolo') {
+    document.getElementById('mainLayout').style.display = 'flex';
+    loadContext().catch(e => {
+      console.error('loadContext failed:', e);
+      const msgs = document.getElementById('messages');
+      if (msgs) msgs.innerHTML = '<div style="padding:20px;color:#fbbf24;text-align:center;font-size:14px">⏳ ' + (e.message || 'Context loading…') + '</div>';
+    });
+  } else {
     showPaywall();
-    return;
   }
+
+  // 2. BACKGROUND: verify with Firestore (canonical). If plan changed,
+  //    update UI without forcing reload.
   try {
-    await loadContext();
-  } catch (e) {
-    console.error('loadContext failed:', e);
-    const msgs = document.getElementById('messages');
-    if (msgs) msgs.innerHTML = '<div style="padding:20px;color:#fbbf24;text-align:center;font-size:14px">⏳ ' + (e.message || 'Context loading…') + '</div>';
-  }
+    const verified = await getUserPlan(user.uid);
+    if (verified && verified !== _plan) {
+      _plan = verified;
+      try { localStorage.setItem('wl_plan', _plan); } catch {}
+      updatePlanBadge();
+      console.log('WizeAI plan corrected by Firestore:', _plan);
+      if (_plan === 'yolo') {
+        // Was-paywall, now upgraded → flip to main layout
+        const aw = document.getElementById('authWall'); if (aw) aw.style.display = 'none';
+        document.getElementById('mainLayout').style.display = 'flex';
+        loadContext().catch(e => console.error('loadContext failed:', e));
+      } else {
+        // Was-allowed-by-cache, but Firestore says no → show paywall
+        showPaywall();
+      }
+    }
+  } catch (e) { console.warn('plan verification skipped:', e && e.message); }
 });
 
 function updatePlanBadge() {
