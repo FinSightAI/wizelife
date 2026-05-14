@@ -18,7 +18,12 @@
         return !!(a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable));
     }
 
-    navigator.serviceWorker.register('/sw.js').then(reg => {
+    // updateViaCache:'none' tells the browser to skip ALL HTTP caches when
+    // re-fetching sw.js for updates — including Cloudflare's edge cache,
+    // which by default holds sw.js for up to 4 hours and delays update
+    // delivery to end users. Without this, real users on a fresh tab see
+    // a 4-hour-old version of the SW and never trigger updatefound.
+    navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(reg => {
         // 1. New SW detected → activate it silently
         reg.addEventListener('updatefound', () => {
             const newSW = reg.installing;
