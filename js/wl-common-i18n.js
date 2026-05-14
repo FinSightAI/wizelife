@@ -208,6 +208,15 @@
     tr('הנתונים שלך — שלך. תחת חוק הגנת הפרטיות הישראלי וה-GDPR, אתה יכול לייצא', 'Your data — yours. Under Israeli Privacy Protection Law and GDPR, you can export', 'Seus dados — seus. Sob a Lei de Privacidade Israelense e o GDPR, você pode exportar', 'Tus datos — tuyos. Bajo la Ley Israelí de Privacidad y el GDPR, puedes exportar');
     tr('התנתק', 'Sign out', 'Sair', 'Cerrar sesión');
 
+    // ── tax-compare landing (additional strings caught in 2026-05-13 audit) ──
+    tr('מס הכנסה', 'Income tax', 'Imposto de renda', 'Impuesto sobre la renta');
+    tr('נטו חודשי', 'Monthly net', 'Líquido mensal', 'Neto mensual');
+    tr('המלצות AI', 'AI recommendations', 'Recomendações de IA', 'Recomendaciones de IA');
+    tr('ביטוח לאומי', 'Social security', 'Previdência', 'Seguridad social');
+    tr('דמי בריאות', 'Health tax', 'Imposto de saúde', 'Impuesto sanitario');
+    tr('הכנסה ברוטו', 'Gross income', 'Renda bruta', 'Ingreso bruto');
+    tr('הכנסה נטו', 'Net income', 'Renda líquida', 'Ingreso neto');
+
     // Travel flight UI extras
     tr('15–22 מרץ', 'Mar 15 – 22', '15–22 mar', '15–22 mar');
     tr('נוסעים', 'passengers', 'passageiros', 'pasajeros');
