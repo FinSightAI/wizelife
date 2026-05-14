@@ -216,6 +216,7 @@
     tr('דמי בריאות', 'Health tax', 'Imposto de saúde', 'Impuesto sanitario');
     tr('הכנסה ברוטו', 'Gross income', 'Renda bruta', 'Ingreso bruto');
     tr('הכנסה נטו', 'Net income', 'Renda líquida', 'Ingreso neto');
+    tr('מחשב...', 'Calculating...', 'Calculando...', 'Calculando...');
 
     // ── Input placeholders ─────────────────────────────────────────────────
     tr('כינוי — איך לקרוא לך? (Ofi, נועה, 007…)', 'Nickname — what should we call you? (Ofi, Noa, 007…)', 'Apelido — como devemos te chamar? (Ofi, Noa, 007…)', 'Apodo — ¿cómo deberíamos llamarte? (Ofi, Noa, 007…)');
