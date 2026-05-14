@@ -1,4 +1,4 @@
-# 🚨 WizeTravel action items — 2026-05-13
+# 🚨 WizeTravel action items — 2026-05-14
 
 **0 failure(s), 1 warning(s), 5 pass.**
 
@@ -8,7 +8,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTravel QA — 2026-05-13
+# WizeTravel QA — 2026-05-14
 
 - ✅ Home loads
 - ✅ Nav/tab-bar renders

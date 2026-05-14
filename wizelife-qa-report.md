@@ -1,4 +1,4 @@
-# 🚨 WizeLife action items — 2026-05-13
+# 🚨 WizeLife action items — 2026-05-14
 
 **0 failure(s), 1 warning(s), 14 pass.**
 
@@ -8,7 +8,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeLife QA — 2026-05-13
+# WizeLife QA — 2026-05-14
 
 - ✅ / loads + has content
 - ✅ /about.html loads + has content

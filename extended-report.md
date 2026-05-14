@@ -1,25 +1,25 @@
-# 🚨 Extended action items — 2026-05-13
+# 🚨 Extended action items — 2026-05-14
 
-**0 failure(s), 1 warning(s), 8 pass.**
+**1 failure(s), 0 warning(s), 8 pass.**
 
-## For you to investigate / fix:
-- ⚠️ DKIM MISSING for google._domainkey.wizelife.ai — **fix:** enable in Gmail Admin Console (or your wizelife.ai@gmail.com — only works with Google Workspace)
+## For Claude to fix:
+- ❌ SW shell asset 404: https://money.wizelife.ai/./pages/stocks.html (cached by https://money.wizelife.ai/sw.js) — **fix:** remove ./pages/stocks.html from SHELL[] in https://money.wizelife.ai/sw.js OR restore the file
 
 ---
 _<details><summary>Full detail</summary>_
 
-# Extended checks — 2026-05-13T00:01:06.072Z
+# Extended checks — 2026-05-14T22:36:55.825Z
 
 ## Tier 13f — SW cache integrity
 
 - ✅ https://wizelife.ai/sw.js: all 21 shell assets reachable
-- ✅ https://money.wizelife.ai/sw.js: all 70 shell assets reachable
+- ❌ SW shell asset 404: https://money.wizelife.ai/./pages/stocks.html (cached by https://money.wizelife.ai/sw.js)
 
 ## Tier 13h — Email DNS records (wizelife.ai)
 
-- ✅ SPF found: `v=spf1 include:_spf.google.com ~all`
+- ✅ SPF found: `v=spf1 include:_spf.google.com include:amazonses.com ~all`
 - ✅ DMARC found: `v=DMARC1; p=quarantine; rua=mailto:security@wizelife.ai`
-- ⚠️  DKIM MISSING for google._domainkey.wizelife.ai
+- ✅ DKIM (resend._domainkey) found
 
 ## Tier 13i — Rate-limit live test
 
