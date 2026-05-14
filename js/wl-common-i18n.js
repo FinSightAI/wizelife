@@ -217,6 +217,35 @@
     tr('הכנסה ברוטו', 'Gross income', 'Renda bruta', 'Ingreso bruto');
     tr('הכנסה נטו', 'Net income', 'Renda líquida', 'Ingreso neto');
 
+    // ── Input placeholders ─────────────────────────────────────────────────
+    tr('כינוי — איך לקרוא לך? (Ofi, נועה, 007…)', 'Nickname — what should we call you? (Ofi, Noa, 007…)', 'Apelido — como devemos te chamar? (Ofi, Noa, 007…)', 'Apodo — ¿cómo deberíamos llamarte? (Ofi, Noa, 007…)');
+    tr('שאל כל דבר על הכספים, הטיסות, המס שלך...', 'Ask anything about your money, flights, tax…', 'Pergunte qualquer coisa sobre seu dinheiro, voos, impostos…', 'Pregunta lo que sea sobre tu dinero, vuelos, impuestos…');
+    tr('לדוגמה 25000', 'e.g. 25000', 'ex. 25000', 'p.ej. 25000');
+    tr('עברית', 'Hebrew', 'Hebraico', 'Hebreo');
+
+    // ── Family-member onboarding (WizeMoney — biggest leak source) ─────────
+    tr('הוסף בן משפחה', 'Add family member', 'Adicionar membro da família', 'Agregar familiar');
+    tr('הוסף בן/בת משפחה', 'Add family member', 'Adicionar membro da família', 'Agregar familiar');
+    tr('בן/בת זוג', 'Spouse', 'Cônjuge', 'Cónyuge');
+    tr('הורה', 'Parent', 'Pai/Mãe', 'Padre/Madre');
+    tr('סבא/סבתא', 'Grandparent', 'Avô/Avó', 'Abuelo/Abuela');
+    tr('בן/בת', 'Son/Daughter', 'Filho/Filha', 'Hijo/Hija');
+    tr('אח/אחות', 'Sibling', 'Irmão/Irmã', 'Hermano/Hermana');
+    tr('שם בן המשפחה', 'Family member name', 'Nome do familiar', 'Nombre del familiar');
+    tr('יחס משפחתי', 'Relationship', 'Relação', 'Relación');
+    tr('שמירה', 'Save', 'Salvar', 'Guardar');
+    tr('עדכון', 'Update', 'Atualizar', 'Actualizar');
+    tr('מחיקה', 'Delete', 'Excluir', 'Eliminar');
+    tr('עריכה', 'Edit', 'Editar', 'Editar');
+    tr('סגירה', 'Close', 'Fechar', 'Cerrar');
+    tr('אישור', 'Confirm', 'Confirmar', 'Confirmar');
+    tr('הוסף', 'Add', 'Adicionar', 'Agregar');
+    tr('הוסיפ/י', 'Add', 'Adicionar', 'Agregar');
+    tr('שמור', 'Save', 'Salvar', 'Guardar');
+    tr('בטל', 'Cancel', 'Cancelar', 'Cancelar');
+    tr('הבא', 'Next', 'Próximo', 'Siguiente');
+    tr('הקודם', 'Previous', 'Anterior', 'Anterior');
+
     // Travel flight UI extras
     tr('15–22 מרץ', 'Mar 15 – 22', '15–22 mar', '15–22 mar');
     tr('נוסעים', 'passengers', 'passageiros', 'pasajeros');
