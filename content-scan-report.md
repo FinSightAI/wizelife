@@ -1,4 +1,4 @@
-# 🚨 Content action items — 2026-05-14
+# 🚨 Content action items — 2026-05-15
 
 ✅ **5 checks passed — no content issues found.**
 ---
@@ -12,7 +12,7 @@ _<details><summary>Full detail (pass list)</summary>_
 
 </details>
 
-# Content scan — 2026-05-14
+# Content scan — 2026-05-15
 
 ## Crawling 16 pages…
 

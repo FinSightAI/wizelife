@@ -310,5 +310,45 @@
     tr('אתה משתמש בשירות מרצונך ועל אחריותך הבלעדית.', 'You are using the service voluntarily and at your sole risk.', 'Você está usando o serviço voluntariamente e sob seu próprio risco.', 'Estás utilizando el servicio voluntariamente y bajo tu exclusivo riesgo.');
     tr('יש לך את הכשרות המשפטית והסמכות להתקשר בתנאים אלה ולשאת בתוצאות כל החלטה שתקבל בהסתמך על השירות.', 'You have the legal capacity and authority to enter into these Terms and to bear the consequences of any decision you take based on the service.', 'Você tem capacidade jurídica e autoridade para celebrar estes Termos e arcar com as consequências de qualquer decisão tomada com base no serviço.', 'Tienes la capacidad legal y la autoridad para celebrar estos Términos y asumir las consecuencias de cualquier decisión tomada con base en el servicio.');
 
+
+    // ── Re-added family/summary + Vitara top-frequency entries (2026-05-15) ──
+    tr('אני', 'Me', 'Eu', 'Yo');
+    tr('מבוגר', 'Adult', 'Adulto', 'Adulto');
+    tr('הוסף', 'Add', 'Adicionar', 'Añadir');
+    tr('בן', 'Son', 'Filho', 'Hijo');
+    tr('בת', 'Daughter', 'Filha', 'Hija');
+    tr('משפחה', 'Family', 'Família', 'Familia');
+    tr('דשבורד משפחתי', 'Family Dashboard', 'Painel Familiar', 'Panel Familiar');
+    tr('👨‍👩‍👧‍👦 דשבורד משפחתי', '👨‍👩‍👧‍👦 Family Dashboard', '👨‍👩‍👧‍👦 Painel Familiar', '👨‍👩‍👧‍👦 Panel Familiar');
+    tr('הגיע הזמן לשלוח את הסיכום הפיננסי שלך', 'Time to send your financial summary', 'Hora de enviar seu resumo financeiro', 'Hora de enviar tu resumen financiero');
+    tr('💬 שתף בוואטסאפ', '💬 Share on WhatsApp', '💬 Compartilhar no WhatsApp', '💬 Compartir en WhatsApp');
+    tr('שתף בוואטסאפ', 'Share on WhatsApp', 'Compartilhar no WhatsApp', 'Compartir en WhatsApp');
+    tr('תצוגה מקדימה', 'Preview', 'Pré-visualização', 'Vista previa');
+    tr('👁️ תצוגה מקדימה', '👁️ Preview', '👁️ Pré-visualização', '👁️ Vista previa');
+    tr('אחר כך', 'Later', 'Mais tarde', 'Más tarde');
+    tr('אולי אחר כך', 'Maybe later', 'Talvez mais tarde', 'Tal vez después');
+    tr('ילד/ה', 'Child', 'Criança', 'Niño/a');
+    tr('👤 מבוגר', '👤 Adult', '👤 Adulto', '👤 Adulto');
+    tr('סיסמה', 'Password', 'Senha', 'Contraseña');
+    tr('כניסה', 'Sign in', 'Entrar', 'Iniciar sesión');
+    tr('יציאה', 'Exit', 'Sair', 'Salir');
+    tr('שיחה חדשה', 'New chat', 'Nova conversa', 'Nueva conversación');
+    tr('היסטוריה', 'History', 'Histórico', 'Historial');
+    tr('בדיקות', 'Tests', 'Exames', 'Análisis');
+    tr('פרופיל', 'Profile', 'Perfil', 'Perfil');
+    tr('שלח', 'Send', 'Enviar', 'Enviar');
+    tr('ביטול', 'Cancel', 'Cancelar', 'Cancelar');
+    tr('שמור', 'Save', 'Salvar', 'Guardar');
+    tr('מחק', 'Delete', 'Excluir', 'Eliminar');
+    tr('סגור', 'Close', 'Fechar', 'Cerrar');
+    tr('טוען...', 'Loading…', 'Carregando…', 'Cargando…');
+    tr('שגיאה', 'Error', 'Erro', 'Error');
+    tr('בחר ספק', 'Choose provider', 'Escolher provedor', 'Elegir proveedor');
+    tr('התחבר לחשבון Pro / YOLO לקבל יותר שאלות', 'Sign in to a Pro / YOLO account for more questions', 'Entre numa conta Pro / YOLO para mais perguntas', 'Inicia sesión en una cuenta Pro / YOLO para más preguntas');
+    tr('בחר מומחה', 'Choose specialist', 'Escolher especialista', 'Elegir especialista');
+    tr('שאל אותי כל דבר', 'Ask me anything', 'Pergunte qualquer coisa', 'Pregúntame lo que sea');
+    tr('הקלד שאלה...', 'Type a question…', 'Digite uma pergunta…', 'Escribe una pregunta…');
+    tr('העלה קובץ', 'Upload file', 'Enviar arquivo', 'Subir archivo');
+
     window.WL_TR = existing;
 })();

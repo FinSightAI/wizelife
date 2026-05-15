@@ -4,7 +4,7 @@
 ---
 _<details><summary>Full report (passes + checks)</summary>_
 
-# Security report — 2026-05-15T00:56:58.176Z
+# Security report — 2026-05-15T16:40:57.338Z
 
 ## Tier 13a — JS parse-check (catches silent SyntaxErrors)
 

@@ -4,7 +4,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# API contract — 2026-05-15T00:56:58.176Z
+# API contract — 2026-05-15T16:40:57.338Z
 
 - ✅ validateCode rejects no-auth (UNAUTHENTICATED).
 - ✅ awardReferral rejects no-auth (UNAUTHENTICATED).
