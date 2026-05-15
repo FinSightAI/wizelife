@@ -1,6 +1,6 @@
 # WizeLife — Architecture & Specification
 
-> Last updated: 2026-05-08
+> Last updated: 2026-05-15
 > Owner: WizeLife / FinSightAI
 > Domain: `wizelife.ai`
 
@@ -218,10 +218,64 @@ Highest tier wins (yolo > pro > free).
 | **GitHub Actions** | Daily QA + Render keep-alive | Free (well under 2000 min/month) |
 | **GitHub Issues** | QA alerts → email via notifications | Free |
 | **UptimeRobot** | 5-min interval downtime check on all 6 endpoints | Free (50 monitors) |
-| **Microsoft Clarity** | Session replays + heatmaps | Free, project ID `wnvlwv7gu0` |
-| **Google Analytics** | Traffic + events | Free, IDs: `G-MPRTN6CJ9K` (WizeLife), `G-DB63NWYGX5` (Money), `G-3W9ZZ0008E` (Tax), `G-6E5BE86WVT` (Deal) |
+| **Cloudflare Web Analytics** | Page views, top pages, referrers, countries, devices, Core Web Vitals | Free, **cookieless, no PII, no consent banner required**. Enabled via Cloudflare dashboard with Automatic Setup on the wizelife.ai zone (orange-proxy). |
 | **Sentry** | Error tracking | Deferred until traffic justifies |
 | **PostHog** | Funnels + retention | Deferred |
+
+> **Removed 2026-05-15 (privacy hardening):**
+> - **Microsoft Clarity** — session replay was recording bank balances + blood-test results from WizeMoney / WizeHealth. GDPR Article 9 risk on special-category data. No replacement.
+> - **Google Analytics** — non-compliant in multiple EU jurisdictions (France/Austria/Italy 2022). Replaced by Cloudflare Web Analytics. All `gtag.js` Script tags + the `measurementId` in `firebase-config.js` removed from all 5 apps.
+
+---
+
+## 10.5 Privacy & legal architecture (2026-05-15)
+
+### 10.5.1 ToS consent chain
+
+| Layer | What it does | File |
+|---|---|---|
+| `wize-disclaimer.js` (canonical at `wizelife.ai/js/`) | First-visit modal per app. `TOS_VERSION = 3` — bumping triggers re-acceptance for everyone | `TOTALIST/wizelife/js/wize-disclaimer.js` |
+| `recordAcceptance(app)` | Writes localStorage + Firestore `users/{uid}/disclaimers/<app>_v<N>` with SHA-256 hash of exact text shown + viewport + screen + tz + ua + lang. Retry-once on App Check warmup | same file |
+| `showProfessionalDisclaimer({app})` | Slim ℹ️ corner chip + click-to-expand banner. 7-day dismiss | same file |
+| `terms.html` §10 / §11 / §11A | Hebrew authoritative + full en/pt/es translations in `wl-common-i18n.js`. §10 = LoL (NIS-100 / 12-month-spend cap, per-domain carve-outs). §11 = Indemnification with defence + attorneys' fees. §11A = Assumption of Risk + sophisticated-user warranties | `TOTALIST/wizelife/terms.html` |
+
+### 10.5.2 Firestore rules — relevant collections
+
+| Path | Read | Write | Notes |
+|---|---|---|---|
+| `users/{uid}` | owner | owner | App Check enforced |
+| `users/{uid}/context/{appId}` | owner | owner | per-app aggregated state |
+| `users/{uid}/disclaimers/{key}` | owner | owner-create-only, shape-validated, immutable | Legal evidence of ToS acceptance |
+| `users/{uid}/consent/{key}` | owner | owner-create-only, immutable | Cookie consent (currently unused — Cloudflare-only analytics needs no banner) |
+| `users/{uid}/cross_app/{appId}` | owner | admin only (Cloud Function) | Cross-app derived data |
+| `feedback/{id}` | nobody | public-create, shape-validated | Bug reports |
+
+Deploy via: `firebase deploy --only firestore:rules --project finzilla-7f1f9`
+
+### 10.5.3 PII strip-before-AI
+
+| Layer | What it does | File |
+|---|---|---|
+| `wize-pii.js` (canonical + mirrors) | `WizePII.stripIdentity(obj)` deep-clones and removes ~35 identity keys (name, email, phone, IDs, account/IBAN/card numbers, uid). Scrubs string-content patterns (ת.ז, SSN, CPF, raw email). KEEPS numerical state | `TOTALIST/wizelife/js/wize-pii.js` |
+| `lib/pii.ts` | TS port for Next.js apps, identical rules | `tax master/frontend/lib/pii.ts` |
+| Applied in tax master | `_sendChat`, `fetchSavings`, `fetchIsraelAnalysis` strip profile before POST | `tax master/frontend/lib/api.ts` |
+| WizeAI portal already safe | `getUserContext` returns aggregated context only | `finance dashboard/functions/index.js:1195` |
+| Check Deal already safe | Buyer profile is boolean flags, not identifiers | `Check Deal/src/lib/types/deal.ts` |
+
+### 10.5.4 Server-side log redaction & error sanitization
+
+- `PiiRedactFilter` attached to root + uvicorn + fastapi loggers — masks JSON `"password":"x"`, k=v patterns, bare `sk-*` / `AIza*` / `Bearer *` (file: `tax master/backend/main.py`)
+- Sanitized error responses: backend exceptions now return generic `"Service error — please try again."` to client; real traceback logged server-side only (files: `main.py`, `agent/orchestrator.py`, `agent/orchestrator_claude.py`)
+
+### 10.5.5 Client-side state hygiene
+
+- `signOut()` purges 14 sensitive localStorage keys (`wl_token`, `wl_sso`, profile caches, finance/health/tax data) BEFORE Firebase signOut resolves (`TOTALIST/wizelife/dashboard.html`)
+- `<meta name="referrer" content="strict-origin-when-cross-origin">` on all 12 entry HTML pages + 3 Next.js layouts
+- `wl_lang`, `wl_theme` kept (functional preferences, not user data)
+
+### 10.5.6 Performance — Claude prompt caching
+
+`tax master/backend/agent/orchestrator_claude.py` wraps `SYSTEM_PROMPT` (~12 KB) and the last tool entry with `cache_control: {type: 'ephemeral'}` → Anthropic returns ~90% input-token discount on every follow-up turn within the 5-min TTL.
 
 ---
 
@@ -238,14 +292,13 @@ Highest tier wins (yolo > pro > free).
 | Stack | Vanilla HTML/CSS/JS, Firebase Auth |
 | SW cache | `wizelife-v11` |
 | SW SHELL pages | index, auth, dashboard, feedback, apps, health, travel, wizetravel, tax-compare, web-apps, wize-ai, privacy, terms, 404 (15 pages) |
-| GA tracking ID | `G-MPRTN6CJ9K` |
-| Clarity project | `wnvlwv7gu0` |
+| Analytics | Cloudflare Web Analytics (cookieless, aggregate) — replaces GA + Clarity since 2026-05-15 |
 | Backend | None (Firebase Auth + Firestore directly) |
-| AI providers | None (auth/portal only) |
+| AI providers | None (auth/portal only — WizeAI cross-app advisor lives at /wize-ai.html, uses `aiProxy` Cloud Function) |
 | Languages | he / en / pt / es |
 | Auto-update banner | ✓ via `js/sw-register.js` (5-min poll, focus check) |
 | Pages | landing, auth (login/signup), dashboard (account/plan/referral), feedback (4-language form) |
-| Recent installs | Microsoft Clarity, smart SW auto-update, Wize<Life> animated brand title, mobile nav (hamburger surfaces lang/CTA), referral system + 30-day reward, ARCHITECTURE.md/.html |
+| Recent installs (2026-05-15) | Trackers removed (GA + Clarity), Cloudflare Web Analytics, TOS_VERSION=3 with §10 LoL + §11 Indemnification + §11A Risk, disclaimer audit log (SHA-256 text-hash) to Firestore, PII strip-before-AI helper (`js/wize-pii.js`), Firestore rules fix (disclaimers + consent writable by owner), signOut purge of 14 sensitive localStorage keys, referrer=strict-origin-when-cross-origin meta on all entry pages |
 
 ### 11.1 WizeMoney (FinSight)
 
@@ -258,15 +311,14 @@ Highest tier wins (yolo > pro > free).
 | Stack | Vanilla HTML/CSS/JS, Firebase, PWA |
 | SW cache | `finsight-v235` |
 | SW pages | 38 internal pages (bank, credit, stocks, goals, etc.) |
-| GA tracking ID | `G-DB63NWYGX5` |
-| Clarity project | `wnvlwv7gu0` (loaded via sidebar.js → all 38 pages) |
+| Analytics | Cloudflare Web Analytics (cookieless) — replaces GA + Clarity since 2026-05-15 |
 | Backend (chat) | Firebase Functions `aiProxy` (legacy, not invoked) |
 | Backend (advisor) | `https://master-backend-79jx.onrender.com/api/ai-proxy` |
 | AI providers | Gemini 2.5-flash-lite (via /api/ai-proxy) + Tavily web search (auto-analysis only) |
 | Languages | he / en / pt / es |
 | Auto-update banner | ✓ via `js/app.js` `registerServiceWorker` (banner pattern) |
 | Pages | 38 (dashboard, bank, credit, my-funds, stocks, stock-analytics, sectors, investment-advisor, ai-chat, ai-story, goals, simulator, tax-optimizer, pension-optimizer, compare-funds, family-dashboard, tesouro-direto, fiis, renda-fixa, etc.) |
-| Recent installs | Investment advisor v2 (3-market awareness IL/US/BR, 2026 tax-product limits, sanity validations, Tavily web search), neutral dark bg, sidebar cleanup (no sign-in pill, no bottom plan pill, Pro badges hidden while paywall off), first-name display, smart SW update, Clarity, sectors comparison page |
+| Recent installs (2026-05-15) | Trackers removed (GA gtag + Clarity loader in sidebar.js), Cloudflare Web Analytics, big centered "WizeMoney" wordmark in page header (LTR-locked even in RTL pages, pure green gradient), small WizeMoney pill removed from WL bar, sidebar `.brand-name` removed (now redundant with page header), `#globalLangSwitcher` hidden on desktop too, `wize-pii.js` mirrored, log redaction filter & sanitized error responses (server-side) |
 
 ### 11.2 WizeTax
 
@@ -280,14 +332,14 @@ Highest tier wins (yolo > pro > free).
 | Frontend stack | Next.js 15, React 18, Tailwind |
 | Backend stack | FastAPI, Python 3.11, slowapi rate limit |
 | SW cache | `taxmaster-v2` (in `frontend/public/sw.js`) |
-| GA tracking ID | `G-3W9ZZ0008E` |
-| Clarity project | `wnvlwv7gu0` (via `<Script>` in layout.tsx + CSP allowed) |
+| Analytics | Cloudflare Web Analytics (cookieless) — replaces GA + Clarity since 2026-05-15 |
+
 | AI provider | Gemini 2.5-flash-lite via `agent/orchestrator.py` |
 | Web search | Tavily (finance topic) injected before each `/api/chat` call |
 | Languages | he / en / pt / es |
 | Auto-update banner | ✓ Inline in `layout.tsx` |
 | Backend endpoints | `/health`, `/api/chat` (SSE), `/api/ai-proxy`, `/api/analyze`, `/api/savings`, `/api/countries`, `/api/regimes`, `/api/country/{code}`, `/api/company`, `/api/israel`, `/api/tax-updates` |
-| Recent installs | Wize<Tax> branded title (yellow gradient), AI-proxy with Tavily augmentation, gemini-2.5-flash-lite (was retired 2.0), 'Cloudflare WAF allow WizeLife-QA UA' for daily QA, sidebar cleanup, dark neutral palette, Clarity, ms-clarity CSP allowed, smart SW update banner, first-name display |
+| Recent installs (2026-05-15) | Trackers removed (GA Script tag + ga-init + Clarity), tiny ℹ️ disclaimer chip replacing full banner, single onboarding (legacy duplicate removed), big-centered WizeTax wordmark, RTL initial-scroll fix, mobile bottom-nav clearance fix, Claude prompt caching (system + tools, 5-min TTL), next.config `optimizePackageImports` for recharts/lucide-react, AbortSignal in lib/api.ts, /api/health warmup on visibilitychange, PII strip-before-AI in lib/api.ts (chat/savings/israel routes), backend error sanitization + PII redaction log filter |
 
 ### 11.3 WizeTravel
 
@@ -301,8 +353,7 @@ Highest tier wins (yolo > pro > free).
 | Frontend stack | Next.js 15 |
 | Backend stack | FastAPI + Streamlit |
 | SW cache | None (Streamlit doesn't use SW) |
-| GA tracking ID | (none configured yet) |
-| Clarity project | `wnvlwv7gu0` (via layout.tsx) |
+| Analytics | Cloudflare Web Analytics (cookieless) — no GA configured |
 | AI provider | Gemini |
 | Web search | Tavily (not yet wired) |
 | Languages | he / en / pt / es |
@@ -319,8 +370,6 @@ Highest tier wins (yolo > pro > free).
 | Local path | `RAMBAM/` |
 | Stack | Express.js + Vanilla HTML/CSS/JS frontend in `public/` |
 | SW cache | `vitara-v4` |
-| GA tracking ID | (none) |
-| Clarity project | `wnvlwv7gu0` (inline in index.html `<head>`) |
 | Backend endpoints | `/api/chat` (SSE), `/api/auth/login`, `/api/auth/check`, `/api/config`, `/api/transcribe`, file upload |
 | AI providers | Gemini 2.5-flash-lite (default), Groq, OpenRouter (admin only) |
 | Plan-aware quota | `_check_ai_quota` middleware — free 5/day, pro 20/day, yolo 40/day |
@@ -340,8 +389,6 @@ Highest tier wins (yolo > pro > free).
 | Local path | `Check Deal/` |
 | Stack | Next.js 15, React 18, Tailwind, lucide-react |
 | SW cache | `checkdeal-v2` (in `public/sw.js`) |
-| GA tracking ID | `G-6E5BE86WVT` |
-| Clarity project | `wnvlwv7gu0` (via layout.tsx) |
 | Backend | Vercel API routes in `src/app/api/ai/*` |
 | AI provider | Gemini 2.5-flash-lite (5 routes: market-data, rental-estimate, chat, parse-listing, insights) |
 | API routes | `/api/ai/chat`, `/api/ai/insights`, `/api/ai/market-data`, `/api/ai/parse-listing`, `/api/ai/rental-estimate`, `/api/rental/*` |
