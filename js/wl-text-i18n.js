@@ -35,6 +35,12 @@
   // Only includes entries whose HE value contains Hebrew characters, so we
   // never accidentally match English strings as if they were translatable.
   var _reverseMap = null;
+  // Collapse all internal whitespace so HTML-indented multi-line text matches
+  // dict values that store the canonical single-space form.
+  function normalize(s) {
+    return String(s).replace(/\s+/g, ' ').trim();
+  }
+
   function buildReverseMap() {
     if (_reverseMap) return _reverseMap;
     _reverseMap = {};
@@ -44,7 +50,7 @@
     Object.keys(heDict).forEach(function (k) {
       var v = heDict[k];
       if (typeof v !== 'string') return;
-      var t = v.trim();
+      var t = normalize(v);
       if (t.length < 2) return;
       if (!hebrewChar.test(t)) return;
       // First key wins on collision — preserves the order of declaration.
@@ -83,8 +89,7 @@
     var node, swapped = 0;
     while ((node = walker.nextNode())) {
       var orig = node.nodeValue;
-      var trimmed = orig.trim();
-      var key = reverse[trimmed];
+      var key = reverse[normalize(orig)];
       if (!key) continue;
       var translated = dict[key];
       if (typeof translated !== 'string' || !translated.length) continue;
@@ -100,7 +105,7 @@
       attrs.forEach(function (a) {
         var v = el.getAttribute(a);
         if (!v) return;
-        var key = reverse[v.trim()];
+        var key = reverse[normalize(v)];
         if (key && dict[key]) el.setAttribute(a, dict[key]);
       });
     });
