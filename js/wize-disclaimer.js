@@ -18,7 +18,10 @@
 
   // Bump this when you materially change ToS / disclaimer language.
   // All users must re-accept on next visit.
-  const TOS_VERSION = 2;
+  // v3 (2026-05-15): expanded Limitation of Liability §10, new Indemnification §11,
+  //                  new Assumption of Risk §11A. Existing _v2 acceptances will
+  //                  auto-trigger re-prompt because storageKey is suffixed with the version.
+  const TOS_VERSION = 3;
 
   const COPY = {
     health: {
