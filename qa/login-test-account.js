@@ -42,7 +42,7 @@ if (!email || !password) { console.error('Usage: node qa/login-test-account.js <
     if (ok) {
         console.log('✅ LOGIN SUCCESS — at dashboard');
         console.log('   email:    ' + email);
-        console.log('   password: ' + password);
+        console.log('   password: ' + '*'.repeat(Math.min(password.length, 12)) + ' (' + password.length + ' chars)');
     } else {
         console.log('❌ LOGIN FAILED');
         console.log('   error on page: ' + (errText.msg || '(none shown)'));

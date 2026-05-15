@@ -58,7 +58,7 @@ if (!email || !password) {
         if (url.includes('dashboard.html')) {
             console.log(`\n✅ SUCCESS — dashboard reached after ${i+1}s`);
             console.log(`   Email: ${email}`);
-            console.log(`   Password: ${password}`);
+            console.log(`   Password: ${'*'.repeat(Math.min(password.length, 12))} (${password.length} chars)`);
             break;
         }
         if (err && err.trim().length > 5) {

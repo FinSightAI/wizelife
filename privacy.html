@@ -113,19 +113,19 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <li><strong>Tax-related data:</strong> citizenships, residency, income brackets, and the questions you ask WizeTax. Used to personalise tax answers, not stored beyond your session unless you explicitly save a profile.</li>
       <li><strong>Real-estate data:</strong> deal details (address, price, mortgage terms) you analyse in WizeDeal.</li>
       <li><strong>Travel data:</strong> destinations, dates, trip plans entered in WizeTravel.</li>
-      <li><strong>AI queries:</strong> the questions you send. Routed to third-party AI APIs (Google Gemini, sometimes Tavily for web search). Not stored permanently by us.</li>
-      <li><strong>Analytics data:</strong> page views, session duration, browser/device type — Google Analytics + Microsoft Clarity (session replays). Set only when you accept the cookie banner; you can withdraw consent at any time.</li>
+      <li><strong>AI queries:</strong> the questions you send, plus relevant context from your profile. Routed to one of: Google Gemini (default), Anthropic Claude, or OpenRouter (when explicitly selected). For tax-related questions, a derived search query may also go to Tavily for fresh regulatory data. Paid-tier APIs do NOT train on customer prompts. We do not retain prompts beyond the response.</li>
+      <li><strong>Aggregate analytics:</strong> page views, top routes, country (not city), device type, browser. Collected by <strong>Cloudflare Web Analytics</strong> in cookieless, server-side, aggregate-only form. No personal identifiers, no cross-session user tracking, no advertising ID. Not consent-gated because no cookies are set.</li>
       <li><strong>Auto-categorisation data:</strong> if you use WizeMoney's auto-categorise feature, transaction descriptions are sent to Gemini for tagging, then results returned to your browser. Not stored on AI provider servers.</li>
     </ul>
-    <p>We do <strong>not</strong> collect: government IDs, passport numbers, payment-card numbers (handled by Stripe directly when billing is live), biometric data, or geolocation beyond country-level.</p>
+    <p>We do <strong>not</strong> use Google Analytics, Microsoft Clarity, Facebook Pixel, advertising trackers, or any cross-site identifier. We do <strong>not</strong> collect: government IDs, passport numbers, payment-card numbers (handled by Stripe directly when billing is live), biometric data, geolocation beyond country-level, or session recordings.</p>
   </section>
 
   <section>
     <h2>3. Why We Collect It (Legal Basis)</h2>
     <ul>
       <li><strong>Performance of contract:</strong> account auth, syncing your data, generating the AI answers you request.</li>
-      <li><strong>Legitimate interest:</strong> enforcing fair-use AI quotas, preventing abuse, debugging.</li>
-      <li><strong>Consent:</strong> analytics, session replays, marketing emails.</li>
+      <li><strong>Legitimate interest:</strong> enforcing fair-use AI quotas, preventing abuse, debugging, aggregate analytics (Cloudflare) for service operation. No tracking cookies are set, no profile is built about you.</li>
+      <li><strong>Consent:</strong> marketing emails (when opted in), data sync to Firestore for sensitive WizeHealth records.</li>
       <li><strong>Legal obligation:</strong> retaining records required by Israeli/EU law (e.g. tax audit if we become a billing entity).</li>
     </ul>
     <p>We do <strong>not</strong> sell your data, share it with advertisers, or use it for any purpose other than operating and improving the service.</p>
@@ -142,8 +142,9 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <tr><td style="padding:6px 8px;">Render</td><td style="padding:6px 8px;">US (Oregon)</td><td style="padding:6px 8px;">API backends (master-backend, vitara)</td></tr>
       <tr><td style="padding:6px 8px;">Vercel</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">WizeTax / WizeDeal frontends</td></tr>
       <tr><td style="padding:6px 8px;">GitHub Pages</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">WizeLife / WizeMoney static hosting</td></tr>
-      <tr><td style="padding:6px 8px;">Cloudflare</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">DNS, DDoS protection, WAF</td></tr>
-      <tr><td style="padding:6px 8px;">Google Analytics + Microsoft Clarity</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Anonymised usage + session replays (consent only)</td></tr>
+      <tr><td style="padding:6px 8px;">Cloudflare</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">DNS, DDoS protection, WAF, cookieless aggregate analytics</td></tr>
+      <tr><td style="padding:6px 8px;">Anthropic (Claude)</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries when user selects Claude provider (paid API, no training)</td></tr>
+      <tr><td style="padding:6px 8px;">OpenRouter</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries when user explicitly switches provider</td></tr>
       <tr><td style="padding:6px 8px;">Resend (when active)</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Transactional emails</td></tr>
     </table>
   </section>
@@ -164,11 +165,12 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
     <h2>6. Cookies & Local Storage</h2>
     <p>We use:</p>
     <ul>
-      <li><strong>Functional storage</strong> (always on): <code>wl_token</code>, <code>wl_sso</code>, <code>wl_lang</code>, <code>wl_theme</code> — required to keep you logged in and remember your preferences.</li>
-      <li><strong>App data</strong> (always on): your portfolio, goals, etc. stored in browser localStorage so the app works offline.</li>
-      <li><strong>Analytics cookies</strong> (consent only): Google Analytics, Microsoft Clarity. Triggered after you accept the cookie banner.</li>
+      <li><strong>Functional storage</strong> (always on): <code>wl_token</code>, <code>wl_sso</code>, <code>wl_lang</code>, <code>wl_theme</code>, <code>wl_plan</code> — required to keep you logged in and remember your preferences. Strictly necessary; no consent banner under GDPR Article 6(1)(b).</li>
+      <li><strong>App data</strong> (always on): your portfolio, goals, health markers, etc. stored in your browser's localStorage so the app works offline. This data NEVER leaves your device unless you explicitly sync or send a chat.</li>
+      <li><strong>Analytics</strong>: <strong>Cloudflare Web Analytics</strong> only — cookieless and aggregate-only. No cross-session user identification, no persistent identifier, no advertising signal. Because no cookies are set and no PII is processed, no consent banner is required (per CNIL/ICO guidance for cookieless analytics).</li>
+      <li><strong>We do NOT use:</strong> Google Analytics, Microsoft Clarity, Facebook Pixel, Hotjar, FullStory, advertising cookies, retargeting pixels, or any cross-site tracker.</li>
     </ul>
-    <p>You can withdraw analytics consent at any time by clearing your browser's localStorage or using your browser's cookie controls.</p>
+    <p>You can clear all functional storage at any time via your browser's controls; doing so will sign you out and remove cached app data.</p>
   </section>
 
   <section>
