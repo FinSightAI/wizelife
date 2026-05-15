@@ -48,6 +48,32 @@
         accept: 'I understand and continue at my own risk',
         decline: 'Exit',
       },
+      pt: {
+        title: '⚠️ Importante — Antes de começar',
+        intro: 'WizeHealth é <strong>uma ferramenta de informação e monitoramento apenas</strong>. Não é <strong>um médico</strong> e não substitui aconselhamento médico profissional.',
+        bullets: [
+          '<strong>Em emergência, ligue 101 (Israel) ou seu número de emergência local</strong> — não use WizeHealth.',
+          'Não inicie, interrompa ou altere medicamentos sem consultar um médico.',
+          'Sempre mostre os resultados de exames ao seu médico para interpretação.',
+          'IA pode cometer erros. Verifique qualquer informação com fonte qualificada.',
+          'WizeHealth não é para usuários menores de 18 anos.',
+        ],
+        accept: 'Entendi e continuo por minha própria conta e risco',
+        decline: 'Sair',
+      },
+      es: {
+        title: '⚠️ Importante — Antes de empezar',
+        intro: 'WizeHealth es <strong>una herramienta de información y seguimiento solamente</strong>. <strong>No es un médico</strong> y no sustituye al consejo médico profesional.',
+        bullets: [
+          '<strong>En emergencia, llama al 101 (Israel) o tu número de emergencia local</strong> — no uses WizeHealth.',
+          'No inicies, pares o cambies medicamentos sin consultar a un médico.',
+          'Muestra siempre los resultados de los análisis a tu médico para su interpretación.',
+          'La IA puede equivocarse. Verifica cualquier información con una fuente cualificada.',
+          'WizeHealth no es para usuarios menores de 18 años.',
+        ],
+        accept: 'Entiendo y continúo bajo mi propio riesgo',
+        decline: 'Salir',
+      },
     },
     money: {
       he: {
@@ -76,6 +102,32 @@
         accept: 'I understand and continue at my own risk',
         decline: 'Exit',
       },
+      pt: {
+        title: '⚠️ Antes de usar o Consultor de Investimentos',
+        intro: 'WizeMoney fornece <strong>informação, não consultoria de investimentos licenciada</strong>. Não somos regulados pela Autoridade de Valores Mobiliários de Israel.',
+        bullets: [
+          'Toda recomendação é informativa — não é ordem de compra/venda.',
+          'Rendimentos passados não garantem rendimentos futuros.',
+          'Você pode perder todo o investimento.',
+          'Consulte um assessor de investimentos licenciado antes de agir.',
+          'IA pode errar em preços, tickers e previsões.',
+        ],
+        accept: 'Entendi e continuo por minha própria conta e risco',
+        decline: 'Sair',
+      },
+      es: {
+        title: '⚠️ Antes de usar el Asesor de Inversiones',
+        intro: 'WizeMoney proporciona <strong>información, no asesoramiento de inversiones licenciado</strong>. No estamos regulados por la Autoridad de Valores de Israel.',
+        bullets: [
+          'Cada recomendación es informativa — no es una orden de compra/venta.',
+          'Las rentabilidades pasadas no garantizan rentabilidades futuras.',
+          'Puedes perder toda tu inversión.',
+          'Consulta a un asesor de inversiones licenciado antes de actuar.',
+          'La IA puede equivocarse con precios, tickers y pronósticos.',
+        ],
+        accept: 'Entiendo y continúo bajo mi propio riesgo',
+        decline: 'Salir',
+      },
     },
     tax: {
       he: {
@@ -102,6 +154,30 @@
         accept: 'I understand and continue',
         decline: 'Exit',
       },
+      pt: {
+        title: '⚠️ Antes de usar o WizeTax',
+        intro: 'WizeTax fornece <strong>informação tributária geral, não aconselhamento personalizado</strong>. Não somos consultores tributários licenciados.',
+        bullets: [
+          'As leis tributárias mudam frequentemente — as informações podem estar desatualizadas.',
+          'O cumprimento de prazos e pagamentos é de sua exclusiva responsabilidade.',
+          'Consulte um consultor tributário licenciado antes de qualquer declaração real.',
+          'Não use o serviço para planejamento tributário ilegal ou evasão.',
+        ],
+        accept: 'Entendi e continuo',
+        decline: 'Sair',
+      },
+      es: {
+        title: '⚠️ Antes de usar WizeTax',
+        intro: 'WizeTax proporciona <strong>información fiscal general, no asesoramiento personalizado</strong>. No somos asesores fiscales licenciados.',
+        bullets: [
+          'Las leyes fiscales cambian con frecuencia — la información puede estar desactualizada.',
+          'El cumplimiento de plazos y pagos es tu responsabilidad exclusiva.',
+          'Consulta a un asesor fiscal licenciado antes de cualquier declaración real.',
+          'No uses el servicio para planificación fiscal ilegal o evasión.',
+        ],
+        accept: 'Entiendo y continúo',
+        decline: 'Salir',
+      },
     },
     deal: {
       he: {
@@ -126,12 +202,36 @@
         accept: 'I understand',
         decline: 'Exit',
       },
+      pt: {
+        title: '⚠️ Antes de analisar uma operação imobiliária',
+        intro: 'WizeDeal fornece <strong>análise, não recomendação de compra ou aluguel</strong>.',
+        bullets: [
+          'As projeções são baseadas nos dados que você insere — não são automaticamente precisas para as condições atuais do mercado.',
+          'Verifique sempre com advogado / avaliador / consultor imobiliário licenciado antes de agir.',
+          'IA pode errar sobre valores de mercado e tributação.',
+        ],
+        accept: 'Entendi',
+        decline: 'Sair',
+      },
+      es: {
+        title: '⚠️ Antes de analizar una operación inmobiliaria',
+        intro: 'WizeDeal proporciona <strong>análisis, no recomendación de compra o alquiler</strong>.',
+        bullets: [
+          'Las proyecciones se basan en los datos que ingresas — no son automáticamente precisas para las condiciones actuales del mercado.',
+          'Verifica siempre con un abogado / tasador / asesor inmobiliario licenciado antes de actuar.',
+          'La IA puede equivocarse con valores de mercado e impuestos.',
+        ],
+        accept: 'Entiendo',
+        decline: 'Salir',
+      },
     },
   };
 
   function getLang() {
-    try { const v = localStorage.getItem('wl_lang'); return v === 'en' || v === 'he' ? v : 'he'; }
-    catch { return 'he'; }
+    try {
+      const v = (localStorage.getItem('wl_lang') || '').slice(0, 2);
+      return ['he', 'en', 'pt', 'es'].includes(v) ? v : 'he';
+    } catch { return 'he'; }
   }
 
   function storageKey(app) { return `wl_disclaimer_${app}_v${TOS_VERSION}`; }
@@ -364,7 +464,9 @@
     var chip = document.createElement('button');
     chip.id = 'wl-pro-disclaimer-chip';
     chip.type = 'button';
-    chip.setAttribute('aria-label', 'AI disclaimer');
+    var chipAria = ({ he: 'גילוי AI', en: 'AI disclaimer', pt: 'Aviso de IA', es: 'Aviso de IA' })[lang] || 'AI disclaimer';
+    chip.setAttribute('aria-label', chipAria);
+    chip.setAttribute('title', chipAria);
     chip.innerHTML = 'ℹ️';
     chip.style.cssText = [
       'position:fixed','top:46px','inset-inline-end:12px','z-index:99996',
