@@ -170,8 +170,9 @@ body{display:flex;flex-direction:column}
 </div>
 <script>
   // Hide loader as soon as main content is ready (mainLayout shows OR paywall shows OR authWall shows).
-  // Safety fallback at 6 s: if nothing is ready yet, force the auth-wall to show so the user is
-  // never staring at a blank dark screen — they can always retry login from there.
+  // Safety fallback at 12 s. If the user has a cached plan we treat them as signed-in
+  // and show the paywall (or render mainLayout when YOLO) — never the sign-in wall —
+  // because the wall would be a flat-out lie for a logged-in visitor.
   (function(){
     function hide() {
       var el = document.getElementById('wize-ai-early-loader');
@@ -183,14 +184,20 @@ body{display:flex;flex-direction:column}
     }, 200);
     setTimeout(function(){
       clearInterval(poll);
-      // If we're past the safety budget and nothing is wired up yet, surface auth-wall.
       var anyReady = document.querySelector('#mainLayout[style*="flex"], #wizeaiPaywall:not(.hidden), #authWall:not([style*="none"])');
       if (!anyReady) {
-        var aw = document.getElementById('authWall');
-        if (aw) aw.style.display = 'flex';
+        var cachedPlan = null;
+        try { cachedPlan = localStorage.getItem('wl_plan'); } catch (e) {}
+        if (cachedPlan === 'yolo') {
+          var ml = document.getElementById('mainLayout'); if (ml) ml.style.display = 'flex';
+        } else if (cachedPlan === 'pro' || cachedPlan === 'free') {
+          if (typeof showPaywall === 'function') showPaywall();
+        } else {
+          var aw = document.getElementById('authWall'); if (aw) aw.style.display = 'flex';
+        }
       }
       hide();
-    }, 6000);
+    }, 12000);
   })();
 </script>
 
