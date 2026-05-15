@@ -1,19 +1,23 @@
-# 🚨 Extended action items — 2026-05-14
+# 🚨 Extended action items — 2026-05-15
 
-**1 failure(s), 0 warning(s), 8 pass.**
+**3 failure(s), 0 warning(s), 8 pass.**
 
 ## For Claude to fix:
-- ❌ SW shell asset 404: https://money.wizelife.ai/./pages/stocks.html (cached by https://money.wizelife.ai/sw.js) — **fix:** remove ./pages/stocks.html from SHELL[] in https://money.wizelife.ai/sw.js OR restore the file
+- ❌ SW shell asset 404: https://money.wizelife.ai/./img/logo.svg (cached by https://money.wizelife.ai/sw.js) — **fix:** remove ./img/logo.svg from SHELL[] in https://money.wizelife.ai/sw.js OR restore the file
+- ❌ SW shell asset 404: https://money.wizelife.ai/./js/widgets.js (cached by https://money.wizelife.ai/sw.js) — **fix:** remove ./js/widgets.js from SHELL[] in https://money.wizelife.ai/sw.js OR restore the file
+- ❌ SW shell asset 404: https://money.wizelife.ai/./pages/mygemel.html (cached by https://money.wizelife.ai/sw.js) — **fix:** remove ./pages/mygemel.html from SHELL[] in https://money.wizelife.ai/sw.js OR restore the file
 
 ---
 _<details><summary>Full detail</summary>_
 
-# Extended checks — 2026-05-14T22:36:55.825Z
+# Extended checks — 2026-05-15T00:56:58.178Z
 
 ## Tier 13f — SW cache integrity
 
 - ✅ https://wizelife.ai/sw.js: all 21 shell assets reachable
-- ❌ SW shell asset 404: https://money.wizelife.ai/./pages/stocks.html (cached by https://money.wizelife.ai/sw.js)
+- ❌ SW shell asset 404: https://money.wizelife.ai/./img/logo.svg (cached by https://money.wizelife.ai/sw.js)
+- ❌ SW shell asset 404: https://money.wizelife.ai/./js/widgets.js (cached by https://money.wizelife.ai/sw.js)
+- ❌ SW shell asset 404: https://money.wizelife.ai/./pages/mygemel.html (cached by https://money.wizelife.ai/sw.js)
 
 ## Tier 13h — Email DNS records (wizelife.ai)
 

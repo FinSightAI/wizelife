@@ -1,19 +1,24 @@
-# 🚨 I18n-Leak action items — 2026-05-14
+# 🚨 I18n-Leak action items — 2026-05-15
 
-**6 failure(s), 0 warning(s), 45 pass.**
+**11 failure(s), 0 warning(s), 40 pass.**
 
 ## For Claude to fix:
-- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "אני", "מבוגר", "הוסף בן משפחה")
-- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "אני", "מבוגר", "הוסף בן משפחה")
-- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "אני", "מבוגר", "הוסף בן משפחה")
-- ❌ https://vitara.onrender.com/ [EN] — no Hebrew leaks — 12 Hebrew strings leaked (first 3: "Llama 3.3 70B (חינמי | טקסט)", "Llama 3.2 11B Vision (חינמי | תמונות ✅)", "Gemini 2.0 Flash (חינמי | תמונות ✅)")
-- ❌ https://vitara.onrender.com/ [PT] — no Hebrew leaks — 12 Hebrew strings leaked (first 3: "Llama 3.3 70B (חינמי | טקסט)", "Llama 3.2 11B Vision (חינמי | תמונות ✅)", "Gemini 2.0 Flash (חינמי | תמונות ✅)")
-- ❌ https://vitara.onrender.com/ [ES] — no Hebrew leaks — 12 Hebrew strings leaked (first 3: "Llama 3.3 70B (חינמי | טקסט)", "Llama 3.2 11B Vision (חינמי | תמונות ✅)", "Gemini 2.0 Flash (חינמי | תמונות ✅)")
+- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 8 Hebrew strings leaked (first 3: "אני", "מבוגר", "הגיע הזמן לשלוח את הסיכום הפיננסי שלך")
+- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 8 Hebrew strings leaked (first 3: "אני", "מבוגר", "הגיע הזמן לשלוח את הסיכום הפיננסי שלך")
+- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 8 Hebrew strings leaked (first 3: "אני", "מבוגר", "הגיע הזמן לשלוח את הסיכום הפיננסי שלך")
+- ❌ https://deal.wizelife.ai/ [PT] — no Hebrew leaks — page load failed: page.waitForTimeout: Target page, context or browser has been closed
+- ❌ https://deal.wizelife.ai/ [ES] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://travel.wizelife.ai/ [EN] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://travel.wizelife.ai/ [PT] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://travel.wizelife.ai/ [ES] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://vitara.onrender.com/ [EN] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://vitara.onrender.com/ [PT] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://vitara.onrender.com/ [ES] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
 
 ---
 _<details><summary>Full detail</summary>_
 
-# I18n-Leak QA — 2026-05-14
+# I18n-Leak QA — 2026-05-15
 
 - ✅ https://wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/ [PT] — no Hebrew leaks
@@ -51,20 +56,20 @@ _<details><summary>Full detail</summary>_
 - ✅ https://wizelife.ai/health.html [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [ES] — no Hebrew leaks
-- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "אני", "מבוגר", "הוסף בן משפחה")
-- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "אני", "מבוגר", "הוסף בן משפחה")
-- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "אני", "מבוגר", "הוסף בן משפחה")
+- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 8 Hebrew strings leaked (first 3: "אני", "מבוגר", "הגיע הזמן לשלוח את הסיכום הפיננסי שלך")
+- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 8 Hebrew strings leaked (first 3: "אני", "מבוגר", "הגיע הזמן לשלוח את הסיכום הפיננסי שלך")
+- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 8 Hebrew strings leaked (first 3: "אני", "מבוגר", "הגיע הזמן לשלוח את הסיכום הפיננסי שלך")
 - ✅ https://tax.wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://tax.wizelife.ai/ [PT] — no Hebrew leaks
 - ✅ https://tax.wizelife.ai/ [ES] — no Hebrew leaks
 - ✅ https://deal.wizelife.ai/ [EN] — no Hebrew leaks
-- ✅ https://deal.wizelife.ai/ [PT] — no Hebrew leaks
-- ✅ https://deal.wizelife.ai/ [ES] — no Hebrew leaks
-- ✅ https://travel.wizelife.ai/ [EN] — no Hebrew leaks
-- ✅ https://travel.wizelife.ai/ [PT] — no Hebrew leaks
-- ✅ https://travel.wizelife.ai/ [ES] — no Hebrew leaks
-- ❌ https://vitara.onrender.com/ [EN] — no Hebrew leaks — 12 Hebrew strings leaked (first 3: "Llama 3.3 70B (חינמי | טקסט)", "Llama 3.2 11B Vision (חינמי | תמונות ✅)", "Gemini 2.0 Flash (חינמי | תמונות ✅)")
-- ❌ https://vitara.onrender.com/ [PT] — no Hebrew leaks — 12 Hebrew strings leaked (first 3: "Llama 3.3 70B (חינמי | טקסט)", "Llama 3.2 11B Vision (חינמי | תמונות ✅)", "Gemini 2.0 Flash (חינמי | תמונות ✅)")
-- ❌ https://vitara.onrender.com/ [ES] — no Hebrew leaks — 12 Hebrew strings leaked (first 3: "Llama 3.3 70B (חינמי | טקסט)", "Llama 3.2 11B Vision (חינמי | תמונות ✅)", "Gemini 2.0 Flash (חינמי | תמונות ✅)")
+- ❌ https://deal.wizelife.ai/ [PT] — no Hebrew leaks — page load failed: page.waitForTimeout: Target page, context or browser has been closed
+- ❌ https://deal.wizelife.ai/ [ES] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://travel.wizelife.ai/ [EN] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://travel.wizelife.ai/ [PT] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://travel.wizelife.ai/ [ES] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://vitara.onrender.com/ [EN] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://vitara.onrender.com/ [PT] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
+- ❌ https://vitara.onrender.com/ [ES] — no Hebrew leaks — page load failed: page.goto: Target page, context or browser has been closed
 
 </details>
