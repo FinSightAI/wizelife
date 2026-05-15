@@ -140,28 +140,79 @@
     try { return !!localStorage.getItem(storageKey(app)); } catch { return false; }
   }
 
-  function recordAcceptance(app) {
+  /* SHA-256 of an arbitrary string (UTF-8). Used to fingerprint the
+     disclaimer copy the user actually saw, so we can later prove in court
+     'user X accepted the exact text whose hash matches Y on this date'. */
+  async function _sha256Hex(s) {
+    try {
+      const enc = new TextEncoder().encode(s);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch { return null; }
+  }
+
+  /* Build a deterministic snapshot of the disclaimer text rendered on screen
+     (title + intro + every bullet, joined with \n). Hashing this gives us
+     legal evidence the user saw exactly THIS version of the copy. */
+  function _renderedTextFor(app, lang) {
+    const t = (COPY[app] || {})[lang] || (COPY[app] || {}).en;
+    if (!t) return '';
+    return [t.title, t.intro, ...(t.bullets || [])].join('\n');
+  }
+
+  async function recordAcceptance(app) {
+    const lang = getLang();
+    const rendered = _renderedTextFor(app, lang);
+    const textHash = await _sha256Hex(rendered);
     const payload = {
       accepted: true,
       version: TOS_VERSION,
       at: new Date().toISOString(),
       ua: navigator.userAgent.slice(0, 200),
-      lang: getLang(),
+      lang,
       pageUrl: location.href.slice(0, 300),
+      /* Legal-evidence fields: hash + length of the exact copy shown. */
+      text_hash: textHash,
+      text_length: rendered.length,
+      /* Viewport + screen — helps prove the modal was visible (not hidden by
+         dev tools / zoom abuse). */
+      viewport: typeof window !== 'undefined' ? (window.innerWidth + 'x' + window.innerHeight) : '',
+      screen: typeof screen !== 'undefined' ? (screen.width + 'x' + screen.height) : '',
+      /* Timezone gives a rough geographic fingerprint without storing real IP
+         (which we don't have client-side anyway). */
+      tz: (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '',
     };
     // 1. localStorage (fast, available offline)
     try { localStorage.setItem(storageKey(app), JSON.stringify(payload)); } catch {}
-    // 2. Firestore audit trail (server-side legal evidence) — only if firebase is loaded + user signed in.
-    //    Stored as users/{uid}/disclaimers/{app}_v{N} so deletion of the user wipes it cleanly.
-    try {
-      if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+    // 2. Firestore audit trail (server-side legal evidence) — only if firebase
+    //    is loaded + user signed in. Stored as users/{uid}/disclaimers/{app}_v{N}
+    //    so a user deletion wipes the record cleanly. Uses {merge:true} so
+    //    second-visit re-acceptance doesn't lose first-visit fields like 'at'.
+    function writeFirestore(retry) {
+      try {
+        if (typeof firebase === 'undefined' || !firebase.auth || !firebase.firestore) return;
         const u = firebase.auth().currentUser;
-        if (u && u.uid) {
-          firebase.firestore()
-            .collection('users').doc(u.uid)
-            .collection('disclaimers').doc(`${app}_v${TOS_VERSION}`)
-            .set(payload, { merge: false });
-        }
+        if (!u || !u.uid) return;
+        firebase.firestore()
+          .collection('users').doc(u.uid)
+          .collection('disclaimers').doc(`${app}_v${TOS_VERSION}`)
+          .set(payload, { merge: false })
+          .catch(function () {
+            // One retry after 4s — typical cause is App Check token still warming up.
+            if (!retry) setTimeout(function () { writeFirestore(true); }, 4000);
+          });
+      } catch (e) {
+        if (!retry) setTimeout(function () { writeFirestore(true); }, 4000);
+      }
+    }
+    writeFirestore(false);
+    // 3. If user signs in AFTER accepting (anonymous → google), write the
+    //    record on the auth-state-change event so we still capture proof.
+    try {
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        firebase.auth().onAuthStateChanged(function (u) {
+          if (u && u.uid) writeFirestore(false);
+        });
       }
     } catch {}
   }
@@ -300,18 +351,51 @@
     };
     const tr = (TR[opts.app] && (TR[opts.app][lang] || TR[opts.app].en)) || '';
     if (!tr) return;
-    const bar = document.createElement('div');
-    bar.id = 'wl-pro-disclaimer';
-    bar.style.cssText = [
-      'background:linear-gradient(90deg,#fef3c7,#fde68a)','color:#78350f',
-      'font:600 11.5px Inter,-apple-system,sans-serif','padding:6px 14px','text-align:center',
-      'letter-spacing:0.1px','line-height:1.45','position:relative','z-index:99997',
-      'border-bottom:1px solid #f59e0b55',
+    /* 7-day dismissal: only the full banner re-shows; the chip is permanent. */
+    var dismKey = 'wl_pro_disclaimer_dismissed_' + opts.app;
+    function dismissed() {
+      try {
+        var t = parseInt(localStorage.getItem(dismKey) || '0', 10);
+        return t && (Date.now() - t) < 7 * 24 * 60 * 60 * 1000;
+      } catch (e) { return false; }
+    }
+    /* Floating ℹ️ chip in the corner — non-intrusive. Click expands into the
+       full amber banner positioned just below the WizeBar. */
+    var chip = document.createElement('button');
+    chip.id = 'wl-pro-disclaimer-chip';
+    chip.type = 'button';
+    chip.setAttribute('aria-label', 'AI disclaimer');
+    chip.innerHTML = 'ℹ️';
+    chip.style.cssText = [
+      'position:fixed','top:46px','inset-inline-end:12px','z-index:99996',
+      'width:24px','height:24px','border-radius:50%','border:1px solid rgba(245,158,11,0.55)',
+      'background:rgba(254,243,199,0.92)','color:#78350f',
+      'font:600 12px Inter,-apple-system,sans-serif','cursor:pointer',
+      'display:flex','align-items:center','justify-content:center',
+      'box-shadow:0 2px 8px rgba(0,0,0,0.15)','backdrop-filter:blur(8px)',
+      'opacity:.85','transition:opacity .15s',
     ].join(';');
-    bar.innerHTML = tr;
-    /* Insert just BELOW the WizeBar (top 36px). The WizeBar itself uses
-       z-index 99999, so this banner stays in normal flow underneath it. */
-    document.body.insertBefore(bar, document.body.firstChild);
+    chip.onmouseover = function () { chip.style.opacity = '1'; };
+    chip.onmouseout  = function () { chip.style.opacity = '.85'; };
+    chip.onclick = function () {
+      if (document.getElementById('wl-pro-disclaimer')) return;
+      var bar = document.createElement('div');
+      bar.id = 'wl-pro-disclaimer';
+      bar.style.cssText = [
+        'position:fixed','top:36px','left:0','right:0','z-index:99996',
+        'background:linear-gradient(90deg,rgba(254,243,199,0.97),rgba(253,230,138,0.97))',
+        'color:#78350f','font:600 11px Inter,-apple-system,sans-serif',
+        'padding:6px 36px 6px 14px','text-align:center','line-height:1.45',
+        'border-bottom:1px solid rgba(245,158,11,0.35)','backdrop-filter:blur(8px)',
+      ].join(';');
+      bar.innerHTML = tr +
+        '<button aria-label="dismiss" style="position:absolute;top:50%;inset-inline-end:8px;transform:translateY(-50%);background:transparent;border:0;color:#78350f;font-size:14px;cursor:pointer;padding:2px 6px;line-height:1;font-family:inherit;opacity:.7;" onclick="(function(b){try{localStorage.setItem(\'' + dismKey + '\',String(Date.now()));}catch(e){}b.remove();})(this.parentNode)">✕</button>';
+      document.body.appendChild(bar);
+    };
+    document.body.appendChild(chip);
+    /* Auto-expand on first visit (and again after every 7-day dismissal),
+       then collapse to chip-only behaviour. */
+    if (!dismissed()) chip.click();
   }
 
   root.WizeDisclaimer = { gate, showEmergencyBanner, showProfessionalDisclaimer, TOS_VERSION };
