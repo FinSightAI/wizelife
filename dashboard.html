@@ -23,6 +23,7 @@
 }catch(e){}})();
 </script>
 <meta charset="utf-8"/>
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link href="/manifest.json" rel="manifest"/>
 <meta content="#6366f1" name="theme-color"/>
 <meta content="yes" name="mobile-web-app-capable"/>
@@ -905,7 +906,30 @@ function manageSubscription() {
 }
 
 function signOut() {
- wlAuth.signOut().then(() => window.location.href = "index.html");
+  // Wipe sensitive client-side state BEFORE Firebase signOut completes so
+  // race conditions can't leak the next render to localStorage observers.
+  // Cross-domain data (money/tax/deal/health/travel.wizelife.ai) lives in
+  // each sub-domain's own localStorage — we can't reach it from here, but
+  // each sub-app clears its own state when it sees wl_token disappear (see
+  // sub-app auth listeners).
+  try {
+    const PURGE = [
+      // Auth / SSO bridge
+      'wl_token', 'wl_sso', 'wl_nick', 'wl_nickname', 'wl_plan', 'wl_access_code',
+      // Disclaimer / consent records (re-prompt on next sign-in, fresh proof)
+      'wl_cookie_consent_v1',
+      // Per-app local profiles that travelled through portal context
+      'tax_master_profile', 'wh_profile', 'wh_conversations',
+      'finance_data', 'wize_money_data', 'app_state',
+      'wt_trips', 'wt_watches',
+      // Cached plan / nickname / refer link
+      'wl_referral_link', 'wl_referral_stats',
+    ];
+    PURGE.forEach(k => localStorage.removeItem(k));
+    // Anything else with a wl_ prefix is functional; keep wl_lang + wl_theme
+    // because they're UX preferences, not user data.
+  } catch (e) {}
+  wlAuth.signOut().then(() => window.location.href = "index.html");
 }
 
 // ── Privacy: export user data as JSON ────────────────────────────────────────
