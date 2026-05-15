@@ -36,7 +36,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WizeLife">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Sign In — Wize Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://vitara.onrender.com" crossorigin>
@@ -220,11 +220,7 @@
  <div class="form-group">
  <label>Password</label>
  <div class="pw-wrap">
- <div style="position:relative;">
  <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" style="padding-inline-end:38px;">
- <button type="button" onclick="togglePw('loginPassword', this)" aria-label="Show password"
- style="position:absolute; inset-inline-end:8px; top:50%; transform:translateY(-50%); background:none; border:0; color:var(--muted); cursor:pointer; padding:4px 8px; font-size:16px;">👁</button>
- </div>
  <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
  </div>
  </div>
@@ -246,11 +242,7 @@
  <div class="form-group">
  <label>Password</label>
  <div class="pw-wrap">
- <div style="position:relative;">
  <input type="password" id="signupPassword" placeholder="8+ chars, A-Z, a-z, 0-9, special" autocomplete="new-password" style="padding-inline-end:38px;">
- <button type="button" onclick="togglePw('signupPassword', this)" aria-label="Show password"
- style="position:absolute; inset-inline-end:8px; top:50%; transform:translateY(-50%); background:none; border:0; color:var(--muted); cursor:pointer; padding:4px 8px; font-size:16px;">👁</button>
- </div>
  <button type="button" class="pw-toggle" onclick="togglePw('signupPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
  </div>
  </div>
@@ -269,12 +261,12 @@
 </div>
 
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
 <!-- Firebase App Check (reCAPTCHA v3) + Functions — must load BEFORE wizelife-auth.js -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js" integrity="sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v" crossorigin="anonymous"></script>
 <script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
 <script src="js/wizelife-auth.js"></script>
 <script>

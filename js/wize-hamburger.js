@@ -49,14 +49,17 @@
   function ssoUrl(base) {
     try {
       var sso = getSso();
+      // Non-sensitive params go in the query string.
       var p = new URLSearchParams();
-      if (sso.token) p.set('wl_token', sso.token);
       if (sso.nick) p.set('wl_nick', sso.nick);
       var plan = sso.plan || localStorage.getItem('wl_plan');
       if (plan) p.set('wl_plan', plan);
       p.set('lang', getLang());
       var qs = p.toString();
-      return qs ? base + (base.indexOf('?') >= 0 ? '&' : '?') + qs : base;
+      var url = qs ? base + (base.indexOf('?') >= 0 ? '&' : '?') + qs : base;
+      // wl_token in the fragment so it never reaches server logs / CF / Referer.
+      if (sso.token) url += '#wl_token=' + encodeURIComponent(sso.token);
+      return url;
     } catch (e) { return base; }
   }
 
@@ -172,12 +175,32 @@
       var initial = nick.charAt(0).toUpperCase();
       var planRaw = (sso.plan || localStorage.getItem('wl_plan') || 'free').toLowerCase();
       var planLbl = planRaw === 'yolo' ? '⚡ ' + t.plan_yolo : planRaw === 'pro' ? '✦ ' + t.plan_pro : t.plan_free;
-      acct.innerHTML = '<div class="wh-avatar">' + initial + '</div>'
-                    + '<div><div class="wh-name">' + nick + '</div>'
-                    + '<div class="wh-plan">' + planLbl + '</div></div>';
+      var avDiv = document.createElement('div');
+      avDiv.className = 'wh-avatar';
+      avDiv.textContent = initial;
+      var infoDiv = document.createElement('div');
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'wh-name';
+      nameDiv.textContent = nick;
+      var planDiv = document.createElement('div');
+      planDiv.className = 'wh-plan';
+      planDiv.textContent = planLbl;
+      infoDiv.appendChild(nameDiv);
+      infoDiv.appendChild(planDiv);
+      acct.appendChild(avDiv);
+      acct.appendChild(infoDiv);
     } else {
-      acct.innerHTML = '<div class="wh-avatar">?</div>'
-                    + '<div><a href="https://wizelife.ai/auth.html" style="color:#a5b4fc;text-decoration:none;font-size:13.5px;font-weight:700;">' + t.signin + ' →</a></div>';
+      var avDiv2 = document.createElement('div');
+      avDiv2.className = 'wh-avatar';
+      avDiv2.textContent = '?';
+      var wrap2 = document.createElement('div');
+      var a2 = document.createElement('a');
+      a2.href = 'https://wizelife.ai/auth.html';
+      a2.style.cssText = 'color:#a5b4fc;text-decoration:none;font-size:13.5px;font-weight:700;';
+      a2.textContent = t.signin + ' →';
+      wrap2.appendChild(a2);
+      acct.appendChild(avDiv2);
+      acct.appendChild(wrap2);
     }
     body.appendChild(acct);
 

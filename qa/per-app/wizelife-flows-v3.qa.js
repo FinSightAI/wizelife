@@ -190,9 +190,10 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }, path = '/
             await page.waitForTimeout(4000);
             const allHaveToken = await page.evaluate(() => {
                 const cards = Array.from(document.querySelectorAll('a.tool-card[href]'));
+                // wl_token is now in the #fragment (privacy); test checks raw substring so still matches.
                 return cards.length >= 4 && cards.every(c => /wl_token=/.test(c.href));
             });
-            if (!allHaveToken) throw new Error('not all tool-card links have wl_token query string');
+            if (!allHaveToken) throw new Error('not all tool-card links carry wl_token (query or fragment)');
         } finally { await page.close(); await ctx.close(); }
     });
 

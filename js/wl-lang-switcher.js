@@ -75,8 +75,8 @@
     pills.style.cssText = [
       'position:fixed',
       'top:12px',
-      // RTL pages: left; LTR pages: right
-      (document.documentElement.dir === 'rtl' ? 'left:12px' : 'right:12px'),
+      // RTL pages: left; LTR pages: right. Shifted by ~44px to clear the hamburger button.
+      (document.documentElement.dir === 'rtl' ? 'left:52px' : 'right:52px'),
       'z-index:9998',
       'display:flex',
       'gap:4px',

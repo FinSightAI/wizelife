@@ -531,11 +531,16 @@ Monthly rent potential: ₪7,500. HOA: ₪500/mo. Property tax: ₪400/mo.`;
             return a && a.href && a.href.includes('wl_token=');
         }, { timeout: 10000 });
         const href = await ssoWize.locator('#tool-finsight').getAttribute('href');
-        ssoToken = new URL(href).searchParams.get('wl_token') || '';
+        // Token now lives in the #fragment (privacy: not in server / Referer logs).
+        // Fall back to ?query for backward-compat.
+        const u = new URL(href);
+        const hp = new URLSearchParams((u.hash || '').replace(/^#/, ''));
+        ssoToken = hp.get('wl_token') || u.searchParams.get('wl_token') || '';
         if (!ssoToken) throw new Error('wl_token missing from WizeMoney link');
     });
     await step('Navigate to WizeMoney with token → wl_sso stored', async () => {
-        const moneyUrl = `https://money.wizelife.ai/?wl_token=${encodeURIComponent(ssoToken)}&wl_nick=QA&wl_plan=yolo`;
+        // Use the new fragment form for the smoke test.
+        const moneyUrl = `https://money.wizelife.ai/?wl_nick=QA&wl_plan=yolo#wl_token=${encodeURIComponent(ssoToken)}`;
         const ssoMoney = await ssoCtx.newPage();
         await ssoMoney.goto(moneyUrl, { waitUntil: 'load', timeout: 30000 });
         // sidebar.js reads wl_token from URL → stores in wl_sso localStorage

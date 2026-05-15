@@ -2,3 +2,13 @@ User-agent: *
 Allow: /
 
 Sitemap: https://wizelife.ai/sitemap.xml
+
+# Block admin/auth flows from search indexing
+Disallow: /auth.html
+Disallow: /__/auth/
+Disallow: /admin/
+Disallow: /*?wl_token=
+Disallow: /*?wl_plan=
+
+# Crawl-delay for politeness (most engines ignore this)
+Crawl-delay: 1

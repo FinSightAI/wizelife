@@ -1,38 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Landing -->
   <url>
     <loc>https://wizelife.ai/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://wizelife.ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wizelife.ai/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://wizelife.ai/?lang=pt"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://wizelife.ai/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wizelife.ai/"/>
   </url>
+
+  <!-- About -->
   <url>
-    <loc>https://wizelife.ai/auth.html</loc>
+    <loc>https://wizelife.ai/about.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://wizelife.ai/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wizelife.ai/about.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://wizelife.ai/about.html?lang=pt"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://wizelife.ai/about.html?lang=es"/>
   </url>
+
+  <!-- Security -->
   <url>
-    <loc>https://wizelife.ai/apps.html</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://wizelife.ai/security.html</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://wizelife.ai/health.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://wizelife.ai/travel.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
+
+  <!-- Legal -->
   <url>
     <loc>https://wizelife.ai/privacy.html</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://wizelife.ai/terms.html</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.5</priority>
   </url>
+
+  <!-- Feedback -->
+  <url>
+    <loc>https://wizelife.ai/feedback.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Sub-app landing pages (cross-domain — also include for discoverability) -->
+  <url>
+    <loc>https://money.wizelife.ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tax.wizelife.ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tax.wizelife.ai/advisor</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://health.wizelife.ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://travel.wizelife.ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://deal.wizelife.ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
 </urlset>

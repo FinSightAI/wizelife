@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>WizeHealth — מעביר…</title>
 <link rel="icon" href="/favicon.svg?v=51" type="image/svg+xml">
 <style>
@@ -23,13 +23,20 @@
 <script>
 // Forward wl_token + wl_plan + wl_nick to health.wizelife.ai so the
 // destination app (vitara) knows the user's plan + identity.
+// wl_token is carried in the URL fragment so it never reaches server / CF
+// logs / Referer headers. We accept it from either the incoming query OR
+// the incoming fragment for 30-day backward compatibility.
 (function () {
-  var p = new URLSearchParams(location.search);
+  var qp = new URLSearchParams(location.search);
+  var hp = new URLSearchParams((location.hash || '').replace(/^#/, ''));
   var qs = new URLSearchParams();
-  ['wl_token', 'wl_plan', 'wl_nick'].forEach(function (k) {
-    var v = p.get(k); if (v) qs.set(k, v);
+  // Non-sensitive — stay in query.
+  ['wl_plan', 'wl_nick'].forEach(function (k) {
+    var v = hp.get(k) || qp.get(k); if (v) qs.set(k, v);
   });
-  var TARGET = 'https://health.wizelife.ai/' + (qs.toString() ? '?' + qs.toString() : '');
+  var tok = hp.get('wl_token') || qp.get('wl_token');
+  var base = 'https://health.wizelife.ai/';
+  var TARGET = base + (qs.toString() ? '?' + qs.toString() : '') + (tok ? '#wl_token=' + encodeURIComponent(tok) : '');
   location.replace(TARGET);
 })();
 </script>
