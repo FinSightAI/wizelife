@@ -74,7 +74,7 @@
 
   // Words that strongly suggest the value is a financial / domain label
   // rather than a person name.
-  var LABEL_HINT_RE = /(fund|plan|account|loan|mortgage|goal|stock|etf|card|bank|savings|pension|insurance|deposit|portfolio|holding|transfer|bond|crypto|retirement|budget|expense|income|debt|asset)/i;
+  var LABEL_HINT_RE = /(fund|plan|account|loan|mortgage|goal|stock|etf|card|bank|savings|pension|insurance|deposit|portfolio|holding|transfer|bond|crypto|retirement|budget|expense|income|debt|asset|child|children|kids|family|education|college|university|tuition|wedding|emergency|reserve|nest\s*egg|mutual|index|hedge|broker|brokerage|trade|trading|dividend|interest|yield|tax|estate|trust|annuity|ira|roth|401k|403b|gemel|hishtalmut|kupot|keren|kupa|hashlama|hashlamut|tagmulim|haf?ka?da|otzar|hochasa|hochasot|hochasit|חיסכון|חסכון|פנסיה|השתלמות|גמל|השתלמות|קרן|קופה|הפקדה|הפקדות|חיסכ|לימודים|חתונה|חירום|רזרבה)/i;
 
   // Currency symbols (₪ NIS, $ USD, € EUR, £ GBP, ¥ JPY/CNY, R$ BRL).
   var CURRENCY_RE = /[₪$€£¥]|R\$/;

@@ -264,6 +264,7 @@ body{display:flex;flex-direction:column}
   </div>
 </div>
 
+<script src="js/wize-pii.js"></script>
 <script>
 const chatBody  = document.getElementById('chatBody');
 const msgInput  = document.getElementById('msgInput');
@@ -442,10 +443,14 @@ async function sendMsg() {
     _history.push({ role: 'user', parts: [{ text: q }] });
     if (_history.length > MAX_HISTORY) _history = _history.slice(-MAX_HISTORY);
 
+    // PII scrubbed (wize-pii.js, contextual) — strips identity values from
+    // history (email/phone/IDs); keeps financial labels intact for AI accuracy.
+    const _strip = (window.WizePII?.stripIdentity) || (x => x);
+    const _scrub = (window.WizePII?.scrubString) || (x => x);
     const fn = firebase.functions().httpsCallable('aiProxy');
     const res = await fn({
-      messages: [..._history],
-      system,
+      messages: _strip([..._history]),
+      system: typeof system === 'string' ? _scrub(system) : _strip(system),
       maxTokens: _plan === 'yolo' ? 800 : _plan === 'pro' ? 600 : 300
     });
 
