@@ -4,22 +4,22 @@
 <head>
 <script>
 (function(){try{
-  var t=localStorage.getItem('wl_theme');
-  var isLight=t==='light';
-  document.documentElement.setAttribute('data-theme',isLight?'light':'dark');
-  document.documentElement.classList.add(isLight?'light':'dark');
-  document.documentElement.classList.remove(isLight?'dark':'light');
-  if(document.body){document.body.classList.add(isLight?'light':'dark');document.body.classList.remove(isLight?'dark':'light');}
-  document.addEventListener('DOMContentLoaded',function(){
-    document.body.classList.add(isLight?'light':'dark');
-    document.body.classList.remove(isLight?'dark':'light');
-  });
-  // Apply saved language direction before paint to prevent RTL flash for non-Hebrew users.
-  var v = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
-  if(['he','en','pt','es'].indexOf(v)>=0){
-    document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
-    document.documentElement.lang = v;
-  }
+ var t=localStorage.getItem('wl_theme');
+ var isLight=t==='light';
+ document.documentElement.setAttribute('data-theme',isLight?'light':'dark');
+ document.documentElement.classList.add(isLight?'light':'dark');
+ document.documentElement.classList.remove(isLight?'dark':'light');
+ if(document.body){document.body.classList.add(isLight?'light':'dark');document.body.classList.remove(isLight?'dark':'light');}
+ document.addEventListener('DOMContentLoaded',function(){
+ document.body.classList.add(isLight?'light':'dark');
+ document.body.classList.remove(isLight?'dark':'light');
+ });
+ // Apply saved language direction before paint to prevent RTL flash for non-Hebrew users.
+ var v = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+ if(['he','en','pt','es'].indexOf(v)>=0){
+ document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
+ document.documentElement.lang = v;
+ }
 }catch(e){}})();
 </script>
 <meta charset="utf-8"/>
@@ -34,7 +34,7 @@ gtag('js',new Date());
 <script>gtag('config','G-MPRTN6CJ9K');</script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <!-- Security headers (GH Pages doesn't allow HTTP headers, so meta-equivalent) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com https://www.clarity.ms https://*.clarity.ms https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://www.google-analytics.com https://*.clarity.ms; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://www.google-analytics.com ; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self';">
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <title>WizeLife — Live Smarter. Every Day.</title>
@@ -59,8 +59,8 @@ gtag('js',new Date());
 <meta content="WizeLife" name="apple-mobile-web-app-title"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <!-- Pre-warm the Render-hosted backends so they're awake by the time a user
-     taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
-     The actual wake-up GET is fired below in a JS block. -->
+ taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
+ The actual wake-up GET is fired below in a JS block. -->
 <link crossorigin="" href="https://vitara.onrender.com" rel="preconnect"/>
 <link href="https://vitara.onrender.com" rel="dns-prefetch"/>
 <link crossorigin="" href="https://master-backend-79jx.onrender.com" rel="preconnect"/>
@@ -72,21 +72,21 @@ gtag('js',new Date());
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#05060f;
-  --surf:#0a0c1a;
-  --surf2:#11142a;
-  --border:rgba(255,255,255,.07);
-  --border2:rgba(255,255,255,.14);
-  --text:#eef2ff;
-  --muted:#7b88ad;
-  --muted2:#9aa6c7;
-  --accent:#6366f1;
-  --accent2:#a78bfa;
-  --money:#10b981;
-  --travel:#3b82f6;
-  --tax:#f59e0b;
-  --health:#ec4899;
-  --deal:#8b5cf6;
+ --bg:#05060f;
+ --surf:#0a0c1a;
+ --surf2:#11142a;
+ --border:rgba(255,255,255,.07);
+ --border2:rgba(255,255,255,.14);
+ --text:#eef2ff;
+ --muted:#7b88ad;
+ --muted2:#9aa6c7;
+ --accent:#6366f1;
+ --accent2:#a78bfa;
+ --money:#10b981;
+ --travel:#3b82f6;
+ --tax:#f59e0b;
+ --health:#ec4899;
+ --deal:#8b5cf6;
 }
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
@@ -96,7 +96,7 @@ button{font-family:inherit}
 
 /* Noise */
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
+ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:66px;background:rgba(5,6,15,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid transparent;transition:border-color .25s,background .25s}
@@ -145,20 +145,20 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
 .gradient-text{background:linear-gradient(120deg,#6366f1 0%,#a78bfa 35%,#ec4899 65%,#f59e0b 100%);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 8s ease infinite}
 @keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 /* Logo icon — PNG carved by luminance mask, filled with the gradient.
-   The icon AND text BOTH use background-attachment:scroll so the gradient
-   is positioned relative to the VIEWPORT (not each element) → they share
-   one continuous gradient surface and show contiguous slices = identical
-   colors at the seam between icon and text. */
+ The icon AND text BOTH use background-attachment:scroll so the gradient
+ is positioned relative to the VIEWPORT (not each element) → they share
+ one continuous gradient surface and show contiguous slices = identical
+ colors at the seam between icon and text. */
 /* HUD logo with hue-only animated overlay: ::after layer carries the same
-   brand gradient as the WizeLife text and animates with gradShift; the
-   mix-blend-mode:hue keeps the PNG's saturation + luminosity (so rings,
-   glow, and W shape stay intact) while letting the hue cycle through
-   indigo → purple → pink → orange every 8 s — synced with the text. */
+ brand gradient as the WizeLife text and animates with gradShift; the
+ mix-blend-mode:hue keeps the PNG's saturation + luminosity (so rings,
+ glow, and W shape stay intact) while letting the hue cycle through
+ indigo → purple → pink → orange every 8 s — synced with the text. */
 .logo{gap:6px !important}
 /* Logo: original PNG (full glow + rings + W + colors as designed). Above
-   it, an animated hue-rotate filter cycles the colors through the brand
-   palette in lock-step with the WizeLife text. Simple, no mask, no
-   overlay — the PNG keeps its visual identity and the colors animate. */
+ it, an animated hue-rotate filter cycles the colors through the brand
+ palette in lock-step with the WizeLife text. Simple, no mask, no
+ overlay — the PNG keeps its visual identity and the colors animate. */
 /* old logo-icon CSS removed; see wl-logo-icon-style */
 
 @keyframes logoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
@@ -446,87 +446,87 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 
 /* ── RESPONSIVE ── */
 @media(max-width:960px){
-  .showcase{grid-template-columns:1fr}
-  .tool-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
-  .tool-tab-desc,.tool-tab-arrow{display:none}
-  .testi-grid{grid-template-columns:1fr 1fr}
-  .testi-card:last-child{grid-column:span 2}
-  .panel-bullets{grid-template-columns:1fr}
-  .calc-wrap{grid-template-columns:1fr}
-  .compare-head,.compare-row{grid-template-columns:1.5fr 1fr 1fr 1fr;padding-left:18px;padding-right:18px;font-size:.82rem}
+ .showcase{grid-template-columns:1fr}
+ .tool-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+ .tool-tab-desc,.tool-tab-arrow{display:none}
+ .testi-grid{grid-template-columns:1fr 1fr}
+ .testi-card:last-child{grid-column:span 2}
+ .panel-bullets{grid-template-columns:1fr}
+ .calc-wrap{grid-template-columns:1fr}
+ .compare-head,.compare-row{grid-template-columns:1.5fr 1fr 1fr 1fr;padding-left:18px;padding-right:18px;font-size:.82rem}
 }
 @media(max-width:700px){
-  nav{padding:0 16px}
-  .nav-links,.nav-signin,.nav-cta,#langBtn,#navPlanBadge{display:none}
-  .hamburger{display:flex}
-  .nav-right{gap:0}
-  section{padding:60px 18px}
-  .hero{padding:90px 18px 48px;min-height:auto}
-  .testi-grid,.pricing-grid{grid-template-columns:1fr}
-  .testi-card:last-child{grid-column:auto}
-  .trust-inner{flex-wrap:wrap}
-  .trust-item{flex:1 1 45%;border-bottom:1px solid var(--border)}
-  .trust-item:nth-last-child(-n+2){border-bottom:none}
-  .footer-top{flex-direction:column}
-  .footer-links{gap:32px}
-  h1{font-size:clamp(2.2rem,8.5vw,4rem);letter-spacing:-0.5px;line-height:1.06;margin-bottom:20px;padding:0 6px;word-break:keep-all;hyphens:none}
-  .hero-badge{flex-wrap:wrap;text-align:center;line-height:1.4}
-  .hero-sub{font-size:1.02rem;margin-bottom:32px;line-height:1.55;padding:0 4px}
-  .hero-badge{font-size:.72rem;padding:6px 12px;margin-bottom:22px}
-  .hero-btns{flex-direction:column;width:100%;max-width:340px;margin:0 auto;gap:10px}
-  .hero-btns .btn-primary,.hero-btns .btn-secondary{width:100%;padding:14px 20px;font-size:1rem}
-  .panel{padding:22px 18px}
-  .tool-stage{min-height:auto}
-  .deal-stats{grid-template-columns:1fr 1fr;gap:10px}
-  .tax-grid{grid-template-columns:1fr}
-  /* Compare table: switch from 4 columns to a stacked card view */
-  .compare-head{display:none}
-  .compare-row{display:grid;grid-template-columns:1fr;padding:14px 16px;border-bottom:1px solid var(--border)}
-  .compare-cell{padding:4px 0;font-size:.92rem}
-  .compare-cell.hl{font-weight:700;color:var(--accent2)}
-  /* Pricing card less vertical bloat */
-  .plan-card{padding:24px 22px}
-  .plan-price{font-size:2.6rem !important}
-  /* FAQ items more breathing room */
-  .faq-question{padding:14px 16px;font-size:.95rem}
-  .faq-answer{padding:0 16px 14px;font-size:.88rem}
-  /* Tools showcase: smaller cards stack 1-up cleanly */
-  .tool-tabs{display:flex;flex-direction:column;gap:6px}
-  .tool-tab{padding:14px 16px;font-size:.95rem}
-  /* Aurora glows: smaller + less aggressive on mobile */
-  .aurora-1,.aurora-2,.aurora-3{opacity:.5}
-  /* Hide hero feed (live activity ticker) on tiny screens — too much chrome */
-  .hero-feed{margin-top:42px}
-  /* Calculator: make labels stack above inputs */
-  .calc-row,.calc-brow{flex-direction:column !important;align-items:stretch !important;gap:6px !important}
-  .calc-bval{text-align:start !important;font-size:1.1rem !important}
-  /* Hebrew-specific: letter-spacing 0 (negative crushes Hebrew) */
-  html[dir="rtl"] h1,html[dir="rtl"] h2{letter-spacing:0 !important}
+ nav{padding:0 16px}
+ .nav-links,.nav-signin,.nav-cta,#langBtn,#navPlanBadge{display:none}
+ .hamburger{display:flex}
+ .nav-right{gap:0}
+ section{padding:60px 18px}
+ .hero{padding:90px 18px 48px;min-height:auto}
+ .testi-grid,.pricing-grid{grid-template-columns:1fr}
+ .testi-card:last-child{grid-column:auto}
+ .trust-inner{flex-wrap:wrap}
+ .trust-item{flex:1 1 45%;border-bottom:1px solid var(--border)}
+ .trust-item:nth-last-child(-n+2){border-bottom:none}
+ .footer-top{flex-direction:column}
+ .footer-links{gap:32px}
+ h1{font-size:clamp(2.2rem,8.5vw,4rem);letter-spacing:-0.5px;line-height:1.06;margin-bottom:20px;padding:0 6px;word-break:keep-all;hyphens:none}
+ .hero-badge{flex-wrap:wrap;text-align:center;line-height:1.4}
+ .hero-sub{font-size:1.02rem;margin-bottom:32px;line-height:1.55;padding:0 4px}
+ .hero-badge{font-size:.72rem;padding:6px 12px;margin-bottom:22px}
+ .hero-btns{flex-direction:column;width:100%;max-width:340px;margin:0 auto;gap:10px}
+ .hero-btns .btn-primary,.hero-btns .btn-secondary{width:100%;padding:14px 20px;font-size:1rem}
+ .panel{padding:22px 18px}
+ .tool-stage{min-height:auto}
+ .deal-stats{grid-template-columns:1fr 1fr;gap:10px}
+ .tax-grid{grid-template-columns:1fr}
+ /* Compare table: switch from 4 columns to a stacked card view */
+ .compare-head{display:none}
+ .compare-row{display:grid;grid-template-columns:1fr;padding:14px 16px;border-bottom:1px solid var(--border)}
+ .compare-cell{padding:4px 0;font-size:.92rem}
+ .compare-cell.hl{font-weight:700;color:var(--accent2)}
+ /* Pricing card less vertical bloat */
+ .plan-card{padding:24px 22px}
+ .plan-price{font-size:2.6rem !important}
+ /* FAQ items more breathing room */
+ .faq-question{padding:14px 16px;font-size:.95rem}
+ .faq-answer{padding:0 16px 14px;font-size:.88rem}
+ /* Tools showcase: smaller cards stack 1-up cleanly */
+ .tool-tabs{display:flex;flex-direction:column;gap:6px}
+ .tool-tab{padding:14px 16px;font-size:.95rem}
+ /* Aurora glows: smaller + less aggressive on mobile */
+ .aurora-1,.aurora-2,.aurora-3{opacity:.5}
+ /* Hide hero feed (live activity ticker) on tiny screens — too much chrome */
+ .hero-feed{margin-top:42px}
+ /* Calculator: make labels stack above inputs */
+ .calc-row,.calc-brow{flex-direction:column !important;align-items:stretch !important;gap:6px !important}
+ .calc-bval{text-align:start !important;font-size:1.1rem !important}
+ /* Hebrew-specific: letter-spacing 0 (negative crushes Hebrew) */
+ html[dir="rtl"] h1,html[dir="rtl"] h2{letter-spacing:0 !important}
 }
 @media(max-width:380px){
-  /* iPhone SE / mini */
-  h1{font-size:2.2rem}
-  section{padding:48px 14px}
-  .hero{padding:80px 14px 40px}
-  .panel{padding:18px 14px}
+ /* iPhone SE / mini */
+ h1{font-size:2.2rem}
+ section{padding:48px 14px}
+ .hero{padding:80px 14px 40px}
+ .panel{padding:18px 14px}
 }
 </style>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "WizeLife",
-  "url": "https://wizelife.ai",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "https://wizelife.ai/icon-512.png",
-    "width": 512,
-    "height": 512
-  },
-  "description": "AI-powered life suite — Money, Tax, Travel, Health, Real Estate. Five tools in one place.",
-  "sameAs": [
-    "https://finsightai.github.io/wizelife/"
-  ]
+ "@context": "https://schema.org",
+ "@type": "Organization",
+ "name": "WizeLife",
+ "url": "https://wizelife.ai",
+ "logo": {
+ "@type": "ImageObject",
+ "url": "https://wizelife.ai/icon-512.png",
+ "width": 512,
+ "height": 512
+ },
+ "description": "AI-powered life suite — Money, Tax, Travel, Health, Real Estate. Five tools in one place.",
+ "sameAs": [
+ "https://finsightai.github.io/wizelife/"
+ ]
 }
 </script>
 <style>
@@ -549,36 +549,26 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 
 /* Theme toggle button */
 .wl-theme-btn-landing {
-  position: fixed; bottom: 18px; left: 18px; z-index: 9999;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #cbd5e1; font-size: 15px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25); transition: all .18s ease;
+ position: fixed; bottom: 18px; left: 18px; z-index: 9999;
+ width: 38px; height: 38px; border-radius: 50%;
+ background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);
+ border: 1px solid rgba(255,255,255,0.12);
+ color: #cbd5e1; font-size: 15px; cursor: pointer;
+ display: flex; align-items: center; justify-content: center;
+ box-shadow: 0 4px 16px rgba(0,0,0,0.25); transition: all .18s ease;
 }
 .wl-theme-btn-landing:hover { transform: translateY(-2px) scale(1.05); }
 [data-theme="light"] .wl-theme-btn-landing {
-  background: rgba(255,255,255,0.95); border-color: rgba(0,0,0,0.1);
-  color: #475569; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+ background: rgba(255,255,255,0.95); border-color: rgba(0,0,0,0.1);
+ color: #475569; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 </style>
-<!-- Microsoft Clarity -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "wnvlwv7gu0");
-</script>
-
-
 </head>
 <body>
 <!-- NAV -->
 <nav id="nav">
 <a class="logo" href="#"><span class="wl-logo-icon" aria-hidden="true"></span>WizeLife
-  </a>
+ </a>
 <div class="nav-links">
 <a data-i18n="_" href="#products">מוצרים</a>
 <a data-i18n="__2" href="#pricing">תמחור</a>
@@ -622,22 +612,22 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="hero-grid"></div>
 <div class="hero-badge">
 <span class="badge-live"></span>
-    5 AI tools · one account · live now
-  </div>
+ 5 AI tools · one account · live now
+ </div>
 <div style="font-family:'Plus Jakarta Sans',Inter,sans-serif;font-size:clamp(48px,9vw,86px);font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:18px;color:#eef2ff;animation:fadeUp .5s ease both;">
-    Wize<span class="wize-life-grad">Life</span>
+ Wize<span class="wize-life-grad">Life</span>
 </div>
 <h1 data-i18n="_ai_" style="font-size:clamp(2rem,5vw,3.4rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:30px;max-width:860px;animation:fadeUp .7s .15s ease both;"><span data-i18n="__10">קבל כל</span><span class="gradient-text" data-i18n="__11">החלטה חכמה</span> עם AI.
-  </h1>
+ </h1>
 <style>
-    .wize-life-grad{
-      background:linear-gradient(120deg,#6366f1 0%,#8b5cf6 30%,#a78bfa 50%,#c084fc 75%,#6366f1 100%);
-      background-size:200% 200%;
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      animation:wize-life-shift 8s ease infinite;
-    }
-    @keyframes wize-life-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-  </style>
+ .wize-life-grad{
+ background:linear-gradient(120deg,#6366f1 0%,#8b5cf6 30%,#a78bfa 50%,#c084fc 75%,#6366f1 100%);
+ background-size:200% 200%;
+ -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+ animation:wize-life-shift 8s ease infinite;
+ }
+ @keyframes wize-life-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+ </style>
 <p class="hero-sub" style="display:none;">Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.</p>
 <div class="hero-btns">
 <a class="btn-primary" href="auth.html">Start free →</a>
@@ -1185,41 +1175,41 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <script>
 // ── NAV ──
 function toggleMenu(){
-  document.getElementById('hamburger').classList.toggle('open');
-  document.getElementById('mobileNav').classList.toggle('open');
+ document.getElementById('hamburger').classList.toggle('open');
+ document.getElementById('mobileNav').classList.toggle('open');
 }
 window.addEventListener('scroll',()=>{
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY>30);
+ document.getElementById('nav').classList.toggle('scrolled', window.scrollY>30);
 });
 
 // ── TOOLS DATA ──
 const ICONS = {
-  money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg>',
-  travel: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"/></svg>',
-  tax: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5" opacity=".7"/></svg>',
-  health: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-6 4 12 2-6h7"/></svg>',
-  deal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10" opacity=".7"/><path d="M9 21v-6h6v6" opacity=".5"/></svg>'
+ money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg>',
+ travel: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"/></svg>',
+ tax: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5" opacity=".7"/></svg>',
+ health: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-6 4 12 2-6h7"/></svg>',
+ deal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10" opacity=".7"/><path d="M9 21v-6h6v6" opacity=".5"/></svg>'
 };
 
 const TOOLS = [
-  {id:'money',  name:'Money',  em:'Wize', color:'#10b981', desc:'Personal finance & investments'},
-  {id:'travel', name:'Travel', em:'Wize', color:'#3b82f6', desc:'Flight AI with hidden-city & virtual interlining'},
-  {id:'tax',    name:'Tax',    em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries'},
-  {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Cardiology & nutrition-trained AI'},
-  {id:'deal',   name:'Deal',   em:'Wize', color:'#8b5cf6', desc:'Real-estate ROI & tax analyzer'},
+ {id:'money', name:'Money', em:'Wize', color:'#10b981', desc:'Personal finance & investments'},
+ {id:'travel', name:'Travel', em:'Wize', color:'#3b82f6', desc:'Flight AI with hidden-city & virtual interlining'},
+ {id:'tax', name:'Tax', em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries'},
+ {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Cardiology & nutrition-trained AI'},
+ {id:'deal', name:'Deal', em:'Wize', color:'#8b5cf6', desc:'Real-estate ROI & tax analyzer'},
 ];
 
 // Render tabs
 const tabsEl = document.getElementById('toolTabs');
 tabsEl.innerHTML = TOOLS.map((t,i)=>`
-  <button class="tool-tab ${i===0?'active':''}" data-idx="${i}" style="--c:${t.color}">
-    <div class="tool-tab-icon">${ICONS[t.id]}</div>
-    <div class="tool-tab-text">
-      <div class="tool-tab-name"><em>${t.em}</em>${t.name}</div>
-      <div class="tool-tab-desc">${t.desc}</div>
-    </div>
-    <div class="tool-tab-arrow">→</div>
-  </button>
+ <button class="tool-tab ${i===0?'active':''}" data-idx="${i}" style="--c:${t.color}">
+ <div class="tool-tab-icon">${ICONS[t.id]}</div>
+ <div class="tool-tab-text">
+ <div class="tool-tab-name"><em>${t.em}</em>${t.name}</div>
+ <div class="tool-tab-desc">${t.desc}</div>
+ </div>
+ <div class="tool-tab-arrow">→</div>
+ </button>
 `).join('');
 
 const panels = document.querySelectorAll('.panel');
@@ -1227,30 +1217,30 @@ const glow = document.getElementById('toolGlow');
 const stage = document.getElementById('toolStage');
 
 function setTool(i){
-  document.querySelectorAll('.tool-tab').forEach((el,j)=>el.classList.toggle('active', j===i));
-  panels.forEach((p,j)=>p.classList.toggle('active', j===i));
-  const c = TOOLS[i].color;
-  stage.style.setProperty('--c-active', c);
-  glow.style.background = c;
+ document.querySelectorAll('.tool-tab').forEach((el,j)=>el.classList.toggle('active', j===i));
+ panels.forEach((p,j)=>p.classList.toggle('active', j===i));
+ const c = TOOLS[i].color;
+ stage.style.setProperty('--c-active', c);
+ glow.style.background = c;
 }
 document.querySelectorAll('.tool-tab').forEach(btn=>{
-  btn.addEventListener('click',()=>setTool(parseInt(btn.dataset.idx)));
+ btn.addEventListener('click',()=>setTool(parseInt(btn.dataset.idx)));
 });
 stage.style.setProperty('--c-active', TOOLS[0].color);
 glow.style.background = TOOLS[0].color;
 
 // ── LIVE FEED ──
 const feeds = [
-  {dot:'#10b981', t:'WizeMoney', m:'Portfolio up <strong>+2.4%</strong> this week'},
-  {dot:'#3b82f6', t:'WizeTravel', m:'TLV → NYC dropped to <strong>$370</strong>'},
-  {dot:'#f59e0b', t:'WizeTax', m:'Portugal NHR saves <strong>$40,800</strong>'},
-  {dot:'#ec4899', t:'WizeHealth', m:'LDL trending down · <strong>−14%</strong>'},
-  {dot:'#8b5cf6', t:'WizeDeal', m:'São Paulo flat · deal score <strong>A</strong>'},
-  {dot:'#10b981', t:'WizeMoney', m:'Pension rebalanced · saved <strong>₪1,240 / yr</strong>'},
-  {dot:'#3b82f6', t:'WizeTravel', m:'Hidden-city ticket found <strong>− 43%</strong>'},
-  {dot:'#f59e0b', t:'WizeTax', m:'Exit tax simulation complete'},
-  {dot:'#ec4899', t:'WizeHealth', m:'Deep sleep +22 min last night'},
-  {dot:'#8b5cf6', t:'WizeDeal', m:'3 properties flagged below comps'},
+ {dot:'#10b981', t:'WizeMoney', m:'Portfolio up <strong>+2.4%</strong> this week'},
+ {dot:'#3b82f6', t:'WizeTravel', m:'TLV → NYC dropped to <strong>$370</strong>'},
+ {dot:'#f59e0b', t:'WizeTax', m:'Portugal NHR saves <strong>$40,800</strong>'},
+ {dot:'#ec4899', t:'WizeHealth', m:'LDL trending down · <strong>−14%</strong>'},
+ {dot:'#8b5cf6', t:'WizeDeal', m:'São Paulo flat · deal score <strong>A</strong>'},
+ {dot:'#10b981', t:'WizeMoney', m:'Pension rebalanced · saved <strong>₪1,240 / yr</strong>'},
+ {dot:'#3b82f6', t:'WizeTravel', m:'Hidden-city ticket found <strong>− 43%</strong>'},
+ {dot:'#f59e0b', t:'WizeTax', m:'Exit tax simulation complete'},
+ {dot:'#ec4899', t:'WizeHealth', m:'Deep sleep +22 min last night'},
+ {dot:'#8b5cf6', t:'WizeDeal', m:'3 properties flagged below comps'},
 ];
 const feedChip = f => `<div class="feed-chip"><span class="dot" style="background:${f.dot};box-shadow:0 0 6px ${f.dot}"></span><strong>${f.t}</strong> · ${f.m}</div>`;
 document.getElementById('feedRow').innerHTML = feeds.map(feedChip).join('') + feeds.map(feedChip).join('');
@@ -1262,104 +1252,104 @@ const aiSend = document.getElementById('aiSend');
 const aiPrompts = document.getElementById('aiPrompts');
 
 const suggestions = [
-  "Should I relocate to Portugal?",
-  "Is TLV→NYC cheaper via a hub?",
-  "Explain my LDL cholesterol of 138",
-  "What's a good rental yield in São Paulo?",
-  "How do I rebalance a 60/40 portfolio?"
+ "Should I relocate to Portugal?",
+ "Is TLV→NYC cheaper via a hub?",
+ "Explain my LDL cholesterol of 138",
+ "What's a good rental yield in São Paulo?",
+ "How do I rebalance a 60/40 portfolio?"
 ];
 aiPrompts.innerHTML = suggestions.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
 aiPrompts.querySelectorAll('.ai-prompt').forEach(b=>{
-  b.addEventListener('click',()=>{ aiInput.value = b.textContent; sendAI(); });
+ b.addEventListener('click',()=>{ aiInput.value = b.textContent; sendAI(); });
 });
 
 // Scripted answers for landing page demo
 const scriptedAnswers = [
-  {
-    keys: ['portugal','relocat','nhр','nhr'],
-    ans: "Portugal's NHR (Non-Habitual Resident) regime offers 0% tax on most foreign income for 10 years — ideal if you have Israeli salary or investment income. The key risk is the Israeli exit tax on assets you held before leaving. WizeTax can model your exact scenario and tell you the optimal timing to move. Create a free account to run your full exit-tax analysis."
-  },
-  {
-    keys: ['tlv','jfk','nyc','new york','hub','position'],
-    ans: "Yes — a positioning route via Amsterdam or London typically costs $370–420 vs $680 direct. The trick is booking KLM to AMS and JetBlue AMS→JFK as two separate tickets, which is a 'virtual interline'. WizeTravel automates this search across 1,200+ carriers. Try it free — it usually finds savings in under 30 seconds."
-  },
-  {
-    keys: ['ldl','cholesterol','138','blood','health'],
-    ans: "An LDL of 138 mg/dL is borderline high (optimal is under 100 for most adults). The main levers are dietary: reducing saturated fat, adding soluble fiber (oats, legumes), and omega-3s. WizeHealth can interpret your full blood panel in context — looking at LDL particle size, HDL ratio, triglycerides, and CRP together gives a much clearer picture than LDL alone."
-  },
-  {
-    keys: ['rental','yield','são paulo','sao paulo','brazil','brasili'],
-    ans: "Good gross rental yield in São Paulo's premium neighborhoods (Jardins, Itaim, Vila Nova Conceição) ranges from 5–8%. After ITBI acquisition tax (~3%), management fees, and vacancy, net yield typically lands at 4–6%. WizeDeal can run the full numbers on any specific listing URL — including neighborhood comps and payback period — in under 30 seconds."
-  },
-  {
-    keys: ['rebalance','60/40','portfolio','allocat'],
-    ans: "A 60/40 portfolio (60% equities, 40% bonds) is a classic moderate-risk allocation. Rebalancing annually or when any asset class drifts more than 5% from target keeps your risk profile stable. With Israeli investors, also factor in the pension (Keren Hishtalmut, Kupat Gemel) as part of the bond allocation — it often represents 30–50% of total wealth. WizeMoney can map your full picture including pension."
-  }
+ {
+ keys: ['portugal','relocat','nhр','nhr'],
+ ans: "Portugal's NHR (Non-Habitual Resident) regime offers 0% tax on most foreign income for 10 years — ideal if you have Israeli salary or investment income. The key risk is the Israeli exit tax on assets you held before leaving. WizeTax can model your exact scenario and tell you the optimal timing to move. Create a free account to run your full exit-tax analysis."
+ },
+ {
+ keys: ['tlv','jfk','nyc','new york','hub','position'],
+ ans: "Yes — a positioning route via Amsterdam or London typically costs $370–420 vs $680 direct. The trick is booking KLM to AMS and JetBlue AMS→JFK as two separate tickets, which is a 'virtual interline'. WizeTravel automates this search across 1,200+ carriers. Try it free — it usually finds savings in under 30 seconds."
+ },
+ {
+ keys: ['ldl','cholesterol','138','blood','health'],
+ ans: "An LDL of 138 mg/dL is borderline high (optimal is under 100 for most adults). The main levers are dietary: reducing saturated fat, adding soluble fiber (oats, legumes), and omega-3s. WizeHealth can interpret your full blood panel in context — looking at LDL particle size, HDL ratio, triglycerides, and CRP together gives a much clearer picture than LDL alone."
+ },
+ {
+ keys: ['rental','yield','são paulo','sao paulo','brazil','brasili'],
+ ans: "Good gross rental yield in São Paulo's premium neighborhoods (Jardins, Itaim, Vila Nova Conceição) ranges from 5–8%. After ITBI acquisition tax (~3%), management fees, and vacancy, net yield typically lands at 4–6%. WizeDeal can run the full numbers on any specific listing URL — including neighborhood comps and payback period — in under 30 seconds."
+ },
+ {
+ keys: ['rebalance','60/40','portfolio','allocat'],
+ ans: "A 60/40 portfolio (60% equities, 40% bonds) is a classic moderate-risk allocation. Rebalancing annually or when any asset class drifts more than 5% from target keeps your risk profile stable. With Israeli investors, also factor in the pension (Keren Hishtalmut, Kupat Gemel) as part of the bond allocation — it often represents 30–50% of total wealth. WizeMoney can map your full picture including pension."
+ }
 ];
 
 function getAnswer(q){
-  const lower = q.toLowerCase();
-  for(const a of scriptedAnswers){
-    if(a.keys.some(k => lower.includes(k))) return a.ans;
-  }
-  return "Great question! WizeAI covers money, travel, tax, health and real estate — all in one place. Sign up free to get full AI-powered answers tailored to your situation across all 5 domains. Takes 30 seconds to start.";
+ const lower = q.toLowerCase();
+ for(const a of scriptedAnswers){
+ if(a.keys.some(k => lower.includes(k))) return a.ans;
+ }
+ return "Great question! WizeAI covers money, travel, tax, health and real estate — all in one place. Sign up free to get full AI-powered answers tailored to your situation across all 5 domains. Takes 30 seconds to start.";
 }
 
 function addMsg(text, who, loading){
-  const el = document.createElement('div');
-  el.className = 'ai-msg ' + who + (loading?' loading':'');
-  if(loading){
-    el.innerHTML = '<span class="ai-typing"><span></span><span></span><span></span></span>';
-  } else {
-    el.textContent = text;
-  }
-  aiBody.appendChild(el);
-  aiBody.scrollTop = aiBody.scrollHeight;
-  return el;
+ const el = document.createElement('div');
+ el.className = 'ai-msg ' + who + (loading?' loading':'');
+ if(loading){
+ el.innerHTML = '<span class="ai-typing"><span></span><span></span><span></span></span>';
+ } else {
+ el.textContent = text;
+ }
+ aiBody.appendChild(el);
+ aiBody.scrollTop = aiBody.scrollHeight;
+ return el;
 }
 
 async function sendAI(){
-  const q = aiInput.value.trim();
-  if(!q) return;
-  aiInput.value = '';
-  aiSend.disabled = true;
-  addMsg(q,'user');
-  const loadingEl = addMsg('','bot',true);
+ const q = aiInput.value.trim();
+ if(!q) return;
+ aiInput.value = '';
+ aiSend.disabled = true;
+ addMsg(q,'user');
+ const loadingEl = addMsg('','bot',true);
 
-  const user = wlAuth.currentUser;
-  if(user){
-    try{
-      const plan = await getUserPlan(user.uid);
-      const planLabel = plan === 'yolo' ? 'YOLO (unlimited AI)'
-                       : plan === 'pro'  ? 'Pro'
-                       : 'Free (2 calls/day)';
-      const system = 'You are WizeAI, a sharp multi-domain life advisor covering: personal finance, tax optimization, flight deals & travel, health & nutrition, and real estate/deals. ' +
-        'The user has a ' + planLabel + ' WizeLife plan. Be concise, practical and personalized. ' +
-        'For YOLO/Pro users give full detailed answers. For Free users give a useful sample then mention upgrading for full analysis.';
-      const fn = firebase.functions().httpsCallable('aiProxy');
-      const res = await fn({
-        messages:[{role:'user',parts:[{text:q}]}],
-        system,
-        maxTokens:600
-      });
-      loadingEl.classList.remove('loading');
-      loadingEl.textContent = res.data.text || 'Sorry, no response.';
-    } catch(err){
-      loadingEl.classList.remove('loading');
-      if(err.code === 'resource-exhausted'){
-        loadingEl.textContent = 'You\'ve reached your daily AI limit. Upgrade to YOLO for 40 answers/day.';
-      } else if(err.code === 'unauthenticated'){
-        loadingEl.textContent = 'Session expired — please sign in again.';
-      } else {
-        loadingEl.textContent = 'Something went wrong. Try again in a moment.';
-      }
-    }
-  } else {
-    await new Promise(r => setTimeout(r, 700 + Math.random()*500));
-    loadingEl.classList.remove('loading');
-    loadingEl.textContent = getAnswer(q);
-  }
-  aiSend.disabled = false;
+ const user = wlAuth.currentUser;
+ if(user){
+ try{
+ const plan = await getUserPlan(user.uid);
+ const planLabel = plan === 'yolo' ? 'YOLO (unlimited AI)'
+ : plan === 'pro' ? 'Pro'
+ : 'Free (2 calls/day)';
+ const system = 'You are WizeAI, a sharp multi-domain life advisor covering: personal finance, tax optimization, flight deals & travel, health & nutrition, and real estate/deals. ' +
+ 'The user has a ' + planLabel + ' WizeLife plan. Be concise, practical and personalized. ' +
+ 'For YOLO/Pro users give full detailed answers. For Free users give a useful sample then mention upgrading for full analysis.';
+ const fn = firebase.functions().httpsCallable('aiProxy');
+ const res = await fn({
+ messages:[{role:'user',parts:[{text:q}]}],
+ system,
+ maxTokens:600
+ });
+ loadingEl.classList.remove('loading');
+ loadingEl.textContent = res.data.text || 'Sorry, no response.';
+ } catch(err){
+ loadingEl.classList.remove('loading');
+ if(err.code === 'resource-exhausted'){
+ loadingEl.textContent = 'You\'ve reached your daily AI limit. Upgrade to YOLO for 40 answers/day.';
+ } else if(err.code === 'unauthenticated'){
+ loadingEl.textContent = 'Session expired — please sign in again.';
+ } else {
+ loadingEl.textContent = 'Something went wrong. Try again in a moment.';
+ }
+ }
+ } else {
+ await new Promise(r => setTimeout(r, 700 + Math.random()*500));
+ loadingEl.classList.remove('loading');
+ loadingEl.textContent = getAnswer(q);
+ }
+ aiSend.disabled = false;
 }
 aiSend.addEventListener('click', sendAI);
 aiInput.addEventListener('keydown', e=>{ if(e.key==='Enter') sendAI(); });
@@ -1367,422 +1357,422 @@ aiInput.addEventListener('keydown', e=>{ if(e.key==='Enter') sendAI(); });
 // ── SAVINGS CALCULATOR ──
 const fmt = n => '$' + Math.round(n).toLocaleString();
 function animateNum(el, target){
-  const start = parseFloat(el.dataset.cur || 0);
-  const startTime = performance.now();
-  const dur = 500;
-  function step(t){
-    const p = Math.min(1,(t-startTime)/dur);
-    const e = 1 - Math.pow(1-p,3);
-    const v = start + (target-start)*e;
-    el.textContent = fmt(v);
-    el.dataset.cur = v;
-    if(p<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+ const start = parseFloat(el.dataset.cur || 0);
+ const startTime = performance.now();
+ const dur = 500;
+ function step(t){
+ const p = Math.min(1,(t-startTime)/dur);
+ const e = 1 - Math.pow(1-p,3);
+ const v = start + (target-start)*e;
+ el.textContent = fmt(v);
+ el.dataset.cur = v;
+ if(p<1) requestAnimationFrame(step);
+ }
+ requestAnimationFrame(step);
 }
 function updateCalc(){
-  const invest = +document.getElementById('s-invest').value;
-  const flights = +document.getElementById('s-flights').value;
-  const income = +document.getElementById('s-income').value;
-  const prop = +document.getElementById('s-prop').value;
+ const invest = +document.getElementById('s-invest').value;
+ const flights = +document.getElementById('s-flights').value;
+ const income = +document.getElementById('s-income').value;
+ const prop = +document.getElementById('s-prop').value;
 
-  document.getElementById('v-invest').textContent = fmt(invest)+'/mo';
-  document.getElementById('v-flights').textContent = flights;
-  document.getElementById('v-income').textContent = fmt(income);
-  document.getElementById('v-prop').textContent = fmt(prop);
+ document.getElementById('v-invest').textContent = fmt(invest)+'/mo';
+ document.getElementById('v-flights').textContent = flights;
+ document.getElementById('v-income').textContent = fmt(income);
+ document.getElementById('v-prop').textContent = fmt(prop);
 
-  // Savings model (estimates)
-  const money = invest * 12 * 0.022; // 2.2% return edge
-  const travel = flights * 180; // avg $180 per flight
-  const tax = income * 0.08; // 8% effective tax optimization ceiling
-  const deal = prop * 0.04; // 4% deal-score margin
+ // Savings model (estimates)
+ const money = invest * 12 * 0.022; // 2.2% return edge
+ const travel = flights * 180; // avg $180 per flight
+ const tax = income * 0.08; // 8% effective tax optimization ceiling
+ const deal = prop * 0.04; // 4% deal-score margin
 
-  animateNum(document.getElementById('b-money'), money);
-  animateNum(document.getElementById('b-travel'), travel);
-  animateNum(document.getElementById('b-tax'), tax);
-  animateNum(document.getElementById('b-deal'), deal);
-  animateNum(document.getElementById('calcTotal'), money+travel+tax+deal);
+ animateNum(document.getElementById('b-money'), money);
+ animateNum(document.getElementById('b-travel'), travel);
+ animateNum(document.getElementById('b-tax'), tax);
+ animateNum(document.getElementById('b-deal'), deal);
+ animateNum(document.getElementById('calcTotal'), money+travel+tax+deal);
 }
 ['s-invest','s-flights','s-income','s-prop'].forEach(id=>{
-  document.getElementById(id).addEventListener('input', updateCalc);
+ document.getElementById(id).addEventListener('input', updateCalc);
 });
 updateCalc();
 
 // ── FAQ ──
 const faqs=[
-  {q:"Is WizeLife really free?", a:"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/mo) for more answers and unlocked features, or go YOLO ($9.99/mo) for unlimited AI across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."},
-  {q:"Do I need a separate account for each tool?", a:"No — one WizeLife account works across all 5 tools. Sign in once, use everything."},
-  {q:"How is WizeTax different from a regular tax calculator?", a:"WizeTax uses AI trained on tax law across 26 countries, with real exit-tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable advice."},
-  {q:"Can WizeTravel actually save me money?", a:"Yes. WizeTravel finds hidden-city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."},
-  {q:"What markets does WizeDeal cover?", a:"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental-yield benchmarks."},
-  {q:"Is my data secure?", a:"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."},
-  {q:"Can I cancel anytime?", a:"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."},
+ {q:"Is WizeLife really free?", a:"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/mo) for more answers and unlocked features, or go YOLO ($9.99/mo) for unlimited AI across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."},
+ {q:"Do I need a separate account for each tool?", a:"No — one WizeLife account works across all 5 tools. Sign in once, use everything."},
+ {q:"How is WizeTax different from a regular tax calculator?", a:"WizeTax uses AI trained on tax law across 26 countries, with real exit-tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable advice."},
+ {q:"Can WizeTravel actually save me money?", a:"Yes. WizeTravel finds hidden-city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."},
+ {q:"What markets does WizeDeal cover?", a:"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental-yield benchmarks."},
+ {q:"Is my data secure?", a:"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."},
+ {q:"Can I cancel anytime?", a:"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."},
 ];
 document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
 <div class="faq-item" data-i="${i}">
-  <button class="faq-q">
-    ${f.q}
-    <span class="faq-chev">▾</span>
-  </button>
-  <div class="faq-a">${f.a}</div>
+ <button class="faq-q">
+ ${f.q}
+ <span class="faq-chev">▾</span>
+ </button>
+ <div class="faq-a">${f.a}</div>
 </div>`).join('');
 document.querySelectorAll('.faq-item').forEach(item=>{
-  item.querySelector('.faq-q').addEventListener('click',()=>{
-    const open = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
-    if(!open) item.classList.add('open');
-  });
+ item.querySelector('.faq-q').addEventListener('click',()=>{
+ const open = item.classList.contains('open');
+ document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+ if(!open) item.classList.add('open');
+ });
 });
 
 // ── SCROLL REVEAL ──
 const io = new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+ es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 // ── LANGUAGE SWITCHER (EN / PT) ──
 const WIZE_TR = {
-  en: {
-    navProducts:'Products', navPricing:'Pricing', navFaq:'FAQ',
-    navSignin:'Sign in', navCta:'Get Started',
-    heroBadge:'5 AI tools · one account · live now',
-    h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
-    heroSub:'Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.',
-    heroBtn:'Start free →', heroBtn2:'Explore the suite ↓',
-    feedLabel:'בזמן אמת מהסוויטה',
-    trustLabel0:'כלי AI בסוויטה אחת', trustLabel1:'To get started', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
-    suiteEye:'The suite', suiteTitle:'חשבון אחד.\nEvery החלטה חכמה.', suiteSub:'Each tool is purpose-built AI — not a generic chatbot. Click any tool to see a live preview.',
-    aiEye:'Try it now', aiTitle:'דבר עם WizeAI.\nבזמן אמת, כאן.', aiSub:'No signup. Ask anything about money, travel, tax, health or real estate — get a real answer in seconds.',
-    aiWelcome:'Hi 👋 I\'m WizeAI. Ask me about investing, a flight deal, tax moves, a blood test, or a property listing — or tap a suggestion below.',
-    aiPlaceholder:'Ask anything… e.g. \'Should I relocate to Portugal?\'',
-    aiSendBtn:'Send →',
-    calcEye:'ROI calculator', calcTitle:'כמה תחסוך לך WizeLife?', calcSub:'התאם את הפרופיל שלך וצפה בחיסכון השנתי מתעדכן בזמן אמת.',
-    calcEyebrow:'חיסכון שנתי מוערך', calcSubResult:'Projected WizeLife value — based on typical user outcomes across the suite.',
-    compareEye:'Why WizeLife', compareTitle:'סוויטה אחת מול כל השאר.', compareSub:'חמישה תחומים, התחברות אחת, מנוי אחד. השווה לחלופות.',
-    testiEye:'What people say', testiTitle:'משתמשים אמיתיים. חיסכון אמיתי.', testiSub:'משוב ממשתמשים ב-WizeLife בשלוש יבשות.',
-    pricingEye:'Pricing', pricingTitle:'תמחור פשוט וכן.', pricingSub:'התחל בחינם. שדרג כשצריך. ללא כרטיס אשראי.',
-    faqEye:'FAQ', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
-    ctaEye:'Start today', ctaTitle:'מוכן לחיות חכם יותר?', ctaDesc:'Join thousands making better decisions עם AI. Free forever, upgrade when you want.',
-    ctaBtn:'Create free account →', ctaBtn2:'Explore tools',
-    footerDesc:'5 כלי AI לכל החלטה חשובה בחייך. נבנה באהבה, בכל מקום.',
-    footerProducts:'Products', footerAccount:'Account', footerInfo:'Info',
-    footerSignin:'Sign in', footerSignup:'Sign up free', footerPricing:'Pricing',
-    footerContact:'Contact', footerPrivacy:'Privacy Policy', footerTerms:'Terms of Service',
-    footerRights:'© 2026 WizeLife. All rights reserved.', footerMade:'Made with ❤️ worldwide',
-    mobileGetStarted:'Get Started Free →',
-  },
-  pt: {
-    navProducts:'Produtos', navPricing:'Preços', navFaq:'FAQ',
-    navSignin:'Entrar', navCta:'Começar Grátis',
-    heroBadge:'Sua vantagem injusta.',
-    h1a:'Tome cada', h1b:'decisão inteligente', h1c:'com IA.',
-    heroSub:'Dinheiro, viagens, impostos, saúde, imóveis — as grandes escolhas da vida, guiadas por IA desenvolvida especificamente para cada domínio.',
-    heroBtn:'Comece grátis →', heroBtn2:'Explorar a suíte ↓',
-    feedLabel:'Ao vivo na suíte',
-    trustLabel0:'Ferramentas de IA em uma suíte', trustLabel1:'Para começar', trustLabel2:'Países no WizeTax', trustLabel3:'Mercados imobiliários',
-    suiteEye:'A suíte', suiteTitle:'Uma conta.\nCada decisão inteligente.', suiteSub:'Cada ferramenta é uma IA especializada — não um chatbot genérico. Clique em qualquer ferramenta para ver uma prévia ao vivo.',
-    aiEye:'Experimente agora', aiTitle:'Fale com o WizeAI.\nAo vivo, aqui mesmo.', aiSub:'Sem cadastro. Pergunte qualquer coisa sobre dinheiro, viagens, impostos, saúde ou imóveis — obtenha uma resposta real em segundos.',
-    aiWelcome:'Olá 👋 Sou o WizeAI. Pergunte-me sobre investimentos, promoções de voos, planejamento fiscal, exames de sangue ou um imóvel — ou toque em uma sugestão abaixo.',
-    aiPlaceholder:'Pergunte qualquer coisa… ex: \'Devo me mudar para Portugal?\'',
-    aiSendBtn:'Enviar →',
-    calcEye:'Calculadora de ROI', calcTitle:'Quanto o WizeLife vai te economizar?', calcSub:'Ajuste seu perfil e veja suas economias anuais sendo atualizadas em tempo real.',
-    calcEyebrow:'Economia anual estimada', calcSubResult:'Valor projetado do WizeLife — baseado em resultados típicos de usuários em toda a suíte.',
-    compareEye:'Por que WizeLife', compareTitle:'Uma suíte vs. tudo o mais.', compareSub:'Cinco domínios, um login, uma assinatura. Compare as alternativas.',
-    testiEye:'O que dizem as pessoas', testiTitle:'Usuários reais. Economias reais.', testiSub:'Feedback de pessoas que usam o WizeLife em três continentes.',
-    pricingEye:'Preços', pricingTitle:'Preços simples e honestos.', pricingSub:'Comece de graça. Faça upgrade quando precisar. Sem cartão de crédito.',
-    faqEye:'FAQ', faqTitle:'Perguntas frequentes.', faqSub:'Tudo que você precisa saber antes de começar.',
-    ctaEye:'Comece hoje', ctaTitle:'Pronto para viver de forma mais inteligente?', ctaDesc:'Junte-se a milhares que tomam melhores decisões com IA. Grátis para sempre, faça upgrade quando quiser.',
-    ctaBtn:'Criar conta gratuita →', ctaBtn2:'Explorar ferramentas',
-    footerDesc:'Cinco ferramentas de IA para cada decisão importante da sua vida. Feito com amor, em todo o mundo.',
-    footerProducts:'Produtos', footerAccount:'Conta', footerInfo:'Informações',
-    footerSignin:'Entrar', footerSignup:'Cadastrar grátis', footerPricing:'Preços',
-    footerContact:'Contato', footerPrivacy:'Política de Privacidade', footerTerms:'Termos de Serviço',
-    footerRights:'© 2026 WizeLife. Todos os direitos reservados.', footerMade:'Feito com ❤️ em todo o mundo',
-    mobileGetStarted:'Comece Grátis →',
-  },
-  es: {
-    navProducts:'Productos', navPricing:'Precios', navFaq:'FAQ',
-    navSignin:'Iniciar sesión', navCta:'Comenzar Gratis',
-    heroBadge:'Tu ventaja injusta.',
-    h1a:'Toma cada', h1b:'decisión inteligente', h1c:'con IA.',
-    heroSub:'Dinero, viajes, impuestos, salud, bienes raíces — las grandes decisiones de la vida, guiadas por IA creada específicamente para cada dominio.',
-    heroBtn:'Empieza gratis →', heroBtn2:'Explorar la suite ↓',
-    feedLabel:'En vivo desde la suite',
-    trustLabel0:'Herramientas de IA en una suite', trustLabel1:'Para comenzar', trustLabel2:'Países en WizeTax', trustLabel3:'Mercados inmobiliarios',
-    suiteEye:'La suite', suiteTitle:'Una cuenta.\nCada decisión inteligente.', suiteSub:'Cada herramienta es IA de propósito específico — no un chatbot genérico. Haz clic en cualquier herramienta para ver una vista previa en vivo.',
-    aiEye:'Pruébalo ahora', aiTitle:'Habla con WizeAI.\nEn vivo, aquí mismo.', aiSub:'Sin registro. Pregunta cualquier cosa sobre dinero, viajes, impuestos, salud o bienes raíces — obtén una respuesta real en segundos.',
-    aiWelcome:'Hola 👋 Soy WizeAI. Pregúntame sobre inversiones, ofertas de vuelos, planificación fiscal, análisis de sangre o una propiedad — o toca una sugerencia abajo.',
-    aiPlaceholder:'Pregunta cualquier cosa… ej: \'¿Debería mudarme a Portugal?\'',
-    aiSendBtn:'Enviar →',
-    calcEye:'Calculadora ROI', calcTitle:'¿Cuánto te ahorrará WizeLife?', calcSub:'Ajusta tu perfil y mira tus ahorros anuales actualizarse en tiempo real.',
-    calcEyebrow:'Ahorro anual estimado', calcSubResult:'Valor proyectado de WizeLife — basado en resultados típicos de usuarios en toda la suite.',
-    compareEye:'Por qué WizeLife', compareTitle:'Una suite vs. todo lo demás.', compareSub:'Cinco dominios, un inicio de sesión, una suscripción. Compara las alternativas.',
-    testiEye:'Lo que dicen las personas', testiTitle:'Usuarios reales. Ahorros reales.', testiSub:'Opiniones de personas que usan WizeLife en tres continentes.',
-    pricingEye:'Precios', pricingTitle:'Precios simples y honestos.', pricingSub:'Empieza gratis. Actualiza cuando necesites más. Sin tarjeta de crédito.',
-    faqEye:'FAQ', faqTitle:'Preguntas frecuentes.', faqSub:'Todo lo que necesitas saber antes de comenzar.',
-    ctaEye:'Empieza hoy', ctaTitle:'¿Listo para vivir con más inteligencia?', ctaDesc:'Únete a miles que toman mejores decisiones con IA. Gratis para siempre, actualiza cuando quieras.',
-    ctaBtn:'Crear cuenta gratuita →', ctaBtn2:'Explorar herramientas',
-    footerDesc:'Cinco herramientas de IA para cada decisión importante de tu vida. Hecho con amor, en todo el mundo.',
-    footerProducts:'Productos', footerAccount:'Cuenta', footerInfo:'Información',
-    footerSignin:'Iniciar sesión', footerSignup:'Registrarse gratis', footerPricing:'Precios',
-    footerContact:'Contacto', footerPrivacy:'Política de Privacidad', footerTerms:'Términos de Servicio',
-    footerRights:'© 2026 WizeLife. Todos los derechos reservados.', footerMade:'Hecho con ❤️ en todo el mundo',
-    mobileGetStarted:'Comenzar Gratis →',
-  },
-  he: {
-    navProducts:'מוצרים', navPricing:'מחירים', navFaq:'שאלות נפוצות',
-    navSignin:'כניסה', navCta:'התחל בחינם',
-    heroBadge:'היתרון הלא הוגן שלך.',
-    h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
-    heroSub:'כסף, טיולים, מיסים, בריאות, נדל"ן — ההחלטות הגדולות בחיים, מונחות על ידי AI שנבנה במיוחד לכל תחום.',
-    heroBtn:'התחל בחינם ←', heroBtn2:'גלה את הכלים ↓',
-    feedLabel:'שידור חי מהחבילה',
-    trustLabel0:'כלי AI בחבילה אחת', trustLabel1:'להתחלה', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
-    suiteEye:'החבילה', suiteTitle:'חשבון אחד.\nכל החלטה חכמה.', suiteSub:'כל כלי הוא AI ייעודי — לא צ\'אטבוט גנרי. לחץ על כל כלי לצפייה בתצוגה מקדימה חיה.',
-    aiEye:'נסה עכשיו', aiTitle:'דבר עם WizeAI.\nחי, כאן ועכשיו.', aiSub:'ללא הרשמה. שאל כל דבר על כסף, טיסות, מיסים, בריאות או נדל"ן — קבל תשובה אמיתית תוך שניות.',
-    aiWelcome:'היי 👋 אני WizeAI. שאל אותי על השקעות, עסקאות טיסה, תכנון מס, בדיקת דם, או נכס — או לחץ על הצעה למטה.',
-    aiPlaceholder:'שאל כל דבר… למשל: \'האם כדאי לי לעבור לפורטוגל?\'',
-    aiSendBtn:'שלח ←',
-    calcEye:'מחשבון ROI', calcTitle:'כמה WizeLife יחסוך לך?', calcSub:'כוון את הפרופיל שלך וראה את החיסכון השנתי מתעדכן בזמן אמת.',
-    calcEyebrow:'חיסכון שנתי משוער', calcSubResult:'ערך WizeLife המוקרן — על בסיס תוצאות טיפוסיות של משתמשים בכל החבילה.',
-    compareEye:'למה WizeLife', compareTitle:'חבילה אחת מול כל השאר.', compareSub:'חמישה תחומים, כניסה אחת, מנוי אחד. השווה את החלופות.',
-    testiEye:'מה אומרים המשתמשים', testiTitle:'משתמשים אמיתיים. חיסכון אמיתי.', testiSub:'משוב מאנשים שמשתמשים ב-WizeLife בשלוש יבשות.',
-    pricingEye:'מחירים', pricingTitle:'מחירים פשוטים וישרים.', pricingSub:'התחל בחינם. שדרג כשתצטרך. ללא כרטיס אשראי.',
-    faqEye:'שאלות נפוצות', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
-    ctaEye:'התחל היום', ctaTitle:'מוכן לחיות יותר חכם?', ctaDesc:'הצטרף לאלפים שמקבלים החלטות טובות יותר עם AI. חינם לתמיד, שדרג מתי שרוצה.',
-    ctaBtn:'צור חשבון חינמי ←', ctaBtn2:'גלה את הכלים',
-    footerDesc:'חמישה כלי AI לכל החלטה חשובה בחיים. נבנה עם אהבה, מכל העולם.',
-    footerProducts:'מוצרים', footerAccount:'חשבון', footerInfo:'מידע',
-    footerSignin:'כניסה', footerSignup:'הרשמה חינמית', footerPricing:'מחירים',
-    footerContact:'צור קשר', footerPrivacy:'מדיניות פרטיות', footerTerms:'תנאי שירות',
-    footerRights:'© 2026 WizeLife. כל הזכויות שמורות.', footerMade:'נבנה עם ❤️ מכל העולם',
-    mobileGetStarted:'התחל בחינם ←',
-  },
+ en: {
+ navProducts:'Products', navPricing:'Pricing', navFaq:'FAQ',
+ navSignin:'Sign in', navCta:'Get Started',
+ heroBadge:'5 AI tools · one account · live now',
+ h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
+ heroSub:'Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.',
+ heroBtn:'Start free →', heroBtn2:'Explore the suite ↓',
+ feedLabel:'בזמן אמת מהסוויטה',
+ trustLabel0:'כלי AI בסוויטה אחת', trustLabel1:'To get started', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
+ suiteEye:'The suite', suiteTitle:'חשבון אחד.\nEvery החלטה חכמה.', suiteSub:'Each tool is purpose-built AI — not a generic chatbot. Click any tool to see a live preview.',
+ aiEye:'Try it now', aiTitle:'דבר עם WizeAI.\nבזמן אמת, כאן.', aiSub:'No signup. Ask anything about money, travel, tax, health or real estate — get a real answer in seconds.',
+ aiWelcome:'Hi 👋 I\'m WizeAI. Ask me about investing, a flight deal, tax moves, a blood test, or a property listing — or tap a suggestion below.',
+ aiPlaceholder:'Ask anything… e.g. \'Should I relocate to Portugal?\'',
+ aiSendBtn:'Send →',
+ calcEye:'ROI calculator', calcTitle:'כמה תחסוך לך WizeLife?', calcSub:'התאם את הפרופיל שלך וצפה בחיסכון השנתי מתעדכן בזמן אמת.',
+ calcEyebrow:'חיסכון שנתי מוערך', calcSubResult:'Projected WizeLife value — based on typical user outcomes across the suite.',
+ compareEye:'Why WizeLife', compareTitle:'סוויטה אחת מול כל השאר.', compareSub:'חמישה תחומים, התחברות אחת, מנוי אחד. השווה לחלופות.',
+ testiEye:'What people say', testiTitle:'משתמשים אמיתיים. חיסכון אמיתי.', testiSub:'משוב ממשתמשים ב-WizeLife בשלוש יבשות.',
+ pricingEye:'Pricing', pricingTitle:'תמחור פשוט וכן.', pricingSub:'התחל בחינם. שדרג כשצריך. ללא כרטיס אשראי.',
+ faqEye:'FAQ', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
+ ctaEye:'Start today', ctaTitle:'מוכן לחיות חכם יותר?', ctaDesc:'Join thousands making better decisions עם AI. Free forever, upgrade when you want.',
+ ctaBtn:'Create free account →', ctaBtn2:'Explore tools',
+ footerDesc:'5 כלי AI לכל החלטה חשובה בחייך. נבנה באהבה, בכל מקום.',
+ footerProducts:'Products', footerAccount:'Account', footerInfo:'Info',
+ footerSignin:'Sign in', footerSignup:'Sign up free', footerPricing:'Pricing',
+ footerContact:'Contact', footerPrivacy:'Privacy Policy', footerTerms:'Terms of Service',
+ footerRights:'© 2026 WizeLife. All rights reserved.', footerMade:'Made with ❤️ worldwide',
+ mobileGetStarted:'Get Started Free →',
+ },
+ pt: {
+ navProducts:'Produtos', navPricing:'Preços', navFaq:'FAQ',
+ navSignin:'Entrar', navCta:'Começar Grátis',
+ heroBadge:'Sua vantagem injusta.',
+ h1a:'Tome cada', h1b:'decisão inteligente', h1c:'com IA.',
+ heroSub:'Dinheiro, viagens, impostos, saúde, imóveis — as grandes escolhas da vida, guiadas por IA desenvolvida especificamente para cada domínio.',
+ heroBtn:'Comece grátis →', heroBtn2:'Explorar a suíte ↓',
+ feedLabel:'Ao vivo na suíte',
+ trustLabel0:'Ferramentas de IA em uma suíte', trustLabel1:'Para começar', trustLabel2:'Países no WizeTax', trustLabel3:'Mercados imobiliários',
+ suiteEye:'A suíte', suiteTitle:'Uma conta.\nCada decisão inteligente.', suiteSub:'Cada ferramenta é uma IA especializada — não um chatbot genérico. Clique em qualquer ferramenta para ver uma prévia ao vivo.',
+ aiEye:'Experimente agora', aiTitle:'Fale com o WizeAI.\nAo vivo, aqui mesmo.', aiSub:'Sem cadastro. Pergunte qualquer coisa sobre dinheiro, viagens, impostos, saúde ou imóveis — obtenha uma resposta real em segundos.',
+ aiWelcome:'Olá 👋 Sou o WizeAI. Pergunte-me sobre investimentos, promoções de voos, planejamento fiscal, exames de sangue ou um imóvel — ou toque em uma sugestão abaixo.',
+ aiPlaceholder:'Pergunte qualquer coisa… ex: \'Devo me mudar para Portugal?\'',
+ aiSendBtn:'Enviar →',
+ calcEye:'Calculadora de ROI', calcTitle:'Quanto o WizeLife vai te economizar?', calcSub:'Ajuste seu perfil e veja suas economias anuais sendo atualizadas em tempo real.',
+ calcEyebrow:'Economia anual estimada', calcSubResult:'Valor projetado do WizeLife — baseado em resultados típicos de usuários em toda a suíte.',
+ compareEye:'Por que WizeLife', compareTitle:'Uma suíte vs. tudo o mais.', compareSub:'Cinco domínios, um login, uma assinatura. Compare as alternativas.',
+ testiEye:'O que dizem as pessoas', testiTitle:'Usuários reais. Economias reais.', testiSub:'Feedback de pessoas que usam o WizeLife em três continentes.',
+ pricingEye:'Preços', pricingTitle:'Preços simples e honestos.', pricingSub:'Comece de graça. Faça upgrade quando precisar. Sem cartão de crédito.',
+ faqEye:'FAQ', faqTitle:'Perguntas frequentes.', faqSub:'Tudo que você precisa saber antes de começar.',
+ ctaEye:'Comece hoje', ctaTitle:'Pronto para viver de forma mais inteligente?', ctaDesc:'Junte-se a milhares que tomam melhores decisões com IA. Grátis para sempre, faça upgrade quando quiser.',
+ ctaBtn:'Criar conta gratuita →', ctaBtn2:'Explorar ferramentas',
+ footerDesc:'Cinco ferramentas de IA para cada decisão importante da sua vida. Feito com amor, em todo o mundo.',
+ footerProducts:'Produtos', footerAccount:'Conta', footerInfo:'Informações',
+ footerSignin:'Entrar', footerSignup:'Cadastrar grátis', footerPricing:'Preços',
+ footerContact:'Contato', footerPrivacy:'Política de Privacidade', footerTerms:'Termos de Serviço',
+ footerRights:'© 2026 WizeLife. Todos os direitos reservados.', footerMade:'Feito com ❤️ em todo o mundo',
+ mobileGetStarted:'Comece Grátis →',
+ },
+ es: {
+ navProducts:'Productos', navPricing:'Precios', navFaq:'FAQ',
+ navSignin:'Iniciar sesión', navCta:'Comenzar Gratis',
+ heroBadge:'Tu ventaja injusta.',
+ h1a:'Toma cada', h1b:'decisión inteligente', h1c:'con IA.',
+ heroSub:'Dinero, viajes, impuestos, salud, bienes raíces — las grandes decisiones de la vida, guiadas por IA creada específicamente para cada dominio.',
+ heroBtn:'Empieza gratis →', heroBtn2:'Explorar la suite ↓',
+ feedLabel:'En vivo desde la suite',
+ trustLabel0:'Herramientas de IA en una suite', trustLabel1:'Para comenzar', trustLabel2:'Países en WizeTax', trustLabel3:'Mercados inmobiliarios',
+ suiteEye:'La suite', suiteTitle:'Una cuenta.\nCada decisión inteligente.', suiteSub:'Cada herramienta es IA de propósito específico — no un chatbot genérico. Haz clic en cualquier herramienta para ver una vista previa en vivo.',
+ aiEye:'Pruébalo ahora', aiTitle:'Habla con WizeAI.\nEn vivo, aquí mismo.', aiSub:'Sin registro. Pregunta cualquier cosa sobre dinero, viajes, impuestos, salud o bienes raíces — obtén una respuesta real en segundos.',
+ aiWelcome:'Hola 👋 Soy WizeAI. Pregúntame sobre inversiones, ofertas de vuelos, planificación fiscal, análisis de sangre o una propiedad — o toca una sugerencia abajo.',
+ aiPlaceholder:'Pregunta cualquier cosa… ej: \'¿Debería mudarme a Portugal?\'',
+ aiSendBtn:'Enviar →',
+ calcEye:'Calculadora ROI', calcTitle:'¿Cuánto te ahorrará WizeLife?', calcSub:'Ajusta tu perfil y mira tus ahorros anuales actualizarse en tiempo real.',
+ calcEyebrow:'Ahorro anual estimado', calcSubResult:'Valor proyectado de WizeLife — basado en resultados típicos de usuarios en toda la suite.',
+ compareEye:'Por qué WizeLife', compareTitle:'Una suite vs. todo lo demás.', compareSub:'Cinco dominios, un inicio de sesión, una suscripción. Compara las alternativas.',
+ testiEye:'Lo que dicen las personas', testiTitle:'Usuarios reales. Ahorros reales.', testiSub:'Opiniones de personas que usan WizeLife en tres continentes.',
+ pricingEye:'Precios', pricingTitle:'Precios simples y honestos.', pricingSub:'Empieza gratis. Actualiza cuando necesites más. Sin tarjeta de crédito.',
+ faqEye:'FAQ', faqTitle:'Preguntas frecuentes.', faqSub:'Todo lo que necesitas saber antes de comenzar.',
+ ctaEye:'Empieza hoy', ctaTitle:'¿Listo para vivir con más inteligencia?', ctaDesc:'Únete a miles que toman mejores decisiones con IA. Gratis para siempre, actualiza cuando quieras.',
+ ctaBtn:'Crear cuenta gratuita →', ctaBtn2:'Explorar herramientas',
+ footerDesc:'Cinco herramientas de IA para cada decisión importante de tu vida. Hecho con amor, en todo el mundo.',
+ footerProducts:'Productos', footerAccount:'Cuenta', footerInfo:'Información',
+ footerSignin:'Iniciar sesión', footerSignup:'Registrarse gratis', footerPricing:'Precios',
+ footerContact:'Contacto', footerPrivacy:'Política de Privacidad', footerTerms:'Términos de Servicio',
+ footerRights:'© 2026 WizeLife. Todos los derechos reservados.', footerMade:'Hecho con ❤️ en todo el mundo',
+ mobileGetStarted:'Comenzar Gratis →',
+ },
+ he: {
+ navProducts:'מוצרים', navPricing:'מחירים', navFaq:'שאלות נפוצות',
+ navSignin:'כניסה', navCta:'התחל בחינם',
+ heroBadge:'היתרון הלא הוגן שלך.',
+ h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
+ heroSub:'כסף, טיולים, מיסים, בריאות, נדל"ן — ההחלטות הגדולות בחיים, מונחות על ידי AI שנבנה במיוחד לכל תחום.',
+ heroBtn:'התחל בחינם ←', heroBtn2:'גלה את הכלים ↓',
+ feedLabel:'שידור חי מהחבילה',
+ trustLabel0:'כלי AI בחבילה אחת', trustLabel1:'להתחלה', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
+ suiteEye:'החבילה', suiteTitle:'חשבון אחד.\nכל החלטה חכמה.', suiteSub:'כל כלי הוא AI ייעודי — לא צ\'אטבוט גנרי. לחץ על כל כלי לצפייה בתצוגה מקדימה חיה.',
+ aiEye:'נסה עכשיו', aiTitle:'דבר עם WizeAI.\nחי, כאן ועכשיו.', aiSub:'ללא הרשמה. שאל כל דבר על כסף, טיסות, מיסים, בריאות או נדל"ן — קבל תשובה אמיתית תוך שניות.',
+ aiWelcome:'היי 👋 אני WizeAI. שאל אותי על השקעות, עסקאות טיסה, תכנון מס, בדיקת דם, או נכס — או לחץ על הצעה למטה.',
+ aiPlaceholder:'שאל כל דבר… למשל: \'האם כדאי לי לעבור לפורטוגל?\'',
+ aiSendBtn:'שלח ←',
+ calcEye:'מחשבון ROI', calcTitle:'כמה WizeLife יחסוך לך?', calcSub:'כוון את הפרופיל שלך וראה את החיסכון השנתי מתעדכן בזמן אמת.',
+ calcEyebrow:'חיסכון שנתי משוער', calcSubResult:'ערך WizeLife המוקרן — על בסיס תוצאות טיפוסיות של משתמשים בכל החבילה.',
+ compareEye:'למה WizeLife', compareTitle:'חבילה אחת מול כל השאר.', compareSub:'חמישה תחומים, כניסה אחת, מנוי אחד. השווה את החלופות.',
+ testiEye:'מה אומרים המשתמשים', testiTitle:'משתמשים אמיתיים. חיסכון אמיתי.', testiSub:'משוב מאנשים שמשתמשים ב-WizeLife בשלוש יבשות.',
+ pricingEye:'מחירים', pricingTitle:'מחירים פשוטים וישרים.', pricingSub:'התחל בחינם. שדרג כשתצטרך. ללא כרטיס אשראי.',
+ faqEye:'שאלות נפוצות', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
+ ctaEye:'התחל היום', ctaTitle:'מוכן לחיות יותר חכם?', ctaDesc:'הצטרף לאלפים שמקבלים החלטות טובות יותר עם AI. חינם לתמיד, שדרג מתי שרוצה.',
+ ctaBtn:'צור חשבון חינמי ←', ctaBtn2:'גלה את הכלים',
+ footerDesc:'חמישה כלי AI לכל החלטה חשובה בחיים. נבנה עם אהבה, מכל העולם.',
+ footerProducts:'מוצרים', footerAccount:'חשבון', footerInfo:'מידע',
+ footerSignin:'כניסה', footerSignup:'הרשמה חינמית', footerPricing:'מחירים',
+ footerContact:'צור קשר', footerPrivacy:'מדיניות פרטיות', footerTerms:'תנאי שירות',
+ footerRights:'© 2026 WizeLife. כל הזכויות שמורות.', footerMade:'נבנה עם ❤️ מכל העולם',
+ mobileGetStarted:'התחל בחינם ←',
+ },
 };
 
 const WIZE_FAQ_PT = [
-  {q:"O WizeLife é realmente gratuito?", a:"Sim. Você obtém 3–5 respostas de IA por dia por ferramenta, para sempre gratuito. Sem cartão de crédito, sem período de teste. Faça upgrade para o Pro ($4,99/mês) para mais respostas e recursos desbloqueados, ou vá YOLO ($9,99/mês) para IA ilimitada em todas as ferramentas."},
-  {q:"Preciso de uma conta separada para cada ferramenta?", a:"Não — uma conta WizeLife funciona em todas as 5 ferramentas. Entre uma vez, use tudo."},
-  {q:"Como o WizeTax difere de uma calculadora de impostos comum?", a:"O WizeTax usa IA treinada em legislação tributária de 26 países, com cenários reais de imposto de saída, comparações de realocação e um gerador de cartas. Não são apenas números — são conselhos práticos."},
-  {q:"O WizeTravel realmente pode me economizar dinheiro?", a:"Sim. O WizeTravel encontra passagens hidden-city, rotas de posicionamento (voe por um hub mais barato) e interlining virtual entre companhias de baixo custo — rotas que sites tradicionais de reserva perdem completamente."},
-  {q:"Quais mercados o WizeDeal cobre?", a:"Brasil, Israel e EUA. Cada mercado tem conhecimento profundo de impostos locais (ITBI, taxas de transferência), produtos hipotecários e benchmarks de rentabilidade de aluguel."},
-  {q:"Meus dados estão seguros?", a:"Todos os dados são armazenados na sua conta pessoal do Firebase. Cada usuário pode ver apenas seus próprios dados. Nunca vendemos ou compartilhamos dados de usuários. HSTS e Cloudflare WAF protegem todo o tráfego."},
-  {q:"Posso cancelar a qualquer momento?", a:"Sim. Sem contratos, sem taxas de cancelamento. Cancele pelo seu painel a qualquer momento e manterá acesso Pro até o final do período de faturamento."},
+ {q:"O WizeLife é realmente gratuito?", a:"Sim. Você obtém 3–5 respostas de IA por dia por ferramenta, para sempre gratuito. Sem cartão de crédito, sem período de teste. Faça upgrade para o Pro ($4,99/mês) para mais respostas e recursos desbloqueados, ou vá YOLO ($9,99/mês) para IA ilimitada em todas as ferramentas."},
+ {q:"Preciso de uma conta separada para cada ferramenta?", a:"Não — uma conta WizeLife funciona em todas as 5 ferramentas. Entre uma vez, use tudo."},
+ {q:"Como o WizeTax difere de uma calculadora de impostos comum?", a:"O WizeTax usa IA treinada em legislação tributária de 26 países, com cenários reais de imposto de saída, comparações de realocação e um gerador de cartas. Não são apenas números — são conselhos práticos."},
+ {q:"O WizeTravel realmente pode me economizar dinheiro?", a:"Sim. O WizeTravel encontra passagens hidden-city, rotas de posicionamento (voe por um hub mais barato) e interlining virtual entre companhias de baixo custo — rotas que sites tradicionais de reserva perdem completamente."},
+ {q:"Quais mercados o WizeDeal cobre?", a:"Brasil, Israel e EUA. Cada mercado tem conhecimento profundo de impostos locais (ITBI, taxas de transferência), produtos hipotecários e benchmarks de rentabilidade de aluguel."},
+ {q:"Meus dados estão seguros?", a:"Todos os dados são armazenados na sua conta pessoal do Firebase. Cada usuário pode ver apenas seus próprios dados. Nunca vendemos ou compartilhamos dados de usuários. HSTS e Cloudflare WAF protegem todo o tráfego."},
+ {q:"Posso cancelar a qualquer momento?", a:"Sim. Sem contratos, sem taxas de cancelamento. Cancele pelo seu painel a qualquer momento e manterá acesso Pro até o final do período de faturamento."},
 ];
 
 const WIZE_FAQ_ES = [
-  {q:"¿WizeLife es realmente gratuito?", a:"Sí. Obtienes 3–5 respuestas de IA al día por herramienta, gratis para siempre. Sin tarjeta de crédito, sin período de prueba. Actualiza a Pro ($4.99/mes) para más respuestas y funciones desbloqueadas, o pasa a YOLO ($9.99/mes) para IA ilimitada en todas las herramientas."},
-  {q:"¿Necesito una cuenta separada para cada herramienta?", a:"No — una cuenta WizeLife funciona en las 5 herramientas. Inicia sesión una vez, usa todo."},
-  {q:"¿En qué se diferencia WizeTax de una calculadora de impuestos normal?", a:"WizeTax usa IA entrenada en legislación fiscal de 26 países, con escenarios reales de impuesto de salida, comparaciones de reubicación y un generador de cartas. No son solo números — son consejos prácticos."},
-  {q:"¿WizeTravel realmente puede ahorrarme dinero?", a:"Sí. WizeTravel encuentra vuelos hidden-city, rutas de posicionamiento (vuela por un hub más barato) e interlining virtual entre aerolíneas de bajo costo — rutas que los sitios de reserva tradicionales pasan por alto."},
-  {q:"¿Qué mercados cubre WizeDeal?", a:"España, Israel y EE. UU. Cada mercado tiene conocimiento profundo de impuestos locales (ITP, tasas de transferencia), productos hipotecarios y benchmarks de rentabilidad de alquiler."},
-  {q:"¿Mis datos están seguros?", a:"Todos los datos se almacenan en tu cuenta personal de Firebase. Cada usuario solo puede ver sus propios datos. Nunca vendemos ni compartimos datos de usuarios. HSTS y Cloudflare WAF protegen todo el tráfico."},
-  {q:"¿Puedo cancelar en cualquier momento?", a:"Sí. Sin contratos, sin tarifas de cancelación. Cancela desde tu panel en cualquier momento y mantendrás acceso Pro hasta el final del período de facturación."},
+ {q:"¿WizeLife es realmente gratuito?", a:"Sí. Obtienes 3–5 respuestas de IA al día por herramienta, gratis para siempre. Sin tarjeta de crédito, sin período de prueba. Actualiza a Pro ($4.99/mes) para más respuestas y funciones desbloqueadas, o pasa a YOLO ($9.99/mes) para IA ilimitada en todas las herramientas."},
+ {q:"¿Necesito una cuenta separada para cada herramienta?", a:"No — una cuenta WizeLife funciona en las 5 herramientas. Inicia sesión una vez, usa todo."},
+ {q:"¿En qué se diferencia WizeTax de una calculadora de impuestos normal?", a:"WizeTax usa IA entrenada en legislación fiscal de 26 países, con escenarios reales de impuesto de salida, comparaciones de reubicación y un generador de cartas. No son solo números — son consejos prácticos."},
+ {q:"¿WizeTravel realmente puede ahorrarme dinero?", a:"Sí. WizeTravel encuentra vuelos hidden-city, rutas de posicionamiento (vuela por un hub más barato) e interlining virtual entre aerolíneas de bajo costo — rutas que los sitios de reserva tradicionales pasan por alto."},
+ {q:"¿Qué mercados cubre WizeDeal?", a:"España, Israel y EE. UU. Cada mercado tiene conocimiento profundo de impuestos locales (ITP, tasas de transferencia), productos hipotecarios y benchmarks de rentabilidad de alquiler."},
+ {q:"¿Mis datos están seguros?", a:"Todos los datos se almacenan en tu cuenta personal de Firebase. Cada usuario solo puede ver sus propios datos. Nunca vendemos ni compartimos datos de usuarios. HSTS y Cloudflare WAF protegen todo el tráfico."},
+ {q:"¿Puedo cancelar en cualquier momento?", a:"Sí. Sin contratos, sin tarifas de cancelación. Cancela desde tu panel en cualquier momento y mantendrás acceso Pro hasta el final del período de facturación."},
 ];
 
 function _detectLandingLang(){
-  // Landing page preference order: explicit setting > cross-app wl_lang > browser > Hebrew default
-  const landing = localStorage.getItem('wl_landing_lang');
-  if(landing && ['en','pt','es','he'].includes(landing)) return landing;
-  const cross = localStorage.getItem('wl_lang');
-  if(cross && ['en','pt','es','he'].includes(cross)) return cross;
-  const bl = (navigator.language || 'he').toLowerCase();
-  if(bl.startsWith('pt')) return 'pt';
-  if(bl.startsWith('es')) return 'es';
-  if(bl.startsWith('en')) return 'en';
-  return 'he'; // default Hebrew
+ // Landing page preference order: explicit setting > cross-app wl_lang > browser > Hebrew default
+ const landing = localStorage.getItem('wl_landing_lang');
+ if(landing && ['en','pt','es','he'].includes(landing)) return landing;
+ const cross = localStorage.getItem('wl_lang');
+ if(cross && ['en','pt','es','he'].includes(cross)) return cross;
+ const bl = (navigator.language || 'he').toLowerCase();
+ if(bl.startsWith('pt')) return 'pt';
+ if(bl.startsWith('es')) return 'es';
+ if(bl.startsWith('en')) return 'en';
+ return 'he'; // default Hebrew
 }
 let _wl_lang = _detectLandingLang();
 
 function setWlLang(v){
-  if(!['en','pt','es','he'].includes(v)) return;
-  _wl_lang = v;
-  localStorage.setItem('wl_landing_lang', v);
-  localStorage.setItem('wl_lang', v);
-  applyLandingLang();
+ if(!['en','pt','es','he'].includes(v)) return;
+ _wl_lang = v;
+ localStorage.setItem('wl_landing_lang', v);
+ localStorage.setItem('wl_lang', v);
+ applyLandingLang();
 }
 function applyLandingLang(){
-  const t = WIZE_TR[_wl_lang];
-  const isRtl = _wl_lang === 'he';
-  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
-  document.documentElement.lang = _wl_lang;
-  document.querySelectorAll('.lang-pill').forEach(b => b.classList.toggle('active', b.dataset.lang === _wl_lang));
+ const t = WIZE_TR[_wl_lang];
+ const isRtl = _wl_lang === 'he';
+ document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+ document.documentElement.lang = _wl_lang;
+ document.querySelectorAll('.lang-pill').forEach(b => b.classList.toggle('active', b.dataset.lang === _wl_lang));
 
-  // Nav
-  document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
-  document.querySelector('.nav-links a[href="#pricing"]').textContent = t.navPricing;
-  document.querySelector('.nav-links a[href="#faq"]').textContent = t.navFaq;
-  // Only update auth buttons if user is NOT logged in (don't overwrite username)
-  if (!window._wlLoggedIn) {
-    document.getElementById('nav-signin').textContent = t.navSignin;
-    document.getElementById('nav-cta').textContent = t.navCta;
-  }
+ // Nav
+ document.querySelector('.nav-links a[href="#products"]').textContent = t.navProducts;
+ document.querySelector('.nav-links a[href="#pricing"]').textContent = t.navPricing;
+ document.querySelector('.nav-links a[href="#faq"]').textContent = t.navFaq;
+ // Only update auth buttons if user is NOT logged in (don't overwrite username)
+ if (!window._wlLoggedIn) {
+ document.getElementById('nav-signin').textContent = t.navSignin;
+ document.getElementById('nav-cta').textContent = t.navCta;
+ }
 
-  // Mobile nav
-  const mna = document.querySelectorAll('.mobile-nav a');
-  if(mna[0]) mna[0].textContent = t.navProducts;
-  if(mna[1]) mna[1].textContent = t.navPricing;
-  if(mna[2]) mna[2].textContent = t.navFaq;
-  if(mna[3]) mna[3].textContent = t.mobileGetStarted;
+ // Mobile nav
+ const mna = document.querySelectorAll('.mobile-nav a');
+ if(mna[0]) mna[0].textContent = t.navProducts;
+ if(mna[1]) mna[1].textContent = t.navPricing;
+ if(mna[2]) mna[2].textContent = t.navFaq;
+ if(mna[3]) mna[3].textContent = t.mobileGetStarted;
 
-  // Hero
-  const badge = document.querySelector('.hero-badge');
-  if(badge){ badge.innerHTML = `<span class="badge-live"></span>${t.heroBadge}`; }
-  const h1el = document.querySelector('h1');
-  if(h1el) h1el.innerHTML = `${t.h1a}<br><span class="gradient-text">${t.h1b}</span><br>${t.h1c}`;
-  const heroSub = document.querySelector('.hero-sub');
-  if(heroSub) heroSub.textContent = t.heroSub;
-  const btns = document.querySelectorAll('.hero-btns a');
-  if(btns[0]) btns[0].textContent = t.heroBtn;
-  if(btns[1]) btns[1].textContent = t.heroBtn2;
-  const feedLbl = document.querySelector('.feed-label');
-  if(feedLbl) feedLbl.textContent = t.feedLabel;
+ // Hero
+ const badge = document.querySelector('.hero-badge');
+ if(badge){ badge.innerHTML = `<span class="badge-live"></span>${t.heroBadge}`; }
+ const h1el = document.querySelector('h1');
+ if(h1el) h1el.innerHTML = `${t.h1a}<br><span class="gradient-text">${t.h1b}</span><br>${t.h1c}`;
+ const heroSub = document.querySelector('.hero-sub');
+ if(heroSub) heroSub.textContent = t.heroSub;
+ const btns = document.querySelectorAll('.hero-btns a');
+ if(btns[0]) btns[0].textContent = t.heroBtn;
+ if(btns[1]) btns[1].textContent = t.heroBtn2;
+ const feedLbl = document.querySelector('.feed-label');
+ if(feedLbl) feedLbl.textContent = t.feedLabel;
 
-  // Trust bar
-  const tlabels = document.querySelectorAll('.trust-label');
-  ['trustLabel0','trustLabel1','trustLabel2','trustLabel3'].forEach((k,i)=>{ if(tlabels[i]) tlabels[i].textContent = t[k]; });
+ // Trust bar
+ const tlabels = document.querySelectorAll('.trust-label');
+ ['trustLabel0','trustLabel1','trustLabel2','trustLabel3'].forEach((k,i)=>{ if(tlabels[i]) tlabels[i].textContent = t[k]; });
 
-  // Suite section
-  const eyes = document.querySelectorAll('.sec-eyebrow');
-  const titles = document.querySelectorAll('.sec-title');
-  const subs = document.querySelectorAll('.sec-sub');
-  // sec indices: 0=suite, 1=ai, 2=calc, 3=compare, 4=testi, 5=pricing, 6=faq
-  const secData = [
-    [t.suiteEye, t.suiteTitle.replace('\n','<br>'), t.suiteSub],
-    [t.aiEye, t.aiTitle.replace('\n','<br>'), t.aiSub],
-    [t.calcEye, t.calcTitle, t.calcSub],
-    [t.compareEye, t.compareTitle, t.compareSub],
-    [t.testiEye, t.testiTitle, t.testiSub],
-    [t.pricingEye, t.pricingTitle, t.pricingSub],
-    [t.faqEye, t.faqTitle, t.faqSub],
-  ];
-  secData.forEach(([eye,title,sub],i)=>{
-    if(eyes[i]) eyes[i].textContent = eye;
-    if(titles[i]) titles[i].innerHTML = title;
-    if(subs[i]) subs[i].textContent = sub;
-  });
+ // Suite section
+ const eyes = document.querySelectorAll('.sec-eyebrow');
+ const titles = document.querySelectorAll('.sec-title');
+ const subs = document.querySelectorAll('.sec-sub');
+ // sec indices: 0=suite, 1=ai, 2=calc, 3=compare, 4=testi, 5=pricing, 6=faq
+ const secData = [
+ [t.suiteEye, t.suiteTitle.replace('\n','<br>'), t.suiteSub],
+ [t.aiEye, t.aiTitle.replace('\n','<br>'), t.aiSub],
+ [t.calcEye, t.calcTitle, t.calcSub],
+ [t.compareEye, t.compareTitle, t.compareSub],
+ [t.testiEye, t.testiTitle, t.testiSub],
+ [t.pricingEye, t.pricingTitle, t.pricingSub],
+ [t.faqEye, t.faqTitle, t.faqSub],
+ ];
+ secData.forEach(([eye,title,sub],i)=>{
+ if(eyes[i]) eyes[i].textContent = eye;
+ if(titles[i]) titles[i].innerHTML = title;
+ if(subs[i]) subs[i].textContent = sub;
+ });
 
-  // AI demo
-  const aip = document.getElementById('aiInput');
-  if(aip) aip.placeholder = t.aiPlaceholder;
-  const aisend = document.getElementById('aiSend');
-  if(aisend) aisend.textContent = t.aiSendBtn;
-  // Reset AI body to translated welcome
-  const aiB = document.getElementById('aiBody');
-  if(aiB && aiB.children.length === 1) aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
+ // AI demo
+ const aip = document.getElementById('aiInput');
+ if(aip) aip.placeholder = t.aiPlaceholder;
+ const aisend = document.getElementById('aiSend');
+ if(aisend) aisend.textContent = t.aiSendBtn;
+ // Reset AI body to translated welcome
+ const aiB = document.getElementById('aiBody');
+ if(aiB && aiB.children.length === 1) aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
 
-  // Calculator
-  const calcEyeEl = document.querySelector('.calc-section .sec-eyebrow');
-  if(calcEyeEl) calcEyeEl.textContent = t.calcEye;
-  const calcTitleEl = document.querySelector('.calc-section .sec-title');
-  if(calcTitleEl) calcTitleEl.textContent = t.calcTitle;
-  const calcSubEl = document.querySelector('.calc-section .sec-sub');
-  if(calcSubEl) calcSubEl.textContent = t.calcSub;
-  const calcEyebrowEl = document.querySelector('.calc-eyebrow');
-  if(calcEyebrowEl) calcEyebrowEl.textContent = t.calcEyebrow;
-  const calcSubResEl = document.querySelector('.calc-sub');
-  if(calcSubResEl) calcSubResEl.textContent = t.calcSubResult;
+ // Calculator
+ const calcEyeEl = document.querySelector('.calc-section .sec-eyebrow');
+ if(calcEyeEl) calcEyeEl.textContent = t.calcEye;
+ const calcTitleEl = document.querySelector('.calc-section .sec-title');
+ if(calcTitleEl) calcTitleEl.textContent = t.calcTitle;
+ const calcSubEl = document.querySelector('.calc-section .sec-sub');
+ if(calcSubEl) calcSubEl.textContent = t.calcSub;
+ const calcEyebrowEl = document.querySelector('.calc-eyebrow');
+ if(calcEyebrowEl) calcEyebrowEl.textContent = t.calcEyebrow;
+ const calcSubResEl = document.querySelector('.calc-sub');
+ if(calcSubResEl) calcSubResEl.textContent = t.calcSubResult;
 
-  // CTA
-  const ctaEyeEl = document.querySelector('.cta-section .sec-eyebrow');
-  if(ctaEyeEl) ctaEyeEl.textContent = t.ctaEye;
-  const ctaH2 = document.querySelector('.cta-section h2');
-  if(ctaH2) ctaH2.textContent = t.ctaTitle;
-  const ctaP = document.querySelector('.cta-section p');
-  if(ctaP) ctaP.textContent = t.ctaDesc;
-  const ctaBtns = document.querySelectorAll('.cta-section .hero-btns a');
-  if(ctaBtns[0]) ctaBtns[0].textContent = t.ctaBtn;
-  if(ctaBtns[1]) ctaBtns[1].textContent = t.ctaBtn2;
+ // CTA
+ const ctaEyeEl = document.querySelector('.cta-section .sec-eyebrow');
+ if(ctaEyeEl) ctaEyeEl.textContent = t.ctaEye;
+ const ctaH2 = document.querySelector('.cta-section h2');
+ if(ctaH2) ctaH2.textContent = t.ctaTitle;
+ const ctaP = document.querySelector('.cta-section p');
+ if(ctaP) ctaP.textContent = t.ctaDesc;
+ const ctaBtns = document.querySelectorAll('.cta-section .hero-btns a');
+ if(ctaBtns[0]) ctaBtns[0].textContent = t.ctaBtn;
+ if(ctaBtns[1]) ctaBtns[1].textContent = t.ctaBtn2;
 
-  // Footer
-  const footerBrand = document.querySelector('.footer-brand p');
-  if(footerBrand) footerBrand.textContent = t.footerDesc;
-  const fcols = document.querySelectorAll('.footer-col h4');
-  if(fcols[0]) fcols[0].textContent = t.footerProducts;
-  if(fcols[1]) fcols[1].textContent = t.footerAccount;
-  if(fcols[2]) fcols[2].textContent = t.footerInfo;
-  const faLinks = document.querySelectorAll('.footer-col:nth-child(2) a');
-  if(faLinks[0]) faLinks[0].textContent = t.footerSignin;
-  if(faLinks[1]) faLinks[1].textContent = t.footerSignup;
-  if(faLinks[2]) faLinks[2].textContent = t.footerPricing;
-  if(faLinks[3]) faLinks[3].textContent = t.footerFaq || 'FAQ';
-  const fiLinks = document.querySelectorAll('.footer-col:nth-child(3) a');
-  if(fiLinks[0]) fiLinks[0].textContent = t.footerContact;
-  if(fiLinks[1]) fiLinks[1].textContent = t.footerPrivacy;
-  if(fiLinks[2]) fiLinks[2].textContent = t.footerTerms;
-  const fbottom = document.querySelectorAll('.footer-bottom span');
-  if(fbottom[0]) fbottom[0].textContent = t.footerRights;
-  if(fbottom[1]) fbottom[1].textContent = t.footerMade;
+ // Footer
+ const footerBrand = document.querySelector('.footer-brand p');
+ if(footerBrand) footerBrand.textContent = t.footerDesc;
+ const fcols = document.querySelectorAll('.footer-col h4');
+ if(fcols[0]) fcols[0].textContent = t.footerProducts;
+ if(fcols[1]) fcols[1].textContent = t.footerAccount;
+ if(fcols[2]) fcols[2].textContent = t.footerInfo;
+ const faLinks = document.querySelectorAll('.footer-col:nth-child(2) a');
+ if(faLinks[0]) faLinks[0].textContent = t.footerSignin;
+ if(faLinks[1]) faLinks[1].textContent = t.footerSignup;
+ if(faLinks[2]) faLinks[2].textContent = t.footerPricing;
+ if(faLinks[3]) faLinks[3].textContent = t.footerFaq || 'FAQ';
+ const fiLinks = document.querySelectorAll('.footer-col:nth-child(3) a');
+ if(fiLinks[0]) fiLinks[0].textContent = t.footerContact;
+ if(fiLinks[1]) fiLinks[1].textContent = t.footerPrivacy;
+ if(fiLinks[2]) fiLinks[2].textContent = t.footerTerms;
+ const fbottom = document.querySelectorAll('.footer-bottom span');
+ if(fbottom[0]) fbottom[0].textContent = t.footerRights;
+ if(fbottom[1]) fbottom[1].textContent = t.footerMade;
 
-  // AI suggestions
-  const suggestions_pt = [
-    "Devo me mudar para Portugal?",
-    "TLV→NYC é mais barato via hub?",
-    "Explique meu colesterol LDL de 138",
-    "Qual é uma boa rentabilidade em São Paulo?",
-    "Como rebalancear uma carteira 60/40?"
-  ];
-  const suggestions_es = [
-    "¿Debería mudarme a Portugal?",
-    "¿TLV→NYC es más barato vía hub?",
-    "Explica mi colesterol LDL de 138",
-    "¿Cuál es un buen rendimiento de alquiler en Madrid?",
-    "¿Cómo rebalanceo una cartera 60/40?"
-  ];
-  const suggestions_en = [
-    "Should I relocate to Portugal?",
-    "Is TLV→NYC cheaper via a hub?",
-    "Explain my LDL cholesterol of 138",
-    "What's a good rental yield in São Paulo?",
-    "How do I rebalance a 60/40 portfolio?"
-  ];
-  const suggestions_he = [
-    "האם כדאי לי לעבור לפורטוגל?",
-    "האם TLV→NYC זול יותר דרך hub?",
-    "הסבר לי כולסטרול LDL של 138",
-    "מה תשואת שכירות טובה בתל אביב?",
-    "איך לאזן מחדש תיק 60/40?",
-  ];
-  const suggs = _wl_lang === 'pt' ? suggestions_pt : _wl_lang === 'es' ? suggestions_es : _wl_lang === 'he' ? suggestions_he : suggestions_en;
-  const aiPromptsEl = document.getElementById('aiPrompts');
-  if(aiPromptsEl){
-    aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
-    aiPromptsEl.querySelectorAll('.ai-prompt').forEach(b=>{
-      b.addEventListener('click',()=>{ aiInput.value = b.textContent; sendAI(); });
-    });
-  }
+ // AI suggestions
+ const suggestions_pt = [
+ "Devo me mudar para Portugal?",
+ "TLV→NYC é mais barato via hub?",
+ "Explique meu colesterol LDL de 138",
+ "Qual é uma boa rentabilidade em São Paulo?",
+ "Como rebalancear uma carteira 60/40?"
+ ];
+ const suggestions_es = [
+ "¿Debería mudarme a Portugal?",
+ "¿TLV→NYC es más barato vía hub?",
+ "Explica mi colesterol LDL de 138",
+ "¿Cuál es un buen rendimiento de alquiler en Madrid?",
+ "¿Cómo rebalanceo una cartera 60/40?"
+ ];
+ const suggestions_en = [
+ "Should I relocate to Portugal?",
+ "Is TLV→NYC cheaper via a hub?",
+ "Explain my LDL cholesterol of 138",
+ "What's a good rental yield in São Paulo?",
+ "How do I rebalance a 60/40 portfolio?"
+ ];
+ const suggestions_he = [
+ "האם כדאי לי לעבור לפורטוגל?",
+ "האם TLV→NYC זול יותר דרך hub?",
+ "הסבר לי כולסטרול LDL של 138",
+ "מה תשואת שכירות טובה בתל אביב?",
+ "איך לאזן מחדש תיק 60/40?",
+ ];
+ const suggs = _wl_lang === 'pt' ? suggestions_pt : _wl_lang === 'es' ? suggestions_es : _wl_lang === 'he' ? suggestions_he : suggestions_en;
+ const aiPromptsEl = document.getElementById('aiPrompts');
+ if(aiPromptsEl){
+ aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
+ aiPromptsEl.querySelectorAll('.ai-prompt').forEach(b=>{
+ b.addEventListener('click',()=>{ aiInput.value = b.textContent; sendAI(); });
+ });
+ }
 
-  // FAQ — re-render by language
-  const WIZE_FAQ_HE = [
-    {q:"האם WizeLife באמת חינמי?", a:"כן. קבל 3–5 תשובות AI ביום לכל כלי, חינם לתמיד. ללא כרטיס אשראי, ללא תקופת ניסיון. שדרג ל-Pro ($4.99/חודש) לתשובות נוספות ותכונות מלאות, או עבור ל-YOLO ($9.99/חודש) לAI ללא הגבלה בכל הכלים."},
-    {q:"האם צריך חשבון נפרד לכל כלי?", a:"לא — חשבון WizeLife אחד עובד על כל 5 הכלים. כנס פעם אחת, השתמש בכל."},
-    {q:"במה WizeTax שונה ממחשבון מס רגיל?", a:"WizeTax משתמש ב-AI שאומן על חקיקת מס של 26 מדינות, כולל תרחישי מס יציאה, השוואות העתקת מגורים ויצירת מכתבים. לא רק מספרים — עצות פרקטיות."},
-    {q:"האם WizeTravel יכול באמת לחסוך לי כסף?", a:"כן. WizeTravel מוצא טיסות hidden-city, מסלולי positioning וinterlining וירטואלי בין חברות low-cost — מסלולים שאתרי הזמנה רגילים מפספסים לחלוטין."},
-    {q:"אילו שווקים WizeDeal מכסה?", a:"ישראל, ברזיל וארה\"ב. לכל שוק יש ידע עמוק במיסים מקומיים, מוצרי משכנתא ותשואות שכירות."},
-    {q:"האם הנתונים שלי מאובטחים?", a:"כל הנתונים מאוחסנים בחשבון Firebase האישי שלך. כל משתמש יכול לראות רק את הנתונים שלו. לעולם לא מוכרים או משתפים נתוני משתמשים."},
-    {q:"האם אפשר לבטל בכל עת?", a:"כן. ללא חוזים, ללא עמלות ביטול. בטל דרך הלוח בקרה בכל עת ותשמור גישה Pro עד סוף תקופת החיוב."},
-  ];
-  const faqData = _wl_lang === 'pt' ? WIZE_FAQ_PT : _wl_lang === 'es' ? WIZE_FAQ_ES : _wl_lang === 'he' ? WIZE_FAQ_HE : faqs;
-  document.getElementById('faqList').innerHTML = faqData.map((f,i)=>`
+ // FAQ — re-render by language
+ const WIZE_FAQ_HE = [
+ {q:"האם WizeLife באמת חינמי?", a:"כן. קבל 3–5 תשובות AI ביום לכל כלי, חינם לתמיד. ללא כרטיס אשראי, ללא תקופת ניסיון. שדרג ל-Pro ($4.99/חודש) לתשובות נוספות ותכונות מלאות, או עבור ל-YOLO ($9.99/חודש) לAI ללא הגבלה בכל הכלים."},
+ {q:"האם צריך חשבון נפרד לכל כלי?", a:"לא — חשבון WizeLife אחד עובד על כל 5 הכלים. כנס פעם אחת, השתמש בכל."},
+ {q:"במה WizeTax שונה ממחשבון מס רגיל?", a:"WizeTax משתמש ב-AI שאומן על חקיקת מס של 26 מדינות, כולל תרחישי מס יציאה, השוואות העתקת מגורים ויצירת מכתבים. לא רק מספרים — עצות פרקטיות."},
+ {q:"האם WizeTravel יכול באמת לחסוך לי כסף?", a:"כן. WizeTravel מוצא טיסות hidden-city, מסלולי positioning וinterlining וירטואלי בין חברות low-cost — מסלולים שאתרי הזמנה רגילים מפספסים לחלוטין."},
+ {q:"אילו שווקים WizeDeal מכסה?", a:"ישראל, ברזיל וארה\"ב. לכל שוק יש ידע עמוק במיסים מקומיים, מוצרי משכנתא ותשואות שכירות."},
+ {q:"האם הנתונים שלי מאובטחים?", a:"כל הנתונים מאוחסנים בחשבון Firebase האישי שלך. כל משתמש יכול לראות רק את הנתונים שלו. לעולם לא מוכרים או משתפים נתוני משתמשים."},
+ {q:"האם אפשר לבטל בכל עת?", a:"כן. ללא חוזים, ללא עמלות ביטול. בטל דרך הלוח בקרה בכל עת ותשמור גישה Pro עד סוף תקופת החיוב."},
+ ];
+ const faqData = _wl_lang === 'pt' ? WIZE_FAQ_PT : _wl_lang === 'es' ? WIZE_FAQ_ES : _wl_lang === 'he' ? WIZE_FAQ_HE : faqs;
+ document.getElementById('faqList').innerHTML = faqData.map((f,i)=>`
 <div class="faq-item" data-i="${i}">
-  <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
-  <div class="faq-a">${f.a}</div>
+ <button class="faq-q">${f.q}<span class="faq-chev">▾</span></button>
+ <div class="faq-a">${f.a}</div>
 </div>`).join('');
-  document.querySelectorAll('.faq-item').forEach(item=>{
-    item.querySelector('.faq-q').addEventListener('click',()=>{
-      const open = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
-      if(!open) item.classList.add('open');
-    });
-  });
+ document.querySelectorAll('.faq-item').forEach(item=>{
+ item.querySelector('.faq-q').addEventListener('click',()=>{
+ const open = item.classList.contains('open');
+ document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+ if(!open) item.classList.add('open');
+ });
+ });
 }
 
 function toggleLang(){
-  const langs = ['en','pt','es','he'];
-  _wl_lang = langs[(langs.indexOf(_wl_lang)+1) % langs.length];
-  localStorage.setItem('wl_landing_lang', _wl_lang);
-  localStorage.setItem('wl_lang', _wl_lang);
-  applyLandingLang();
+ const langs = ['en','pt','es','he'];
+ _wl_lang = langs[(langs.indexOf(_wl_lang)+1) % langs.length];
+ localStorage.setItem('wl_landing_lang', _wl_lang);
+ localStorage.setItem('wl_lang', _wl_lang);
+ applyLandingLang();
 }
 
 // Apply on load (respects saved preference)
@@ -1798,24 +1788,24 @@ applyLandingLang();
 <script src="js/wizelife-auth.js"></script>
 <script>
 wlAuth.onAuthStateChanged(function(user) {
-    const signinBtn = document.getElementById('nav-signin');
-    const ctaBtn    = document.getElementById('nav-cta');
-    if (!signinBtn || !ctaBtn) return;
-    if (user) {
-        window._wlLoggedIn = true;
-        const name = user.displayName || user.email.split('@')[0];
-        signinBtn.textContent = name;
-        signinBtn.href = 'dashboard.html';
-        ctaBtn.textContent = 'Dashboard →';
-        ctaBtn.href = 'dashboard.html';
-        // Also update hero CTAs
-        document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => {
-            a.textContent = 'Go to Dashboard →';
-            a.href = 'dashboard.html';
-        });
-    } else {
-        window._wlLoggedIn = false;
-    }
+ const signinBtn = document.getElementById('nav-signin');
+ const ctaBtn = document.getElementById('nav-cta');
+ if (!signinBtn || !ctaBtn) return;
+ if (user) {
+ window._wlLoggedIn = true;
+ const name = user.displayName || user.email.split('@')[0];
+ signinBtn.textContent = name;
+ signinBtn.href = 'dashboard.html';
+ ctaBtn.textContent = 'Dashboard →';
+ ctaBtn.href = 'dashboard.html';
+ // Also update hero CTAs
+ document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => {
+ a.textContent = 'Go to Dashboard →';
+ a.href = 'dashboard.html';
+ });
+ } else {
+ window._wlLoggedIn = false;
+ }
 });
 </script>
 <script>
@@ -1826,57 +1816,57 @@ document.head.appendChild(_swScript);
 
 // Trust bar counter animation
 document.querySelectorAll('.trust-num[data-count]').forEach(el => {
-  const target = parseInt(el.dataset.count, 10);
-  const prefix = el.dataset.prefix || '';
-  if (target === 0) return;
-  const obs = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting) return;
-    obs.disconnect();
-    let start = 0;
-    const dur = 1200;
-    const step = ts => {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / dur, 1);
-      el.textContent = prefix + Math.round(p * target);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, {threshold: 0.5});
-  obs.observe(el);
+ const target = parseInt(el.dataset.count, 10);
+ const prefix = el.dataset.prefix || '';
+ if (target === 0) return;
+ const obs = new IntersectionObserver(entries => {
+ if (!entries[0].isIntersecting) return;
+ obs.disconnect();
+ let start = 0;
+ const dur = 1200;
+ const step = ts => {
+ if (!start) start = ts;
+ const p = Math.min((ts - start) / dur, 1);
+ el.textContent = prefix + Math.round(p * target);
+ if (p < 1) requestAnimationFrame(step);
+ };
+ requestAnimationFrame(step);
+ }, {threshold: 0.5});
+ obs.observe(el);
 });
 </script>
 <script>
 (function() {
-    function updateLandingPlanBadge() {
-        var el = document.getElementById('navPlanBadge');
-        if (!el) return;
-        var plan = localStorage.getItem('wl_plan');
-        if (!plan || plan === 'free') {
-            el.style.display = 'none';
-            return;
-        }
-        var labels = { yolo: '⚡ YOLO', pro: '✦ PRO', pro_trial: '✦ PRO' };
-        el.textContent = labels[plan] || plan.toUpperCase();
-        el.style.display = 'inline';
-        if (plan === 'yolo') {
-            el.style.background = 'linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2))';
-            el.style.color = '#fbbf24';
-            el.style.borderColor = 'rgba(245,158,11,0.35)';
-        } else if (plan === 'pro' || plan === 'pro_trial') {
-            el.style.background = 'rgba(16,185,129,0.18)';
-            el.style.color = '#34d399';
-            el.style.borderColor = 'rgba(16,185,129,0.35)';
-        }
-        // If logged in: also hide "Get Started" CTA + change "Sign In" to "Dashboard"
-        var signin = document.querySelector('.nav-signin');
-        var cta = document.querySelector('.nav-cta');
-        if (signin) { signin.textContent = 'Dashboard'; signin.href = 'dashboard.html'; }
-        if (cta) cta.style.display = 'none';
-    }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', updateLandingPlanBadge);
-    } else { updateLandingPlanBadge(); }
-    window.addEventListener('storage', function(e){ if(e.key === 'wl_plan') updateLandingPlanBadge(); });
+ function updateLandingPlanBadge() {
+ var el = document.getElementById('navPlanBadge');
+ if (!el) return;
+ var plan = localStorage.getItem('wl_plan');
+ if (!plan || plan === 'free') {
+ el.style.display = 'none';
+ return;
+ }
+ var labels = { yolo: '⚡ YOLO', pro: '✦ PRO', pro_trial: '✦ PRO' };
+ el.textContent = labels[plan] || plan.toUpperCase();
+ el.style.display = 'inline';
+ if (plan === 'yolo') {
+ el.style.background = 'linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2))';
+ el.style.color = '#fbbf24';
+ el.style.borderColor = 'rgba(245,158,11,0.35)';
+ } else if (plan === 'pro' || plan === 'pro_trial') {
+ el.style.background = 'rgba(16,185,129,0.18)';
+ el.style.color = '#34d399';
+ el.style.borderColor = 'rgba(16,185,129,0.35)';
+ }
+ // If logged in: also hide "Get Started" CTA + change "Sign In" to "Dashboard"
+ var signin = document.querySelector('.nav-signin');
+ var cta = document.querySelector('.nav-cta');
+ if (signin) { signin.textContent = 'Dashboard'; signin.href = 'dashboard.html'; }
+ if (cta) cta.style.display = 'none';
+ }
+ if (document.readyState === 'loading') {
+ document.addEventListener('DOMContentLoaded', updateLandingPlanBadge);
+ } else { updateLandingPlanBadge(); }
+ window.addEventListener('storage', function(e){ if(e.key === 'wl_plan') updateLandingPlanBadge(); });
 })();
 </script>
 <script defer="" src="/js/wize-bottom-nav.js"></script>
@@ -1884,13 +1874,13 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
 <script defer="" src="/js/wize-hamburger.js"></script>
 <script>
 /* Even on the public landing page, fire a single warm-up GET to Vitara so
-   that by the time the user signs in and clicks Health, it's already up. */
+ that by the time the user signs in and clicks Health, it's already up. */
 (function prewarmBackends(){
-  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
-  var TARGETS = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'];
-  // Fire immediately + every 30 s while landing page is open.
-  TARGETS.forEach(ping);
-  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
+ function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+ var TARGETS = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'];
+ // Fire immediately + every 30 s while landing page is open.
+ TARGETS.forEach(ping);
+ setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
 <script>

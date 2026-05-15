@@ -325,7 +325,7 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td><strong>GitHub Actions</strong></td><td>Daily QA + Render keep-alive</td><td>Free (well under 2000 min/month)</td></tr>
 <tr><td><strong>GitHub Issues</strong></td><td>QA alerts → email via notifications</td><td>Free</td></tr>
 <tr><td><strong>UptimeRobot</strong></td><td>5-min interval downtime check on all 6 endpoints</td><td>Free (50 monitors)</td></tr>
-<tr><td><strong>Microsoft Clarity</strong></td><td>Session replays + heatmaps</td><td>Free, project ID <code>wnvlwv7gu0</code></td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td><strong>Google Analytics</strong></td><td>Traffic + events</td><td>Free, IDs: <code>G-MPRTN6CJ9K</code> (WizeLife), <code>G-DB63NWYGX5</code> (Money), <code>G-3W9ZZ0008E</code> (Tax), <code>G-6E5BE86WVT</code> (Deal)</td></tr>
 <tr><td><strong>Sentry</strong></td><td>Error tracking</td><td>Deferred until traffic justifies</td></tr>
 <tr><td><strong>PostHog</strong></td><td>Funnels + retention</td><td>Deferred</td></tr>
@@ -347,7 +347,7 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td>SW cache</td><td><code>wizelife-v11</code></td></tr>
 <tr><td>SW SHELL pages</td><td>index, auth, dashboard, feedback, apps, health, travel, wizetravel, tax-compare, web-apps, wize-ai, privacy, terms, 404 (15 pages)</td></tr>
 <tr><td>GA tracking ID</td><td><code>G-MPRTN6CJ9K</code></td></tr>
-<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code></td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td>Backend</td><td>None (Firebase Auth + Firestore directly)</td></tr>
 <tr><td>AI providers</td><td>None (auth/portal only)</td></tr>
 <tr><td>Languages</td><td>he / en / pt / es</td></tr>
@@ -368,7 +368,7 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td>SW cache</td><td><code>finsight-v235</code></td></tr>
 <tr><td>SW pages</td><td>38 internal pages (bank, credit, stocks, goals, etc.)</td></tr>
 <tr><td>GA tracking ID</td><td><code>G-DB63NWYGX5</code></td></tr>
-<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (loaded via sidebar.js → all 38 pages)</td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td>Backend (chat)</td><td>Firebase Functions <code>aiProxy</code> (legacy, not invoked)</td></tr>
 <tr><td>Backend (advisor)</td><td><code>https://master-backend-79jx.onrender.com/api/ai-proxy</code></td></tr>
 <tr><td>AI providers</td><td>Gemini 2.5-flash-lite (via /api/ai-proxy) + Tavily web search (auto-analysis only)</td></tr>
@@ -391,13 +391,13 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td>Backend stack</td><td>FastAPI, Python 3.11, slowapi rate limit</td></tr>
 <tr><td>SW cache</td><td><code>taxmaster-v2</code> (in <code>frontend/public/sw.js</code>)</td></tr>
 <tr><td>GA tracking ID</td><td><code>G-3W9ZZ0008E</code></td></tr>
-<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (via <code>&lt;Script&gt;</code> in layout.tsx + CSP allowed)</td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td>AI provider</td><td>Gemini 2.5-flash-lite via <code>agent/orchestrator.py</code></td></tr>
 <tr><td>Web search</td><td>Tavily (finance topic) injected before each <code>/api/chat</code> call</td></tr>
 <tr><td>Languages</td><td>he / en / pt / es</td></tr>
 <tr><td>Auto-update banner</td><td>✓ Inline in <code>layout.tsx</code></td></tr>
 <tr><td>Backend endpoints</td><td><code>/health</code>, <code>/api/chat</code> (SSE), <code>/api/ai-proxy</code>, <code>/api/analyze</code>, <code>/api/savings</code>, <code>/api/countries</code>, <code>/api/regimes</code>, <code>/api/country/{code}</code>, <code>/api/company</code>, <code>/api/israel</code>, <code>/api/tax-updates</code></td></tr>
-<tr><td>Recent installs</td><td>Wize&lt;Tax&gt; branded title (yellow gradient), AI-proxy with Tavily augmentation, gemini-2.5-flash-lite (was retired 2.0), 'Cloudflare WAF allow WizeLife-QA UA' for daily QA, sidebar cleanup, dark neutral palette, Clarity, ms-clarity CSP allowed, smart SW update banner, first-name display</td></tr>
+<tr><td>Recent installs</td><td>Wize&lt;Tax&gt; branded title (yellow gradient), AI-proxy with Tavily augmentation, gemini-2.5-flash-lite (was retired 2.0), 'Cloudflare WAF allow WizeLife-QA UA' for daily QA, sidebar cleanup, dark neutral palette, Clarity, smart SW update banner, first-name display</td></tr>
 </table>
 
 <h3>11.3 WizeTravel</h3>
@@ -413,12 +413,12 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td>Backend stack</td><td>FastAPI + Streamlit</td></tr>
 <tr><td>SW cache</td><td>None (Streamlit doesn't use SW)</td></tr>
 <tr><td>GA tracking ID</td><td>(none configured yet)</td></tr>
-<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (via layout.tsx)</td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td>AI provider</td><td>Gemini</td></tr>
 <tr><td>Web search</td><td>Tavily (not yet wired)</td></tr>
 <tr><td>Languages</td><td>he / en / pt / es</td></tr>
 <tr><td>Backend endpoints</td><td><code>/api/visa-check</code> (passport+destination), <code>/api/exchange-rates</code>, <code>/api/true-cost</code>, <code>/api/deal-hunter</code>, <code>/api/competitor</code>, <code>/api/rss</code>, <code>/api/hidden-city</code></td></tr>
-<tr><td>Recent installs</td><td>Wize&lt;Travel&gt; cyan animated title, neutral dark bg, visa-check field rename (passport/destination), first-name display, Clarity</td></tr>
+<tr><td>Recent installs</td><td>Wize&lt;Travel&gt; cyan animated title, neutral dark bg, visa-check field rename (passport/destination), first-name display</td></tr>
 </table>
 
 <h3>11.4 WizeHealth (Vitara / RAMBAM)</h3>
@@ -432,7 +432,7 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td>Stack</td><td>Express.js + Vanilla HTML/CSS/JS frontend in <code>public/</code></td></tr>
 <tr><td>SW cache</td><td><code>vitara-v4</code></td></tr>
 <tr><td>GA tracking ID</td><td>(none)</td></tr>
-<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (inline in index.html <code>&lt;head&gt;</code>)</td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td>Backend endpoints</td><td><code>/api/chat</code> (SSE), <code>/api/auth/login</code>, <code>/api/auth/check</code>, <code>/api/config</code>, <code>/api/transcribe</code>, file upload</td></tr>
 <tr><td>AI providers</td><td>Gemini 2.5-flash-lite (default), Groq, OpenRouter (admin only)</td></tr>
 <tr><td>Plan-aware quota</td><td><code>_check_ai_quota</code> middleware — free 5/day, pro 20/day, yolo 40/day</td></tr>
@@ -454,7 +454,7 @@ header.brand .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
 <tr><td>Stack</td><td>Next.js 15, React 18, Tailwind, lucide-react</td></tr>
 <tr><td>SW cache</td><td><code>checkdeal-v2</code> (in <code>public/sw.js</code>)</td></tr>
 <tr><td>GA tracking ID</td><td><code>G-6E5BE86WVT</code></td></tr>
-<tr><td>Clarity project</td><td><code>wnvlwv7gu0</code> (via layout.tsx)</td></tr>
+<tr><td><em>Microsoft Clarity</em></td><td colspan="2"><em>Removed 2026-05-15 — recorded sensitive financial+health screens, replaced with consent-friendly analytics (TBD).</em></td></tr>
 <tr><td>Backend</td><td>Vercel API routes in <code>src/app/api/ai/*</code></td></tr>
 <tr><td>AI provider</td><td>Gemini 2.5-flash-lite (5 routes: market-data, rental-estimate, chat, parse-listing, insights)</td></tr>
 <tr><td>API routes</td><td><code>/api/ai/chat</code>, <code>/api/ai/insights</code>, <code>/api/ai/market-data</code>, <code>/api/ai/parse-listing</code>, <code>/api/ai/rental-estimate</code>, <code>/api/rental/*</code></td></tr>
