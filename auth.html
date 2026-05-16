@@ -373,10 +373,14 @@
  // get the user's Firebase ID token + nick + plan and redirect there with
  // them appended to the URL fragment. Otherwise fall through to dashboard.
  async function _afterAuthRedirect() {
+ // Production allow-list. NOTE: localhost was intentionally removed (2026-05-16) —
+ // it created an open-redirect path where a local malicious server could steal
+ // tokens via wizelife.ai/auth.html?next=http://localhost:9999/...
+ // For local dev, run auth.html under a localhost host yourself.
  const SAFE_HOSTS = [
  'finsightai.github.io', 'check-deal.vercel.app', 'mastermove.vercel.app',
  'wizetravel.hf.space', 'ofirofir-wizetravel.hf.space', 'vitara.onrender.com',
- 'wizelife.ai', 'localhost'
+ 'wizelife.ai'
  ];
  try {
  const next = new URLSearchParams(window.location.search).get('next');
