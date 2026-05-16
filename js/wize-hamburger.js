@@ -75,14 +75,15 @@
     var css = ''
       + '#wize-ham-btn{display:none;}'
       + '@media (max-width: 820px){'
-      /* Sit ABOVE the 36px WizeBar (z-index 99999) so it's always tappable. */
-      + '  #wize-ham-btn{position:fixed;top:max(8px,env(safe-area-inset-top));right:10px;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
-      + '  html[dir="rtl"] #wize-ham-btn{right:auto;left:10px;}'
+      /* Sit ABOVE the 36px WizeBar (z-index 99999) so it's always tappable.
+         Anchored at inline-START: LTR → left, RTL → right. */
+      + '  #wize-ham-btn{position:fixed;top:max(8px,env(safe-area-inset-top));inset-inline-start:8px;inset-inline-end:auto;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
       + '}'
       + '#wize-ham-overlay{position:fixed;inset:0;z-index:100002;background:rgba(5,8,20,0.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s ease;}'
       + '#wize-ham-overlay.open{opacity:1;pointer-events:auto;}'
-      + '#wize-ham-drawer{position:fixed;top:0;bottom:0;right:0;width:min(86vw,340px);z-index:100003;background:#0a0e1a;border-left:1px solid rgba(255,255,255,0.08);transform:translateX(100%);transition:transform .28s ease;display:flex;flex-direction:column;font-family:Inter,-apple-system,system-ui,sans-serif;}'
-      + 'html[dir="rtl"] #wize-ham-drawer{right:auto;left:0;border-left:none;border-right:1px solid rgba(255,255,255,0.08);transform:translateX(-100%);}'
+      /* Drawer slides in from inline-START (LTR→left, RTL→right). */
+      + '#wize-ham-drawer{position:fixed;top:0;bottom:0;inset-inline-start:0;inset-inline-end:auto;width:min(86vw,340px);z-index:100003;background:#0a0e1a;border-inline-end:1px solid rgba(255,255,255,0.08);transform:translateX(-100%);transition:transform .28s ease;display:flex;flex-direction:column;font-family:Inter,-apple-system,system-ui,sans-serif;}'
+      + 'html[dir="rtl"] #wize-ham-drawer{transform:translateX(100%);}'
       + '#wize-ham-drawer.open{transform:translateX(0);}'
       + '.wh-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 10px;}'
       + '.wh-title{font-size:18px;font-weight:800;color:#eef2ff;letter-spacing:-.4px;}'
@@ -124,20 +125,12 @@
     var t = T[lang] || T.en;
     var sso = getSso();
 
-    /* Hamburger button — pin opposite the WizeLife brand (RTL→left, LTR→right). */
+    /* Hamburger button — always at inline-START (LTR→left, RTL→right).
+       Position handled entirely via CSS `inset-inline-start`; no JS override. */
     var btn = document.createElement('button');
     btn.id = 'wize-ham-btn';
     btn.setAttribute('aria-label', t.menu);
     btn.innerHTML = '☰';
-    function applyBtnSide() {
-      var rtl = (document.documentElement.dir === 'rtl') ||
-                ((document.documentElement.lang || '').toLowerCase().indexOf('he') === 0) ||
-                getLang() === 'he';
-      btn.style.right = rtl ? 'auto' : '10px';
-      btn.style.left  = rtl ? '10px' : 'auto';
-    }
-    applyBtnSide();
-    window.addEventListener('languagechange', applyBtnSide);
 
     /* Backdrop */
     var ov = document.createElement('div');
@@ -233,7 +226,9 @@
       b.addEventListener('click', function () {
         try { localStorage.setItem('wl_lang', lc); } catch (e) {}
         document.documentElement.setAttribute('lang', lc);
-        document.documentElement.setAttribute('dir', lc === 'he' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('dir', (lc === 'he' || lc === 'ar') ? 'rtl' : 'ltr');
+        try { window.dispatchEvent(new CustomEvent('wl-lang-change', { detail: { lang: lc } })); } catch (e) {}
+        if (typeof window.setLang === 'function') { try { window.setLang(lc); return; } catch (e) {} }
         if (window.I18n && window.I18n.setLanguage) window.I18n.setLanguage(lc);
         else location.reload();
       });
@@ -331,13 +326,14 @@
     bind(close, closeFn);
     bind(ov, closeFn);
 
-    /* Swipe to close */
+    /* Swipe to close — drawer sits at inline-START so a swipe AWAY from the
+       open edge (toward inline-start) should dismiss it. LTR→swipe left, RTL→swipe right. */
     var sx = 0;
     dr.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
     dr.addEventListener('touchend', function (e) {
       var dx = e.changedTouches[0].clientX - sx;
       var rtl = document.documentElement.dir === 'rtl' || (document.documentElement.lang || '').startsWith('he');
-      if ((rtl && dx < -60) || (!rtl && dx > 60)) closeFn();
+      if ((rtl && dx > 60) || (!rtl && dx < -60)) closeFn();
     }, { passive: true });
 
     /* Public API */

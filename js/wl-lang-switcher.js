@@ -70,6 +70,7 @@
 
     var pills = document.createElement('div');
     pills.id = 'wl-lang-pills';
+    pills.className = 'wl-lang-pills-floating';
     pills.setAttribute('role', 'toolbar');
     pills.setAttribute('aria-label', 'Language switcher');
     pills.style.cssText = [
@@ -115,11 +116,13 @@
       pills.appendChild(p);
     });
 
-    // Inject CSS for active state
+    // Inject CSS for active state + hide floating pills on mobile (≤820px).
+    // On mobile, the hamburger drawer owns the language switcher.
     if (!document.getElementById('wl-lang-pill-css')) {
       var st = document.createElement('style');
       st.id = 'wl-lang-pill-css';
-      st.textContent = '.wl-lang-pill.active{background:linear-gradient(135deg,#6366f1,#8b5cf6) !important;color:#fff !important;box-shadow:0 4px 12px rgba(99,102,241,.4)}';
+      st.textContent = '.wl-lang-pill.active{background:linear-gradient(135deg,#6366f1,#8b5cf6) !important;color:#fff !important;box-shadow:0 4px 12px rgba(99,102,241,.4)}'
+        + '@media (max-width:820px){.wl-lang-pills-floating,#wl-lang-pills{display:none !important;}}';
       document.head.appendChild(st);
     }
 
