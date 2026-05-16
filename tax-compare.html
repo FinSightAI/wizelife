@@ -31,7 +31,7 @@
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png?v=2026-05-14">
 <link rel="apple-touch-icon" sizes="256x256" href="/icon-256.png?v=2026-05-14">
 <meta name="viewport" content="width=device-width,initial-scale=1, viewport-fit=cover">
-<title>WizeTax — השוואת מסים בין מדינות | WizeLife</title>
+<title>WizeTax — Country tax comparison | WizeLife</title>
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
@@ -207,30 +207,30 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sb-brand"><div class="sb-wordmark">Wize<em>Tax</em></div></div>
-    <div class="sb-section">כלים</div>
+    <div class="sb-section">Tools</div>
     <div class="sb-item active">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      השוואת מדינות
+      Country comparison
     </div>
     <div class="sb-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      סימולטור הכנסה
+      Income simulator
     </div>
     <div class="sb-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      ציר זמן מס
+      Tax timeline
     </div>
     <div class="sb-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      יועץ AI
+      AI advisor
     </div>
-    <div class="sb-section">עוד</div>
+    <div class="sb-section">More</div>
     <div class="sb-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      דוחות
+      Reports
     </div>
     <div class="sb-spacer"></div>
-    <div class="sb-footer" id="sbFooter"><strong id="sbUserName">—</strong>מנוי WizeLife</div>
+    <div class="sb-footer" id="sbFooter"><strong id="sbUserName">—</strong>WizeLife subscription</div>
   </div>
 
   <!-- Main -->
@@ -238,37 +238,37 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
     <div id="authWall">
       <div style="font-size:48px;margin-bottom:8px">🌍</div>
-      <h2>יש להתחבר</h2>
-      <p>כדי להשוות מסים בין מדינות עם הנתונים שלך</p>
-      <a href="auth.html" class="auth-btn">התחברות / הרשמה</a>
+      <h2>Sign-in required</h2>
+      <p>to compare taxes across countries with your data</p>
+      <a href="auth.html" class="auth-btn">Sign in / Sign up</a>
     </div>
 
     <div id="mainContent" style="display:none">
       <div class="page-hd">
-        <h1>השוואת מסים בין מדינות</h1>
-        <p>הזן משכורת ברוטו חודשית וקבל תמונה מלאה — מה יישאר לך נטו בכל מדינה</p>
+        <h1>Country tax comparison</h1>
+        <p>Enter monthly gross salary and get the full picture — what stays net in each country</p>
       </div>
 
       <div class="card">
-        <h2>נתוני הכנסה</h2>
+        <h2>Income data</h2>
         <div class="input-row">
           <div class="field">
-            <label>משכורת ברוטו חודשית (₪)</label>
-            <input type="number" id="grossSalary" placeholder="לדוגמה 25000" min="1000" max="500000">
-            <span id="moneySource" class="source-badge" style="display:none">✓ נטען מ-WizeMoney</span>
+            <label>Monthly gross salary (₪)</label>
+            <input type="number" id="grossSalary" placeholder="e.g. 25000" min="1000" max="500000">
+            <span id="moneySource" class="source-badge" style="display:none">✓ Loaded from WizeMoney</span>
           </div>
           <div class="field">
-            <label>מצב משפחתי</label>
+            <label>Family status</label>
             <select id="maritalStatus">
-              <option value="single">רווק/ה</option>
-              <option value="married">נשוי/אה</option>
-              <option value="married_working">נשוי/אה + בן/בת זוג עובד/ת</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+              <option value="married_working">Married + working spouse</option>
             </select>
           </div>
           <div class="field">
-            <label>ילדים</label>
+            <label>Children</label>
             <select id="numChildren">
-              <option value="0">ללא</option>
+              <option value="0">None</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3+</option>
@@ -278,20 +278,20 @@ tr:hover td{background:rgba(255,255,255,.02)}
       </div>
 
       <div class="card">
-        <h2>בחר מדינות להשוואה <button class="select-all-btn" onclick="toggleAll()">בחר הכל</button></h2>
+        <h2>Select countries to compare <button class="select-all-btn" onclick="toggleAll()">Select all</button></h2>
         <div class="countries-grid" id="countriesGrid"></div>
         <div class="data-badge">
-          <span>✓ נתונים מאומתים 2025</span>
-          מקורות: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס רשמיות
+          <span>✓ Verified 2025 data</span>
+          Sources: PwC Worldwide Tax Summaries · OECD · KPMG · official tax authorities
         </div>
       </div>
 
-      <button class="run-btn" id="runBtn" onclick="runComparison()">השווה עכשיו →</button>
+      <button class="run-btn" id="runBtn" onclick="runComparison()">Compare now →</button>
 
       <div id="resultsWrap" style="display:none">
         <div class="results-header">
           <div>
-            <div class="results-title">תוצאות ההשוואה</div>
+            <div class="results-title">Comparison results</div>
             <div class="results-sub" id="resultsSub"></div>
           </div>
         </div>
@@ -299,23 +299,23 @@ tr:hover td{background:rgba(255,255,255,.02)}
           <table>
             <thead>
               <tr>
-                <th>מדינה</th><th>ברוטו (מקומי)</th><th>מס הכנסה</th>
-                <th>ביטוח לאומי + בריאות</th><th>נטו חודשי</th>
-                <th>שיעור אפקטיבי</th><th>יתרון מול ישראל</th>
+                <th>Country</th><th>Gross (local)</th><th>Income tax</th>
+                <th>Social security + health</th><th>Monthly net</th>
+                <th>Effective rate</th><th>Vs Israel advantage</th>
               </tr>
             </thead>
             <tbody id="resultsBody"></tbody>
           </table>
         </div>
         <div class="notes-card">
-          <h3>המלצות AI <span class="ai-chip">Gemini</span></h3>
-          <div class="notes-text" id="notesText"><span class="notes-loading">טוען המלצות...</span></div>
+          <h3>AI recommendations <span class="ai-chip">Gemini</span></h3>
+          <div class="notes-text" id="notesText"><span class="notes-loading">Loading recommendations...</span></div>
         </div>
       </div>
 
       <div id="loadingDiv" class="loading" style="display:none">
         <div class="spinner"></div>
-        <span>מחשב...</span>
+        <span>Calculating...</span>
       </div>
     </div>
   </div>

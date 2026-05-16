@@ -30,7 +30,7 @@
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png?v=2026-05-14">
 <link rel="apple-touch-icon" sizes="256x256" href="/icon-256.png?v=2026-05-14">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>WizeTravel — טיסות חכמות עם AI</title>
+<title>WizeTravel — Smart flights with AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"WizeLife","url":"https://wizelife.ai"}</script>
@@ -159,9 +159,9 @@ body{display:flex;flex-direction:column;align-items:center}
     <span class="wl-logo-icon" aria-hidden="true" style="width:20px;height:20px"></span>
     <span>Wize<em>Travel</em></span>
   </div>
-  <div class="launch-status" id="pStatus">מאתחל את מנוע AI...</div>
+  <div class="launch-status" id="pStatus">Initializing AI engine...</div>
   <div class="launch-prog-wrap"><div class="launch-prog" id="pBar"></div></div>
-  <a href="https://nodedai.onrender.com" class="launch-cta" id="ctaBtn">פתח את האפליקציה ←</a>
+  <a href="https://nodedai.onrender.com" class="launch-cta" id="ctaBtn">Open the app ←</a>
 </div>
 
 <div class="page-shell">
@@ -175,12 +175,12 @@ body{display:flex;flex-direction:column;align-items:center}
     <div class="app-wrap">
       <div class="sidebar">
         <div class="sb-brand"><div class="sb-wordmark">Wize<em>Travel</em></div></div>
-        <div class="sb-section">חיפוש</div>
-        <div class="sb-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>חיפוש טיסות</div>
-        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>מסלולים שמורים</div>
-        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>התראות מחיר</div>
-        <div class="sb-section">ניתוח</div>
-        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>מגמות מחיר</div>
+        <div class="sb-section">Search</div>
+        <div class="sb-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Search flights</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Saved routes</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Price alerts</div>
+        <div class="sb-section">Analysis</div>
+        <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Price trends</div>
         <div class="sb-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI Planner</div>
         <div class="sb-spacer"></div>
         <div class="sb-user"><div class="sb-user-name">Yotam R.</div><div class="sb-user-plan">Pro Plan ✦</div></div>
@@ -188,30 +188,30 @@ body{display:flex;flex-direction:column;align-items:center}
 
       <div class="main">
         <div class="main-header">
-          <div><div class="main-title">Flight Search</div><div class="main-sub">AI מנתח 2.3M+ מחירי טיסה בזמן אמת</div></div>
+          <div><div class="main-title">Flight Search</div><div class="main-sub">AI analyzes 2.3M+ flight prices in real time</div></div>
         </div>
         <div class="search-row">
-          <div class="search-field">✈ תל אביב (TLV)</div>
+          <div class="search-field">✈ Tel Aviv (TLV)</div>
           <div style="color:#6b7280;font-size:14px">→</div>
-          <div class="search-field">🗺 ברצלונה (BCN)</div>
-          <div class="search-field">📅 15 מרץ – 22 מרץ</div>
-          <div class="search-field">👤 2 נוסעים</div>
-          <div class="search-btn">חפש</div>
+          <div class="search-field">🗺 Barcelona (BCN)</div>
+          <div class="search-field">📅 Mar 15 – Mar 22</div>
+          <div class="search-field">👤 2 passengers</div>
+          <div class="search-btn">Search</div>
         </div>
         <div class="stat-grid">
-          <div class="stat-card"><div class="stat-label">מסלולים נסרקו</div><div class="stat-val">487</div><div class="stat-badge">↑ 23 חדש</div></div>
-          <div class="stat-card"><div class="stat-label">מחיר הכי זול</div><div class="stat-val">₪1,240</div><div class="stat-badge">−18% ממוצע</div></div>
-          <div class="stat-card"><div class="stat-label">חיסכון פוטנציאלי</div><div class="stat-val">₪890</div><div class="stat-badge">AI Deal</div></div>
+          <div class="stat-card"><div class="stat-label">Routes scanned</div><div class="stat-val">487</div><div class="stat-badge">↑ 23 new</div></div>
+          <div class="stat-card"><div class="stat-label">Lowest price</div><div class="stat-val">₪1,240</div><div class="stat-badge">−18% average</div></div>
+          <div class="stat-card"><div class="stat-label">Potential savings</div><div class="stat-val">₪890</div><div class="stat-badge">AI Deal</div></div>
         </div>
         <div style="flex:1;overflow:auto">
         <table class="wl-table">
-          <thead><tr><th>חברת תעופה</th><th>יציאה</th><th>הגעה</th><th>עצירות</th><th>משך</th><th>מחיר לנוסע</th><th></th></tr></thead>
+          <thead><tr><th>Airline</th><th>Departure</th><th>Arrival</th><th>Stops</th><th>Duration</th><th>Price per traveler</th><th></th></tr></thead>
           <tbody>
-            <tr><td>Wizz Air</td><td>06:20</td><td>09:45</td><td>ישיר</td><td>4h 25m</td><td><span class="price-tag">₪1,240</span></td><td><span class="deal-tag">הכי זול</span></td></tr>
-            <tr><td>EasyJet</td><td>11:15</td><td>15:05</td><td>ישיר</td><td>4h 50m</td><td><span class="price-tag">₪1,390</span></td><td></td></tr>
-            <tr><td>Ryanair</td><td>07:00</td><td>12:30</td><td>1 עצירה</td><td>6h 30m</td><td><span class="price-tag">₪980</span></td><td><span class="deal-tag">זול ביותר</span></td></tr>
-            <tr><td>El Al</td><td>14:30</td><td>18:10</td><td>ישיר</td><td>4h 40m</td><td><span class="price-tag">₪1,850</span></td><td></td></tr>
-            <tr><td>Vueling</td><td>09:45</td><td>15:20</td><td>1 עצירה</td><td>6h 35m</td><td><span class="price-tag">₪1,050</span></td><td></td></tr>
+            <tr><td>Wizz Air</td><td>06:20</td><td>09:45</td><td>Direct</td><td>4h 25m</td><td><span class="price-tag">₪1,240</span></td><td><span class="deal-tag">Cheapest</span></td></tr>
+            <tr><td>EasyJet</td><td>11:15</td><td>15:05</td><td>Direct</td><td>4h 50m</td><td><span class="price-tag">₪1,390</span></td><td></td></tr>
+            <tr><td>Ryanair</td><td>07:00</td><td>12:30</td><td>1 stop</td><td>6h 30m</td><td><span class="price-tag">₪980</span></td><td><span class="deal-tag">Cheapest</span></td></tr>
+            <tr><td>El Al</td><td>14:30</td><td>18:10</td><td>Direct</td><td>4h 40m</td><td><span class="price-tag">₪1,850</span></td><td></td></tr>
+            <tr><td>Vueling</td><td>09:45</td><td>15:20</td><td>1 stop</td><td>6h 35m</td><td><span class="price-tag">₪1,050</span></td><td></td></tr>
           </tbody>
         </table>
         </div>
@@ -223,20 +223,20 @@ body{display:flex;flex-direction:column;align-items:center}
           <div class="price-history">
             <div class="ph-bar" style="height:40%"></div><div class="ph-bar" style="height:60%"></div><div class="ph-bar hi" style="height:85%"></div><div class="ph-bar" style="height:70%"></div><div class="ph-bar" style="height:55%"></div><div class="ph-bar" style="height:45%"></div><div class="ph-bar" style="height:35%"></div>
           </div>
-          <div style="font-size:10px;color:#6b7280;margin-top:4px">מחיר יורד — הזמן עכשיו ↓</div>
+          <div style="font-size:10px;color:#6b7280;margin-top:4px">Price dropping — book now ↓</div>
         </div>
         <div class="rp-section">
           <div class="rp-label">AI Insights</div>
-          <div class="ai-insight">טיסות ביום <strong>שלישי בבוקר</strong> זולות בממוצע <strong>23%</strong> לוחית.</div>
-          <div class="ai-insight">הטיסה של <strong>Ryanair</strong> עם עצירה חוסכת <strong>₪260</strong> — מומלצת לנסיעה ללא מטען.</div>
+          <div class="ai-insight">Flights on <strong>Tuesday morning</strong> are <strong>23%</strong> cheaper on average.</div>
+          <div class="ai-insight"><strong>Ryanair</strong> with one stop saves <strong>₪260</strong> — recommended for carry-on travel.</div>
         </div>
         <div class="rp-section">
           <div class="rp-label">Route Details</div>
-          <div class="data-row"><span class="data-key">יעד</span><span class="data-val">Barcelona (BCN)</span></div>
-          <div class="data-row"><span class="data-key">תאריכים</span><span class="data-val">15–22 מרץ</span></div>
-          <div class="data-row"><span class="data-key">נוסעים</span><span class="data-val">2 מבוגרים</span></div>
-          <div class="data-row"><span class="data-key">מחלקה</span><span class="data-val">Economy</span></div>
-          <div class="data-row"><span class="data-key">מטבע</span><span class="data-val">ILS ₪</span></div>
+          <div class="data-row"><span class="data-key">Destination</span><span class="data-val">Barcelona (BCN)</span></div>
+          <div class="data-row"><span class="data-key">Dates</span><span class="data-val">Mar 15 – 22</span></div>
+          <div class="data-row"><span class="data-key">Passengers</span><span class="data-val">2 adults</span></div>
+          <div class="data-row"><span class="data-key">Class</span><span class="data-val">Economy</span></div>
+          <div class="data-row"><span class="data-key">Currency</span><span class="data-val">ILS ₪</span></div>
         </div>
       </div>
     </div>

@@ -46,18 +46,18 @@ footer{padding:32px;text-align:center;color:var(--muted);font-size:.85rem;border
 <meta content="website" property="og:type"/>
 <meta content="WizeLife" property="og:site_name"/>
 <meta content="https://wizelife.ai/security.html" property="og:url"/>
-<meta content="אבטחה — WizeLife" property="og:title"/>
-<meta content="אבטחה ברצינות, מהיום הראשון. הצפנת מידע, App Check, rate limiting, ביקורות יומיות, ועוד." property="og:description"/>
+<meta content="Security — WizeLife" property="og:title"/>
+<meta content="Security taken seriously, from day one. Encrypted data, App Check, rate limiting, daily audits, and more." property="og:description"/>
 <meta content="https://wizelife.ai/img/wizelife-logo-v2.svg" property="og:image"/>
-<meta content="he_IL" property="og:locale"/>
-<meta content="en_US" property="og:locale:alternate"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="he_IL" property="og:locale:alternate"/>
 <meta content="pt_BR" property="og:locale:alternate"/>
 <meta content="es_ES" property="og:locale:alternate"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="אבטחה — WizeLife" name="twitter:title"/>
-<meta content="אבטחה ברצינות, מהיום הראשון. הצפנת מידע, App Check, rate limiting, ביקורות יומיות, ועוד." name="twitter:description"/>
+<meta content="Security — WizeLife" name="twitter:title"/>
+<meta content="Security taken seriously, from day one. Encrypted data, App Check, rate limiting, daily audits, and more." name="twitter:description"/>
 <meta content="https://wizelife.ai/img/wizelife-logo-v2.svg" name="twitter:image"/>
-<meta content="אבטחה ברצינות, מהיום הראשון. הצפנת מידע, App Check, rate limiting, ביקורות יומיות, ועוד." name="description"/>
+<meta content="Security taken seriously, from day one. Encrypted data, App Check, rate limiting, daily audits, and more." name="description"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -84,122 +84,122 @@ footer{padding:32px;text-align:center;color:var(--muted);font-size:.85rem;border
 <a class="nav-back" href="index.html">← Back</a>
 </nav>
 <div class="page">
-<h1 class="page-title" data-i18n="__39">אבטחה</h1>
+<h1 class="page-title" data-i18n="__39">Security</h1>
 <p class="page-sub">How we protect your data · Last updated: 2026-05-09</p>
 <section>
-<h2 data-i18n="1_">1. הגרסה הקצרה</h2>
-<p data-i18n="wizelife_handles_sen">WizeLife מטפלת בנתונים רגישים — פיננסיים, רפואיים, ומס. אנחנו פועלים לפי שיטות אבטחה מודרניות של הגנה רב-שכבתית: תעבורה מוצפנת, אחסון מוצפן, הרשאות משתמש מבודדות, ספקי ענן מבוקרים, ותכנית תגובה לתקריות מתועדת. אנחנו צוות קטן — אנחנו לא טוענים לאישורי תקן ארגוני עדיין, אבל אנחנו מיישמים את אותם עקרונות הנדסיים.</p>
+<h2 data-i18n="1_">1. The short version</h2>
+<p data-i18n="wizelife_handles_sen">WizeLife handles sensitive data — financial, medical, tax. We follow modern defense-in-depth practices: encrypted transport, encrypted storage, isolated user permissions, audited cloud providers, and a documented incident-response plan. We are a small team — we do not claim enterprise-grade certifications yet, but we apply the same engineering principles.</p>
 </section>
 <section>
-<h2 data-i18n="2_">2. הצפנה</h2>
+<h2 data-i18n="2_">2. Encryption</h2>
 <ul>
-<li><strong data-i18n="__2">בתעבורה:</strong><span data-i18n="_https_tls_1_2_h_2">כל התעבורה ב-HTTPS/TLS 1.2+. HSTS preload, ללא תוכן מעורב.</span></li>
-<li><strong data-i18n="__3">במנוחה:</strong> Firestore encrypts all data with Google-managed keys (AES-256). Render and Vercel encrypt their volumes. Browser localStorage is not encrypted by us — that's handled by the device's OS-level security.</li>
-<li><strong data-i18n="__4">סודות:</strong><span data-i18n="_api_rende_2">מפתחות API מאוחסנים רק ב-Render / Vercel / GitHub secret stores מוצפנים. לעולם לא ב-git, לעולם לא ב-logs.</span></li>
+<li><strong data-i18n="__2">In transit:</strong> <span data-i18n="_https_tls_1_2_h">all traffic is HTTPS/TLS 1.2+. HSTS preload, no mixed content.</span></li>
+<li><strong data-i18n="__3">At rest:</strong> Firestore encrypts all data with Google-managed keys (AES-256). Render and Vercel encrypt their volumes. Browser localStorage is not encrypted by us — that's handled by the device's OS-level security.</li>
+<li><strong data-i18n="__4">Secrets:</strong> <span data-i18n="_api_rende">API keys live only in Render / Vercel / GitHub encrypted secret stores. Never committed to git, never logged.</span></li>
 </ul>
 </section>
 <section>
-<h2 data-i18n="3_">3. אימות ובקרת גישה</h2>
+<h2 data-i18n="3_">3. Authentication &amp; access control</h2>
 <ul>
-<li data-i18n="_firebas">אימות אימייל/סיסמא דרך Firebase Authentication. סיסמאות מוצפנות באלגוריתמי תקן תעשייתי (Firebase משתמש ב-scrypt + per-user salt).</li>
-<li data-i18n="_google_oauth_2_0_">כניסה דרך Google עם OAuth 2.0.</li>
-<li data-i18n="_jwt_firebase_i">אסימוני סשן הם JWT (Firebase ID tokens), קצרי-טווח, מתחדשים אוטומטית.</li>
-<li data-i18n="_firestore_">כללי אבטחה של Firestore אוכפים: כל משתמש יכול לקרוא/לכתוב רק את המסמכים שלו. נבדק רציפות בבדיקות אוטומטיות.</li>
-<li>Backend APIs require <code>Authorization: Bearer &lt;Firebase ID token&gt;</code><span data-i18n="__40">. גישה אנונימית מוגבלת בקצב לפי IP.</span></li>
+<li data-i18n="_firebas">Email/password authentication via Firebase Authentication. Passwords are hashed with industry-standard algorithms (Firebase uses scrypt + per-user salt).</li>
+<li data-i18n="_google_oauth_2_0_">Google sign-in with OAuth 2.0.</li>
+<li data-i18n="_jwt_firebase_i">Session tokens are JWT (Firebase ID tokens), short-lived, refreshed automatically.</li>
+<li data-i18n="_firestore_">Firestore security rules enforce: each user can read/write only their own documents. Verified continuously by automated tests.</li>
+<li>Backend APIs require <code>Authorization: Bearer &lt;Firebase ID token&gt;</code><span data-i18n="__5">. Anonymous access is rate-limited per IP.</span></li>
 </ul>
 </section>
 <section>
-<h2 data-i18n="4_">4. רשת ופרימטר</h2>
+<h2 data-i18n="4_">4. Network &amp; perimeter</h2>
 <ul>
-<li><strong>Cloudflare</strong> in front of <code>wizelife.ai</code> and <code>tax.wizelife.ai</code><span data-i18n="_ddos_waf__2">: הקלת DDoS, WAF (חומת אש לאפליקציות), זיהוי בוטים.</span></li>
-<li><strong data-i18n="__6">כותרות אבטחה</strong> (HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, strict CSP) on all pages — verified daily by our QA workflow.</li>
-<li><strong data-i18n="__7">הגבלת קצב</strong><span data-i18n="_endpoints_ai_backen_2">בכל endpoints של ה-AI ב-backend (slowapi ל-FastAPI, middleware מותאם ל-Express).</span></li>
+<li><strong>Cloudflare</strong> in front of <code>wizelife.ai</code> and <code>tax.wizelife.ai</code><span data-i18n="_ddos_waf_">: DDoS mitigation, WAF (Web Application Firewall), bot detection.</span></li>
+<li><strong data-i18n="__6">Security headers</strong> (HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, strict CSP) on all pages — verified daily by our QA workflow.</li>
+<li><strong data-i18n="__7">Rate limiting</strong> <span data-i18n="_endpoints_ai_backen">on all backend AI endpoints (slowapi for FastAPI, custom middleware for Express).</span></li>
 <li><strong>CORS</strong> tightly scoped — only known WizeLife origins can call our APIs.</li>
 </ul>
 </section>
 <section>
-<h2 data-i18n="5_">5. צמצום נתונים</h2>
-<p data-i18n="__8">אנחנו אוספים רק את הדרוש לכל כלי לעבוד. אנחנו לעולם לא אוספים:</p>
+<h2 data-i18n="5_">5. Data minimization</h2>
+<p data-i18n="__8">We collect only what's required for each tool to work. We never collect:</p>
 <ul>
 <li>Government IDs, passport numbers (free text only — not stored as IDs)</li>
-<li data-i18n="_stripe_">מספרי כרטיסי אשראי (Stripe מטפל ישירות כשהחיוב פעיל)</li>
-<li data-i18n="__9">נתונים ביומטריים</li>
-<li data-i18n="__10">מיקום גיאוגרפי מעבר לרמת מדינה</li>
-<li data-i18n="__11">טביעות אצבע דפדפן או מזהי מכשירים למעקב</li>
+<li data-i18n="_stripe_">Payment-card numbers (Stripe handles those directly when billing is live)</li>
+<li data-i18n="__9">Biometric data</li>
+<li data-i18n="__10">Geolocation beyond country level</li>
+<li data-i18n="__11">Browser fingerprints or device IDs for tracking</li>
 </ul>
-<p data-i18n="__12">נתוני בריאות ונתונים פיננסיים רגישים מאוחסנים ב-localStorage של הדפדפן כברירת מחדל ומסונכרנים ל-Firestore רק אם אתה במפורש opt in.</p>
+<p data-i18n="__12">Health data and high-sensitivity financial data are stored in browser localStorage by default and only synced to Firestore if you explicitly opt in.</p>
 </section>
 <section>
-<h2 data-i18n="6_ai">6. עיבוד AI</h2>
-<p data-i18n="_ai_">כשאתה שואל את ה-AI שלנו:</p>
+<h2 data-i18n="6_ai">6. AI processing</h2>
+<p data-i18n="_ai_">When you query our AI:</p>
 <ul>
-<li data-i18n="__13">השאלה שלך + הקשר הפרופיל המובנה נשלחים ב-HTTPS ל-Google Gemini.</li>
-<li data-i18n="__14">למחקר בזמן אמת, שאילתה נגזרת נשלחת ל-Tavily.</li>
-<li data-i18n="_api_google_gemini_">ה-API בתשלום של Google Gemini אינו משתמש בפניות לקוחות לאימון מודלים.</li>
-<li data-i18n="_ai">אנחנו לא שומרים יומני שיחות AI לאחר הסשן, מעבר למה שאתה שומר במפורש בפרופיל שלך.</li>
+<li data-i18n="__13">Your question + the structured profile context is sent over HTTPS to Google Gemini.</li>
+<li data-i18n="__14">For real-time research, a derived query goes to Tavily.</li>
+<li data-i18n="_api_google_gemini_">Google's paid Gemini API does not use customer prompts to train models.</li>
+<li data-i18n="_ai">We do not retain AI conversation logs after the session, beyond what you explicitly save in your profile.</li>
 </ul>
 <p>Full architecture: <a href="https://github.com/FinSightAI/wizelife/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a> (public).</p>
 </section>
 <section>
-<h2 data-i18n="7_">7. ניטור רציף</h2>
+<h2 data-i18n="7_">7. Continuous monitoring</h2>
 <ul>
-<li><strong data-i18n="_qa_">תהליך QA יומי</strong> (GitHub Actions, 06:00 UTC) — runs 13 tiers of checks against every deployed page: HTTP status, console errors, broken assets, security headers, SSL expiry, accessibility (axe-core), SEO meta tags, PWA validity, multi-viewport, cross-app SSO, i18n, third-party APIs, cold-start latency, end-to-end auth flow.</li>
-<li><strong data-i18n="_uptime_">ניטור uptime בזמן אמת</strong> via UptimeRobot — every endpoint pinged every 5 minutes. Owner alerted within 5 minutes of an outage.</li>
-<li><strong data-i18n="__15">צופה חוקי מס</strong><span data-i18n="__41">(שבועית) סורק שינויי רגולציה שמשפיעים על משתמשים.</span></li>
-<li><strong data-i18n="service_worker_">Service Worker מתעדכן אוטומטית</strong> across all apps — every 5 minutes, the browser checks for new code and offers a one-click upgrade.</li>
+<li><strong data-i18n="_qa_">Daily QA workflow</strong> (GitHub Actions, 06:00 UTC) — runs 13 tiers of checks against every deployed page: HTTP status, console errors, broken assets, security headers, SSL expiry, accessibility (axe-core), SEO meta tags, PWA validity, multi-viewport, cross-app SSO, i18n, third-party APIs, cold-start latency, end-to-end auth flow.</li>
+<li><strong data-i18n="_uptime_">Real-time uptime monitoring</strong> via UptimeRobot — every endpoint pinged every 5 minutes. Owner alerted within 5 minutes of an outage.</li>
+<li><strong data-i18n="__15">Tax-law watcher</strong> <span data-i18n="__16">(weekly) scans for regulatory changes that affect users.</span></li>
+<li><strong data-i18n="service_worker_">Service Worker auto-update</strong> across all apps — every 5 minutes, the browser checks for new code and offers a one-click upgrade.</li>
 </ul>
 </section>
 <section>
-<h2 data-i18n="8_">8. תגובה לתקריות</h2>
-<p data-i18n="__17">אם מתרחשת פריצת מידע:</p>
+<h2 data-i18n="8_">8. Incident response</h2>
+<p data-i18n="__17">If a data breach occurs:</p>
 <ol>
-<li><span data-i18n="__42">משתמשים מושפעים מקבלים הודעה במייל</span><strong data-i18n="_72_">תוך 72 שעות</strong><span data-i18n="__43">(לפי חוק הגנת הפרטיות הישראלי ו-GDPR סעיף 33).</span></li>
-<li data-i18n="__20">הרשות להגנת הפרטיות הישראלית מקבלת הודעה, אם נדרש לפי חומרת ההפרה.</li>
-<li data-i18n="_post_mortem_">דוח post-mortem מתפרסם בעמוד זה.</li>
-<li data-i18n="__21">אישורי גישה שנפגעו מוחלפים בכפייה.</li>
+<li><span data-i18n="__18">Affected users are notified via email</span> <strong data-i18n="_72_">within 72 hours</strong> <span data-i18n="__19">(per Israeli Privacy Law and GDPR Article 33).</span></li>
+<li data-i18n="__20">The Israeli Privacy Protection Authority is notified, if required by the breach severity.</li>
+<li data-i18n="_post_mortem_">A post-mortem is published on this page.</li>
+<li data-i18n="__21">Compromised credentials are forcibly rotated.</li>
 </ol>
 </section>
 <section>
-<h2 data-i18n="9_">9. בדיקת ספקים</h2>
-<p data-i18n="__22">ספקים קריטיים ועמידתם בתקנים:</p>
+<h2 data-i18n="9_">9. Vendor due diligence</h2>
+<p data-i18n="__22">Critical vendors and their compliance posture:</p>
 <table>
-<tr><th data-i18n="__23">ספק</th><th data-i18n="__24">תפקיד</th><th data-i18n="__25">תקנים</th></tr>
-<tr><td>Google Firebase / Cloud</td><td data-i18n="_ai_2">אימות + מסד נתונים + AI</td><td>SOC 1/2/3, ISO 27001/17/18, HIPAA-eligible</td></tr>
-<tr><td>Vercel</td><td data-i18n="_frontend">אירוח Frontend</td><td>SOC 2 Type 2</td></tr>
-<tr><td>Render</td><td data-i18n="_backend">אירוח Backend</td><td>SOC 2 Type 2</td></tr>
+<tr><th data-i18n="__23">Vendor</th><th data-i18n="__24">Role</th><th data-i18n="__25">Standards</th></tr>
+<tr><td>Google Firebase / Cloud</td><td data-i18n="_ai_2">Auth + database + AI</td><td>SOC 1/2/3, ISO 27001/17/18, HIPAA-eligible</td></tr>
+<tr><td>Vercel</td><td data-i18n="_frontend">Frontend hosting</td><td>SOC 2 Type 2</td></tr>
+<tr><td>Render</td><td data-i18n="_backend">Backend hosting</td><td>SOC 2 Type 2</td></tr>
 <tr><td>Cloudflare</td><td>DNS / WAF / DDoS</td><td>SOC 2, ISO 27001</td></tr>
-<tr><td>Tavily</td><td data-i18n="_ai_3">חיפוש אינטרנט לעיגון AI</td><td data-i18n="soc_2_">SOC 2 בתהליך</td></tr>
-<tr><td>Microsoft Clarity</td><td data-i18n="_ux_">אנליטיקת UX (בהסכמה בלבד)</td><td>SOC 2, GDPR-aligned</td></tr>
+<tr><td>Tavily</td><td data-i18n="_ai_3">Web search for AI grounding</td><td data-i18n="soc_2_">SOC 2 in progress</td></tr>
+<tr><td>Microsoft Clarity</td><td data-i18n="_ux_">UX analytics (consent only)</td><td>SOC 2, GDPR-aligned</td></tr>
 </table>
 </section>
 <section>
-<h2 data-i18n="10_">10. דיווח על חולשה</h2>
-<p class="hl"><span data-i18n="__44">אם גילית בעיית אבטחה, נא לשלוח מייל ל</span><a href="mailto:security@wizelife.ai">security@wizelife.ai</a><span data-i18n="__45">עם פרטים וצעדים לשחזור. אנחנו עונים תוך 48 שעות.</span></p>
-<p data-i18n="__28">נא:</p>
+<h2 data-i18n="10_">10. Reporting a vulnerability</h2>
+<p class="hl"><span data-i18n="__26">If you discovered a security issue, please email</span> <a href="mailto:security@wizelife.ai">security@wizelife.ai</a> <span data-i18n="__27">with details and steps to reproduce. We respond within 48 hours.</span></p>
+<p data-i18n="__28">Please:</p>
 <ul>
-<li>Do <strong data-i18n="__33">תעשה</strong><span data-i18n="__46">לחשוף בפומבי לפני שהייתה לנו הזדמנות לתקן.</span></li>
-<li>Do <strong data-i18n="__33">תעשה</strong><span data-i18n="__47">לגשת, לשנות, או למחוק נתונים של משתמשים אחרים.</span></li>
-<li>Do <strong data-i18n="__33">תעשה</strong><span data-i18n="__48">להריץ סריקות אוטומטיות שפוגעות בשירות.</span></li>
+<li>Do <strong data-i18n="__33">not</strong> <span data-i18n="__30">publicly disclose before we've had a chance to fix.</span></li>
+<li>Do <strong data-i18n="__33">not</strong> <span data-i18n="__32">access, modify, or delete other users' data.</span></li>
+<li>Do <strong data-i18n="__33">not</strong> <span data-i18n="__34">run automated scans that degrade service.</span></li>
 </ul>
-<p data-i18n="_bug_bounty">כרגע אין לנו תוכנית bug-bounty בתשלום, אבל נודה פומבית למדווחים אחראיים בסעיף זה.</p>
+<p data-i18n="_bug_bounty">We currently don't run a paid bug-bounty program, but we will publicly thank responsible reporters in this section.</p>
 </section>
 <section>
-<h2 data-i18n="11_">11. מגבלות והערות גלויות</h2>
-<p>Things we <strong data-i18n="__35">אנחנו לא</strong> have yet — and you should know:</p>
+<h2 data-i18n="11_">11. Limitations &amp; honest caveats</h2>
+<p>Things we <strong data-i18n="__35">don't</strong> have yet — and you should know:</p>
 <ul>
 <li>No SOC 2 / ISO 27001 audit (small team — those audits cost ₪50-100K). We'll pursue them when enterprise customers require it.</li>
-<li data-i18n="_pen_test_">אין pen-test של צד שלישי בתיק (מתוכנן לפני אבן הדרך של 1,000 משתמשים).</li>
+<li data-i18n="_pen_test_">No third-party penetration test on record (planned before 1,000-user milestone).</li>
 <li>No DPO (Data Protection Officer) — owner acts as primary contact for privacy matters.</li>
 <li>No HIPAA covered-entity status — WizeHealth is for personal information, not for clinical use.</li>
 </ul>
 </section>
 <section>
-<h2 data-i18n="12_">12. צור קשר</h2>
-<p><span data-i18n="__49">שאלות אבטחה או חששות:</span><a href="mailto:security@wizelife.ai">security@wizelife.ai</a><br/>
+<h2 data-i18n="12_">12. Contact</h2>
+<p><span data-i18n="__36">Security questions or concerns:</span> <a href="mailto:security@wizelife.ai">security@wizelife.ai</a><br/>
     General: <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a></p>
 </section>
 </div>
-<footer>© 2026 WizeLife · <a data-i18n="__37" href="privacy.html">פרטיות</a> · <a data-i18n="__38" href="terms.html">תנאים</a> · <a data-i18n="__39" href="security.html">אבטחה</a></footer>
+<footer>© 2026 WizeLife · <a data-i18n="__37" href="privacy.html">Privacy</a> · <a data-i18n="__38" href="terms.html">Terms</a> · <a data-i18n="__39" href="security.html">Security</a></footer>
 <script>
 window.WL_TR = {"he": {"_": "אבטחה", "1_": "1. הגרסה הקצרה", "2_": "2. הצפנה", "__2": "בתעבורה:", "_https_tls_1_2_h": "כל התעבורה ב-HTTPS/TLS 1.2+. HSTS preload, ללא תוכן מעורב.", "__3": "במנוחה:", "__4": "סודות:", "_api_rende": "מפתחות API מאוחסנים רק ב-Render / Vercel / GitHub secret stores מוצפנים. לעולם לא ב-git, לעולם לא ב-logs.", "3_": "3. אימות ובקרת גישה", "_firebas": "אימות אימייל/סיסמא דרך Firebase Authentication. סיסמאות מוצפנות באלגוריתמי תקן תעשייתי (Firebase משתמש ב-scrypt + per-user salt).", "_google_oauth_2_0_": "כניסה דרך Google עם OAuth 2.0.", "_jwt_firebase_i": "אסימוני סשן הם JWT (Firebase ID tokens), קצרי-טווח, מתחדשים אוטומטית.", "_firestore_": "כללי אבטחה של Firestore אוכפים: כל משתמש יכול לקרוא/לכתוב רק את המסמכים שלו. נבדק רציפות בבדיקות אוטומטיות.", "__5": ". גישה אנונימית מוגבלת בקצב לפי IP.", "4_": "4. רשת ופרימטר", "_ddos_waf_": ": הקלת DDoS, WAF (חומת אש לאפליקציות), זיהוי בוטים.", "__6": "כותרות אבטחה", "__7": "הגבלת קצב", "_endpoints_ai_backen": "בכל endpoints של ה-AI ב-backend (slowapi ל-FastAPI, middleware מותאם ל-Express).", "5_": "5. צמצום נתונים", "__8": "אנחנו אוספים רק את הדרוש לכל כלי לעבוד. אנחנו לעולם לא אוספים:", "_stripe_": "מספרי כרטיסי אשראי (Stripe מטפל ישירות כשהחיוב פעיל)", "__9": "נתונים ביומטריים", "__10": "מיקום גיאוגרפי מעבר לרמת מדינה", "__11": "טביעות אצבע דפדפן או מזהי מכשירים למעקב", "__12": "נתוני בריאות ונתונים פיננסיים רגישים מאוחסנים ב-localStorage של הדפדפן כברירת מחדל ומסונכרנים ל-Firestore רק אם אתה במפורש opt in.", "6_ai": "6. עיבוד AI", "_ai_": "כשאתה שואל את ה-AI שלנו:", "__13": "השאלה שלך + הקשר הפרופיל המובנה נשלחים ב-HTTPS ל-Google Gemini.", "__14": "למחקר בזמן אמת, שאילתה נגזרת נשלחת ל-Tavily.", "_api_google_gemini_": "ה-API בתשלום של Google Gemini אינו משתמש בפניות לקוחות לאימון מודלים.", "_ai": "אנחנו לא שומרים יומני שיחות AI לאחר הסשן, מעבר למה שאתה שומר במפורש בפרופיל שלך.", "7_": "7. ניטור רציף", "_qa_": "תהליך QA יומי", "_uptime_": "ניטור uptime בזמן אמת", "__15": "צופה חוקי מס", "__16": "(שבועית) סורק שינויי רגולציה שמשפיעים על משתמשים.", "service_worker_": "Service Worker מתעדכן אוטומטית", "8_": "8. תגובה לתקריות", "__17": "אם מתרחשת פריצת מידע:", "__18": "משתמשים מושפעים מקבלים הודעה במייל", "_72_": "תוך 72 שעות", "__19": "(לפי חוק הגנת הפרטיות הישראלי ו-GDPR סעיף 33).", "__20": "הרשות להגנת הפרטיות הישראלית מקבלת הודעה, אם נדרש לפי חומרת ההפרה.", "_post_mortem_": "דוח post-mortem מתפרסם בעמוד זה.", "__21": "אישורי גישה שנפגעו מוחלפים בכפייה.", "9_": "9. בדיקת ספקים", "__22": "ספקים קריטיים ועמידתם בתקנים:", "__23": "ספק", "__24": "תפקיד", "__25": "תקנים", "_ai_2": "אימות + מסד נתונים + AI", "_frontend": "אירוח Frontend", "_backend": "אירוח Backend", "_ai_3": "חיפוש אינטרנט לעיגון AI", "soc_2_": "SOC 2 בתהליך", "_ux_": "אנליטיקת UX (בהסכמה בלבד)", "10_": "10. דיווח על חולשה", "__26": "אם גילית בעיית אבטחה, נא לשלוח מייל ל", "__27": "עם פרטים וצעדים לשחזור. אנחנו עונים תוך 48 שעות.", "__28": "נא:", "__29": "תעשה", "__30": "לחשוף בפומבי לפני שהייתה לנו הזדמנות לתקן.", "__31": "תעשה", "__32": "לגשת, לשנות, או למחוק נתונים של משתמשים אחרים.", "__33": "תעשה", "__34": "להריץ סריקות אוטומטיות שפוגעות בשירות.", "_bug_bounty": "כרגע אין לנו תוכנית bug-bounty בתשלום, אבל נודה פומבית למדווחים אחראיים בסעיף זה.", "11_": "11. מגבלות והערות גלויות", "__35": "אנחנו לא", "_pen_test_": "אין pen-test של צד שלישי בתיק (מתוכנן לפני אבן הדרך של 1,000 משתמשים).", "12_": "12. צור קשר", "__36": "שאלות אבטחה או חששות:", "__37": "פרטיות", "__38": "תנאים", "__39": "אבטחה", "wizelife_handles_sen": "WizeLife מטפלת בנתונים רגישים — פיננסיים, רפואיים, ומס. אנחנו פועלים לפי שיטות אבטחה מודרניות של הגנה רב-שכבתית: תעבורה מוצפנת, אחסון מוצפן, הרשאות משתמש מבודדות, ספקי ענן מבוקרים, ותכנית תגובה לתקריות מתועדת. אנחנו צוות קטן — אנחנו לא טוענים לאישורי תקן ארגוני עדיין, אבל אנחנו מיישמים את אותם עקרונות הנדסיים."}, "en": {"_": "Security", "1_": "1. The short version", "2_": "2. Encryption", "__2": "In transit:", "_https_tls_1_2_h": "all traffic is HTTPS/TLS 1.2+. HSTS preload, no mixed content.", "__3": "At rest:", "__4": "Secrets:", "_api_rende": "API keys live only in Render / Vercel / GitHub encrypted secret stores. Never committed to git, never logged.", "3_": "3. Authentication &amp; access control", "_firebas": "Email/password authentication via Firebase Authentication. Passwords are hashed with industry-standard algorithms (Firebase uses scrypt + per-user salt).", "_google_oauth_2_0_": "Google sign-in with OAuth 2.0.", "_jwt_firebase_i": "Session tokens are JWT (Firebase ID tokens), short-lived, refreshed automatically.", "_firestore_": "Firestore security rules enforce: each user can read/write only their own documents. Verified continuously by automated tests.", "__5": ". Anonymous access is rate-limited per IP.", "4_": "4. Network &amp; perimeter", "_ddos_waf_": ": DDoS mitigation, WAF (Web Application Firewall), bot detection.", "__6": "Security headers", "__7": "Rate limiting", "_endpoints_ai_backen": "on all backend AI endpoints (slowapi for FastAPI, custom middleware for Express).", "5_": "5. Data minimization", "__8": "We collect only what's required for each tool to work. We never collect:", "_stripe_": "Payment-card numbers (Stripe handles those directly when billing is live)", "__9": "Biometric data", "__10": "Geolocation beyond country level", "__11": "Browser fingerprints or device IDs for tracking", "__12": "Health data and high-sensitivity financial data are stored in browser localStorage by default and only synced to Firestore if you explicitly opt in.", "6_ai": "6. AI processing", "_ai_": "When you query our AI:", "__13": "Your question + the structured profile context is sent over HTTPS to Google Gemini.", "__14": "For real-time research, a derived query goes to Tavily.", "_api_google_gemini_": "Google's paid Gemini API does not use customer prompts to train models.", "_ai": "We do not retain AI conversation logs after the session, beyond what you explicitly save in your profile.", "7_": "7. Continuous monitoring", "_qa_": "Daily QA workflow", "_uptime_": "Real-time uptime monitoring", "__15": "Tax-law watcher", "__16": "(weekly) scans for regulatory changes that affect users.", "service_worker_": "Service Worker auto-update", "8_": "8. Incident response", "__17": "If a data breach occurs:", "__18": "Affected users are notified via email", "_72_": "within 72 hours", "__19": "(per Israeli Privacy Law and GDPR Article 33).", "__20": "The Israeli Privacy Protection Authority is notified, if required by the breach severity.", "_post_mortem_": "A post-mortem is published on this page.", "__21": "Compromised credentials are forcibly rotated.", "9_": "9. Vendor due diligence", "__22": "Critical vendors and their compliance posture:", "__23": "Vendor", "__24": "Role", "__25": "Standards", "_ai_2": "Auth + database + AI", "_frontend": "Frontend hosting", "_backend": "Backend hosting", "_ai_3": "Web search for AI grounding", "soc_2_": "SOC 2 in progress", "_ux_": "UX analytics (consent only)", "10_": "10. Reporting a vulnerability", "__26": "If you discovered a security issue, please email", "__27": "with details and steps to reproduce. We respond within 48 hours.", "__28": "Please:", "__29": "not", "__30": "publicly disclose before we've had a chance to fix.", "__31": "not", "__32": "access, modify, or delete other users' data.", "__33": "not", "__34": "run automated scans that degrade service.", "_bug_bounty": "We currently don't run a paid bug-bounty program, but we will publicly thank responsible reporters in this section.", "11_": "11. Limitations &amp; honest caveats", "__35": "don't", "_pen_test_": "No third-party penetration test on record (planned before 1,000-user milestone).", "12_": "12. Contact", "__36": "Security questions or concerns:", "__37": "Privacy", "__38": "Terms", "__39": "Security", "wizelife_handles_sen": "WizeLife handles sensitive data — financial, medical, tax. We follow modern defense-in-depth practices: encrypted transport, encrypted storage, isolated user permissions, audited cloud providers, and a documented incident-response plan. We are a small team — we do not claim enterprise-grade certifications yet, but we apply the same engineering principles."}, "pt": {"_": "Security", "1_": "1. The short version", "2_": "2. Encryption", "__2": "In transit:", "_https_tls_1_2_h": "all traffic is HTTPS/TLS 1.2+. HSTS preload, no mixed content.", "__3": "At rest:", "__4": "Secrets:", "_api_rende": "API keys live only in Render / Vercel / GitHub encrypted secret stores. Never committed to git, never logged.", "3_": "3. Authentication &amp; access control", "_firebas": "Email/password authentication via Firebase Authentication. Passwords are hashed with industry-standard algorithms (Firebase uses scrypt + per-user salt).", "_google_oauth_2_0_": "Google sign-in with OAuth 2.0.", "_jwt_firebase_i": "Session tokens are JWT (Firebase ID tokens), short-lived, refreshed automatically.", "_firestore_": "Firestore security rules enforce: each user can read/write only their own documents. Verified continuously by automated tests.", "__5": ". Anonymous access is rate-limited per IP.", "4_": "4. Network &amp; perimeter", "_ddos_waf_": ": DDoS mitigation, WAF (Web Application Firewall), bot detection.", "__6": "Security headers", "__7": "Rate limiting", "_endpoints_ai_backen": "on all backend AI endpoints (slowapi for FastAPI, custom middleware for Express).", "5_": "5. Data minimization", "__8": "We collect only what's required for each tool to work. We never collect:", "_stripe_": "Payment-card numbers (Stripe handles those directly when billing is live)", "__9": "Biometric data", "__10": "Geolocation beyond country level", "__11": "Browser fingerprints or device IDs for tracking", "__12": "Health data and high-sensitivity financial data are stored in browser localStorage by default and only synced to Firestore if you explicitly opt in.", "6_ai": "6. AI processing", "_ai_": "When you query our AI:", "__13": "Your question + the structured profile context is sent over HTTPS to Google Gemini.", "__14": "For real-time research, a derived query goes to Tavily.", "_api_google_gemini_": "Google's paid Gemini API does not use customer prompts to train models.", "_ai": "We do not retain AI conversation logs after the session, beyond what you explicitly save in your profile.", "7_": "7. Continuous monitoring", "_qa_": "Daily QA workflow", "_uptime_": "Real-time uptime monitoring", "__15": "Tax-law watcher", "__16": "(weekly) scans for regulatory changes that affect users.", "service_worker_": "Service Worker auto-update", "8_": "8. Incident response", "__17": "If a data breach occurs:", "__18": "Affected users are notified via email", "_72_": "within 72 hours", "__19": "(per Israeli Privacy Law and GDPR Article 33).", "__20": "The Israeli Privacy Protection Authority is notified, if required by the breach severity.", "_post_mortem_": "A post-mortem is published on this page.", "__21": "Compromised credentials are forcibly rotated.", "9_": "9. Vendor due diligence", "__22": "Critical vendors and their compliance posture:", "__23": "Vendor", "__24": "Role", "__25": "Standards", "_ai_2": "Auth + database + AI", "_frontend": "Frontend hosting", "_backend": "Backend hosting", "_ai_3": "Web search for AI grounding", "soc_2_": "SOC 2 in progress", "_ux_": "UX analytics (consent only)", "10_": "10. Reporting a vulnerability", "__26": "If you discovered a security issue, please email", "__27": "with details and steps to reproduce. We respond within 48 hours.", "__28": "Please:", "__29": "not", "__30": "publicly disclose before we've had a chance to fix.", "__31": "not", "__32": "access, modify, or delete other users' data.", "__33": "not", "__34": "run automated scans that degrade service.", "_bug_bounty": "We currently don't run a paid bug-bounty program, but we will publicly thank responsible reporters in this section.", "11_": "11. Limitations &amp; honest caveats", "__35": "don't", "_pen_test_": "No third-party penetration test on record (planned before 1,000-user milestone).", "12_": "12. Contact", "__36": "Security questions or concerns:", "__37": "Privacy", "__38": "Terms", "__39": "Security", "wizelife_handles_sen": "A WizeLife lida com dados sensíveis — financeiros, médicos, fiscais. Seguimos práticas modernas de defesa em profundidade: transporte criptografado, armazenamento criptografado, permissões isoladas, provedores de nuvem auditados e plano documentado de resposta a incidentes. Somos uma equipe pequena — ainda não reivindicamos certificações de nível empresarial, mas aplicamos os mesmos princípios de engenharia."}, "es": {"_": "Security", "1_": "1. The short version", "2_": "2. Encryption", "__2": "In transit:", "_https_tls_1_2_h": "all traffic is HTTPS/TLS 1.2+. HSTS preload, no mixed content.", "__3": "At rest:", "__4": "Secrets:", "_api_rende": "API keys live only in Render / Vercel / GitHub encrypted secret stores. Never committed to git, never logged.", "3_": "3. Authentication &amp; access control", "_firebas": "Email/password authentication via Firebase Authentication. Passwords are hashed with industry-standard algorithms (Firebase uses scrypt + per-user salt).", "_google_oauth_2_0_": "Google sign-in with OAuth 2.0.", "_jwt_firebase_i": "Session tokens are JWT (Firebase ID tokens), short-lived, refreshed automatically.", "_firestore_": "Firestore security rules enforce: each user can read/write only their own documents. Verified continuously by automated tests.", "__5": ". Anonymous access is rate-limited per IP.", "4_": "4. Network &amp; perimeter", "_ddos_waf_": ": DDoS mitigation, WAF (Web Application Firewall), bot detection.", "__6": "Security headers", "__7": "Rate limiting", "_endpoints_ai_backen": "on all backend AI endpoints (slowapi for FastAPI, custom middleware for Express).", "5_": "5. Data minimization", "__8": "We collect only what's required for each tool to work. We never collect:", "_stripe_": "Payment-card numbers (Stripe handles those directly when billing is live)", "__9": "Biometric data", "__10": "Geolocation beyond country level", "__11": "Browser fingerprints or device IDs for tracking", "__12": "Health data and high-sensitivity financial data are stored in browser localStorage by default and only synced to Firestore if you explicitly opt in.", "6_ai": "6. AI processing", "_ai_": "When you query our AI:", "__13": "Your question + the structured profile context is sent over HTTPS to Google Gemini.", "__14": "For real-time research, a derived query goes to Tavily.", "_api_google_gemini_": "Google's paid Gemini API does not use customer prompts to train models.", "_ai": "We do not retain AI conversation logs after the session, beyond what you explicitly save in your profile.", "7_": "7. Continuous monitoring", "_qa_": "Daily QA workflow", "_uptime_": "Real-time uptime monitoring", "__15": "Tax-law watcher", "__16": "(weekly) scans for regulatory changes that affect users.", "service_worker_": "Service Worker auto-update", "8_": "8. Incident response", "__17": "If a data breach occurs:", "__18": "Affected users are notified via email", "_72_": "within 72 hours", "__19": "(per Israeli Privacy Law and GDPR Article 33).", "__20": "The Israeli Privacy Protection Authority is notified, if required by the breach severity.", "_post_mortem_": "A post-mortem is published on this page.", "__21": "Compromised credentials are forcibly rotated.", "9_": "9. Vendor due diligence", "__22": "Critical vendors and their compliance posture:", "__23": "Vendor", "__24": "Role", "__25": "Standards", "_ai_2": "Auth + database + AI", "_frontend": "Frontend hosting", "_backend": "Backend hosting", "_ai_3": "Web search for AI grounding", "soc_2_": "SOC 2 in progress", "_ux_": "UX analytics (consent only)", "10_": "10. Reporting a vulnerability", "__26": "If you discovered a security issue, please email", "__27": "with details and steps to reproduce. We respond within 48 hours.", "__28": "Please:", "__29": "not", "__30": "publicly disclose before we've had a chance to fix.", "__31": "not", "__32": "access, modify, or delete other users' data.", "__33": "not", "__34": "run automated scans that degrade service.", "_bug_bounty": "We currently don't run a paid bug-bounty program, but we will publicly thank responsible reporters in this section.", "11_": "11. Limitations &amp; honest caveats", "__35": "don't", "_pen_test_": "No third-party penetration test on record (planned before 1,000-user milestone).", "12_": "12. Contact", "__36": "Security questions or concerns:", "__37": "Privacy", "__38": "Terms", "__39": "Security", "wizelife_handles_sen": "WizeLife maneja datos sensibles — financieros, médicos, fiscales. Seguimos prácticas modernas de defensa en profundidad: transporte cifrado, almacenamiento cifrado, permisos aislados, proveedores de nube auditados y plan documentado de respuesta a incidentes. Somos un equipo pequeño — aún no reclamamos certificaciones de nivel empresarial, pero aplicamos los mismos principios de ingeniería."}};
 </script>

@@ -31,7 +31,7 @@
 <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png?v=2026-05-14">
 <link rel="apple-touch-icon" sizes="256x256" href="/icon-256.png?v=2026-05-14">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
-<title>WizeAI — יועץ החיים שלך</title>
+<title>WizeAI — Your Life Advisor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
@@ -205,16 +205,16 @@ body{display:flex;flex-direction:column}
 
 <!-- Top bar -->
 <div class="topbar">
-  <a href="dashboard.html" class="topbar-back">← דאשבורד</a>
+  <a href="dashboard.html" class="topbar-back">← Dashboard</a>
   <span class="wl-logo-icon" aria-hidden="true"></span><span class="topbar-title">Wize<span>AI</span></span>
   <span class="topbar-plan" id="planBadge">FREE</span>
 </div>
 
 <!-- Auth wall (shown when not logged in) -->
 <div class="auth-wall" id="authWall" style="display:none">
-  <h2>WizeAI דורש חשבון WizeLife</h2>
-  <p>יועץ AI שמכיר את הנתונים שלך מכל 5 האפליקציות — כסף, מס, טיסות, בריאות, עסקאות</p>
-  <a href="auth.html" class="auth-btn">כניסה / הרשמה</a>
+  <h2>WizeAI requires a WizeLife account</h2>
+  <p>AI advisor that knows your data from all 5 apps — money, tax, flights, health, deals</p>
+  <a href="auth.html" class="auth-btn">Sign in / Sign up</a>
 </div>
 
 <!-- Main layout -->
@@ -224,21 +224,21 @@ body{display:flex;flex-direction:column}
   <div class="ctx-panel">
     <div class="ctx-panel-header"><div class="ctx-panel-title">WizeAI Context</div></div>
     <div class="ctx-card">
-      <h3>נתונים מחוברים</h3>
-      <div id="appsConnected"><span class="ctx-loading">טוען...</span></div>
+      <h3>Connected data</h3>
+      <div id="appsConnected"><span class="ctx-loading">Loading...</span></div>
     </div>
     <div class="ctx-card" id="moneyCtx" style="display:none">
       <h3>WizeMoney</h3>
       <div id="moneyCtxRows"></div>
     </div>
     <div class="ctx-card">
-      <h3>WizeAI יודע לענות על</h3>
+      <h3>WizeAI can answer</h3>
       <div style="font-size:12px;color:#6b7280;line-height:1.8">
-        💰 תכנון פיננסי<br>
-        ✈️ טיסות ותקציב נסיעות<br>
-        🧾 אופטימיזציית מס<br>
-        🩺 הוצאות בריאות<br>
-        🛍️ עסקאות וקניות
+        💰 Financial planning<br>
+        ✈️ Flights and travel budget<br>
+        🧾 Tax optimization<br>
+        🩺 Health expenses<br>
+        🛍️ Deals and purchases
       </div>
     </div>
   </div>
@@ -246,19 +246,19 @@ body{display:flex;flex-direction:column}
   <!-- Chat -->
   <div class="chat-wrap">
     <div class="chat-body" id="chatBody">
-      <div class="msg bot" id="welcomeMsg">היי 👋 אני WizeAI — יועץ שמכיר את כל הנתונים שלך. שאל אותי כל דבר.</div>
+      <div class="msg bot" id="welcomeMsg">Hi 👋 I'm WizeAI — an advisor that knows all your data. Ask me anything.</div>
     </div>
 
     <div class="suggestions" id="suggestions">
-      <button class="sug" onclick="sendSuggestion(this)">האם אני יכול להרשות לעצמי לטוס?</button>
-      <button class="sug" onclick="sendSuggestion(this)">מה ההוצאה הגדולה שלי החודש?</button>
-      <button class="sug" onclick="sendSuggestion(this)">כמה חוסך לי במס?</button>
-      <button class="sug" onclick="sendSuggestion(this)">האם אני בדרך ליעד החיסכון?</button>
+      <button class="sug" onclick="sendSuggestion(this)">Can I afford to fly?</button>
+      <button class="sug" onclick="sendSuggestion(this)">What's my biggest expense this month?</button>
+      <button class="sug" onclick="sendSuggestion(this)">How much am I saving on tax?</button>
+      <button class="sug" onclick="sendSuggestion(this)">Am I on track to my savings goal?</button>
     </div>
 
     <div class="input-row">
-      <textarea class="msg-input" id="msgInput" placeholder="שאל כל דבר על הכספים, הטיסות, המס שלך..." rows="1"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMsg()">שלח</button>
+      <textarea class="msg-input" id="msgInput" placeholder="Ask anything about your money, flights, tax…" rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
     </div>
     <div class="quota" id="quotaBar"></div>
   </div>

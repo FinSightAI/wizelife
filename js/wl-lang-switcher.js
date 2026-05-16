@@ -57,16 +57,42 @@
       var key = el.getAttribute('data-i18n-key');
       if (attr && key && dict[key]) el.setAttribute(attr, dict[key]);
     });
+
+    // Shorthand attribute helpers: data-i18n-placeholder, data-i18n-title,
+    // data-i18n-aria-label, data-i18n-alt. Each maps to the matching DOM attr.
+    var attrShortcuts = [
+      ['data-i18n-placeholder', 'placeholder'],
+      ['data-i18n-title', 'title'],
+      ['data-i18n-aria-label', 'aria-label'],
+      ['data-i18n-alt', 'alt'],
+    ];
+    attrShortcuts.forEach(function (pair) {
+      document.querySelectorAll('[' + pair[0] + ']').forEach(function (el) {
+        var key = el.getAttribute(pair[0]);
+        if (key && dict[key]) el.setAttribute(pair[1], dict[key]);
+      });
+    });
+
+    // <title> + <meta name="description"> if dict provides page_description
+    if (dict.page_description) {
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content', dict.page_description);
+      var og = document.querySelector('meta[property="og:description"]');
+      if (og) og.setAttribute('content', dict.page_description);
+      var tw = document.querySelector('meta[name="twitter:description"]');
+      if (tw) tw.setAttribute('content', dict.page_description);
+    }
   }
 
   function injectPills() {
     if (document.getElementById('wl-lang-pills')) return; // already there
     // Skip if page already has its own language switcher (avoid duplicate)
-    if (document.querySelector('[data-wl-lang], [data-lang-switcher], #langSwitcher, .lang-pills, [onclick*="setDashLang"], [onclick*="setLanguage"], button[onclick*="wl_lang"]')) {
+    if (document.querySelector('[data-wl-lang], [data-lang-switcher], #langSwitcher, .lang-pills, .lang-pill, [onclick*="setDashLang"], [onclick*="setWlLang"], [onclick*="setLanguage"], button[onclick*="wl_lang"]')) {
       return;
     }
     // Skip if a known lang-setter function exists
     if (typeof window.setDashLang === 'function') return;
+    if (typeof window.setWlLang === 'function') return;
 
     var pills = document.createElement('div');
     pills.id = 'wl-lang-pills';
