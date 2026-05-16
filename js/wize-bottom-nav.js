@@ -98,7 +98,6 @@
     ],
     deal: [
       { icon:'home',    key:'home',    href:'/',         label:{he:'בית',     en:'Home',     pt:'Início',  es:'Inicio'  } },
-      { icon:'chart',   key:'analyze', href:'/analyze',  label:{he:'ניתוח',   en:'Analyze',  pt:'Analisar',es:'Analizar'} },
       { icon:'bookmark',key:'saved',   href:'/saved',    label:{he:'שמורים',  en:'Saved',    pt:'Salvos',  es:'Guardados'} },
       { icon:'user',    key:'profile', href:'/profile',  label:{he:'פרופיל',  en:'Profile',  pt:'Perfil',  es:'Perfil'  } }
     ],
