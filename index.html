@@ -152,7 +152,12 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
  it, an animated hue-rotate filter cycles the colors through the brand
  palette in lock-step with the WizeLife text. Simple, no mask, no
  overlay — the PNG keeps its visual identity and the colors animate. */
-/* old logo-icon CSS removed; see wl-logo-icon-style */
+/* Brand-mark icon next to "WizeLife" text in nav + footer. Restored
+ 2026-05-17 — the rule was previously deleted with no replacement so the
+ .wl-logo-icon span rendered empty on the landing page only. Matches the
+ sizing/animation other portal pages (auth/dashboard/wize-ai/…) use. */
+.wl-logo-icon{display:inline-block;width:20px;height:20px;flex-shrink:0;background:url('/img/wizelife-logo-v2.svg') center/contain no-repeat;animation:wlLogoHue 8s ease infinite;vertical-align:middle;margin-inline-end:6px}
+@keyframes wlLogoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
 
 @keyframes logoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
 .hero-sub{font-size:1.2rem;color:var(--muted2);max-width:540px;margin-bottom:48px;font-weight:400;line-height:1.65;animation:fadeUp .7s .2s ease both}
