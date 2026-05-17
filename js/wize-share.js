@@ -53,6 +53,30 @@
     setTimeout(function () { t.remove(); }, 2600);
   }
 
+  async function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (_) { /* fall through to textarea */ }
+    }
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      ta.style.pointerEvents = 'none';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      return ok;
+    } catch (_) {
+      return false;
+    }
+  }
+
   async function share(opts) {
     const tr = TR[lang()];
     const data = {
@@ -60,32 +84,32 @@
       text:  (opts && opts.text)  || 'WizeLife — Live Smarter. Every Day.',
       url:   (opts && opts.url)   || (location.origin + location.pathname),
     };
-    try {
-      if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+
+    // 1) Try the native Web Share API. Any error other than user-cancel
+    //    falls through to the clipboard path — many environments expose
+    //    navigator.share but reject with NotAllowedError / InvalidStateError
+    //    (e.g. Permissions-Policy, embedded contexts, sub-domains, Cloudflare
+    //    Tunnel). Don't show "failed" in those cases — silently copy instead.
+    if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+      try {
         await navigator.share(data);
         return true;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return false; // user cancelled — no toast
+        // any other error → continue to clipboard fallback
+        try { console.warn('[WizeShare] native share failed, falling back to clipboard:', e && (e.name + ' ' + e.message)); } catch (_) {}
       }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(data.url);
-        toast(tr.copied, true);
-        return true;
-      }
-      // Last resort: textarea trick
-      const ta = document.createElement('textarea');
-      ta.value = data.url;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
+    }
+
+    // 2) Clipboard fallback
+    if (await copyToClipboard(data.url)) {
       toast(tr.copied, true);
       return true;
-    } catch (e) {
-      if (e && e.name === 'AbortError') return false; // user cancelled
-      toast(tr.err, false);
-      return false;
     }
+
+    // 3) Total failure (very rare)
+    toast(tr.err, false);
+    return false;
   }
 
   window.WizeShare = { share: share };
