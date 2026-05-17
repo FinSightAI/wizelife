@@ -18,16 +18,25 @@ firebase.initializeApp(firebaseConfig);
 // Cloud Functions. reCAPTCHA v3 site key is public — verification happens
 // server-side. If activation fails (old browser cache / blocker / etc),
 // `__wlAppCheckActive` stays false and we show a "please refresh" banner.
+//
+// Deferred 200ms past first paint (perf): the reCAPTCHA enterprise script
+// it pulls in is ~50KB + does a heavy crypto-init blocking the main thread.
+// Auth + Firestore calls during that 200ms window go un-attested; the next
+// request after activation is attested. Safe because protected endpoints
+// only run after user interaction (sign-in, code redeem, etc.), all of which
+// happen well after 200ms.
 window.__wlAppCheckActive = false;
-try {
-    if (firebase.appCheck && window.WIZELIFE_RECAPTCHA_SITE_KEY) {
-        firebase.appCheck().activate(
-            new firebase.appCheck.ReCaptchaV3Provider(window.WIZELIFE_RECAPTCHA_SITE_KEY),
-            true /* automatic refresh */
-        );
-        window.__wlAppCheckActive = true;
-    }
-} catch (e) { console.warn('App Check init failed', e); }
+setTimeout(function () {
+    try {
+        if (firebase.appCheck && window.WIZELIFE_RECAPTCHA_SITE_KEY) {
+            firebase.appCheck().activate(
+                new firebase.appCheck.ReCaptchaV3Provider(window.WIZELIFE_RECAPTCHA_SITE_KEY),
+                true /* automatic refresh */
+            );
+            window.__wlAppCheckActive = true;
+        }
+    } catch (e) { console.warn('App Check init failed', e); }
+}, 200);
 
 // ── "Please refresh" banner ────────────────────────────────────────────────────
 // Triggered when:
@@ -102,14 +111,30 @@ wlAuth.onAuthStateChanged((user) => {
     try {
         if (sessionStorage.getItem('wl_login_alert_fired')) return;
         sessionStorage.setItem('wl_login_alert_fired', '1');
-        // firebase.functions may be undefined if firebase-functions-compat.js
-        // didn't load on this page. Bail silently in that case.
-        if (typeof firebase.functions !== 'function') return;
-        const fn = firebase.functions().httpsCallable('notifyLoginAlert');
-        fn({
-            ua: navigator.userAgent.slice(0, 300),
-            platform: (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '',
-        }).catch(() => {});
+
+        // Schedule the alert call AFTER first paint so it never blocks the
+        // critical render. Use _wlLazy if available (most pages); fall back
+        // to direct firebase.functions if the page has the script tag.
+        const fire = (fns) => {
+            try {
+                if (!fns) return;
+                fns.httpsCallable('notifyLoginAlert')({
+                    ua: navigator.userAgent.slice(0, 300),
+                    platform: (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '',
+                }).catch(() => {});
+            } catch (e) { /* silent */ }
+        };
+        const schedule = (cb) => {
+            if (typeof requestIdleCallback === 'function') requestIdleCallback(cb, { timeout: 4000 });
+            else setTimeout(cb, 1500);
+        };
+        schedule(() => {
+            if (window._wlLazy && typeof window._wlLazy.functions === 'function') {
+                window._wlLazy.functions().then(fire).catch(() => {});
+            } else if (typeof firebase.functions === 'function') {
+                fire(firebase.functions());
+            }
+        });
     } catch (e) { console.warn('login alert skipped', e); }
 });
 

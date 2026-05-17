@@ -417,9 +417,34 @@
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
-<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js" integrity="sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v" crossorigin="anonymous"></script>
+<!-- firebase-functions-compat.js intentionally OMITTED from the first-paint
+     bundle. It is lazy-loaded via window._wlLazy.functions() when the user
+     actually triggers a callable (validateCode, awardReferral) and by the
+     login alert in wizelife-auth.js (which tolerates absence). Saves ~30 KB. -->
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
 <script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
+<script>
+window._wlLazy = {
+  _loaded: {},
+  load: function (src, integrity) {
+    if (this._loaded[src]) return this._loaded[src];
+    return this._loaded[src] = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      if (integrity) { s.integrity = integrity; s.crossOrigin = 'anonymous'; }
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  },
+  functions: function () {
+    return this.load(
+      'https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js',
+      'sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v'
+    ).then(function () { return firebase.functions(); });
+  }
+};
+</script>
 <script src="js/wizelife-auth.js"></script>
 <script>
 const PAYPAL_PLAN_ID = "P-42B26777LT293231BNHMVWNA";
@@ -480,7 +505,8 @@ requireAuth("auth.html").then(async (user) => {
  // bonus for the referrer. Idempotent — server checks referralRewardSent.
  try {
  if (plan === 'pro' || plan === 'yolo') {
- const fn = firebase.functions().httpsCallable('awardReferral');
+ const fns = await window._wlLazy.functions();
+ const fn = fns.httpsCallable('awardReferral');
  await fn({ tier: plan });
  }
  } catch (e) { console.warn('post-upgrade referral reward failed', e); }
@@ -664,7 +690,8 @@ async function applyCode(uid) {
  msg.style.color = "#8892a4";
  msg.textContent = "Checking…";
  try {
- const fn = firebase.functions().httpsCallable("validateCode");
+ const fns = await window._wlLazy.functions();
+ const fn = fns.httpsCallable("validateCode");
  const result = await fn({ code });
  if (result.data.valid) {
  const newPlan = result.data.plan;
