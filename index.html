@@ -1243,53 +1243,87 @@ const feeds = [
 const feedChip = f => `<div class="feed-chip"><span class="dot" style="background:${f.dot};box-shadow:0 0 6px ${f.dot}"></span><strong>${f.t}</strong> · ${f.m}</div>`;
 document.getElementById('feedRow').innerHTML = feeds.map(feedChip).join('') + feeds.map(feedChip).join('');
 
-// ── AI DEMO (scripted responses for landing page) ──
+// ── AI DEMO (scripted Q&A pool — rotates on every page load) ──
+// Pool of 10 Q&A pairs (2 per domain × 5 domains). On each page load we pick
+// one random pair per domain — visitors don't see the same 5 questions twice
+// in a row. Answers are stored alongside questions (no fragile keyword
+// matching), so HE/PT/ES suggestions return the right answer too.
 const aiBody = document.getElementById('aiBody');
 const aiPrompts = document.getElementById('aiPrompts');
 
-const suggestions = [
- "Should I relocate to Portugal?",
- "Is TLV→NYC cheaper via a hub?",
- "Explain my LDL cholesterol of 138",
- "What's a good rental yield in São Paulo?",
- "How do I rebalance a 60/40 portfolio?"
-];
-aiPrompts.innerHTML = suggestions.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
-aiPrompts.querySelectorAll('.ai-prompt').forEach(b=>{
- b.addEventListener('click',()=>{ sendDemo(b.textContent); });
-});
+const QA_POOL = {
+ tax: [
+ {
+ q: { en:"Should I relocate to Portugal?", he:"האם כדאי לי לעבור לפורטוגל?", pt:"Devo me mudar para Portugal?", es:"¿Debería mudarme a Portugal?" },
+ a: "Portugal's NHR (Non-Habitual Resident) regime offers 0% tax on most foreign income for 10 years — ideal if you have Israeli salary or investment income. The key risk is the Israeli exit tax on assets you held before leaving. WizeTax can model your exact scenario and tell you the optimal timing to move. Create a free account to run your full exit-tax analysis."
+ },
+ {
+ q: { en:"Does Estonia e-residency save tax for an Israeli?", he:"האם תושבות אסטונית חוסכת מס לישראלי?", pt:"E-residência da Estônia ajuda em impostos para um israelense?", es:"¿La e-residencia de Estonia ahorra impuestos para un israelí?" },
+ a: "Estonia's e-residency lets you run a company taxed only on distributed profits (0% on retained earnings). BUT for Israeli residents, the company is still considered an Israeli tax resident if managed from Israel — 23% corporate tax applies regardless. The real benefit kicks in only if you actually relocate. WizeTax compares your net position with and without real residency change, factoring in treaty offsets and Israeli CFC rules."
+ },
+ ],
+ travel: [
+ {
+ q: { en:"Is TLV→NYC cheaper via a hub?", he:"האם TLV→NYC זול יותר דרך hub?", pt:"TLV→NYC é mais barato via hub?", es:"¿TLV→NYC es más barato vía hub?" },
+ a: "Yes — a positioning route via Amsterdam or London typically costs $370–420 vs $680 direct. The trick is booking KLM to AMS and JetBlue AMS→JFK as two separate tickets, which is a 'virtual interline'. WizeTravel automates this search across 1,200+ carriers. Try it free — it usually finds savings in under 30 seconds."
+ },
+ {
+ q: { en:"Cheapest month to fly to Tokyo this year?", he:"החודש הזול ביותר לטוס לטוקיו השנה?", pt:"Mês mais barato para voar a Tóquio este ano?", es:"¿Mes más barato para volar a Tokio este año?" },
+ a: "October–November are typically the cheapest months for TLV→NRT ($620–780 RT vs $1,100+ in March–April cherry-blossom season). Best fares usually appear 6–10 weeks before departure. WizeTravel tracks 12 months of historical fares and surfaces the booking sweet-spot for any route, plus virtual-interline combos most aggregators miss."
+ },
+ ],
+ health: [
+ {
+ q: { en:"Explain my LDL cholesterol of 138", he:"הסבר לי כולסטרול LDL של 138", pt:"Explique meu colesterol LDL de 138", es:"Explica mi colesterol LDL de 138" },
+ a: "An LDL of 138 mg/dL is borderline high (optimal is under 100 for most adults). The main levers are dietary: reducing saturated fat, adding soluble fiber (oats, legumes), and omega-3s. WizeHealth can interpret your full blood panel in context — looking at LDL particle size, HDL ratio, triglycerides, and CRP together gives a much clearer picture than LDL alone."
+ },
+ {
+ q: { en:"What does an HRV of 38 ms mean?", he:"מה זה אומר HRV של 38 ms?", pt:"O que significa HRV de 38 ms?", es:"¿Qué significa HRV de 38 ms?" },
+ a: "HRV (heart-rate variability) of 38 ms is below typical adult average (~50–80 ms), suggesting elevated sympathetic stress or recovery debt — common after poor sleep, alcohol, or hard training. It's a directional signal, not a diagnosis: track the trend, not a single value. WizeHealth correlates HRV with sleep, training load, and caffeine/alcohol intake to surface your personal levers."
+ },
+ ],
+ deal: [
+ {
+ q: { en:"What's a good rental yield in São Paulo?", he:"מה תשואת שכירות טובה בסאו פאולו?", pt:"Qual é uma boa rentabilidade de aluguel em São Paulo?", es:"¿Cuál es un buen rendimiento de alquiler en São Paulo?" },
+ a: "Good gross rental yield in São Paulo's premium neighborhoods (Jardins, Itaim, Vila Nova Conceição) ranges from 5–8%. After ITBI acquisition tax (~3%), management fees, and vacancy, net yield typically lands at 4–6%. WizeDeal can run the full numbers on any specific listing URL — including neighborhood comps and payback period — in under 30 seconds."
+ },
+ {
+ q: { en:"Is a €450K Lisbon apartment worth buying now?", he:"האם דירה בליסבון ב-€450K שווה לקנות עכשיו?", pt:"Vale a pena comprar um apartamento de €450K em Lisboa agora?", es:"¿Vale la pena comprar un piso de €450K en Lisboa ahora?" },
+ a: "Lisbon prices peaked in 2024; current gross rental yields in Príncipe Real / Chiado are 3.5–4.5%. After IMI (~0.3%), management (~10%), and IRS on rental income (~28%), net yield falls to 1.8–2.3%. Vs a 4–5% Treasury, the case for buying now rests on appreciation upside and personal use. WizeDeal runs the full ROI including transfer tax and exit scenarios."
+ },
+ ],
+ money: [
+ {
+ q: { en:"How do I rebalance a 60/40 portfolio?", he:"איך לאזן מחדש תיק 60/40?", pt:"Como rebalancear uma carteira 60/40?", es:"¿Cómo rebalanceo una cartera 60/40?" },
+ a: "A 60/40 portfolio (60% equities, 40% bonds) is a classic moderate-risk allocation. Rebalancing annually or when any asset class drifts more than 5% from target keeps your risk profile stable. For Israeli investors, also factor in pension (Keren Hishtalmut, Kupat Gemel) as part of the bond allocation — it often represents 30–50% of total wealth. WizeMoney maps your full picture including pension."
+ },
+ {
+ q: { en:"Lump-sum or DCA into S&P 500 right now?", he:"סכום חד-פעמי או DCA ל-S&P 500 עכשיו?", pt:"Aportar tudo de uma vez ou DCA no S&P 500 agora?", es:"¿Lump-sum o DCA al S&P 500 ahora?" },
+ a: "Historically, lump-sum beats DCA ~67% of the time over 12 months — markets trend up, so time-in beats timing-in. BUT if a lump represents >25% of net worth or you'd panic-sell after a 20% drop, DCA over 6 months reduces regret risk significantly. The right answer depends on your existing drawdown tolerance — WizeMoney models both paths against your real net-worth profile."
+ },
+ ],
+};
 
-// Scripted answers for landing page demo
-const scriptedAnswers = [
- {
- keys: ['portugal','relocat','nhр','nhr'],
- ans: "Portugal's NHR (Non-Habitual Resident) regime offers 0% tax on most foreign income for 10 years — ideal if you have Israeli salary or investment income. The key risk is the Israeli exit tax on assets you held before leaving. WizeTax can model your exact scenario and tell you the optimal timing to move. Create a free account to run your full exit-tax analysis."
- },
- {
- keys: ['tlv','jfk','nyc','new york','hub','position'],
- ans: "Yes — a positioning route via Amsterdam or London typically costs $370–420 vs $680 direct. The trick is booking KLM to AMS and JetBlue AMS→JFK as two separate tickets, which is a 'virtual interline'. WizeTravel automates this search across 1,200+ carriers. Try it free — it usually finds savings in under 30 seconds."
- },
- {
- keys: ['ldl','cholesterol','138','blood','health'],
- ans: "An LDL of 138 mg/dL is borderline high (optimal is under 100 for most adults). The main levers are dietary: reducing saturated fat, adding soluble fiber (oats, legumes), and omega-3s. WizeHealth can interpret your full blood panel in context — looking at LDL particle size, HDL ratio, triglycerides, and CRP together gives a much clearer picture than LDL alone."
- },
- {
- keys: ['rental','yield','são paulo','sao paulo','brazil','brasili'],
- ans: "Good gross rental yield in São Paulo's premium neighborhoods (Jardins, Itaim, Vila Nova Conceição) ranges from 5–8%. After ITBI acquisition tax (~3%), management fees, and vacancy, net yield typically lands at 4–6%. WizeDeal can run the full numbers on any specific listing URL — including neighborhood comps and payback period — in under 30 seconds."
- },
- {
- keys: ['rebalance','60/40','portfolio','allocat'],
- ans: "A 60/40 portfolio (60% equities, 40% bonds) is a classic moderate-risk allocation. Rebalancing annually or when any asset class drifts more than 5% from target keeps your risk profile stable. With Israeli investors, also factor in the pension (Keren Hishtalmut, Kupat Gemel) as part of the bond allocation — it often represents 30–50% of total wealth. WizeMoney can map your full picture including pension."
- }
-];
-
-function getAnswer(q){
- const lower = q.toLowerCase();
- for(const a of scriptedAnswers){
- if(a.keys.some(k => lower.includes(k))) return a.ans;
- }
- return "Great question! WizeAI covers money, travel, tax, health and real estate — all in one place. Sign up free to get full AI-powered answers tailored to your situation across all 5 domains. Takes 30 seconds to start.";
+function pickPrompts(){
+ const raw = (function(){ try { return localStorage.getItem('wl_lang'); } catch(_) { return null; } })();
+ const lang = ['he','en','pt','es'].includes(raw) ? raw : 'en';
+ return Object.keys(QA_POOL).map(domain => {
+ const pool = QA_POOL[domain];
+ const pick = pool[Math.floor(Math.random() * pool.length)];
+ return { text: pick.q[lang] || pick.q.en, answer: pick.a, domain };
+ });
 }
+
+function renderPrompts(){
+ const picks = pickPrompts();
+ aiPrompts.innerHTML = picks.map(p => `<button class="ai-prompt" data-i18n-skip="1">${p.text}</button>`).join('');
+ aiPrompts.querySelectorAll('.ai-prompt').forEach((b, i) => {
+ b.addEventListener('click', () => sendDemo(picks[i].text, picks[i].answer));
+ });
+}
+renderPrompts();
+// Expose so the lang re-render block can refresh after language switch.
+window.__renderAiPrompts = renderPrompts;
 
 function addMsg(text, who, loading){
  const el = document.createElement('div');
@@ -1304,15 +1338,14 @@ function addMsg(text, who, loading){
  return el;
 }
 
-// Demo only: always replies with one of the 5 scripted answers + simulated delay.
-// Free typing + real aiProxy were removed from the landing page on 2026-05-17 —
-// the full personalized advisor lives at /wize-ai.html (YOLO only).
-async function sendDemo(q){
+// Demo only — direct Q→A lookup (no keyword matching). Full personalized
+// advisor lives at /wize-ai.html (YOLO only).
+async function sendDemo(q, ans){
  addMsg(q,'user');
  const loadingEl = addMsg('','bot',true);
  await new Promise(r => setTimeout(r, 700 + Math.random()*400));
  loadingEl.classList.remove('loading');
- loadingEl.textContent = getAnswer(q);
+ loadingEl.textContent = ans;
 }
 // (input row removed 2026-05-17 — sendDemo() is now wired to suggestion buttons only)
 
@@ -1661,43 +1694,8 @@ function applyLandingLang(){
  if(fbottom[0]) fbottom[0].textContent = t.footerRights;
  if(fbottom[1]) fbottom[1].textContent = t.footerMade;
 
- // AI suggestions
- const suggestions_pt = [
- "Devo me mudar para Portugal?",
- "TLV→NYC é mais barato via hub?",
- "Explique meu colesterol LDL de 138",
- "Qual é uma boa rentabilidade em São Paulo?",
- "Como rebalancear uma carteira 60/40?"
- ];
- const suggestions_es = [
- "¿Debería mudarme a Portugal?",
- "¿TLV→NYC es más barato vía hub?",
- "Explica mi colesterol LDL de 138",
- "¿Cuál es un buen rendimiento de alquiler en Madrid?",
- "¿Cómo rebalanceo una cartera 60/40?"
- ];
- const suggestions_en = [
- "Should I relocate to Portugal?",
- "Is TLV→NYC cheaper via a hub?",
- "Explain my LDL cholesterol of 138",
- "What's a good rental yield in São Paulo?",
- "How do I rebalance a 60/40 portfolio?"
- ];
- const suggestions_he = [
- "האם כדאי לי לעבור לפורטוגל?",
- "האם TLV→NYC זול יותר דרך hub?",
- "הסבר לי כולסטרול LDL של 138",
- "מה תשואת שכירות טובה בתל אביב?",
- "איך לאזן מחדש תיק 60/40?",
- ];
- const suggs = _wl_lang === 'pt' ? suggestions_pt : _wl_lang === 'es' ? suggestions_es : _wl_lang === 'he' ? suggestions_he : suggestions_en;
- const aiPromptsEl = document.getElementById('aiPrompts');
- if(aiPromptsEl){
- aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
- aiPromptsEl.querySelectorAll('.ai-prompt').forEach(b=>{
- b.addEventListener('click',()=>{ sendDemo(b.textContent); });
- });
- }
+ // AI suggestions — re-render from the rotating pool in the new active lang.
+ if (typeof window.__renderAiPrompts === 'function') window.__renderAiPrompts();
 
  // FAQ — re-render by language
  const WIZE_FAQ_HE = [
