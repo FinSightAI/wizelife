@@ -1,0 +1,84 @@
+name: Weekly npm audit (alert-only)
+
+# Runs `npm audit` weekly. On HIGH or CRITICAL findings, opens a GitHub
+# Issue (which emails the owner). Does NOT fail the workflow, does NOT
+# block any other CI, does NOT touch production. Pure additive monitoring.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run npm audit (all package.json files)
+        id: audit
+        continue-on-error: true
+        run: |
+          set +e
+          TOTAL_HIGH=0
+          TOTAL_CRIT=0
+          REPORT=""
+          for pkg in $(find . -name package.json -not -path '*/node_modules/*' -not -path '*/.next/*' -not -path '*/dist/*' -not -path '*/build/*' | head -5); do
+            dir=$(dirname "$pkg")
+            [ -f "$dir/package-lock.json" ] || continue
+            echo "=== $dir ==="
+            (
+              cd "$dir"
+              npm audit --audit-level=high --json > /tmp/audit.json 2>/dev/null || true
+              H=$(jq -r '.metadata.vulnerabilities.high // 0' /tmp/audit.json 2>/dev/null || echo 0)
+              C=$(jq -r '.metadata.vulnerabilities.critical // 0' /tmp/audit.json 2>/dev/null || echo 0)
+              echo "  high=$H, critical=$C"
+              echo "$dir|$H|$C"
+            ) >> /tmp/audit-by-dir.txt
+          done
+          # Aggregate
+          while IFS='|' read -r dir h c; do
+            [ -z "$dir" ] && continue
+            TOTAL_HIGH=$((TOTAL_HIGH + h))
+            TOTAL_CRIT=$((TOTAL_CRIT + c))
+            REPORT="${REPORT}- \`${dir}\`: ${c} critical, ${h} high\n"
+          done < /tmp/audit-by-dir.txt
+          echo "TOTAL_HIGH=$TOTAL_HIGH"
+          echo "TOTAL_CRIT=$TOTAL_CRIT"
+          echo "high=$TOTAL_HIGH" >> $GITHUB_OUTPUT
+          echo "crit=$TOTAL_CRIT" >> $GITHUB_OUTPUT
+          echo -e "$REPORT" > /tmp/report.md
+          cat /tmp/report.md
+
+      - name: Open issue if findings
+        if: steps.audit.outputs.high != '0' || steps.audit.outputs.crit != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('/tmp/report.md', 'utf8');
+            const high = '${{ steps.audit.outputs.high }}';
+            const crit = '${{ steps.audit.outputs.crit }}';
+            const date = new Date().toISOString().split('T')[0];
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[npm-audit] ${date}: ${crit} critical / ${high} high`,
+              body: `Weekly npm audit detected high-severity vulnerabilities:\n\n` +
+                    `- **Critical:** ${crit}\n- **High:** ${high}\n\n` +
+                    `### Per package.json\n${report}\n\n` +
+                    `### Next step\n` +
+                    `Run \`npm audit fix\` locally (or per directory). For CVEs without a fix, weigh the risk vs the cost of upgrading the major version.\n\n` +
+                    `Full run log: ${runUrl}\n\n` +
+                    `---\n_Auto-created by \`.github/workflows/npm-audit.yml\` (alert-only)._`,
+              labels: ['security', 'dependencies'],
+            });
