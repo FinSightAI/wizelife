@@ -1614,12 +1614,7 @@ function applyLandingLang(){
  if(subs[i]) subs[i].textContent = sub;
  });
 
- // AI demo
- const aip = document.getElementById('aiInput');
- if(aip) aip.placeholder = t.aiPlaceholder;
- const aisend = document.getElementById('aiSend');
- if(aisend) aisend.textContent = t.aiSendBtn;
- // Reset AI body to translated welcome
+ // AI demo (input was removed 2026-05-17 — Quick Demo + YOLO CTA only)
  const aiB = document.getElementById('aiBody');
  if(aiB && aiB.children.length === 1) aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
 
@@ -1700,7 +1695,7 @@ function applyLandingLang(){
  if(aiPromptsEl){
  aiPromptsEl.innerHTML = suggs.map(s=>`<button class="ai-prompt">${s}</button>`).join('');
  aiPromptsEl.querySelectorAll('.ai-prompt').forEach(b=>{
- b.addEventListener('click',()=>{ aiInput.value = b.textContent; sendAI(); });
+ b.addEventListener('click',()=>{ sendDemo(b.textContent); });
  });
  }
 
