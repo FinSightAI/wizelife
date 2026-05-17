@@ -625,6 +625,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="hero-btns">
 <a class="btn-primary" href="auth.html">Start free →</a>
 <a class="btn-secondary" href="#products">Explore the suite ↓</a>
+<button type="button" class="btn-secondary" id="wlShareBtn" aria-label="Share" data-i18n="share" onclick="WizeShare&amp;&amp;WizeShare.share({title:'WizeLife',text:'WizeLife — Live Smarter. Every Day.',url:'https://wizelife.ai'})">↗ Share</button>
 </div>
 <div class="hero-feed">
 <div class="feed-label" data-i18n="__12">Live from the suite</div>
@@ -1864,6 +1865,7 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
 </script>
 <script defer="" src="/js/wize-bottom-nav.js"></script>
 <script defer="" src="/js/wize-onboarding.js"></script>
+<script defer="" src="/js/wize-share.js"></script>
 <script defer="" src="/js/wize-hamburger.js"></script>
 <script>
 /* Even on the public landing page, fire a single warm-up GET to Vitara so
