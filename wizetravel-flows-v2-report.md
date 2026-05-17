@@ -1,4 +1,4 @@
-# 🚨 WizeTravel-FlowsV2 action items — 2026-05-14
+# 🚨 WizeTravel-FlowsV2 action items — 2026-05-16
 
 **0 failure(s), 6 warning(s), 9 pass.**
 
@@ -13,7 +13,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTravel-FlowsV2 QA — 2026-05-14
+# WizeTravel-FlowsV2 QA — 2026-05-16
 
 - ⚠️ No date-picker hint visible — Streamlit may embed in iframe
 - ✅ Date-picker / calendar UI mentioned somewhere

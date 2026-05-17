@@ -1,26 +1,23 @@
-# 🚨 WizeTax-Deep action items — 2026-05-14
+# 🚨 WizeTax-Deep action items — 2026-05-16
 
-**4 failure(s), 4 warning(s), 9 pass.**
+**2 failure(s), 3 warning(s), 11 pass.**
 
 ## For Claude to fix:
-- ❌ No CSP violations on first load — 3 CSP errors (sample: Loading the script 'https://wizelife.ai/js/wize-disclaimer.js' violates the following Content Securi)
-- ❌ Routes /reports + /profile reachable (not 404) — broken: /reports → 404, /profile → 404
-- ❌ CSP allows wizelife.ai scripts (no blocked external) — CSP missing wizelife.ai in script-src
-- ❌ OECD 2025 label visible (not stale 2024) — OECD label still 2023 or 2024
+- ❌ Lang switch HE → EN updates UI — UI text + dir identical after EN click
+- ❌ Routes /reports + /profile reachable (not 404) — broken: /reports → err
 
 ## For you to investigate:
 - ⚠️ Send button not found — cannot test chat
 - ⚠️ Country comparison copy not visible — feature may be tab-gated
 - ⚠️ No number inputs found — simulator may be on separate page
-- ⚠️ EN pill not found
 
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTax-Deep QA — 2026-05-14
+# WizeTax-Deep QA — 2026-05-16
 
 - ✅ Advisor page loads + textarea present
-- ❌ No CSP violations on first load — 3 CSP errors (sample: Loading the script 'https://wizelife.ai/js/wize-disclaimer.js' violates the following Content Securi)
+- ✅ No CSP violations on first load
 - ⚠️ Send button not found — cannot test chat
 - ✅ Send "What is VAT?" → assistant streams reply
 - ⚠️ Country comparison copy not visible — feature may be tab-gated
@@ -29,12 +26,11 @@ _<details><summary>Full detail</summary>_
 - ✅ Income simulator — find a number input + currency
 - ✅ Payslip upload — file input present
 - ✅ Language pills HE/EN/PT/ES render
-- ⚠️ EN pill not found
-- ✅ Lang switch HE → EN updates UI
+- ❌ Lang switch HE → EN updates UI — UI text + dir identical after EN click
 - ✅ No Hebrew leak in EN mode
-- ❌ Routes /reports + /profile reachable (not 404) — broken: /reports → 404, /profile → 404
-- ❌ CSP allows wizelife.ai scripts (no blocked external) — CSP missing wizelife.ai in script-src
+- ❌ Routes /reports + /profile reachable (not 404) — broken: /reports → err
+- ✅ CSP allows wizelife.ai scripts (no blocked external)
 - ✅ iPhone (390×844): advisor textarea reachable + no overflow
-- ❌ OECD 2025 label visible (not stale 2024) — OECD label still 2023 or 2024
+- ✅ OECD 2025 label visible (not stale 2024)
 
 </details>

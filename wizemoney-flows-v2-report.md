@@ -1,4 +1,4 @@
-# 🚨 WizeMoney-FlowsV2 action items — 2026-05-14
+# 🚨 WizeMoney-FlowsV2 action items — 2026-05-16
 
 **1 failure(s), 2 warning(s), 11 pass.**
 
@@ -12,7 +12,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeMoney-FlowsV2 QA — 2026-05-14
+# WizeMoney-FlowsV2 QA — 2026-05-16
 
 - ✅ Bank page reachable + add-account form has IBAN/balance fields
 - ✅ Credit card page renders + has transaction list / empty-state

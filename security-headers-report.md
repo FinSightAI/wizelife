@@ -1,4 +1,4 @@
-# 🚨 Security-Headers action items — 2026-05-14
+# 🚨 Security-Headers action items — 2026-05-17
 
 **3 failure(s), 0 warning(s), 3 pass.**
 
@@ -10,7 +10,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# Security-Headers QA — 2026-05-14
+# Security-Headers QA — 2026-05-17
 
 - ❌ https://wizelife.ai/ — security headers — missing content-security-policy | missing referrer-policy
 - ❌ https://money.wizelife.ai/ — security headers — missing content-security-policy | missing referrer-policy

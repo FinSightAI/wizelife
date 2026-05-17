@@ -1,4 +1,4 @@
-# 🚨 WizeTax action items — 2026-05-14
+# 🚨 WizeTax action items — 2026-05-16
 
 **2 failure(s), 0 warning(s), 7 pass.**
 
@@ -9,7 +9,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTax QA — 2026-05-14
+# WizeTax QA — 2026-05-16
 
 - ✅ / loads
 - ✅ /advisor loads

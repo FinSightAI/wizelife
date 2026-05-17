@@ -1,4 +1,4 @@
-# 🚨 WizeTravel-Deep action items — 2026-05-14
+# 🚨 WizeTravel-Deep action items — 2026-05-16
 
 **1 failure(s), 7 warning(s), 13 pass.**
 
@@ -17,7 +17,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTravel-Deep QA — 2026-05-14
+# WizeTravel-Deep QA — 2026-05-16
 
 - ❌ Lang pill HE → EN swaps page direction + body text — UI didn't change after EN click — dir/lang unchanged
 - ✅ Theme toggle present (warn-only — sidebar widget)

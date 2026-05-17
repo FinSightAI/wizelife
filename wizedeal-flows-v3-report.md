@@ -1,12 +1,6 @@
-# 🚨 WizeDeal-FlowsV3 action items — 2026-05-14
+# 🚨 WizeDeal-FlowsV3 action items — 2026-05-16
 
-**1 failure(s), 4 warning(s), 11 pass.**
-
-## For Claude to fix:
-- ❌ Yad2 / Madlan / Zillow URL paste recognized (regex check) — locator.waitFor: Timeout 15000ms exceeded.
-Call log:
-[2m  - waiting for locator('textarea').first() to be visible[22m
-
+**0 failure(s), 4 warning(s), 12 pass.**
 
 ## For you to investigate:
 - ⚠️ No numeric inputs on landing — ROI may be on different page
@@ -17,12 +11,9 @@ Call log:
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeDeal-FlowsV3 QA — 2026-05-14
+# WizeDeal-FlowsV3 QA — 2026-05-16
 
-- ❌ Yad2 / Madlan / Zillow URL paste recognized (regex check) — locator.waitFor: Timeout 15000ms exceeded.
-Call log:
-[2m  - waiting for locator('textarea').first() to be visible[22m
-
+- ✅ Yad2 / Madlan / Zillow URL paste recognized (regex check)
 - ⚠️ No numeric inputs on landing — ROI may be on different page
 - ✅ ROI calculator inputs accept numeric values
 - ⚠️ only 3 flags — expected ≥10

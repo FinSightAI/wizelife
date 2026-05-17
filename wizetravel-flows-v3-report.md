@@ -1,4 +1,4 @@
-# 🚨 WizeTravel-FlowsV3 action items — 2026-05-14
+# 🚨 WizeTravel-FlowsV3 action items — 2026-05-16
 
 **0 failure(s), 8 warning(s), 12 pass.**
 
@@ -15,7 +15,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTravel-FlowsV3 QA — 2026-05-14
+# WizeTravel-FlowsV3 QA — 2026-05-16
 
 - ✅ Skiplagging / hidden-city warning visible (legal context)
 - ⚠️ No best-time-to-book feature

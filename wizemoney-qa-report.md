@@ -1,4 +1,4 @@
-# 🚨 WizeMoney action items — 2026-05-14
+# 🚨 WizeMoney action items — 2026-05-16
 
 **0 failure(s), 1 warning(s), 14 pass.**
 
@@ -8,7 +8,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeMoney QA — 2026-05-14
+# WizeMoney QA — 2026-05-16
 
 - ✅ Home loads
 - ✅ /pages/income.html reachable

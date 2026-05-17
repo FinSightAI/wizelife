@@ -1,30 +1,22 @@
-# 🚨 WizeDeal-Deep action items — 2026-05-14
+# 🚨 WizeDeal-Deep action items — 2026-05-16
 
-**3 failure(s), 4 warning(s), 9 pass.**
+**2 failure(s), 3 warning(s), 10 pass.**
 
 ## For Claude to fix:
-- ❌ Landing loads + paste-listing textarea reachable — locator.waitFor: Timeout 25000ms exceeded.
-Call log:
-[2m  - waiting for locator('textarea').first()[22m
-
 - ❌ Lang switch HE → EN updates UI — UI unchanged after EN click
-- ❌ Route /analyze reachable (not 404) — /analyze → 404
+- ❌ Route /analyze reachable (not 404) — /analyze → err
 
 ## For you to investigate:
 - ⚠️ No country selector/flags detected on landing
 - ⚠️ Only 3 country flags detected (expected ≥15) — verify list rendered
 - ⚠️ No plan badge text/icon detected — may show only when logged-in
-- ⚠️ Textarea not visible on mobile — may need scroll
 
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeDeal-Deep QA — 2026-05-14
+# WizeDeal-Deep QA — 2026-05-16
 
-- ❌ Landing loads + paste-listing textarea reachable — locator.waitFor: Timeout 25000ms exceeded.
-Call log:
-[2m  - waiting for locator('textarea').first()[22m
-
+- ✅ Landing loads + paste-listing textarea reachable
 - ✅ Paste listing → "Analyze" button reachable
 - ⚠️ No country selector/flags detected on landing
 - ✅ Country selector / filter present
@@ -36,8 +28,7 @@ Call log:
 - ✅ 20 countries listed (we added 8 in last wave)
 - ⚠️ No plan badge text/icon detected — may show only when logged-in
 - ✅ Plan badge in sidebar (Free/Pro/YOLO)
-- ❌ Route /analyze reachable (not 404) — /analyze → 404
-- ⚠️ Textarea not visible on mobile — may need scroll
+- ❌ Route /analyze reachable (not 404) — /analyze → err
 - ✅ iPhone (390×844): textarea reachable + no overflow
 - ✅ No back-arrow "← All Tools" on sub-app pages
 

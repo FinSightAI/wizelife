@@ -1,4 +1,4 @@
-# 🚨 WizeMoney-FlowsV3 action items — 2026-05-14
+# 🚨 WizeMoney-FlowsV3 action items — 2026-05-16
 
 **2 failure(s), 3 warning(s), 18 pass.**
 
@@ -14,7 +14,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeMoney-FlowsV3 QA — 2026-05-14
+# WizeMoney-FlowsV3 QA — 2026-05-16
 
 - ✅ /pages/bank.html — page loads + content > 200 chars
 - ✅ /pages/credit.html — page loads + content > 200 chars
