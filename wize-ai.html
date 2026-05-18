@@ -265,10 +265,24 @@ body{display:flex;flex-direction:column}
 </div>
 
 <script src="js/wize-pii.js"></script>
+<script src="js/wize-disclaimer.js" defer></script>
 <script>
 const chatBody  = document.getElementById('chatBody');
 const msgInput  = document.getElementById('msgInput');
 const sendBtn   = document.getElementById('sendBtn');
+
+// Slim "AI may be wrong" strip — injected once at top of chat panel, stays
+// permanently visible. No per-message footer noise (only first response
+// gets a footer; subsequent rely on this strip — see sendMsg() below).
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    try {
+      if (window.WizeDisclaimer && WizeDisclaimer.chatStrip && chatBody) {
+        WizeDisclaimer.chatStrip({ app: 'general', container: chatBody });
+      }
+    } catch (_) {}
+  }, 400);
+});
 
 let _plan = 'free';
 let _contextSummary = '';
@@ -458,6 +472,9 @@ async function sendMsg() {
     loadEl.classList.remove('typing');
     loadEl.innerHTML = '';
     loadEl.textContent = replyText;
+    // First-response-only footer (subsequent responses just have the slim
+    // strip at top of the chat panel — see chatStrip injection on init).
+    try { if (window.WizeDisclaimer && WizeDisclaimer.aiOutputFooter) loadEl.insertAdjacentHTML('beforeend', WizeDisclaimer.aiOutputFooter({ app: 'general', firstOnly: true })); } catch(_) {}
     _history.push({ role: 'model', parts: [{ text: replyText }] });
     _callsToday++;
     updateQuota();

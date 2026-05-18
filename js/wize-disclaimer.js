@@ -503,5 +503,274 @@
     if (!dismissed()) chip.click();
   }
 
-  root.WizeDisclaimer = { gate, showEmergencyBanner, showProfessionalDisclaimer, TOS_VERSION };
+  // ─────────────────────────────────────────────────────────────────────────
+  // aiOutputFooter — small "AI may be wrong" footer to append under every
+  // AI-generated response. Returns a sanitized HTML string. Color/style is
+  // intentionally subtle so it doesn't break the conversation UX, but the
+  // text is always visible.
+  //
+  // Legal purpose: documents that for every AI output, the user was shown
+  // a "verify with a professional" notice. Combined with screen-recording
+  // claims, this is much harder to dispute than a one-time gate.
+  // ─────────────────────────────────────────────────────────────────────────
+  // Session-scoped: tracks which (app) we've already shown a footer for.
+  // Used by aiOutputFooter({firstOnly:true}) to avoid noise after message 1.
+  const _firstFooterShown = {};
+
+  function aiOutputFooter(opts) {
+    opts = opts || {};
+    if (opts.firstOnly) {
+      const k = (opts.app || 'general') + '::session';
+      if (_firstFooterShown[k]) return '';   // already shown this session
+      _firstFooterShown[k] = true;
+    }
+    const lang = getLang();
+    const app  = opts.app || 'general';
+    const PRO = {
+      tax:     { he: 'יועץ מס מורשה / רו״ח', en: 'licensed CPA or tax advisor', pt: 'contador licenciado', es: 'contador licenciado' },
+      money:   { he: 'יועץ השקעות מורשה',     en: 'licensed financial advisor',   pt: 'consultor financeiro licenciado', es: 'asesor financiero licenciado' },
+      health:  { he: 'רופא מורשה',             en: 'licensed physician',           pt: 'médico licenciado',               es: 'médico licenciado' },
+      deal:    { he: 'שמאי / עו״ד נדל״ן',      en: 'appraiser or real-estate attorney', pt: 'avaliador ou advogado imobiliário', es: 'tasador o abogado inmobiliario' },
+      travel:  { he: 'איש מקצוע מתאים',        en: 'a qualified professional',     pt: 'um profissional qualificado',    es: 'un profesional cualificado' },
+      general: { he: 'איש מקצוע מורשה',        en: 'a licensed professional',      pt: 'um profissional licenciado',     es: 'un profesional licenciado' },
+    };
+    const who = (PRO[app] && PRO[app][lang]) || PRO.general[lang] || PRO.general.en;
+    const TR = {
+      he: `ℹ️ <strong>AI עלול לטעות.</strong> אמת מידע קריטי אצל ${who} לפני קבלת החלטה.`,
+      en: `ℹ️ <strong>AI may be wrong.</strong> Verify critical info with ${who} before acting.`,
+      pt: `ℹ️ <strong>A IA pode errar.</strong> Verifique informações críticas com ${who} antes de agir.`,
+      es: `ℹ️ <strong>La IA puede equivocarse.</strong> Verifica información crítica con ${who} antes de actuar.`,
+    };
+    const txt = TR[lang] || TR.en;
+    const dir = lang === 'he' ? 'rtl' : 'ltr';
+    return '<div class="wl-ai-footer" dir="' + dir + '" style="margin-top:10px;padding:7px 11px;'
+      + 'background:rgba(245,158,11,0.07);border-inline-start:3px solid rgba(245,158,11,0.6);'
+      + 'border-radius:6px;font:500 11.5px Inter,-apple-system,sans-serif;color:#94a3b8;'
+      + 'line-height:1.45;">' + txt + '</div>';
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // gateAction — wraps a high-stake action (Calculate / Submit / Analyze)
+  // with a brief disclaimer confirmation. Once accepted within the current
+  // session, subsequent calls bypass the modal (avoid annoying repeated
+  // clicks). A Firestore acceptance record is written on first accept per
+  // (app, actionKey, TOS_VERSION).
+  //
+  // Usage A — programmatic (await + branch):
+  //   const ok = await WizeDisclaimer.gateAction({ app:'tax', actionKey:'simulate' });
+  //   if (ok) doCalc();
+  //
+  // Usage B — attach to a button (preferred):
+  //   WizeDisclaimer.gateAction({
+  //     app: 'tax', actionKey: 'simulate',
+  //     button: document.querySelector('#calc-btn'),
+  //     onProceed: () => doCalc(),
+  //   });
+  // ─────────────────────────────────────────────────────────────────────────
+  const _gateActionAcceptedThisSession = {};
+
+  function gateAction(opts) {
+    opts = opts || {};
+    const app       = opts.app || 'general';
+    const actionKey = opts.actionKey || 'default';
+    const sessKey   = app + '::' + actionKey;
+
+    function proceed() {
+      if (typeof opts.onProceed === 'function') {
+        try { opts.onProceed(); } catch (_) {}
+      }
+      return true;
+    }
+
+    function show() {
+      return new Promise((resolve) => {
+        // Session-cached: instant resolve.
+        if (_gateActionAcceptedThisSession[sessKey]) { resolve(true); return; }
+
+        const lang = getLang();
+        const dir  = lang === 'he' ? 'rtl' : 'ltr';
+        const PRO = {
+          tax:    { he: 'יועץ מס מורשה',           en: 'licensed CPA / tax advisor',     pt: 'contador licenciado',            es: 'contador licenciado' },
+          money:  { he: 'יועץ השקעות מורשה',       en: 'licensed investment advisor',    pt: 'consultor de investimentos licenciado', es: 'asesor de inversiones licenciado' },
+          health: { he: 'רופא מורשה',               en: 'licensed physician',             pt: 'médico licenciado',              es: 'médico licenciado' },
+          deal:   { he: 'שמאי / עו״ד נדל״ן',        en: 'real-estate appraiser / attorney', pt: 'avaliador / advogado imobiliário', es: 'tasador / abogado inmobiliario' },
+          travel: { he: 'גורם מוסמך',               en: 'a qualified party',              pt: 'um profissional qualificado',    es: 'un profesional cualificado' },
+          general:{ he: 'איש מקצוע מורשה',          en: 'a licensed professional',        pt: 'um profissional licenciado',     es: 'un profesional licenciado' },
+        };
+        const who = (PRO[app] && PRO[app][lang]) || PRO.general[lang] || PRO.general.en;
+        const COPY_MAP = {
+          he: { title: 'הבהרה לפני שמירת/חישוב/שליחה',
+                body:  'התוצאה שתתקבל היא <strong>מידע כללי מבוסס AI</strong>, לא ייעוץ מקצועי מורשה. אני מבין שלפני קבלת החלטה כספית/בריאותית/משפטית עליי להתייעץ עם ' + who + '.',
+                accept: 'הבנתי, ממשיך', cancel: 'ביטול' },
+          en: { title: 'Quick reminder before this action',
+                body:  'The result you\'re about to see is <strong>AI-generated general information</strong>, not licensed professional advice. I understand that before any financial / medical / legal decision I should consult ' + who + '.',
+                accept: 'I understand — continue', cancel: 'Cancel' },
+          pt: { title: 'Lembrete rápido antes desta ação',
+                body:  'O resultado é <strong>informação geral gerada por IA</strong>, não consultoria profissional licenciada. Entendo que antes de qualquer decisão financeira / médica / legal devo consultar ' + who + '.',
+                accept: 'Entendi — continuar', cancel: 'Cancelar' },
+          es: { title: 'Recordatorio rápido antes de esta acción',
+                body:  'El resultado es <strong>información general generada por IA</strong>, no asesoramiento profesional licenciado. Entiendo que antes de cualquier decisión financiera / médica / legal debo consultar ' + who + '.',
+                accept: 'Entiendo — continuar', cancel: 'Cancelar' },
+        };
+        const C = COPY_MAP[lang] || COPY_MAP.en;
+
+        const wrap = document.createElement('div');
+        wrap.id = 'wl-gate-action';
+        wrap.setAttribute('dir', dir);
+        wrap.style.cssText = [
+          'position:fixed','inset:0','z-index:2147483645','background:rgba(0,0,0,0.65)',
+          'backdrop-filter:blur(4px)','-webkit-backdrop-filter:blur(4px)',
+          'display:flex','align-items:center','justify-content:center','padding:18px',
+          'font-family:Inter,-apple-system,sans-serif',
+        ].join(';');
+        wrap.innerHTML =
+          '<div style="background:#0a0a0c;border:1px solid rgba(245,158,11,0.45);border-radius:14px;'
+          + 'max-width:440px;width:100%;padding:22px 22px 18px;color:#eef2ff;'
+          + 'box-shadow:0 28px 70px rgba(0,0,0,0.55);">'
+          + '<h3 style="margin:0 0 10px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#fbbf24;letter-spacing:-.2px;">⚠️ ' + C.title + '</h3>'
+          + '<p style="margin:0 0 16px;font:500 13.5px Inter,-apple-system,sans-serif;color:#cbd5e1;line-height:1.55;">' + C.body + '</p>'
+          + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+          +   '<button id="wl-ga-ok" style="flex:1;min-width:140px;padding:11px 16px;border:0;border-radius:9px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font:800 13px inherit;cursor:pointer;">' + C.accept + '</button>'
+          +   '<button id="wl-ga-no" style="padding:11px 16px;border:1px solid rgba(255,255,255,0.18);border-radius:9px;background:transparent;color:#94a3b8;font:600 13px inherit;cursor:pointer;">' + C.cancel + '</button>'
+          + '</div>'
+          + '</div>';
+        document.body.appendChild(wrap);
+
+        function cleanup(accepted) {
+          wrap.remove();
+          if (accepted) {
+            _gateActionAcceptedThisSession[sessKey] = Date.now();
+            // Persist acceptance per (app, actionKey, TOS_VERSION) — survives
+            // refresh, separate Firestore record from the page-level gate().
+            recordActionAcceptance(app, actionKey);
+          }
+          resolve(accepted);
+        }
+        wrap.querySelector('#wl-ga-ok').onclick = function () { cleanup(true); };
+        wrap.querySelector('#wl-ga-no').onclick = function () { cleanup(false); };
+        wrap.addEventListener('click', function (e) { if (e.target === wrap) cleanup(false); });
+      });
+    }
+
+    // Attach to a button if provided — replaces its click handler.
+    if (opts.button && opts.button.addEventListener) {
+      opts.button.addEventListener('click', function (e) {
+        if (_gateActionAcceptedThisSession[sessKey]) return; // bypass — let original click bubble
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        show().then(function (ok) {
+          if (ok) proceed();
+        });
+      }, true /* capture, so we run before other listeners */);
+      return null;
+    }
+
+    // Programmatic mode: return Promise<boolean>
+    return show().then(function (ok) {
+      if (ok && typeof opts.onProceed === 'function') {
+        try { opts.onProceed(); } catch (_) {}
+      }
+      return ok;
+    });
+  }
+
+  // Mirror of recordAcceptance() but writes to a per-action subkey, so a
+  // single user can have multiple disclaimer records (one per action) under
+  // /users/{uid}/disclaimers/{app}_action_{actionKey}_v{N}
+  async function recordActionAcceptance(app, actionKey) {
+    const lang = getLang();
+    const renderedTextSeed = app + '|' + actionKey + '|gateAction|v' + TOS_VERSION;
+    const textHash = await _sha256Hex(renderedTextSeed);
+    const payload = {
+      accepted: true,
+      version: TOS_VERSION,
+      at: new Date().toISOString(),
+      ua: navigator.userAgent.slice(0, 200),
+      lang,
+      pageUrl: location.href.slice(0, 300),
+      text_hash: textHash,
+      text_length: renderedTextSeed.length,
+      viewport: typeof window !== 'undefined' ? (window.innerWidth + 'x' + window.innerHeight) : '',
+      screen: typeof screen !== 'undefined' ? (screen.width + 'x' + screen.height) : '',
+      tz: (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '',
+    };
+    try { localStorage.setItem('wl_disclaimer_' + app + '_action_' + actionKey + '_v' + TOS_VERSION, JSON.stringify(payload)); } catch {}
+    function writeFirestore(retry) {
+      try {
+        if (typeof firebase === 'undefined' || !firebase.auth || !firebase.firestore) return;
+        const u = firebase.auth().currentUser;
+        if (!u || !u.uid) return;
+        firebase.firestore()
+          .collection('users').doc(u.uid)
+          .collection('disclaimers').doc(app + '_action_' + actionKey + '_v' + TOS_VERSION)
+          .set(payload, { merge: false })
+          .catch(function () {
+            if (!retry) setTimeout(function () { writeFirestore(true); }, 4000);
+          });
+      } catch (e) {
+        if (!retry) setTimeout(function () { writeFirestore(true); }, 4000);
+      }
+    }
+    writeFirestore(false);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // chatStrip — persistent, slim, always-visible "AI may be wrong" strip
+  // injected at the TOP of a chat panel. Replaces per-message footers
+  // (which become noise after 2-3 turns).
+  //
+  // Idempotent: calling twice on the same container does nothing.
+  //
+  // Usage:
+  //   WizeDisclaimer.chatStrip({ app: 'general', container: document.getElementById('aiBody') });
+  //   // or
+  //   WizeDisclaimer.chatStrip({ app: 'tax', container: chatWrap });
+  // ─────────────────────────────────────────────────────────────────────────
+  function chatStrip(opts) {
+    opts = opts || {};
+    const container = opts.container;
+    if (!container || !container.insertBefore) return null;
+    if (container.querySelector('.wl-ai-strip')) return container.querySelector('.wl-ai-strip');
+    const app  = opts.app || 'general';
+    const lang = getLang();
+    const PRO = {
+      tax:    { he: 'יועץ מס מורשה',    en: 'a licensed CPA',           pt: 'um contador licenciado',           es: 'un contador licenciado' },
+      money:  { he: 'יועץ פיננסי מורשה', en: 'a licensed financial advisor', pt: 'um consultor financeiro licenciado', es: 'un asesor financiero licenciado' },
+      health: { he: 'רופא מורשה',        en: 'a licensed physician',      pt: 'um médico licenciado',             es: 'un médico licenciado' },
+      deal:   { he: 'שמאי / עו״ד נדל״ן',  en: 'an appraiser / RE attorney', pt: 'um avaliador / advogado imobiliário', es: 'un tasador / abogado inmobiliario' },
+      travel: { he: 'גורם מוסמך',         en: 'a qualified party',         pt: 'um profissional qualificado',      es: 'un profesional cualificado' },
+      general:{ he: 'איש מקצוע מורשה',    en: 'a licensed professional',   pt: 'um profissional licenciado',       es: 'un profesional licenciado' },
+    };
+    const who = (PRO[app] && PRO[app][lang]) || PRO.general[lang] || PRO.general.en;
+    const TR = {
+      he: 'ℹ️ AI עלול לטעות. אמת מידע קריטי אצל ' + who + '.',
+      en: 'ℹ️ AI may be wrong. Verify critical information with ' + who + '.',
+      pt: 'ℹ️ A IA pode errar. Verifique informações críticas com ' + who + '.',
+      es: 'ℹ️ La IA puede equivocarse. Verifica información crítica con ' + who + '.',
+    };
+    const dir = lang === 'he' ? 'rtl' : 'ltr';
+    const strip = document.createElement('div');
+    strip.className = 'wl-ai-strip';
+    strip.setAttribute('dir', dir);
+    strip.style.cssText = [
+      'background:rgba(245,158,11,0.06)',
+      'border-bottom:1px solid rgba(245,158,11,0.22)',
+      'padding:5px 14px','text-align:center',
+      'font:500 11px Inter,-apple-system,sans-serif','color:#9ca3af',
+      'line-height:1.4','letter-spacing:.1px',
+    ].join(';');
+    strip.textContent = TR[lang] || TR.en;
+    container.insertBefore(strip, container.firstChild);
+    return strip;
+  }
+
+  root.WizeDisclaimer = {
+    gate,
+    showEmergencyBanner,
+    showProfessionalDisclaimer,
+    aiOutputFooter,   // per-output footer (use {firstOnly:true} in chats, or {highStake:true} for one-shot results)
+    chatStrip,        // persistent slim strip at top of chat panel
+    gateAction,       // modal confirmation before high-stake action
+    TOS_VERSION,
+  };
 })(window);

@@ -1351,7 +1351,21 @@ async function sendDemo(q, ans){
  await new Promise(r => setTimeout(r, 700 + Math.random()*400));
  loadingEl.classList.remove('loading');
  loadingEl.textContent = ans;
+ // First-response-only footer (strip at top of demo handles the rest).
+ try { if (window.WizeDisclaimer && WizeDisclaimer.aiOutputFooter) loadingEl.insertAdjacentHTML('beforeend', WizeDisclaimer.aiOutputFooter({ app: 'general', firstOnly: true })); } catch(_) {}
 }
+
+// Inject slim "AI may be wrong" strip at top of the landing AI demo panel.
+// Runs once after the disclaimer script loads.
+window.addEventListener('load', function () {
+ setTimeout(function () {
+  try {
+   if (window.WizeDisclaimer && WizeDisclaimer.chatStrip && aiBody) {
+    WizeDisclaimer.chatStrip({ app: 'general', container: aiBody });
+   }
+  } catch (_) {}
+ }, 500);
+});
 // (input row removed 2026-05-17 — sendDemo() is now wired to suggestion buttons only)
 
 // ── SAVINGS CALCULATOR ──
@@ -1831,6 +1845,7 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
 </script>
 <script defer="" src="/js/wize-bottom-nav.js"></script>
 <script defer="" src="/js/wize-onboarding.js"></script>
+<script defer="" src="/js/wize-disclaimer.js"></script>
 <script defer="" src="/js/wize-share.js"></script>
 <script defer="" src="/js/wize-hamburger.js"></script>
 <script>
