@@ -92,6 +92,58 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 
 /* AI footer (slim) */
 .wl-ai-footer{margin-top:10px;padding:7px 11px;background:rgba(245,158,11,0.07);border-inline-start:3px solid rgba(245,158,11,0.6);border-radius:6px;font:500 11.5px Inter,sans-serif;color:#94a3b8;line-height:1.45}
+
+/* Deep-analysis CTA panel */
+.deep-cta{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(99,102,241,0.10),rgba(168,85,247,0.08));border:1px solid rgba(99,102,241,0.35);border-radius:14px;padding:18px}
+.deep-cta h3{margin:0 0 6px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#a5b4fc}
+.deep-cta .gap-list{margin:8px 0 12px;padding-inline-start:18px;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.65}
+.deep-cta .gap-list li{margin-bottom:2px}
+.deep-cta .open-btn{display:block;width:100%;padding:13px 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font:800 14px Inter,sans-serif;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s}
+.deep-cta .open-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(99,102,241,.35)}
+.deep-cta .open-btn .arrow{margin-inline-start:6px}
+
+/* Modal overlay */
+.deep-modal{position:fixed;inset:0;z-index:99996;display:none;align-items:flex-start;justify-content:center;background:rgba(5,6,15,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:20px;overflow-y:auto}
+.deep-modal.on{display:flex}
+.deep-modal-inner{max-width:560px;width:100%;background:linear-gradient(180deg,#11142a,#0a0c1a);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:22px;color:var(--text);box-shadow:0 28px 70px rgba(0,0,0,0.55);margin:auto}
+.deep-modal h2{margin:0 0 4px;font:800 18px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-.3px}
+.deep-modal .modal-sub{margin:0 0 16px;font:500 12.5px Inter,sans-serif;color:var(--muted)}
+.deep-modal .x{position:absolute;top:14px;inset-inline-end:14px;background:none;border:0;color:#6b7280;font-size:22px;cursor:pointer;padding:0 4px;line-height:1}
+.deep-modal-tabs{display:flex;gap:6px;background:rgba(255,255,255,0.04);padding:4px;border-radius:10px;margin-bottom:14px}
+.deep-modal-tabs button{flex:1;padding:8px 10px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:700 12.5px Inter,sans-serif;cursor:pointer;transition:all .12s}
+.deep-modal-tabs button.on{background:rgba(99,102,241,0.18);color:#a5b4fc}
+.deep-modal-panel{display:none}
+.deep-modal-panel.on{display:block}
+.deep-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.deep-fields .full{grid-column:1/-1}
+.deep-fields .field label{font:600 10.5px Inter,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:4px}
+.deep-fields .field input,.deep-fields .field select{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font:600 14px Inter,sans-serif;outline:none}
+.deep-fields .field input:focus,.deep-fields .field select:focus{border-color:rgba(99,102,241,0.5)}
+.deep-fields .field .small{font:500 10.5px Inter,sans-serif;color:#6b7280;margin-top:3px}
+.deep-run{display:block;width:100%;margin-top:12px;padding:12px 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font:800 13.5px Inter,sans-serif;cursor:pointer}
+.deep-run:hover{filter:brightness(1.1)}
+
+/* Privacy panel — payslip upload tab */
+.privacy-panel{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:12px;margin-bottom:12px}
+.privacy-panel .pt{font:800 12px Plus Jakarta Sans,Inter,sans-serif;color:#6ee7b7;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.privacy-panel ul{margin:0;padding-inline-start:18px;font:500 11.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6}
+.upload-dropzone{border:2px dashed rgba(255,255,255,0.15);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.upload-dropzone:hover{border-color:rgba(99,102,241,0.4);background:rgba(99,102,241,0.04)}
+.upload-dropzone.dragging{border-color:rgba(99,102,241,0.6);background:rgba(99,102,241,0.08)}
+.upload-dropzone .icon{font-size:36px;line-height:1;margin-bottom:8px}
+.upload-dropzone .txt{font:700 13px Inter,sans-serif}
+.upload-dropzone .hint{font:500 11px Inter,sans-serif;color:var(--muted);margin-top:4px}
+#ocrProgress{margin-top:10px;font:500 12px Inter,sans-serif;color:var(--muted2);text-align:center}
+
+/* Deep-result panel */
+.deep-result{max-width:760px;margin:18px auto;background:var(--card);border:1px solid rgba(16,185,129,0.4);border-radius:16px;padding:18px}
+.deep-result h3{margin:0 0 12px;font:800 16px Plus Jakarta Sans,Inter,sans-serif;color:#6ee7b7}
+.deep-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:10px;margin-bottom:6px}
+.deep-row.il{border-color:rgba(99,102,241,0.4);background:linear-gradient(90deg,rgba(99,102,241,0.07),rgba(255,255,255,0.025))}
+.deep-row .name{font:700 13.5px Inter,sans-serif;align-self:center}
+.deep-row .name .sub{display:block;font:500 11px Inter,sans-serif;color:var(--muted);margin-top:2px}
+.deep-row .net{font:800 15px 'JetBrains Mono',Menlo,monospace;color:#6ee7b7;align-self:center}
+.deep-row .extras{font:500 10.5px Inter,sans-serif;color:var(--muted);align-self:center;text-align:end;max-width:120px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -145,6 +197,91 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
   </div>
 </div>
 
+<!-- DEPTH-WEDGE: "what this doesn't include" + opens deep-analysis modal -->
+<div class="deep-cta">
+  <h3 data-i18n="deepT">⚠️ זו רק הכנסה ברוטו — לא התמונה האמיתית</h3>
+  <ul class="gap-list">
+    <li data-i18n="gap1">פנסיה (12.5% מעסיק בישראל, 0% פורטוגל, 0% UAE)</li>
+    <li data-i18n="gap2">קרן השתלמות (ייחודי לישראל — 7.5% מעסיק, פטור ממס)</li>
+    <li data-i18n="gap3">ביטוח לאומי vs Segurança Social vs FICA</li>
+    <li data-i18n="gap4">בריאות (חינם IL/PT, $300-1,500/חודש ב-US)</li>
+    <li data-i18n="gap5">ימי חופשה / חופשת לידה / הוצאות מחיה</li>
+  </ul>
+  <button class="open-btn" id="openDeepBtn" data-i18n="openDeep">קבל ניתוח אמיתי לפי הנתונים שלך<span class="arrow">←</span></button>
+</div>
+
+<!-- Deep-analysis modal -->
+<div class="deep-modal" id="deepModal" role="dialog" aria-modal="true">
+  <div class="deep-modal-inner" style="position:relative">
+    <button class="x" id="closeDeep" aria-label="Close">×</button>
+    <h2 data-i18n="modalT">השוואה אמיתית, עם הנתונים שלך</h2>
+    <p class="modal-sub" data-i18n="modalSub">5 שדות (30 שניות) או העלאת תלוש. בלי הרשמה לקבלת הניתוח.</p>
+
+    <div class="deep-modal-tabs">
+      <button class="on" data-tab="manual" data-i18n="tabManual">⌨ הקלד 5 מספרים</button>
+      <button data-tab="upload" data-i18n="tabUpload">📄 העלה תלוש</button>
+    </div>
+
+    <!-- Manual tab -->
+    <div class="deep-modal-panel on" data-panel="manual">
+      <div class="deep-fields">
+        <div class="field">
+          <label data-i18n="dGross">ברוטו חודשי (₪)</label>
+          <input type="number" id="dGross" placeholder="25000" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label data-i18n="dPensionEmp">פנסיה — עובד %</label>
+          <input type="number" id="dPensionEmp" placeholder="6" inputmode="decimal" step="0.5" value="6">
+          <div class="small" data-i18n="dPensionEmpHint">ברירת מחדל 6% — חובה לכל שכיר בישראל</div>
+        </div>
+        <div class="field">
+          <label data-i18n="dPensionEr">פנסיה — מעסיק %</label>
+          <input type="number" id="dPensionEr" placeholder="6.5" inputmode="decimal" step="0.5" value="6.5">
+          <div class="small" data-i18n="dPensionErHint">ברירת מחדל 6.5% — חובה</div>
+        </div>
+        <div class="field">
+          <label data-i18n="dKeren">קרן השתלמות</label>
+          <select id="dKeren">
+            <option value="full" data-i18n="dKerenFull">כן (2.5%+7.5%)</option>
+            <option value="none" data-i18n="dKerenNone">לא</option>
+          </select>
+          <div class="small" data-i18n="dKerenHint">ייחודי לישראל — חיסכון פטור ממס</div>
+        </div>
+        <div class="field full">
+          <label data-i18n="dChildren">ילדים</label>
+          <select id="dChildren">
+            <option value="0">0</option><option value="1">1</option>
+            <option value="2">2</option><option value="3">3+</option>
+          </select>
+        </div>
+      </div>
+      <button class="deep-run" id="runDeep" data-i18n="runDeep">השווה לעומק → 5 מדינות מובילות</button>
+    </div>
+
+    <!-- Upload tab -->
+    <div class="deep-modal-panel" data-panel="upload">
+      <div class="privacy-panel">
+        <div class="pt">🔒 <span data-i18n="privacyT">הפרטיות שלך — מובטחת</span></div>
+        <ul>
+          <li data-i18n="priv1"><strong>התלוש לעולם לא יוצא מהמכשיר שלך.</strong> כל החיפוץ קורה בדפדפן (Tesseract.js).</li>
+          <li data-i18n="priv2">אף שרת לא רואה את התלוש. רק 4 מספרים מחושצים נכנסים לחישוב.</li>
+          <li data-i18n="priv3">לא נשמר כלום — לא ב-Firestore, לא ב-localStorage, לא ב-logs.</li>
+        </ul>
+      </div>
+      <div class="upload-dropzone" id="dropZone">
+        <div class="icon">📄</div>
+        <div class="txt" data-i18n="dropTitle">לחץ או גרור תלוש משכורת לכאן</div>
+        <div class="hint" data-i18n="dropHint">PDF / JPG / PNG · תלוש ישראלי בעברית או אנגלית</div>
+      </div>
+      <input type="file" id="payslipFile" accept="image/*,.pdf" style="display:none">
+      <div id="ocrProgress"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Deep-result panel (rendered after run) -->
+<div id="deepResult" style="display:none"></div>
+
 <div class="cta" id="ctaPortugal" style="display:none">
   <h4>🇵🇹 חושב על פורטוגל?</h4>
   <p data-i18n="ctaPortugalP">משטר ה-<strong>NHR (Non-Habitual Resident)</strong> מאפשר 0% מס על הכנסה זרה ל-10 שנים. הרשמה ל-WizeTax = מודל אישי + תזרים לאורך 10 שנים + תכנון מס יציאה מישראל.</p>
@@ -194,6 +331,42 @@ const TR = {
     vsIL: 'יותר מישראל',
     vsILneg: 'פחות מישראל',
     shareTextMine: 'בדקתי ב-WizeLife כמה משכורת לוקחים הביתה ב-20 מדינות. שווה לראות:',
+    // Deep-analysis modal
+    deepT: '⚠️ זו רק הכנסה ברוטו — לא התמונה האמיתית',
+    gap1: 'פנסיה (12.5% מעסיק בישראל, 0% פורטוגל, 0% UAE)',
+    gap2: 'קרן השתלמות (ייחודי לישראל — 7.5% מעסיק, פטור ממס)',
+    gap3: 'ביטוח לאומי vs Segurança Social vs FICA',
+    gap4: 'בריאות (חינם IL/PT, $300-1,500/חודש ב-US)',
+    gap5: 'ימי חופשה / חופשת לידה / הוצאות מחיה',
+    openDeep: 'קבל ניתוח אמיתי לפי הנתונים שלך ←',
+    modalT: 'השוואה אמיתית, עם הנתונים שלך',
+    modalSub: '5 שדות (30 שניות) או העלאת תלוש. בלי הרשמה לקבלת הניתוח.',
+    tabManual: '⌨ הקלד 5 מספרים',
+    tabUpload: '📄 העלה תלוש',
+    dGross: 'ברוטו חודשי (₪)',
+    dPensionEmp: 'פנסיה — עובד %',
+    dPensionEmpHint: 'ברירת מחדל 6% — חובה לכל שכיר בישראל',
+    dPensionEr: 'פנסיה — מעסיק %',
+    dPensionErHint: 'ברירת מחדל 6.5% — חובה',
+    dKeren: 'קרן השתלמות',
+    dKerenFull: 'כן (2.5%+7.5%)',
+    dKerenNone: 'לא',
+    dKerenHint: 'ייחודי לישראל — חיסכון פטור ממס',
+    dChildren: 'ילדים',
+    runDeep: 'השווה לעומק → 5 מדינות מובילות',
+    privacyT: 'הפרטיות שלך — מובטחת',
+    priv1: '<strong>התלוש לעולם לא יוצא מהמכשיר שלך.</strong> כל החיפוץ קורה בדפדפן (Tesseract.js).',
+    priv2: 'אף שרת לא רואה את התלוש. רק 4 מספרים מחושצים נכנסים לחישוב.',
+    priv3: 'לא נשמר כלום — לא ב-Firestore, לא ב-localStorage, לא ב-logs.',
+    dropTitle: 'לחץ או גרור תלוש משכורת לכאן',
+    dropHint: 'PDF / JPG / PNG · תלוש ישראלי בעברית או אנגלית',
+    deepResT: '📊 הניתוח האמיתי שלך — 5 מדינות',
+    deepNetReal: 'נטו אמיתי',
+    deepPension: 'פנסיה: ',
+    deepStudy: 'קרן השתלמות: ',
+    deepLost: 'מאבד בעקבות מעבר',
+    deepKeep: 'שומר',
+    deepCTASignup: '💾 שמור את הניתוח שלי + השוואה ל-26 מדינות נוספות → פתח חשבון חינם',
   },
   en: {
     badge: '✓ Verified PwC / OECD 2025 tax data',
@@ -219,6 +392,41 @@ const TR = {
     vsIL: 'more than Israel',
     vsILneg: 'less than Israel',
     shareTextMine: 'I checked WizeLife — net take-home salary across 20 countries. Worth a look:',
+    deepT: '⚠️ This is gross income only — not the real picture',
+    gap1: 'Pension (12.5% employer in Israel, 0% Portugal, 0% UAE)',
+    gap2: 'Keren Hishtalmut (unique to Israel — 7.5% employer, tax-free)',
+    gap3: 'Bituach Leumi vs Segurança Social vs FICA',
+    gap4: 'Health (free in IL/PT, $300-1,500/mo in US)',
+    gap5: 'Vacation days / parental leave / cost of living',
+    openDeep: 'Get the real analysis based on YOUR data →',
+    modalT: 'Real comparison, with your numbers',
+    modalSub: '5 fields (30 seconds) or upload your payslip. No signup needed for the analysis.',
+    tabManual: '⌨ Type 5 numbers',
+    tabUpload: '📄 Upload payslip',
+    dGross: 'Monthly gross (₪)',
+    dPensionEmp: 'Pension — Employee %',
+    dPensionEmpHint: 'Default 6% — mandatory for all Israeli employees',
+    dPensionEr: 'Pension — Employer %',
+    dPensionErHint: 'Default 6.5% — mandatory',
+    dKeren: 'Keren Hishtalmut (Study Fund)',
+    dKerenFull: 'Yes (2.5% + 7.5%)',
+    dKerenNone: 'No',
+    dKerenHint: 'Unique to Israel — tax-free savings vehicle',
+    dChildren: 'Children',
+    runDeep: 'Compare deep → top 5 countries',
+    privacyT: 'Your privacy — guaranteed',
+    priv1: '<strong>Your payslip never leaves your device.</strong> All OCR runs in your browser (Tesseract.js).',
+    priv2: 'No server ever sees the payslip. Only 4 extracted numbers enter the calculation.',
+    priv3: 'Nothing is stored — not in Firestore, not in localStorage, not in logs.',
+    dropTitle: 'Click or drag your payslip here',
+    dropHint: 'PDF / JPG / PNG · Israeli payslip, Hebrew or English',
+    deepResT: '📊 Your real analysis — top 5 countries',
+    deepNetReal: 'Real net',
+    deepPension: 'Pension: ',
+    deepStudy: 'Study fund: ',
+    deepLost: 'Lose by moving',
+    deepKeep: 'Keep',
+    deepCTASignup: '💾 Save my analysis + compare to 26 more countries → Open free account',
   },
 };
 let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'he'; } catch { return 'he'; }})();
@@ -336,6 +544,180 @@ function shareTo(channel) {
   else if (channel === 'email') WizeShare.email({ title, text, url });
   else if (channel === 'copy') WizeShare.copy({ title, text, url });
 }
+
+// ── Deep-analysis modal ─────────────────────────────────────────────────────
+const deepModal = document.getElementById('deepModal');
+const deepResultEl = document.getElementById('deepResult');
+
+document.getElementById('openDeepBtn').addEventListener('click', () => {
+  // Pre-fill gross from the top input so user doesn't re-type
+  const topGross = parseFloat(document.getElementById('gross').value) || 0;
+  if (topGross) document.getElementById('dGross').value = topGross;
+  deepModal.classList.add('on');
+});
+document.getElementById('closeDeep').addEventListener('click', () => deepModal.classList.remove('on'));
+deepModal.addEventListener('click', e => { if (e.target === deepModal) deepModal.classList.remove('on'); });
+
+// Tab switching
+document.querySelectorAll('.deep-modal-tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    const target = b.dataset.tab;
+    document.querySelectorAll('.deep-modal-tabs button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.deep-modal-panel').forEach(p => p.classList.toggle('on', p.dataset.panel === target));
+    if (target === 'upload') loadPayslipExtractor();
+  });
+});
+
+// ── Payslip upload — lazy-load Tesseract via PayslipExtractor ──────────────
+let _peLoaded = false;
+function loadPayslipExtractor() {
+  if (_peLoaded || window.PayslipExtractor) return;
+  _peLoaded = true;
+  const s = document.createElement('script');
+  s.src = '/js/payslip-extractor.js';
+  s.defer = true;
+  document.head.appendChild(s);
+}
+
+document.getElementById('dropZone').addEventListener('click', () => document.getElementById('payslipFile').click());
+['dragenter','dragover'].forEach(ev => document.getElementById('dropZone').addEventListener(ev, e => { e.preventDefault(); e.currentTarget.classList.add('dragging'); }));
+['dragleave','drop'].forEach(ev => document.getElementById('dropZone').addEventListener(ev, e => { e.preventDefault(); e.currentTarget.classList.remove('dragging'); }));
+document.getElementById('dropZone').addEventListener('drop', e => {
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) handlePayslip(e.dataTransfer.files[0]);
+});
+document.getElementById('payslipFile').addEventListener('change', e => {
+  if (e.target.files && e.target.files[0]) handlePayslip(e.target.files[0]);
+});
+
+async function handlePayslip(file) {
+  const progressEl = document.getElementById('ocrProgress');
+  progressEl.textContent = '⏳ Loading OCR engine (~3MB, once)…';
+  // Wait for PayslipExtractor to be ready
+  let waited = 0;
+  while (!window.PayslipExtractor && waited < 30) { await new Promise(r => setTimeout(r, 300)); waited++; }
+  if (!window.PayslipExtractor) { progressEl.textContent = '❌ OCR failed to load — please type the fields instead'; return; }
+  try {
+    // PayslipExtractor exposes: recognize(file, onProgress) → text,
+    // and extractFields(text) → structured. We call both directly so we can
+    // wire it into our own drop-zone instead of the built-in file picker.
+    const text = await window.PayslipExtractor.recognize(file, p => {
+      progressEl.textContent = '🔍 Reading payslip… ' + Math.round(p * 100) + '%';
+    });
+    const data = window.PayslipExtractor.extractFields(text);
+    progressEl.textContent = '✓ Extracted — review and adjust if needed';
+    // Auto-fill manual fields with what was extracted
+    if (data.gross) document.getElementById('dGross').value = Math.round(data.gross);
+    if (data.pension_employee && data.gross) {
+      const pct = Math.round(data.pension_employee / data.gross * 100 * 2) / 2;
+      if (pct >= 1 && pct <= 15) document.getElementById('dPensionEmp').value = pct;
+    }
+    if (data.pension_employer && data.gross) {
+      const pct = Math.round(data.pension_employer / data.gross * 100 * 2) / 2;
+      if (pct >= 1 && pct <= 15) document.getElementById('dPensionEr').value = pct;
+    }
+    if (data.keren_hishtalmut && data.keren_hishtalmut > 0) {
+      document.getElementById('dKeren').value = 'full';
+    }
+    // Switch to manual tab so user can review + run
+    document.querySelector('.deep-modal-tabs button[data-tab=manual]').click();
+  } catch (e) {
+    progressEl.textContent = '❌ Could not read payslip — please type the fields instead';
+  }
+}
+
+// ── Deep comparison: per-country with pension + study fund equivalents ─────
+// Each country tags how mandatory pension/social/health work, so we can show
+// a HONEST 'real take-home' that includes the value/cost of these benefits.
+const DEEP_META = {
+  IL: { pensionMandatory: true,  studyFund: true,  healthFree: true,  socialName: 'בטל"א' },
+  PT: { pensionMandatory: false, studyFund: false, healthFree: true,  socialName: 'Seg. Social', socialPct: 11 },
+  EE: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'EE social',   socialPct: 1.6 },
+  AE: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: '—',           socialPct: 0,  healthCost: 200 },
+  SG: { pensionMandatory: true,  studyFund: false, healthFree: false, socialName: 'CPF',         socialPct: 20, healthCost: 100 },
+  US: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: 'FICA',        socialPct: 7.65, healthCost: 500 },
+  DE: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'Sozialvers.', socialPct: 20 },
+  GB: { pensionMandatory: false, studyFund: false, healthFree: true,  socialName: 'NI',          socialPct: 12 },
+  CH: { pensionMandatory: true,  studyFund: false, healthFree: false, socialName: 'AHV',         socialPct: 10, healthCost: 400 },
+  IE: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: 'PRSI',        socialPct: 4,  healthCost: 200 },
+};
+const TOP5_CODES = ['IL','PT','EE','AE','SG','US','DE','GB','CH','IE'];
+
+function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
+  // Israel: subtract employee pension + study fund (real take-home including
+  // mandatory savings vehicles); employer contributions are tax-free "shadow
+  // comp" but money the EMPLOYEE doesn't see today.
+  const rows = TOP5_CODES.map(code => {
+    const r = calcNet(code, grossILS, 'single', children);
+    if (!r) return null;
+    const meta = DEEP_META[code];
+    let extraDeduction = 0;
+    let pensionLine = '';
+    let studyLine = '';
+    if (code === 'IL') {
+      const pensEmpILS  = grossILS * (pensEmpPct / 100);
+      const kerenEmpILS = hasKeren ? grossILS * 0.025 : 0;
+      extraDeduction = (pensEmpILS + kerenEmpILS) * 0.27; // ILS → USD
+      pensionLine = '+' + (pensErPct + pensEmpPct).toFixed(1) + '%';
+      studyLine   = hasKeren ? '+10% (employer + you)' : '—';
+    } else {
+      pensionLine = (meta.pensionMandatory ? 'mandatory' : 'optional');
+      studyLine   = (meta.studyFund ? '+10%' : '—');
+    }
+    // Subtract estimated health cost (US/CH/AE/SG/IE)
+    const healthCostUSD = meta.healthCost || 0;
+    const realNetUSD = r.netUSD - extraDeduction - healthCostUSD;
+    return { code, name: TAX_DATA[code].name, ...r, realNetUSD, pensionLine, studyLine, healthCostUSD };
+  }).filter(Boolean);
+
+  // Sort by REAL take-home, but Israel always pinned first
+  rows.sort((a, b) => {
+    if (a.code === 'IL') return -1;
+    if (b.code === 'IL') return 1;
+    return b.realNetUSD - a.realNetUSD;
+  });
+  return rows.slice(0, 5);
+}
+
+function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
+  const T = TR[_lang];
+  const rows = calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children);
+  const ilNet = rows.find(r => r.code === 'IL').realNetUSD;
+  const html = '<div class="deep-result">'
+    + '<h3>' + T.deepResT + '</h3>'
+    + rows.map(r => {
+        const cls = r.code === 'IL' ? 'deep-row il' : 'deep-row';
+        const delta = r.realNetUSD - ilNet;
+        const deltaTxt = r.code === 'IL' ? '<strong>' + T.deepNetReal + '</strong>'
+          : (delta >= 0 ? '<span style="color:#6ee7b7">+$' : '<span style="color:#fca5a5">-$') + Math.abs(Math.round(delta)).toLocaleString() + '</span>';
+        const extras = T.deepPension + r.pensionLine + '<br>' + T.deepStudy + r.studyLine + (r.healthCostUSD ? '<br>Health: -$' + r.healthCostUSD + '/mo' : '');
+        return '<div class="' + cls + '">'
+          + '<div class="name">' + shortName(r.name) + '<span class="sub">' + deltaTxt + '</span></div>'
+          + '<div class="net">$' + Math.round(r.realNetUSD).toLocaleString() + '</div>'
+          + '<div class="extras">' + extras + '</div>'
+          + '</div>';
+      }).join('')
+    + '<div style="margin-top:14px;text-align:center">'
+    + '<a href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
+    + T.deepCTASignup + '</a></div>'
+    + '</div>';
+  deepResultEl.innerHTML = html;
+  deepResultEl.style.display = 'block';
+}
+
+document.getElementById('runDeep').addEventListener('click', () => {
+  const g = parseFloat(document.getElementById('dGross').value) || 0;
+  if (g < 3000) { alert('Please enter a valid gross salary'); return; }
+  const pe = parseFloat(document.getElementById('dPensionEmp').value) || 6;
+  const pr = parseFloat(document.getElementById('dPensionEr').value)  || 6.5;
+  const kk = document.getElementById('dKeren').value === 'full';
+  const ch = parseInt(document.getElementById('dChildren').value, 10);
+  deepModal.classList.remove('on');
+  renderDeep(g, pe, pr, kk, ch);
+  deepResultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// Close on Esc
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && deepModal.classList.contains('on')) deepModal.classList.remove('on'); });
 </script>
 
 <!-- Cloudflare Web Analytics is auto-injected by the Cloudflare proxy when
