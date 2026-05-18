@@ -285,7 +285,9 @@ function applyLang(l) {
 document.querySelectorAll('#langSwitch button').forEach(b => {
   b.addEventListener('click', () => applyLang(b.dataset.l));
 });
-applyLang(_lang);
+// applyLang() calls recalc() which references PT_RATES — defer until PT_RATES
+// is declared a few lines down (`const` is in TDZ until declared). The
+// applyLang(_lang) call now lives at the very bottom of this script.
 
 // ── Calc: Israel vs Portugal NHR ────────────────────────────────────────────
 // Income types and effective Portuguese rates:
@@ -358,6 +360,8 @@ function recalc() {
 }
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('incomeType').addEventListener('change', recalc);
+// Initial render — now safe because PT_RATES + calcPT are declared above.
+applyLang(_lang);
 recalc();
 
 // ── Share ───────────────────────────────────────────────────────────────────
