@@ -28,7 +28,7 @@
 
 const TAX_DATA = {
 
-  // ── ISRAEL ─────────────────────────────────────────────────── source: irs.gov.il 2025
+  // ── ISRAEL ─────────────────────────────────────────────────── source: rashut hamissim + btl.gov.il 2025
   IL: {
     flag: '🇮🇱', name: 'ישראל', currency: 'ILS', usdRate: 0.27,
     brackets: [
@@ -38,14 +38,26 @@ const TAX_DATA = {
       { upTo: 269_280, rate: 31 },
       { upTo: 559_680, rate: 35 },
       { upTo: 721_560, rate: 47 },
-      { upTo: Infinity, rate: 50 },
+      { upTo: Infinity, rate: 50 },          // includes 3% mas yesef (surtax) above 721,560
     ],
-    credit: 6_591,          // 2.25 credit points × 2,928
-    socialSec: 7.0,         // employee Bituach Leumi (above min wage)
-    socialCeil: 588_360,    // annual ceiling (49,030/mo)
-    health: 5.0,            // Kupat Holim — no ceiling
-    healthCeil: null,
-    notes: 'ביטוח לאומי 3.5% עד שכר מינימום, 12% מעל. בריאות 3.1%/5%. מדרגות לשנת 2025.',
+    credit: 6_591,                            // 2.25 credit points × ₪2,928 (frozen 2024-2025)
+    // Bituach Leumi — 2-tier per 2025 rates. Below ~60% of average wage
+    // (~₪7,522/mo, ~₪90,264/yr) employee pays 0.4%; above that, 7%.
+    // Combined with health (3.1% below / 5% above) the effective rate is
+    // ~3.5% / ~12% — matching public-facing rhetoric.
+    socialSec_tier1:    0.4,                  // employee BL rate below threshold
+    socialSec_tier2:    7.0,                  // employee BL rate above threshold
+    socialSec_threshold:90_264,               // ~60% of average wage (annual)
+    socialCeil:         588_360,              // annual ceiling (49,030/mo)
+    health_tier1:       3.1,                  // mas briut below threshold
+    health_tier2:       5.0,                  // mas briut above threshold
+    healthCeil:         null,                 // no ceiling on health
+    // Legacy single-rate fields kept for backward compat with countries
+    // that don't tier — calc engine uses tier fields if present.
+    socialSec: 7.0,
+    health:    5.0,
+    notes: 'מדרגות 2025. ביטוח לאומי 2-tier: 0.4% עד ~₪7,522/חודש, 7% מעל. מס בריאות 3.1%/5%. מס יסף 3% נוסף כלול במדרגה ה-50%.',
+    lastVerified: '2025-Q2',
   },
 
   // ── USA ─────────────────────────────────────────────── source: IRS Rev. Proc. 2024-61
@@ -454,20 +466,44 @@ function calcNet(countryCode, grossILS, marital, children) {
   }
   taxAnnual = Math.max(0, taxAnnual - (c.credit || 0));
 
+  // ── 2-tier social security & health (Israel) ───────────────────────────
+  // For countries with `socialSec_tier1/tier2/threshold`, apply low rate
+  // below threshold + high rate above. Otherwise fall through to flat rate.
+  let ssAnnualTiered = null, healthAnnualTiered = null;
+  if (typeof c.socialSec_threshold === 'number') {
+    const thr = c.socialSec_threshold;
+    const low = Math.min(grossAnnual, thr);
+    const high = Math.max(0, Math.min(grossAnnual, c.socialCeil || Infinity) - thr);
+    ssAnnualTiered     = (low * c.socialSec_tier1 / 100) + (high * c.socialSec_tier2 / 100);
+    if (typeof c.health_tier1 === 'number') {
+      const lowH  = Math.min(grossAnnual, thr);
+      const highH = Math.max(0, grossAnnual - thr);
+      healthAnnualTiered = (lowH * c.health_tier1 / 100) + (highH * c.health_tier2 / 100);
+    }
+  }
+
   // Netherlands: fixed health premium added separately
   const nlHealthAnnual = countryCode === 'NL' ? (c.health || 0) : 0;
 
   // ── Social security ─────────────────────────────────────────────────────
-  const ssBase   = c.socialCeil ? Math.min(grossAnnual, c.socialCeil) : grossAnnual;
-  const ssAnnual = ssBase * (c.socialSec || 0) / 100;
+  // Use 2-tier calc if available (Israel); otherwise flat rate.
+  let ssAnnual;
+  if (ssAnnualTiered !== null) {
+    ssAnnual = ssAnnualTiered;
+  } else {
+    const ssBase = c.socialCeil ? Math.min(grossAnnual, c.socialCeil) : grossAnnual;
+    ssAnnual = ssBase * (c.socialSec || 0) / 100;
+  }
 
   // ── Health (separate contribution) ──────────────────────────────────────
   let healthAnnual = 0;
-  if (countryCode !== 'NL' && c.health > 0) {
+  if (countryCode === 'NL') {
+    healthAnnual = nlHealthAnnual;
+  } else if (healthAnnualTiered !== null) {
+    healthAnnual = healthAnnualTiered;
+  } else if (c.health > 0) {
     const hBase  = c.healthCeil ? Math.min(grossAnnual, c.healthCeil) : grossAnnual;
     healthAnnual = hBase * c.health / 100;
-  } else {
-    healthAnnual = nlHealthAnnual;
   }
 
   // ── Children credit (simplified) ────────────────────────────────────────
@@ -496,12 +532,19 @@ function calcNet(countryCode, grossILS, marital, children) {
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
   validYear:   2025,
-  updatedAt:   '2026-05-05',
-  nextReview:  '2027-01-15',   // Firebase reminder fires on this date
+  updatedAt:   '2026-05-18',
+  nextReview:  '2026-08-01',   // re-check after Israeli 2026 budget law (חוק ההסדרים) passes
+  knownPending: [
+    'Israel 2026 budget (if passed) — possible bracket changes, surtax increase, BL rate adjustments',
+    'Israel credit-point freeze for 2026 — currently ₪2,928 used; unfreezing would raise it ~3-5%',
+    'Cyprus 2026 GHS rate adjustment (rumored)',
+    'US 2026 IRS inflation adjustments — published Nov 2025',
+  ],
   sources: [
     'PwC Worldwide Tax Summaries 2025 — taxsummaries.pwc.com',
     'OECD Taxing Wages 2024',
     'KPMG Individual Tax Rates Table 2025',
+    'rashut hamissim (taxes.gov.il) + btl.gov.il for Israel-specific',
     'Official tax authority websites per country',
   ],
 };
