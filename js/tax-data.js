@@ -569,3 +569,8 @@ const TAX_META = {
     'Official tax authority websites per country',
   ],
 };
+
+// Node export — for unit tests in qa/tax-data-tests.js. No-op in browser.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { TAX_DATA, calcNet, TAX_META };
+}

@@ -159,6 +159,9 @@ Solo founder, Israeli, building in public. Twitter: [add your handle].
 > **"This is just a calculator — what's the actual product?"**
 Fair. The public landing is one component. The full product is at mastermove.vercel.app — relocation-analyzer (tax + cost-of-living + 10y cashflow), social-compare (Bituach Leumi vs every country), exit-tax-calculator (Section 100A — most calculators forget this). Public landing is the hook to demonstrate quality.
 
+> **"How do you know the tax data is right?"**
+The 8 main countries (IL/PT/CY/IT/US/DE/GB/FR) were verified against 2026 sources in May 2026 — each row has a `lastVerified` field. The calc engine has 24 unit tests covering bracket math, deduction-vs-credit semantics, 2-tier Israeli BL, and edge cases. Source: https://github.com/FinSightAI/wizelife/blob/main/qa/tax-data-tests.js — runs in 50ms via `node --test`.
+
 > **"Why no Romania/Bulgaria/Cyprus?"**
 Cyprus is actually there! Romania + Bulgaria on the list — what would you prioritize? First version targeted destinations Israeli expats actually consider in volume.
 
