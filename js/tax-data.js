@@ -28,19 +28,23 @@
 
 const TAX_DATA = {
 
-  // ── ISRAEL ─────────────────────────────────────────────────── source: rashut hamissim + btl.gov.il 2025
+  // ── ISRAEL ─────────────────────────────────────────────────── source: rashut hamissim + btl.gov.il + חוק ההסדרים 2026
   IL: {
     flag: '🇮🇱', name: 'ישראל', currency: 'ILS', usdRate: 0.27,
+    // 2026 brackets — חוק ההסדרים 2026 widened the 20% and 31% bands.
+    // Effect: ~30% of workers (mid-high earners) pay less. Cost to budget
+    // ~₪4.5B/yr. Retroactive to Jan 1, 2026 — paychecks reflect via 2026
+    // tax-tables booklet from rashut hamissim.
     brackets: [
-      { upTo: 84_120,  rate: 10 },
-      { upTo: 120_720, rate: 14 },
-      { upTo: 193_800, rate: 20 },
-      { upTo: 269_280, rate: 31 },
-      { upTo: 559_680, rate: 35 },
-      { upTo: 721_560, rate: 47 },
-      { upTo: Infinity, rate: 50 },          // includes 3% mas yesef (surtax) above 721,560
+      { upTo: 84_120,  rate: 10 },              // unchanged
+      { upTo: 120_720, rate: 14 },              // unchanged
+      { upTo: 228_000, rate: 20 },              // 2026: ceiling moved 193,800 → 228,000 (19,000/mo)
+      { upTo: 301_200, rate: 31 },              // 2026: ceiling moved 269,280 → 301,200 (25,100/mo)
+      { upTo: 559_680, rate: 35 },              // unchanged
+      { upTo: 721_560, rate: 47 },              // unchanged
+      { upTo: Infinity, rate: 50 },             // includes 3% mas yesef (surtax) above 721,560
     ],
-    credit: 6_591,                            // 2.25 credit points × ₪2,928 (frozen 2024-2025)
+    credit: 6_591,                              // 2.25 credit points × ₪2,928 (frozen for 2026 — pending unfreeze)
     // Bituach Leumi — 2-tier per 2025 rates. Below ~60% of average wage
     // (~₪7,522/mo, ~₪90,264/yr) employee pays 0.4%; above that, 7%.
     // Combined with health (3.1% below / 5% above) the effective rate is
@@ -56,8 +60,8 @@ const TAX_DATA = {
     // that don't tier — calc engine uses tier fields if present.
     socialSec: 7.0,
     health:    5.0,
-    notes: 'מדרגות 2025. ביטוח לאומי 2-tier: 0.4% עד ~₪7,522/חודש, 7% מעל. מס בריאות 3.1%/5%. מס יסף 3% נוסף כלול במדרגה ה-50%.',
-    lastVerified: '2025-Q2',
+    notes: 'מדרגות 2026 (חוק ההסדרים — תוקף ינואר 2026). מדרגת 20% הורחבה עד ₪19K/חודש, מדרגת 31% עד ₪25.1K. ביטוח לאומי 2-tier: 0.4% עד ~₪7,522/חודש, 7% מעל. מס בריאות 3.1%/5%. מס יסף 3% כלול במדרגה ה-50%.',
+    lastVerified: '2026-01',
   },
 
   // ── USA ─────────────────────────────────────────────── source: IRS Rev. Proc. 2024-61
@@ -531,14 +535,14 @@ function calcNet(countryCode, grossILS, marital, children) {
 
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
-  validYear:   2025,
+  validYear:   2026,
   updatedAt:   '2026-05-18',
-  nextReview:  '2026-08-01',   // re-check after Israeli 2026 budget law (חוק ההסדרים) passes
+  nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   knownPending: [
-    'Israel 2026 budget (if passed) — possible bracket changes, surtax increase, BL rate adjustments',
-    'Israel credit-point freeze for 2026 — currently ₪2,928 used; unfreezing would raise it ~3-5%',
+    'Israel credit-point value (₪2,928) — frozen for 2026; an unfreeze would raise it ~3-5%',
     'Cyprus 2026 GHS rate adjustment (rumored)',
-    'US 2026 IRS inflation adjustments — published Nov 2025',
+    'US 2026 IRS inflation adjustments — published Nov 2025, may be slightly stale',
+    'Italy "Lavoratori Impatriati" — eligibility narrowed in 2024; depth of 70% exemption now harder to qualify for',
   ],
   sources: [
     'PwC Worldwide Tax Summaries 2025 — taxsummaries.pwc.com',
