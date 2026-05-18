@@ -323,14 +323,15 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
 <script>
 // Build country list from TAX_DATA (single source of truth)
-const COUNTRY_CODES = ['IL','US','DE','FR','NL','PT','ES','PL','CZ','EE','IE','CH','GB','AE','SG','CA','AU','BR','TH','GR'];
+// Synced to /p/salary-compare 2026-05-18 — IT+CY added, CH+EE removed.
+const COUNTRY_CODES = ['IL','US','DE','FR','NL','PT','ES','PL','CZ','IT','CY','IE','GB','AE','SG','CA','AU','BR','TH','GR'];
 
 let _plan = 'free';
 let _allSelected = false;
 
 // Build chips
 const grid = document.getElementById('countriesGrid');
-const defaultSelected = new Set(['IL','PT','DE','AE','SG','US','GB']);
+const defaultSelected = new Set(['IL','PT','CY','IT','AE','SG','US','GB']);
 
 COUNTRY_CODES.forEach(code => {
   const d = TAX_DATA[code];
