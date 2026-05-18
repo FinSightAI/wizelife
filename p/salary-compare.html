@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>כמה משכורת נטו תקבל ב-20 מדינות? · השוואה מיידית · WizeLife</title>
+<meta name="description" content="הזן משכורת ברוטו → קבל נטו ב-20 מדינות. ישראל, ארה״ב, פורטוגל, אסטוניה, איחוד האמירויות ועוד. נתוני 2025 מאומתים מ-PwC/OECD.">
+<link rel="canonical" href="https://wizelife.ai/p/salary-compare.html">
+
+<!-- OpenGraph / Twitter -->
+<meta property="og:title" content="כמה משכורת נטו תקבל ב-20 מדינות?">
+<meta property="og:description" content="הזן משכורת ברוטו ↦ ראה כמה תיקח הביתה בישראל, ארה״ב, פורטוגל ועוד. כלי חינמי, בלי הרשמה.">
+<meta property="og:image" content="https://wizelife.ai/og-image.png">
+<meta property="og:url" content="https://wizelife.ai/p/salary-compare.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="כמה משכורת נטו תקבל ב-20 מדינות?">
+<meta name="twitter:description" content="הזן משכורת ברוטו → ראה כמה תיקח הביתה ב-20 מדינות. חינם, בלי הרשמה.">
+
+<link rel="icon" href="/img/wizelife-logo-v2.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#05060f;--surf:#0d1024;--card:#11142a;--border:rgba(255,255,255,0.08);--text:#eef2ff;--muted:#9ca3af;--muted2:#a5b4fc;--accent:#6366f1;--green:#10b981;--amber:#f59e0b;--red:#ef4444}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,241,0.12),transparent 60%) no-repeat,var(--bg)}
+
+/* Top bar */
+.topbar{max-width:760px;margin:0 auto;padding:14px 0 8px;display:flex;align-items:center;justify-content:space-between}
+.topbar a.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.topbar a.brand img{width:24px;height:24px;display:block}
+.topbar a.brand span{font:800 16px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-.3px}
+.topbar .lang{display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:3px}
+.topbar .lang button{background:none;border:0;color:#7b88ad;padding:4px 9px;border-radius:6px;font:700 11px Inter,sans-serif;cursor:pointer;letter-spacing:.5px}
+.topbar .lang button.on{background:rgba(99,102,241,0.2);color:#a5b4fc}
+
+/* Hero */
+.hero{max-width:760px;margin:18px auto 22px;text-align:center}
+.hero h1{margin:0 0 10px;font:900 30px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-1.2px;line-height:1.15;background:linear-gradient(135deg,#a5b4fc,#f5d0fe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{margin:0 auto;font:500 14.5px Inter,sans-serif;color:var(--muted);max-width:520px;line-height:1.55}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.28);color:#6ee7b7;padding:5px 12px;border-radius:99px;font:700 11px Inter,sans-serif;margin-bottom:14px}
+
+/* Input card */
+.card{max-width:760px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.field label{display:block;font:600 11.5px Inter,sans-serif;color:var(--muted);margin-bottom:5px;letter-spacing:.3px;text-transform:uppercase}
+.field input,.field select{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font:600 16px Inter,sans-serif;outline:none;transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:rgba(99,102,241,0.5)}
+.field .hint{margin-top:4px;font:500 11px Inter,sans-serif;color:#6b7280}
+
+/* Results */
+.results{max-width:760px;margin:0 auto}
+.r-row{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:6px;animation:fadeUp .35s ease both}
+.r-row.il{border-color:rgba(99,102,241,0.45);background:linear-gradient(90deg,rgba(99,102,241,0.08),var(--card))}
+.r-row .flag{font-size:24px;line-height:1}
+.r-row .info{min-width:0}
+.r-row .name{font:700 14.5px Inter,sans-serif;letter-spacing:-.2px}
+.r-row .meta{font:500 11.5px Inter,sans-serif;color:var(--muted);margin-top:1px}
+.r-row .nums{text-align:end;font-family:'JetBrains Mono',Menlo,monospace}
+.r-row .net{font:800 16px 'JetBrains Mono',Menlo,monospace;color:var(--green)}
+.r-row .delta{font:600 11px Inter,sans-serif;margin-top:2px;color:var(--muted)}
+.r-row .delta.pos{color:#6ee7b7}
+.r-row .delta.neg{color:#fca5a5}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Loading */
+.skeleton{padding:30px 16px;text-align:center;color:var(--muted);font:500 13px Inter,sans-serif}
+
+/* Share buttons */
+.share-wrap{max-width:760px;margin:20px auto;background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(99,102,241,0.08));border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:16px;text-align:center}
+.share-wrap h3{margin:0 0 4px;font:800 15px Plus Jakarta Sans,Inter,sans-serif}
+.share-wrap p{margin:0 0 12px;font:500 12.5px Inter,sans-serif;color:var(--muted)}
+.share-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.share-btns button{padding:11px 8px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font:700 12.5px Inter,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.share-btns button:hover{background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.4);transform:translateY(-1px)}
+.share-btns button .icon{font-size:20px;line-height:1}
+
+/* CTA cards */
+.cta{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.25);border-radius:14px;padding:16px}
+.cta h4{margin:0 0 6px;font:800 14px Plus Jakarta Sans,Inter,sans-serif;color:#fcd34d}
+.cta p{margin:0 0 10px;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.5}
+.cta a{display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:9px 16px;border-radius:99px;font:800 12.5px Inter,sans-serif}
+
+/* Footer */
+.foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.55}
+.foot a{color:#a5b4fc;text-decoration:none}
+
+/* AI footer (slim) */
+.wl-ai-footer{margin-top:10px;padding:7px 11px;background:rgba(245,158,11,0.07);border-inline-start:3px solid rgba(245,158,11,0.6);border-radius:6px;font:500 11.5px Inter,sans-serif;color:#94a3b8;line-height:1.45}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="https://wizelife.ai">
+    <img src="/img/wizelife-logo-v2.svg" alt="WizeLife">
+    <span>WizeLife</span>
+  </a>
+  <div class="lang" id="langSwitch">
+    <button data-l="he" class="on">HE</button>
+    <button data-l="en">EN</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="badge" data-i18n="badge">✓ נתוני מס מאומתים PwC / OECD 2025</div>
+  <h1 data-i18n="title">כמה משכורת תיקח הביתה<br>ב-20 מדינות?</h1>
+  <p data-i18n="sub">הזן משכורת ברוטו, קבל מיידית את הנטו בישראל, פורטוגל, אסטוניה, איחוד האמירויות, ארה״ב ועוד 15. בלי הרשמה.</p>
+</div>
+
+<div class="card">
+  <div class="row">
+    <div class="field">
+      <label data-i18n="lblGross">משכורת חודשית ברוטו (₪)</label>
+      <input type="number" id="gross" placeholder="25000" min="3000" max="500000" value="25000" inputmode="numeric">
+      <div class="hint" data-i18n="hintGross">משכורת חודשית, לפני מס</div>
+    </div>
+    <div class="field">
+      <label data-i18n="lblFamily">מצב משפחתי</label>
+      <select id="family">
+        <option value="single" data-i18n="famSingle">רווק/ה</option>
+        <option value="married" data-i18n="famMarried">נשוי/ה</option>
+        <option value="married_working" data-i18n="famMarriedW">נשוי/ה + בן/בת זוג עובד/ת</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="results" id="results">
+  <div class="skeleton" data-i18n="calculating">מחשב…</div>
+</div>
+
+<div class="share-wrap" id="shareWrap" style="display:none">
+  <h3 data-i18n="shareTitle">חברים שלך מסקרנים. שלח להם 👇</h3>
+  <p data-i18n="shareSub">שיתוף ב-WhatsApp / Email / קישור</p>
+  <div class="share-btns">
+    <button onclick="shareTo('whatsapp')"><span class="icon">💬</span><span>WhatsApp</span></button>
+    <button onclick="shareTo('email')"><span class="icon">✉️</span><span data-i18n="shareEmail">Email</span></button>
+    <button onclick="shareTo('copy')"><span class="icon">📋</span><span data-i18n="shareCopy">העתק</span></button>
+  </div>
+</div>
+
+<div class="cta" id="ctaPortugal" style="display:none">
+  <h4>🇵🇹 חושב על פורטוגל?</h4>
+  <p data-i18n="ctaPortugalP">משטר ה-<strong>NHR (Non-Habitual Resident)</strong> מאפשר 0% מס על הכנסה זרה ל-10 שנים. הרשמה ל-WizeTax = מודל אישי + תזרים לאורך 10 שנים + תכנון מס יציאה מישראל.</p>
+  <a href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" data-i18n="ctaPortugalBtn">קבל ניתוח מלא ←</a>
+</div>
+
+<div class="cta">
+  <h4 data-i18n="ctaMoreT">רוצה ניתוח עומק לפי הפרופיל שלך?</h4>
+  <p data-i18n="ctaMoreP">WizeLife בונה תוכנית מלאה: מס הכנסה + פנסיה + ביטוח לאומי + שיקולי ויזה לכל יעד. AI שמכיר את הנתונים שלך מ-5 אפליקציות.</p>
+  <a href="https://wizelife.ai/auth.html" data-i18n="ctaMoreBtn">חשבון חינם ←</a>
+</div>
+
+<div class="foot">
+  <span data-i18n="footSource">מקור: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס מקומיות (2025).</span><br>
+  <span data-i18n="footLegal">הכלי הוא לצרכי מידע בלבד. AI עלול לטעות. אמת אצל יועץ מס מורשה.</span><br>
+  <a href="https://wizelife.ai">wizelife.ai</a> · <a href="https://wizelife.ai/privacy.html">Privacy</a> · <a href="https://wizelife.ai/terms.html">Terms</a>
+</div>
+
+<script src="/js/tax-data.js"></script>
+<script src="/js/wize-share.js" defer></script>
+<script>
+const COUNTRY_CODES = ['IL','PT','EE','AE','SG','US','DE','PL','GB','CH','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
+
+// ── i18n ────────────────────────────────────────────────────────────────────
+const TR = {
+  he: {
+    badge: '✓ נתוני מס מאומתים PwC / OECD 2025',
+    title: 'כמה משכורת תיקח הביתה<br>ב-20 מדינות?',
+    sub: 'הזן משכורת ברוטו, קבל מיידית את הנטו בישראל, פורטוגל, אסטוניה, איחוד האמירויות, ארה״ב ועוד 15. בלי הרשמה.',
+    lblGross: 'משכורת חודשית ברוטו (₪)',
+    hintGross: 'משכורת חודשית, לפני מס',
+    lblFamily: 'מצב משפחתי',
+    famSingle: 'רווק/ה', famMarried: 'נשוי/ה', famMarriedW: 'נשוי/ה + בן/בת זוג עובד/ת',
+    calculating: 'מחשב…',
+    shareTitle: 'חברים שלך מסקרנים. שלח להם 👇',
+    shareSub: 'שיתוף ב-WhatsApp / Email / קישור',
+    shareEmail: 'Email', shareCopy: 'העתק',
+    ctaPortugalP: 'משטר ה-<strong>NHR (Non-Habitual Resident)</strong> מאפשר 0% מס על הכנסה זרה ל-10 שנים. הרשמה ל-WizeTax = מודל אישי + תזרים לאורך 10 שנים + תכנון מס יציאה מישראל.',
+    ctaPortugalBtn: 'קבל ניתוח מלא ←',
+    ctaMoreT: 'רוצה ניתוח עומק לפי הפרופיל שלך?',
+    ctaMoreP: 'WizeLife בונה תוכנית מלאה: מס הכנסה + פנסיה + ביטוח לאומי + שיקולי ויזה לכל יעד. AI שמכיר את הנתונים שלך מ-5 אפליקציות.',
+    ctaMoreBtn: 'חשבון חינם ←',
+    footSource: 'מקור: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס מקומיות (2025).',
+    footLegal: 'הכלי הוא לצרכי מידע בלבד. AI עלול לטעות. אמת אצל יועץ מס מורשה.',
+    monthlyNet: 'נטו לחודש',
+    effective: 'שיעור מס אפקטיבי',
+    vsIL: 'יותר מישראל',
+    vsILneg: 'פחות מישראל',
+    shareTextMine: 'בדקתי ב-WizeLife כמה משכורת לוקחים הביתה ב-20 מדינות. שווה לראות:',
+  },
+  en: {
+    badge: '✓ Verified PwC / OECD 2025 tax data',
+    title: 'How much take-home pay<br>across 20 countries?',
+    sub: 'Enter gross monthly salary, instantly see net in Israel, Portugal, Estonia, UAE, US and 15 more. No signup.',
+    lblGross: 'Monthly gross salary (₪)',
+    hintGross: 'Monthly, before tax',
+    lblFamily: 'Family status',
+    famSingle: 'Single', famMarried: 'Married', famMarriedW: 'Married + working spouse',
+    calculating: 'Calculating…',
+    shareTitle: 'Your friends are curious. Send it 👇',
+    shareSub: 'Share via WhatsApp / Email / link',
+    shareEmail: 'Email', shareCopy: 'Copy',
+    ctaPortugalP: 'Portugal\'s <strong>NHR (Non-Habitual Resident)</strong> grants 0% tax on foreign income for 10 years. Sign up to WizeTax for a personalized 10-year cashflow + exit-tax model from Israel.',
+    ctaPortugalBtn: 'Get full analysis →',
+    ctaMoreT: 'Want a deep analysis based on YOUR profile?',
+    ctaMoreP: 'WizeLife builds the full picture: income tax + pension + social security + visa considerations per destination. AI that knows your data from 5 apps.',
+    ctaMoreBtn: 'Sign up free →',
+    footSource: 'Sources: PwC Worldwide Tax Summaries · OECD · KPMG · local tax authorities (2025).',
+    footLegal: 'For information only. AI can make mistakes. Verify with a licensed CPA.',
+    monthlyNet: 'Monthly net',
+    effective: 'Effective tax rate',
+    vsIL: 'more than Israel',
+    vsILneg: 'less than Israel',
+    shareTextMine: 'I checked WizeLife — net take-home salary across 20 countries. Worth a look:',
+  },
+};
+let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'he'; } catch { return 'he'; }})();
+if (!['he','en'].includes(_lang)) _lang = 'he';
+
+function applyLang(l) {
+  _lang = l;
+  try { localStorage.setItem('wl_lang', l); } catch {}
+  document.documentElement.setAttribute('lang', l);
+  document.documentElement.setAttribute('dir', l === 'he' ? 'rtl' : 'ltr');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (TR[l] && TR[l][k] !== undefined) el.innerHTML = TR[l][k];
+  });
+  document.querySelectorAll('#langSwitch button').forEach(b => {
+    b.classList.toggle('on', b.dataset.l === l);
+  });
+  recalc();
+}
+document.querySelectorAll('#langSwitch button').forEach(b => {
+  b.addEventListener('click', () => applyLang(b.dataset.l));
+});
+applyLang(_lang);
+
+// ── Calculation + render ────────────────────────────────────────────────────
+function recalc() {
+  const gross = parseFloat(document.getElementById('gross').value) || 0;
+  const family = document.getElementById('family').value;
+  if (gross < 3000) {
+    document.getElementById('results').innerHTML = '<div class="skeleton">' + (TR[_lang].calculating) + '</div>';
+    document.getElementById('shareWrap').style.display = 'none';
+    return;
+  }
+  const rows = COUNTRY_CODES
+    .map(code => {
+      const d = TAX_DATA[code];
+      if (!d) return null;
+      const r = calcNet(code, gross, family, 0);
+      if (!r) return null;
+      return { code, flag: d.flag, name: d.name, ...r };
+    })
+    .filter(Boolean)
+    .sort((a, b) => {
+      if (a.code === 'IL') return -1;
+      if (b.code === 'IL') return 1;
+      return b.netUSD - a.netUSD;
+    });
+
+  const ilRow = rows.find(r => r.code === 'IL');
+  const ilNetUSD = ilRow ? ilRow.netUSD : 0;
+
+  document.getElementById('results').innerHTML = rows.map(r => {
+    const cls = (r.code === 'IL') ? 'r-row il' : 'r-row';
+    const deltaUSD = r.netUSD - ilNetUSD;
+    const deltaPct = ilNetUSD ? Math.round(deltaUSD / ilNetUSD * 100) : 0;
+    const deltaCls = (r.code === 'IL') ? '' : (deltaUSD >= 0 ? 'pos' : 'neg');
+    const deltaTxt = (r.code === 'IL') ? '— ' + TR[_lang].monthlyNet + ' —' :
+      (deltaUSD >= 0 ? '+$' : '-$') + Math.abs(deltaUSD).toLocaleString() + ' (' + (deltaPct >= 0 ? '+' : '') + deltaPct + '% ' + (deltaUSD >= 0 ? TR[_lang].vsIL : TR[_lang].vsILneg) + ')';
+    return `<div class="${cls}">
+      <span class="flag">${r.flag}</span>
+      <div class="info">
+        <div class="name">${r.name}</div>
+        <div class="meta">${TR[_lang].effective}: ${r.effectiveRate}%</div>
+      </div>
+      <div class="nums">
+        <div class="net">$${r.netUSD.toLocaleString()}</div>
+        <div class="delta ${deltaCls}">${deltaTxt}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('shareWrap').style.display = 'block';
+  document.getElementById('ctaPortugal').style.display = 'block';
+
+  // Cache last-rendered numbers for sharing
+  window.__lastResults = { gross, rows };
+}
+document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
+document.getElementById('family').addEventListener('change', recalc);
+recalc();
+
+// ── Share ───────────────────────────────────────────────────────────────────
+function buildShareText() {
+  const r = window.__lastResults;
+  const t = TR[_lang];
+  if (!r) return t.shareTextMine + '\nhttps://wizelife.ai/p/salary-compare.html';
+  const top3 = r.rows.filter(x => x.code !== 'IL').slice(0, 3);
+  const il   = r.rows.find(x => x.code === 'IL');
+  let txt = t.shareTextMine + '\n\n';
+  txt += '🇮🇱 ' + il.name + ': $' + il.netUSD.toLocaleString() + '/mo\n';
+  top3.forEach(x => {
+    const delta = x.netUSD - il.netUSD;
+    txt += x.flag + ' ' + x.name + ': $' + x.netUSD.toLocaleString() + ' (' + (delta >= 0 ? '+' : '') + '$' + Math.abs(delta).toLocaleString() + ')\n';
+  });
+  txt += '\nhttps://wizelife.ai/p/salary-compare.html';
+  return txt;
+}
+function shareTo(channel) {
+  const text = buildShareText();
+  const url  = 'https://wizelife.ai/p/salary-compare.html';
+  const title = (_lang === 'he' ? 'השוואת משכורת ב-20 מדינות' : 'Net salary in 20 countries');
+  if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); return; }
+  if (channel === 'whatsapp') WizeShare.whatsapp({ title, text, url });
+  else if (channel === 'email') WizeShare.email({ title, text, url });
+  else if (channel === 'copy') WizeShare.copy({ title, text, url });
+}
+</script>
+
+<!-- Cloudflare Web Analytics is auto-injected by the Cloudflare proxy when
+     enabled in the dashboard — no manual tag needed. -->
+
+</body>
+</html>
