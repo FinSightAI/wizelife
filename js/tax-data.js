@@ -44,44 +44,47 @@ const TAX_DATA = {
       { upTo: 721_560, rate: 47 },              // unchanged
       { upTo: Infinity, rate: 50 },             // includes 3% mas yesef (surtax) above 721,560
     ],
-    credit: 6_591,                              // 2.25 credit points × ₪2,928 (frozen for 2026 — pending unfreeze)
-    // Bituach Leumi — 2-tier per 2025 rates. Below ~60% of average wage
-    // (~₪7,522/mo, ~₪90,264/yr) employee pays 0.4%; above that, 7%.
-    // Combined with health (3.1% below / 5% above) the effective rate is
-    // ~3.5% / ~12% — matching public-facing rhetoric.
-    socialSec_tier1:    0.4,                  // employee BL rate below threshold
+    credit: 6_534,                              // 2.25 credit points × ₪2,904 (frozen for 2026; was 2,928 in 2024-25)
+    // Bituach Leumi + Mas Briut — 2-tier per 2026 rates (btl.gov.il).
+    // Below threshold ~₪7,703/mo (~60% avg wage, ~₪92,436/yr): BL 1.04% + Health 3.23% = 4.27% combined.
+    // Above: BL 7% + Health 5.17% = 12.17%. Both rates increased from 2025
+    // (was 0.4%/3.1% low, 7%/5.0% high).
+    socialSec_tier1:    1.04,                 // employee BL rate below threshold
     socialSec_tier2:    7.0,                  // employee BL rate above threshold
-    socialSec_threshold:90_264,               // ~60% of average wage (annual)
-    socialCeil:         588_360,              // annual ceiling (49,030/mo)
-    health_tier1:       3.1,                  // mas briut below threshold
-    health_tier2:       5.0,                  // mas briut above threshold
+    socialSec_threshold:92_436,               // ~60% of average wage (annual) — ₪7,703/mo
+    socialCeil:         622_920,              // ₪51,910/mo annual ceiling (was 49,030 in 2025)
+    health_tier1:       3.23,                 // mas briut below threshold
+    health_tier2:       5.17,                 // mas briut above threshold
     healthCeil:         null,                 // no ceiling on health
-    // Legacy single-rate fields kept for backward compat with countries
-    // that don't tier — calc engine uses tier fields if present.
-    socialSec: 7.0,
-    health:    5.0,
-    notes: 'מדרגות 2026 (חוק ההסדרים — תוקף ינואר 2026). מדרגת 20% הורחבה עד ₪19K/חודש, מדרגת 31% עד ₪25.1K. ביטוח לאומי 2-tier: 0.4% עד ~₪7,522/חודש, 7% מעל. מס בריאות 3.1%/5%. מס יסף 3% כלול במדרגה ה-50%.',
+    socialSec: 7.0,                           // legacy single-rate fallback
+    health:    5.17,
+    notes: 'מדרגות 2026 (חוק ההסדרים): 20% הורחבה עד ₪19K/חודש, 31% עד ₪25.1K. ביטוח לאומי 2-tier: 1.04% עד ₪7,703/חודש, 7% מעל (תקרה ₪51,910). מס בריאות 3.23%/5.17%. מס יסף 3% כלול ב-50%. נקודת זיכוי ₪242/חודש (₪2,904/שנה).',
     lastVerified: '2026-01',
   },
 
-  // ── USA ─────────────────────────────────────────────── source: IRS Rev. Proc. 2024-61
+  // ── USA ────────────────────────────────── source: IRS Rev. Proc. 2025-XX + One Big Beautiful Bill Act (Jul 2025)
   US: {
     flag: '🇺🇸', name: 'ארה"ב (פדרלי בלבד)', currency: 'USD', usdRate: 1,
+    // 2026 brackets: bottom 2 inflated ~4% per OBBBA, others ~2.3%
     brackets: [
-      { upTo: 11_925,   rate: 10 },
-      { upTo: 48_475,   rate: 12 },
-      { upTo: 103_350,  rate: 22 },
-      { upTo: 197_300,  rate: 24 },
-      { upTo: 250_525,  rate: 32 },
-      { upTo: 626_350,  rate: 35 },
-      { upTo: Infinity, rate: 37 },
+      { upTo: 12_400,   rate: 10 },               // was 11,925
+      { upTo: 50_400,   rate: 12 },               // was 48,475
+      { upTo: 105_700,  rate: 22 },               // was 103,350
+      { upTo: 201_775,  rate: 24 },               // was 197,300
+      { upTo: 256_225,  rate: 32 },               // was 250,525
+      { upTo: 640_600,  rate: 35 },               // was 626,350
+      { upTo: Infinity, rate: 37 },               // unchanged
     ],
     credit: 0,
-    socialSec: 6.2,         // FICA Social Security
-    socialCeil: 168_600,    // 2025 wage base
-    health: 1.45,           // Medicare (no ceiling)
+    deduction: 16_100,        // 2026 standard deduction, single (was $15,000 in 2025).
+                              // Bug fix 2026-05-18: previously listed as credit=14,600
+                              // which under-taxed every US salary by 5-15%.
+    socialSec: 6.2,           // FICA Social Security
+    socialCeil: 176_100,      // 2026 wage base (was 168,600 in 2025)
+    health: 1.45,             // Medicare (no ceiling)
     healthCeil: null,
-    notes: 'פדרלי בלבד — מס מדינה מוסיף 0%–13.3% לפי מדינה. Standard deduction: $15,000 (single 2025).',
+    notes: 'פדרלי בלבד — מס מדינה מוסיף 0%–13.3%. Standard deduction $16,100 (single 2026). OBBBA הפך קבוע את שינויי TCJA.',
+    lastVerified: '2026-01',
   },
 
   // ── GERMANY ──────────────────────────────────────── source: PwC Germany 2025, §32a EStG
@@ -138,23 +141,26 @@ const TAX_DATA = {
   // ── PORTUGAL ─────────────────────────────────────── source: PwC Portugal 2025, CIRS
   PT: {
     flag: '🇵🇹', name: 'פורטוגל', currency: 'EUR', usdRate: 0.92,
+    // 2026 IRS brackets — thresholds inflated ~3.51% for inflation;
+    // brackets 2-5 rates reduced 0.3pp (PwC 2026 State Budget summary).
     brackets: [
-      { upTo: 7_703,    rate: 13.25 },
-      { upTo: 11_623,   rate: 18    },
-      { upTo: 16_472,   rate: 23    },
-      { upTo: 21_321,   rate: 26    },
-      { upTo: 27_146,   rate: 32.75 },
-      { upTo: 39_791,   rate: 37    },
-      { upTo: 51_997,   rate: 43.5  },
-      { upTo: 81_199,   rate: 45    },
-      { upTo: Infinity, rate: 48    },
+      { upTo: 7_973,    rate: 13.25 },          // bottom rate unchanged
+      { upTo: 12_031,   rate: 16.5  },          // was 18% (-0.3pp inflated below)
+      { upTo: 17_050,   rate: 22    },          // was 23%
+      { upTo: 22_069,   rate: 25    },          // was 26%
+      { upTo: 28_099,   rate: 32    },          // was 32.75%
+      { upTo: 41_188,   rate: 35.5  },          // was 37% (-1.5pp + inflation)
+      { upTo: 53_822,   rate: 43.5  },          // unchanged
+      { upTo: 84_049,   rate: 45    },          // unchanged rate, inflated threshold
+      { upTo: Infinity, rate: 48    },          // top unchanged
     ],
     credit: 0,
-    socialSec: 11.0,        // Segurança Social employee
+    socialSec: 11.0,        // Segurança Social employee — unchanged
     socialCeil: null,
     health: 0,
     healthCeil: null,
-    notes: 'NHR (Non-Habitual Resident) — 10 שנות מס מופחת 20% לעולים. רלוונטי מאוד לישראלים.',
+    notes: '2026: שיעורי מדרגות 2-5 הופחתו 0.3pp. סיפי מדרגות עלו ~3.51%. NHR/IFICI — 10 שנות מס 20% לעולים מקצועות "מועילים". Seg. Social 11%.',
+    lastVerified: '2026-01',
   },
 
   // ── SPAIN ────────────────────────────────────────────────── source: AEAT 2025
@@ -422,22 +428,25 @@ const TAX_DATA = {
     notes: 'משטר "Lavoratori Impatriati" — 50%-70% פטור על הכנסה ל-5 שנים לעולים חדשים. בנוסף Flat-tax €100K לעולים עתירי-נכסים.',
   },
 
-  // ── CYPRUS ──────────────────────────────────────── source: Cyprus Tax Authority 2025
+  // ── CYPRUS ──────────────────────────────────── source: Cyprus Tax Authority 2026 + 2026 tax reform
   CY: {
     flag: '🇨🇾', name: 'קפריסין', currency: 'EUR', usdRate: 0.92,
+    // 2026 reform: tax-free threshold raised €19,500 → €22,000; all
+    // bracket ceilings shifted UP. Result: meaningful tax reduction.
     brackets: [
-      { upTo: 19_500,   rate: 0  },
-      { upTo: 28_000,   rate: 20 },
-      { upTo: 36_300,   rate: 25 },
-      { upTo: 60_000,   rate: 30 },
-      { upTo: Infinity, rate: 35 },
+      { upTo: 22_000,   rate: 0  },             // was 19,500
+      { upTo: 35_000,   rate: 20 },             // was 28,000
+      { upTo: 60_000,   rate: 25 },             // was 36,300
+      { upTo: 72_000,   rate: 30 },             // was 60,000
+      { upTo: Infinity, rate: 35 },             // unchanged
     ],
     credit: 0,
-    socialSec: 8.8,          // social insurance employee
-    socialCeil: 66_612,       // upper ceiling 2025
-    health: 2.65,            // GHS (Gesy)
+    socialSec: 8.8,                             // social insurance employee — unchanged
+    socialCeil: 66_612,
+    health: 2.65,                               // GHS (Gesy) — unchanged
     healthCeil: 180_000,
-    notes: 'Non-Dom regime: 50% פטור ממס הכנסה ל-17 שנה לעולים חדשים מעל €55K. אחד ממשטרי המס הנדיבים באירופה.',
+    notes: '2026 reform: סף פטור עלה ל-€22K. Non-Dom: 0% מס הכנסה + 0% SDC על דיווידנדים ל-17 שנה; רק GHS 2.65% (תקרה €180K = €4,770 max). אחד ממשטרי המס הנדיבים באירופה.',
+    lastVerified: '2026-01',
   },
 };
 
@@ -460,10 +469,14 @@ function calcNet(countryCode, grossILS, marital, children) {
   const grossAnnual = grossLocal * 12;
 
   // ── Income tax ──────────────────────────────────────────────────────────
+  // Subtract deduction from taxable income (US standard deduction style)
+  // BEFORE applying brackets. `credit` is then subtracted from the computed
+  // tax (Israel-style credit points). Both can co-exist per country.
+  const taxableAnnual = Math.max(0, grossAnnual - (c.deduction || 0));
   let taxAnnual = 0;
   let prev = 0;
   for (const b of c.brackets) {
-    const slice = Math.min(grossAnnual, b.upTo) - prev;
+    const slice = Math.min(taxableAnnual, b.upTo) - prev;
     if (slice <= 0) break;
     taxAnnual += slice * b.rate / 100;
     prev = b.upTo;
