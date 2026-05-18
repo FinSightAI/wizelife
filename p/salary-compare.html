@@ -301,6 +301,13 @@ document.getElementById('family').addEventListener('change', recalc);
 recalc();
 
 // ── Share ───────────────────────────────────────────────────────────────────
+// Country names in tax-data.js include honest qualifiers like
+// "שווייץ (ממוצע קנטון)" or 'ארה"ב (פדרלי בלבד)' — necessary on the page
+// but noise in a 5-line WhatsApp share. Strip the parenthetical for sharing.
+function shortName(name) {
+  return (name || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
+}
+
 function buildShareText() {
   const r = window.__lastResults;
   const t = TR[_lang];
@@ -312,10 +319,10 @@ function buildShareText() {
   // are part of the basic emoji set and render everywhere.
   const RANK = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣'];
   let txt = t.shareTextMine + '\n\n';
-  txt += RANK[0] + ' ' + il.name + ': $' + il.netUSD.toLocaleString() + '/mo\n';
+  txt += RANK[0] + ' ' + shortName(il.name) + ': $' + il.netUSD.toLocaleString() + '/mo\n';
   top3.forEach((x, i) => {
     const delta = x.netUSD - il.netUSD;
-    txt += (RANK[i + 1] || '·') + ' ' + x.name + ': $' + x.netUSD.toLocaleString() + ' (' + (delta >= 0 ? '+' : '') + '$' + Math.abs(delta).toLocaleString() + ')\n';
+    txt += (RANK[i + 1] || '·') + ' ' + shortName(x.name) + ': $' + x.netUSD.toLocaleString() + ' (' + (delta >= 0 ? '+' : '') + '$' + Math.abs(delta).toLocaleString() + ')\n';
   });
   // URL added by shareWhatsApp / shareEmail automatically (don't duplicate here).
   return txt;
