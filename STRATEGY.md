@@ -1,7 +1,9 @@
 # WizeLife — Strategy Document
 
-> **Last updated:** 2026-05-18 (Session 9)
+> **Last updated:** 2026-05-18 (Session 9 — late evening)
 > **Status:** Pre-launch, pre-revenue. 6-app suite live. Solo founder.
+> **Pre-HN verification:** 23/23 critical checks pass (qa/deep-qa-sunday.js)
+> **Tax data:** 8 countries verified 2026, 24/24 unit tests pass
 > **North-star metric:** First 1,000 active users.
 
 This doc is updated by Claude. Open it whenever you want to recalibrate priorities, then ask Claude to refresh it. Treat sections marked 🟢 as "doing now," 🟡 as "next 2-4 weeks," 🔴 as "after first 100 paying users."

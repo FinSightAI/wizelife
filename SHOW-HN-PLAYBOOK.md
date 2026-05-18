@@ -10,16 +10,25 @@ This doc has everything you need to launch + survive the first 2 hours.
 
 ## 1. Pre-flight (do this Monday evening, the night before)
 
+> 🤖 **Automated pre-checks (run nightly + on demand):**
+> - `node qa/deep-qa-sunday.js` → 23 critical surface checks (modal flow,
+>   share buttons, deep-result renders, lang switch, all 8 pages load)
+> - `node --test qa/tax-data-tests.js` → 24 unit tests on calc engine
+> - As of 2026-05-18: ALL PASS on the new pages we ship. Pre-existing
+>   portal pages have 9 console warnings (CSP blocks backend pre-warm)
+>   — not user-visible, not blocking.
+
 | Check | Why | Status |
 |---|---|---|
-| Open `https://wizelife.ai/p/salary-compare.html` on mobile + desktop | First impression matters | ☐ |
-| Type a salary, click "Get real analysis", run BOTH tabs (manual + payslip) | Modal flow works end-to-end | ☐ |
-| Click "Share" → WhatsApp/Email/Copy each work | Share menu doesn't break | ☐ |
-| Click sign-up CTA — confirm wizelife.ai/auth.html loads | Funnel ends in a working signup | ☐ |
+| Run `node qa/deep-qa-sunday.js` — must show ✅ ALL CLEAN | Catches regressions in the HN flow | ☐ |
+| Run `node --test qa/tax-data-tests.js` — must show 24/24 pass | Tax math hasn't drifted | ☐ |
+| Open `https://wizelife.ai/p/salary-compare.html` on YOUR phone | Real device test (Playwright = simulator) | ☐ |
+| Tap a salary, "Get real analysis", BOTH tabs (manual + payslip — bring a real payslip) | OCR is the trust lever — test on real data | ☐ |
+| Tap "Share" → WhatsApp on YOUR phone — confirm pre-fill text is clean | The exact thing people will see | ☐ |
+| Tap sign-up CTA — confirm wizelife.ai/auth.html loads | Funnel ends in a working signup | ☐ |
 | Open `/relocation-analyzer` + `/social-compare` + `/exit-tax-calculator` on Vercel | Depth pages are reachable for curious HN folks | ☐ |
 | GitHub repo is public + tax-data.js is browsable | "Stack: vanilla JS" claim is verifiable | ☐ |
 | HN account has karma > 1 (post karma check) | Show HN posts need account >1 day old, recommended >10 karma | ☐ |
-| Open Chrome DevTools tab on the live URL — confirm no console errors | Free QA, HN will look | ☐ |
 
 ---
 
