@@ -124,20 +124,22 @@ const TAX_DATA = {
     lastVerified: '2026-01',
   },
 
-  // ── NETHERLANDS ──────────────────────────────────────── source: Belastingdienst 2025
+  // ── NETHERLANDS ─────────────────────── source: Belastingdienst 2026 + Dutch Tax Budget 2026
   NL: {
     flag: '🇳🇱', name: 'הולנד', currency: 'EUR', usdRate: 0.92,
+    // 2026 Box 1 brackets — thresholds inflation-adjusted, rates unchanged
     brackets: [
-      { upTo: 38_441,   rate: 35.82 }, // box 1 lower (includes AOW premie)
-      { upTo: 76_817,   rate: 37.48 },
-      { upTo: Infinity, rate: 49.50 },
+      { upTo: 38_883,   rate: 35.75 },           // 2026 box 1 (was 38,441)
+      { upTo: 78_426,   rate: 37.56 },           // 2026 mid band (was 76,817)
+      { upTo: Infinity, rate: 49.50 },           // top — unchanged
     ],
-    credit: 3_362,          // algemene heffingskorting (max, phases out at higher income)
-    socialSec: 0,           // bundled in bracket rates above
+    credit: 3_115,                                // 2026 algemene heffingskorting max (was 3,362)
+    socialSec: 0,                                 // bundled in bracket rates
     socialCeil: null,
-    health: 1_964,          // Zvw nominale premie (fixed annual, converted below)
+    health: 1_964,                                // Zvw nominale premie (fixed annual)
     healthCeil: null,
-    notes: 'Zvw bijdrage werkgever (5.64%) מוסף על הברוטו. מס בריאות קבוע ~€164/חודש. Arbeidskorting מפחית עוד.',
+    notes: '2026: Box 1 שיעורי 35.75% / 37.56% / 49.5%. תקרת AHK ירדה €3,362→€3,115. Arbeidskorting מקס €5,685.',
+    lastVerified: '2026-01',
   },
 
   // ── PORTUGAL ─────────────────────────────────────── source: PwC Portugal 2025, CIRS
@@ -165,11 +167,11 @@ const TAX_DATA = {
     lastVerified: '2026-01',
   },
 
-  // ── SPAIN ────────────────────────────────────────────────── source: AEAT 2025
+  // ── SPAIN ──────────────────────────────────── source: AEAT 2026 + PwC Spain 2026
   ES: {
     flag: '🇪🇸', name: 'ספרד', currency: 'EUR', usdRate: 0.92,
     brackets: [
-      { upTo: 12_450,   rate: 19 },
+      { upTo: 12_450,   rate: 19 },               // unchanged for 2026 (national)
       { upTo: 20_200,   rate: 24 },
       { upTo: 35_200,   rate: 30 },
       { upTo: 60_000,   rate: 37 },
@@ -177,26 +179,29 @@ const TAX_DATA = {
       { upTo: Infinity, rate: 47 },
     ],
     credit: 0,
-    socialSec: 6.47,        // contingencias comunes + desempleo
-    socialCeil: 56_256,     // base máxima 2025
+    socialSec: 6.5,                                // 2026: 6.5% (was 6.47%)
+    socialCeil: 61_214,                            // 2026 max base €5,101.20/mo (was €56,256)
     health: 0,
     healthCeil: null,
-    notes: 'Beckham Law — עולים חדשים משלמים 24% flat על הכנסה עד €600k ל-6 שנים.',
+    notes: '2026: שיעורים לאומיים ללא שינוי (חבל אוטונומי מוסיף עוד 0-7%). מקס׳ בסיס ביטוח לאומי €61,214/שנה. Beckham Law — עולים: 24% flat עד €600K ל-6 שנים.',
+    lastVerified: '2026-01',
   },
 
-  // ── POLAND ────────────────────────────────────────── source: PwC Poland 2025
+  // ── POLAND ─────────────────────────────────── source: Ministerstwo Finansów 2026 + PwC 2026
   PL: {
     flag: '🇵🇱', name: 'פולין', currency: 'PLN', usdRate: 0.25,
     brackets: [
-      { upTo: 120_000,  rate: 12 },
-      { upTo: Infinity, rate: 32 },
+      { upTo: 30_000,   rate: 0  },               // 2026 tax-free amount (kwota wolna)
+      { upTo: 120_000,  rate: 12 },               // first bracket
+      { upTo: Infinity, rate: 32 },               // second bracket — unchanged
     ],
-    credit: 3_600,          // kwota wolna od podatku annual relief
-    socialSec: 13.71,       // ZUS (emerytura + renta employee)
-    socialCeil: 260_190,    // roczna podstawa wymiaru
-    health: 9.0,            // NFZ składka zdrowotna
+    credit: 0,                                     // moved tax-free into brackets explicitly
+    socialSec: 13.71,                              // ZUS emerytalna+rentowe+chorobowe
+    socialCeil: 282_600,                           // 2026 ZUS cap (was 260,190)
+    health: 9.0,                                   // NFZ — no cap, not tax-deductible
     healthCeil: null,
-    notes: 'עלות מחייה נמוכה. ורשה — יחס איכות-מחיר גבוה מאוד. אין אמנת מניעת כפל מס עם ישראל.',
+    notes: '2026: PIT-0 על PLN 30K ראשון. 12% עד 120K, 32% מעל. ZUS cap PLN 282,600. אין אמנת מניעת כפל מס עם ישראל.',
+    lastVerified: '2026-01',
   },
 
   // ── CZECH REPUBLIC ────────────────────────────────────── source: PwC CZ 2025
@@ -232,38 +237,41 @@ const TAX_DATA = {
   IE: {
     flag: '🇮🇪', name: 'אירלנד', currency: 'EUR', usdRate: 0.92,
     brackets: [
-      { upTo: 42_000,   rate: 20 },
+      { upTo: 44_000,   rate: 20 },               // 2026: was 42,000 — Budget 2026 widened standard band
       { upTo: Infinity, rate: 40 },
     ],
-    credit: 3_550,          // personal tax credit + PAYE credit
-    socialSec: 4.0,         // PRSI employee class A
+    credit: 3_550,                                 // personal credit + PAYE credit (single)
+    socialSec: 4.2,                                // 2026 PRSI (Jan-Sep 4.2%, Oct-Dec 4.35% — avg 4.24%)
     socialCeil: null,
-    health: 8.0,            // USC (Universal Social Charge) — avg effective rate
+    health: 8.0,                                   // USC max band (avg effective ~4-5%)
     healthCeil: null,
-    notes: 'USC מדורג 0.5%–8% לפי הכנסה. מרכז טכנולוגי אירופי — Google, Meta, Apple.',
+    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. PRSI עלה ל-4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
+    lastVerified: '2026-01',
   },
 
-  // ── SWITZERLAND ────────────────────────────────── source: ESTV / PwC Switzerland 2025
+  // ── SWITZERLAND ──────────────────── source: ESTV 2026 + EY tax alert 2025/2026
   CH: {
     flag: '🇨🇭', name: 'שווייץ (ממוצע קנטון)', currency: 'CHF', usdRate: 1.12,
     brackets: [
-      { upTo: 18_000,   rate: 0    },
-      { upTo: 31_600,   rate: 8    },
-      { upTo: 41_400,   rate: 11.5 },
-      { upTo: 55_200,   rate: 13   },
-      { upTo: 72_500,   rate: 14   },
-      { upTo: 78_100,   rate: 14.5 },
-      { upTo: 103_600,  rate: 17   },
-      { upTo: 134_600,  rate: 21.5 },
-      { upTo: 176_000,  rate: 22.5 },
-      { upTo: Infinity, rate: 23   },
+      // Federal brackets only — cantonal/municipal added on top (varies wildly)
+      { upTo: 18_500,   rate: 0    },              // 2026 — slight inflation adjustment
+      { upTo: 33_200,   rate: 0.77 },              // bottom federal bracket
+      { upTo: 43_500,   rate: 0.88 },
+      { upTo: 58_000,   rate: 2.64 },
+      { upTo: 76_100,   rate: 2.97 },
+      { upTo: 82_000,   rate: 5.94 },
+      { upTo: 108_800,  rate: 6.6  },
+      { upTo: 141_500,  rate: 8.8  },
+      { upTo: 184_900,  rate: 11   },
+      { upTo: Infinity, rate: 13.2 },              // 11.5% special on income >CHF 793,400
     ],
     credit: 0,
-    socialSec: 5.3,         // AHV/IV/EO employee half
+    socialSec: 5.3,                                // AHV/IV/EO employee — no cap
     socialCeil: null,
-    health: 0,              // mandatory private insurance ~CHF 350–600/mo separately
+    health: 0,                                     // private insurance ~CHF 350-600/mo separately
     healthCeil: null,
-    notes: 'מס קנטונלי ומוניציפלי מוסיפים 10%-25% על הפדרלי. זוריך גבוה, זוג נמוך. ביטוח בריאות פרטי חובה ~CHF 450/חודש.',
+    notes: '2026: רק רמה פדרלית — מס קנטונלי + מוניציפלי מוסיפים 10-25% מעל. AHV/IV/EO 5.3% ללא תקרה. ביטוח בריאות פרטי חובה ~CHF 450/חודש.',
+    lastVerified: '2026-01',
   },
 
   // ── UK ───────────────────────────────────────── source: HMRC 2025/26 (Apr 2025)
@@ -397,22 +405,23 @@ const TAX_DATA = {
     notes: 'Thailand LTR Visa — עד 17% מס על הכנסה ממקורות חוץ. עלות מחיה נמוכה מאוד.',
   },
 
-  // ── GREECE ────────────────────────────────────────────── source: AADE 2025
+  // ── GREECE ────────────────────── source: AADE 2026 + Law 5246/2025 (effective Jan 2026)
   GR: {
     flag: '🇬🇷', name: 'יוון', currency: 'EUR', usdRate: 0.92,
     brackets: [
-      { upTo: 10_000,   rate: 9  },
-      { upTo: 20_000,   rate: 22 },
-      { upTo: 30_000,   rate: 28 },
-      { upTo: 40_000,   rate: 36 },
-      { upTo: Infinity, rate: 44 },
+      { upTo: 10_000,   rate: 9  },               // unchanged
+      { upTo: 20_000,   rate: 22 },               // unchanged
+      { upTo: 30_000,   rate: 28 },               // unchanged
+      { upTo: 40_000,   rate: 36 },               // unchanged
+      { upTo: Infinity, rate: 44 },               // unchanged
     ],
-    credit: 777,
-    socialSec: 13.87,       // IKA employee contributions
-    socialCeil: null,
-    health: 0,
+    credit: 777,                                   // employee credit for income up to €12K
+    socialSec: 13.87,                              // EFKA employee
+    socialCeil: 93_143,                            // 2026 EFKA cap (€7,761.94/mo annual)
+    health: 0,                                     // bundled in EFKA
     healthCeil: null,
-    notes: 'תוכנית עולים: 7% flat tax על הכנסה זרה ל-15 שנה. דיגיטל נומאד ויזה זמינה.',
+    notes: '2026: שיעורים ללא שינוי. EFKA cap €93,143/שנה. עובדים מתחת גיל 25 — 0% עד €20K. תוכנית עולים: 7% flat ל-15 שנה.',
+    lastVerified: '2026-01',
   },
 
   // ── ITALY ─────────────────────────────────── source: Agenzia delle Entrate 2026 + Budget Law 2026
@@ -556,10 +565,12 @@ const TAX_META = {
   updatedAt:   '2026-05-18',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   knownPending: [
-    'Israel credit-point value (₪2,928) — frozen for 2026; an unfreeze would raise it ~3-5%',
-    'Cyprus 2026 GHS rate adjustment (rumored)',
-    'US 2026 IRS inflation adjustments — published Nov 2025, may be slightly stale',
-    'Italy "Lavoratori Impatriati" — eligibility narrowed in 2024; depth of 70% exemption now harder to qualify for',
+    'Israel credit-point value (₪2,904) — frozen for 2026; an unfreeze would raise it ~3-5%',
+    'EE/CZ — not yet verified to 2026 (low priority — not on /p/salary-compare default mix)',
+    'CA/AU/BR/TH/SG — not yet verified to 2026 (low priority — niche destinations)',
+    'NL: arbeidskorting phase-out curve not modeled (uses fixed credit; impact ~€500-1500)',
+    'IE: USC tiered structure not modeled (uses 8% flat — overcharges low earners)',
+    'CH: brackets here are federal-only — actual tax includes cantonal/municipal (~10-25% addition)',
   ],
   sources: [
     'PwC Worldwide Tax Summaries 2025 — taxsummaries.pwc.com',
