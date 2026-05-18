@@ -66,6 +66,11 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 .r-row .delta{font:600 11px Inter,sans-serif;margin-top:2px;color:var(--muted)}
 .r-row .delta.pos{color:#6ee7b7}
 .r-row .delta.neg{color:#fca5a5}
+.r-row .pp{font:600 11.5px Inter,sans-serif;margin-top:3px;color:var(--muted)}
+.r-row .pp .pp-val{display:inline-block;padding:2px 8px;border-radius:99px;background:rgba(245,158,11,0.10);color:#fcd34d;font-family:'JetBrains Mono',Menlo,monospace;font-weight:700}
+.r-row .pp .pp-val.pos{background:rgba(16,185,129,0.12);color:#6ee7b7}
+.r-row .pp .pp-val.neg{background:rgba(239,68,68,0.10);color:#fca5a5}
+.r-row .pp .pp-baseline{color:var(--muted);font-style:italic;font-size:10.5px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* Loading */
@@ -309,6 +314,16 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 // (tax-haven status + Mediterranean lifestyle), TH for digital-nomad audience.
 const COUNTRY_CODES = ['IL','PT','CY','IT','AE','SG','US','DE','PL','GB','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
 
+// Cost-of-Living index — Tel Aviv = 100 (Numbeo 2025). Used to convert raw
+// net USD into real purchasing power "of Tel Aviv equivalent". Lower index
+// = cheaper, so net stretches further. Refresh quarterly from numbeo.com.
+const COL_DATA = {
+  IL: 100, PT: 65,  CY: 70,  IT: 80,  AE: 105, SG: 110,
+  US: 130, DE: 85,  PL: 50,  GB: 115, IE: 95,  GR: 60,
+  CA: 105, AU: 110, ES: 65,  FR: 90,  NL: 90,  CZ: 60,
+  BR: 50,  TH: 35,
+};
+
 // ── i18n ────────────────────────────────────────────────────────────────────
 const TR = {
   he: {
@@ -331,7 +346,9 @@ const TR = {
     footSource: 'מקור: PwC Worldwide Tax Summaries · OECD · KPMG · רשויות מס מקומיות (2025).',
     footLegal: 'הכלי הוא לצרכי מידע בלבד. AI עלול לטעות. אמת אצל יועץ מס מורשה.',
     monthlyNet: 'נטו לחודש',
-    effective: 'שיעור מס אפקטיבי',
+    effective: 'שיעור מס',
+    colShort: 'יוקר מחיה',
+    realPP: 'כוח קנייה אמיתי',
     vsIL: 'יותר מישראל',
     vsILneg: 'פחות מישראל',
     shareTextMine: 'בדקתי ב-WizeLife כמה משכורת לוקחים הביתה ב-20 מדינות. שווה לראות:',
@@ -392,7 +409,9 @@ const TR = {
     footSource: 'Sources: PwC Worldwide Tax Summaries · OECD · KPMG · local tax authorities (2025).',
     footLegal: 'For information only. AI can make mistakes. Verify with a licensed CPA.',
     monthlyNet: 'Monthly net',
-    effective: 'Effective tax rate',
+    effective: 'Tax rate',
+    colShort: 'CoL',
+    realPP: 'Real',
     vsIL: 'more than Israel',
     vsILneg: 'less than Israel',
     shareTextMine: 'I checked WizeLife — net take-home salary across 20 countries. Worth a look:',
@@ -482,6 +501,13 @@ function recalc() {
   const ilRow = rows.find(r => r.code === 'IL');
   const ilNetUSD = ilRow ? ilRow.netUSD : 0;
 
+  // Compute real purchasing power per row (net adjusted for cost of living)
+  rows.forEach(r => {
+    r.col = COL_DATA[r.code] || 100;
+    r.realPP = Math.round(r.netUSD / r.col * 100);
+  });
+  const ilRealPP = ilRow ? ilRow.realPP : 0;
+
   document.getElementById('results').innerHTML = rows.map(r => {
     const cls = (r.code === 'IL') ? 'r-row il' : 'r-row';
     const deltaUSD = r.netUSD - ilNetUSD;
@@ -489,11 +515,20 @@ function recalc() {
     const deltaCls = (r.code === 'IL') ? '' : (deltaUSD >= 0 ? 'pos' : 'neg');
     const deltaTxt = (r.code === 'IL') ? '— ' + TR[_lang].monthlyNet + ' —' :
       (deltaUSD >= 0 ? '+$' : '-$') + Math.abs(deltaUSD).toLocaleString() + ' (' + (deltaPct >= 0 ? '+' : '') + deltaPct + '% ' + (deltaUSD >= 0 ? TR[_lang].vsIL : TR[_lang].vsILneg) + ')';
+    // Real purchasing power line — net USD ÷ COL × 100 → "Tel Aviv-equivalent" $/mo
+    const ppDelta = r.realPP - ilRealPP;
+    const ppDeltaCls = (r.code === 'IL') ? '' : (ppDelta >= 0 ? 'pos' : 'neg');
+    const ppLabel = TR[_lang].realPP || 'Real';
+    const colLabel = TR[_lang].colShort || 'COL';
+    const ppLine = (r.code === 'IL')
+      ? `<span class="pp-baseline">— ${ppLabel} —</span>`
+      : `<span class="pp-val ${ppDeltaCls}">${ppLabel} $${r.realPP.toLocaleString()}</span>`;
     return `<div class="${cls}">
       <span class="flag">${r.flag}</span>
       <div class="info">
         <div class="name">${r.name}</div>
-        <div class="meta">${TR[_lang].effective}: ${r.effectiveRate}%</div>
+        <div class="meta">${TR[_lang].effective}: ${r.effectiveRate}% · ${colLabel} ${r.col}</div>
+        <div class="pp">${ppLine}</div>
       </div>
       <div class="nums">
         <div class="net">$${r.netUSD.toLocaleString()}</div>
