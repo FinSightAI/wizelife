@@ -364,10 +364,15 @@ recalc();
 function buildShareText() {
   const r = window.__last;
   const t = TR[_lang];
-  if (!r) return t.shareTextMine + '\nhttps://wizelife.ai/p/relocate-portugal.html';
+  if (!r) return t.shareTextMine;
+  // Avoid flag-emoji pairs (Israel/Portugal flags break on some platforms
+  // to �). Use country names + a generic arrow.
+  const IL = (_lang === 'he' ? 'ישראל' : 'Israel');
+  const PT = (_lang === 'he' ? 'פורטוגל' : 'Portugal');
+  const savingsLabel = (_lang === 'he' ? 'חיסכון ב-10 שנים' : '10-year savings');
   return t.shareTextMine + '\n\n'
-    + '🇮🇱→🇵🇹  ' + (_lang === 'he' ? 'חיסכון ב-10 שנים' : '10-year savings') + ': ' + fmtUSD(r.savings) + '\n'
-    + '\nhttps://wizelife.ai/p/relocate-portugal.html';
+    + IL + ' → ' + PT + '  · ' + savingsLabel + ': ' + fmtUSD(r.savings) + '\n';
+  // URL appended automatically by WizeShare helpers.
 }
 function shareTo(channel) {
   const text = buildShareText();

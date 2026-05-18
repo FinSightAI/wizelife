@@ -87,16 +87,25 @@
     } catch (_) { return false; }
   }
 
+  // If the caller already put the URL inside `text`, don't append it again —
+  // some pages assemble a multi-line share text that ends with the link.
+  // Without this guard the URL shows up twice in WhatsApp / email.
+  function textWithUrl(text, url) {
+    if (!url) return text;
+    if (text && text.indexOf(url) !== -1) return text;
+    return text + '\n' + url;
+  }
+
   function shareWhatsApp(opts) {
     const d = normalize(opts);
-    const url = 'https://wa.me/?text=' + encodeURIComponent(d.text + '\n' + d.url);
-    window.open(url, '_blank', 'noopener,noreferrer');
+    const u = 'https://wa.me/?text=' + encodeURIComponent(textWithUrl(d.text, d.url));
+    window.open(u, '_blank', 'noopener,noreferrer');
   }
 
   function shareEmail(opts) {
     const d = normalize(opts);
     const subj = encodeURIComponent(d.title);
-    const body = encodeURIComponent(d.text + '\n\n' + d.url);
+    const body = encodeURIComponent(textWithUrl(d.text, d.url).replace(/\n/g, '\n\n'));
     window.location.href = 'mailto:?subject=' + subj + '&body=' + body;
   }
 
