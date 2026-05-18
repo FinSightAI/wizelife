@@ -389,6 +389,40 @@ const TAX_DATA = {
     healthCeil: null,
     notes: 'תוכנית עולים: 7% flat tax על הכנסה זרה ל-15 שנה. דיגיטל נומאד ויזה זמינה.',
   },
+
+  // ── ITALY ─────────────────────────────────────────── source: Agenzia delle Entrate 2025
+  IT: {
+    flag: '🇮🇹', name: 'איטליה', currency: 'EUR', usdRate: 0.92,
+    brackets: [
+      { upTo: 28_000,   rate: 23 },
+      { upTo: 50_000,   rate: 35 },
+      { upTo: Infinity, rate: 43 },
+    ],
+    credit: 1_955,           // detrazione base lavoro dipendente (avg)
+    socialSec: 9.49,         // INPS employee contribution
+    socialCeil: 119_650,     // massimale contributivo 2025
+    health: 0,               // health funded through general taxation
+    healthCeil: null,
+    notes: 'משטר "Lavoratori Impatriati" — 50%-70% פטור על הכנסה ל-5 שנים לעולים חדשים. בנוסף Flat-tax €100K לעולים עתירי-נכסים.',
+  },
+
+  // ── CYPRUS ──────────────────────────────────────── source: Cyprus Tax Authority 2025
+  CY: {
+    flag: '🇨🇾', name: 'קפריסין', currency: 'EUR', usdRate: 0.92,
+    brackets: [
+      { upTo: 19_500,   rate: 0  },
+      { upTo: 28_000,   rate: 20 },
+      { upTo: 36_300,   rate: 25 },
+      { upTo: 60_000,   rate: 30 },
+      { upTo: Infinity, rate: 35 },
+    ],
+    credit: 0,
+    socialSec: 8.8,          // social insurance employee
+    socialCeil: 66_612,       // upper ceiling 2025
+    health: 2.65,            // GHS (Gesy)
+    healthCeil: 180_000,
+    notes: 'Non-Dom regime: 50% פטור ממס הכנסה ל-17 שנה לעולים חדשים מעל €55K. אחד ממשטרי המס הנדיבים באירופה.',
+  },
 };
 
 // ── Calculation engine ──────────────────────────────────────────────────────

@@ -303,7 +303,11 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 <script src="/js/tax-data.js"></script>
 <script src="/js/wize-share.js" defer></script>
 <script>
-const COUNTRY_CODES = ['IL','PT','EE','AE','SG','US','DE','PL','GB','CH','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
+// Country mix — Israeli-relevant destinations. Removed CH+EE (2026-05-18 per user
+// feedback — Switzerland too expensive to realistically consider, Estonia data
+// felt fringe). Added IT, CY, TH — IT/CY are real Israeli relocation patterns
+// (tax-haven status + Mediterranean lifestyle), TH for digital-nomad audience.
+const COUNTRY_CODES = ['IL','PT','CY','IT','AE','SG','US','DE','PL','GB','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
 
 // ── i18n ────────────────────────────────────────────────────────────────────
 const TR = {
@@ -631,16 +635,18 @@ async function handlePayslip(file) {
 const DEEP_META = {
   IL: { pensionMandatory: true,  studyFund: true,  healthFree: true,  socialName: 'בטל"א' },
   PT: { pensionMandatory: false, studyFund: false, healthFree: true,  socialName: 'Seg. Social', socialPct: 11 },
-  EE: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'EE social',   socialPct: 1.6 },
+  CY: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'Social Ins.', socialPct: 8.8 },
+  IT: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'INPS',        socialPct: 9.49 },
   AE: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: '—',           socialPct: 0,  healthCost: 200 },
   SG: { pensionMandatory: true,  studyFund: false, healthFree: false, socialName: 'CPF',         socialPct: 20, healthCost: 100 },
   US: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: 'FICA',        socialPct: 7.65, healthCost: 500 },
   DE: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'Sozialvers.', socialPct: 20 },
   GB: { pensionMandatory: false, studyFund: false, healthFree: true,  socialName: 'NI',          socialPct: 12 },
-  CH: { pensionMandatory: true,  studyFund: false, healthFree: false, socialName: 'AHV',         socialPct: 10, healthCost: 400 },
   IE: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: 'PRSI',        socialPct: 4,  healthCost: 200 },
+  TH: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: '—',           socialPct: 5,  healthCost: 80  },
+  GR: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'IKA',         socialPct: 13.87 },
 };
-const TOP5_CODES = ['IL','PT','EE','AE','SG','US','DE','GB','CH','IE'];
+const TOP5_CODES = ['IL','PT','CY','IT','AE','SG','US','DE','GB','IE','TH','GR'];
 
 function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
   // Israel: subtract employee pension + study fund (real take-home including
