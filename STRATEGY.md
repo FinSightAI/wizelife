@@ -1,10 +1,36 @@
 # WizeLife — Strategy Document
 
-> **Last updated:** 2026-05-17 (Session 8)
+> **Last updated:** 2026-05-18 (Session 9)
 > **Status:** Pre-launch, pre-revenue. 6-app suite live. Solo founder.
 > **North-star metric:** First 1,000 active users.
 
 This doc is updated by Claude. Open it whenever you want to recalibrate priorities, then ask Claude to refresh it. Treat sections marked 🟢 as "doing now," 🟡 as "next 2-4 weeks," 🔴 as "after first 100 paying users."
+
+---
+
+## 0. What shipped in Session 9 (today, 2026-05-18)
+
+Decision-quality WizeTax now lives — relocation funnel is real product, not headline calculator.
+
+| What | Where | Why it matters |
+|---|---|---|
+| Swapped country mix (added IT + CY, removed CH + EE) | `/p/salary-compare` | IT "Lavoratori Impatriati" + CY Non-Dom are real Israeli relocation patterns |
+| Deep-analysis modal on landing | `/p/salary-compare` | "Want real picture?" CTA → manual entry (5 fields) or **payslip OCR client-side** (Tesseract.js, payslip never leaves device) → top-5 with REAL net |
+| `/social-compare` (WizeTax) | mastermove.vercel.app/social-compare | 8 countries side-by-side: Bituach Leumi vs Segurança Social vs FICA vs INPS vs CPF — what each covers, what you actually get at retirement |
+| `/relocation-analyzer` (WizeTax) | mastermove.vercel.app/relocation-analyzer | Full picture: net + COL (Numbeo 2025 indices) + 10-year cumulative chart (inline SVG, 0 deps) + treaty column + Quality of Life + lifetime pension |
+| `/exit-tax-calculator` (WizeTax) | mastermove.vercel.app/exit-tax-calculator | Section 100A calculator — 6 asset classes + cost basis → estimated exit tax + tie-back to relocation savings |
+
+**Funnel now real:**
+```
+[Public viral]                     [Pro paid depth]
+/p/salary-compare    →    sign-up    →    /relocation-analyzer
+       │                                          │
+       │                                          ├── /social-compare
+       │                                          ├── /exit-tax-calculator
+       │                                          └── /advisor (chat)
+       │
+       └─ "Deep analysis" modal (payslip OCR + manual) ─→ sign-up gate
+```
 
 ---
 
@@ -61,16 +87,17 @@ Never gate the public landing pages behind signup — they're the top of the fun
 ## 3. Next 7 days — distribution
 
 > Reference: [reference_growth_strategy](https://github.com/FinSightAI/wizelife/blob/main/STRATEGY.md) and Claude's saved memory.
-> User rejected FB/WhatsApp **group** posting — admins ban, members report. The list below avoids that entirely.
+> User rejected FB/WhatsApp **group** posting — admins ban, members report.
+> **Show HN draft + canned responses live at `SHOW-HN-PLAYBOOK.md` in this repo.**
 
 | Day | Action | Time | Expected | Status |
 |---|---|---|---|---|
-| 🟢 1 | **Build-in-public post #1 on X** ("I built X" + screenshot of `/p/salary-compare`) | 30 min | 30-200 visits | ☐ |
-| 🟢 1-2 | **50 personal WhatsApp messages 1:1** to friends — NOT in groups. Different message per relationship. | 1-2h | 30-50 first users | ☐ |
-| 🟢 3-4 | **Show HN submission** of `/p/salary-compare.html`. Title: "Show HN: Net take-home salary across 20 countries, no signup". Submit Tue or Thu 17:00-19:00 Israel time. | 30 min + 2h of comment replies | 500-5,000 if front page | ☐ |
-| 🟢 5-7 | **Build-in-public posts #2-4 on X** (1 every 2 days) — insight, lesson learned, numbers | 30 min each | 50-300 per post cumulatively | ☐ |
-| 🟡 7-14 | **Indie Hackers post** with full story | 1h | 100-500 | ☐ |
-| 🟡 14-21 | **Product Hunt launch** prep + execute | 1 day prep | 300-2,000 spike | ☐ |
+| 🟢 Today (Sun 18/5) | **Build-in-public post #1 on X** ("I built X" + screenshot of `/p/salary-compare`) | 30 min | 30-200 visits | ☐ |
+| 🟢 Sun-Mon | **50 personal WhatsApp messages 1:1** to friends — NOT in groups. Different message per relationship. | 1-2h | 30-50 first users | ☐ |
+| 🟢 **Tue 20/5 17:00-19:00** | **Show HN submission** of `/p/salary-compare.html`. Title: "Show HN: Compare salary in 20 countries, with client-side payslip OCR" — see `SHOW-HN-PLAYBOOK.md` for full body + canned replies. | 30 min + 2h on standby | 500-5,000 if front page | ☐ |
+| 🟢 Wed-Sat | **Build-in-public posts #2-4 on X** (1 every 2 days) — insight, lesson learned, numbers | 30 min each | 50-300 per post cumulatively | ☐ |
+| 🟡 +7-14d | **Indie Hackers post** with full story | 1h | 100-500 | ☐ |
+| 🟡 +14-21d | **Product Hunt launch** prep + execute (now with the depth tools = real product) | 1 day prep | 300-2,000 spike | ☐ |
 
 **Show HN headline candidates (pick one):**
 1. "Show HN: Net take-home salary across 20 countries, no signup" — clear value, HN-friendly
@@ -151,6 +178,10 @@ Built in Session 8 but not yet connected end-to-end:
 | 2026-05-17 | Keep free tier despite landing pages | Each free user costs cents; one paid covers 33; conversion 5-10× higher with free funnel |
 | 2026-05-17 | De-emphasize YOLO on landing | Premium tier needs data first; show on dashboard only |
 | 2026-05-17 | Landing pages = headline comparison; Pro = real comparison (pension + study fund + health + cost-of-living) | User insight — public tool needs to be accurate-but-incomplete so the depth gap pulls users to Pro. Honesty + funnel in one move. |
+| 2026-05-18 | Build /social-compare + /relocation-analyzer + /exit-tax-calculator in WizeTax instead of cramming on landing | Public landing = viral hook; depth lives in app behind sign-up. Show HN can show ALL of it as a coherent product. |
+| 2026-05-18 | Payslip OCR runs client-side (Tesseract.js); payslip never leaves device | Trust barrier blocks ~30% of upload conversions. Client-side OCR = "your payslip never touches my server" = HN-friendly tech angle. |
+| 2026-05-18 | Country mix updated: IT + CY in, CH + EE out | Italy "Lavoratori Impatriati" + Cyprus Non-Dom are real Israeli relocation patterns; Swiss canton-avg too imprecise; Estonia fringe. |
+| 2026-05-18 | Section 100A exit-tax calculator separated as own page | Stand-alone tool — different UX (asset inputs vs gross salary) deserves dedicated page. Links back from /relocation-analyzer warning panel. |
 | 2026-05-17 | Phase 1 security autonomous, Phase 2 PRs, Phase 3 user-clicks | Pure-additive items zero-risk; PRs let user review; click-guide for items needing user's Cloudflare/GCP access |
 | 2026-05-17 | gateAction technical built, lawyer-review pending | Technical wiring done; legal text needs Israeli SaaS lawyer |
 
