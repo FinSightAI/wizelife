@@ -87,39 +87,41 @@ const TAX_DATA = {
     lastVerified: '2026-01',
   },
 
-  // ── GERMANY ──────────────────────────────────────── source: PwC Germany 2025, §32a EStG
+  // ── GERMANY ───────────────────────────── source: deutsche-rentenversicherung.de + §32a EStG 2026
   DE: {
     flag: '🇩🇪', name: 'גרמניה', currency: 'EUR', usdRate: 0.92,
     brackets: [
-      { upTo: 12_096,   rate: 0  },
-      { upTo: 68_429,   rate: 42 }, // progressive 14%→42% simplified to midpoint
+      { upTo: 12_348,   rate: 0  },            // Grundfreibetrag 2026 (was 12,096)
+      { upTo: 68_480,   rate: 42 },            // progressive 14%→42% simplified to midpoint
       { upTo: 277_826,  rate: 42 },
       { upTo: Infinity, rate: 45 },
     ],
     credit: 0,
-    socialSec: 9.3,         // Rentenversicherung employee half
-    socialCeil: 96_600,     // 2025 Beitragsbemessungsgrenze West
-    health: 7.3,            // Krankenversicherung employee half (avg Zusatzbeitrag ~1.7%)
+    socialSec: 9.3,                            // Rentenversicherung employee half
+    socialCeil: 96_600,
+    health: 7.3,                               // Krankenversicherung employee half
     healthCeil: 66_150,
-    notes: 'מס Kirchensteuer (מס כנסייה) ~8-9% מהמס — ניתן לביטול. Solidaritätszuschlag בוטל ל-90% מהמשלמים.',
+    notes: '2026: Grundfreibetrag עלה ל-€12,348. Kirchensteuer ~8-9% מהמס. Solidaritätszuschlag בוטל ל-90%.',
+    lastVerified: '2026-01',
   },
 
-  // ── FRANCE ──────────────────────────────────────────────── source: PwC France 2025
+  // ── FRANCE ────────────────────────── source: PwC France 2026 + Loi de Finances 2026
   FR: {
     flag: '🇫🇷', name: 'צרפת', currency: 'EUR', usdRate: 0.92,
     brackets: [
-      { upTo: 11_294,   rate: 0  },
-      { upTo: 28_797,   rate: 11 },
-      { upTo: 82_341,   rate: 30 },
-      { upTo: 177_106,  rate: 41 },
-      { upTo: Infinity, rate: 45 },
+      { upTo: 11_600,   rate: 0  },            // 2026: was 11,294 (+0.9% inflation)
+      { upTo: 29_579,   rate: 11 },            // 2026: was 28,797
+      { upTo: 84_577,   rate: 30 },            // 2026: was 82,341
+      { upTo: 181_917,  rate: 41 },            // 2026: was 177,106
+      { upTo: Infinity, rate: 45 },            // unchanged
     ],
     credit: 0,
-    socialSec: 6.9,         // employee social contributions (avg, excl health)
+    socialSec: 6.9,
     socialCeil: null,
-    health: 0,              // bundled in cotisations
+    health: 0,
     healthCeil: null,
-    notes: 'Prélèvement à la source. Cotisations salariales כוללות בריאות, פנסיה, אבטלה — סה"כ כ-22%-23%.',
+    notes: '2026: סיפי המדרגות עלו 0.9% (אינפלציה). Prélèvement à la source. Cotisations 22%-23%. PFU (רווחי הון) 30%→31.4%.',
+    lastVerified: '2026-01',
   },
 
   // ── NETHERLANDS ──────────────────────────────────────── source: Belastingdienst 2025
@@ -275,10 +277,11 @@ const TAX_DATA = {
     ],
     credit: 0,
     socialSec: 8.0,         // Class 1 NI employee (8% on £12,570–£50,270, 2% above)
-    socialCeil: null,       // simplified to 8% flat
+    socialCeil: null,
     health: 0,
     healthCeil: null,
-    notes: 'Personal allowance נעלמת בהדרגה מעל £100k. שנת מס אפריל–מרץ.',
+    notes: '2026/27: ללא שינוי מ-2025/26 — Personal allowance £12,570 (קפוא עד 2031). NHS = ללא פרמיית בריאות.',
+    lastVerified: '2026-01',
   },
 
   // ── UAE ──────────────────────────────────────────────────────── source: MoF UAE
@@ -412,20 +415,21 @@ const TAX_DATA = {
     notes: 'תוכנית עולים: 7% flat tax על הכנסה זרה ל-15 שנה. דיגיטל נומאד ויזה זמינה.',
   },
 
-  // ── ITALY ─────────────────────────────────────────── source: Agenzia delle Entrate 2025
+  // ── ITALY ─────────────────────────────────── source: Agenzia delle Entrate 2026 + Budget Law 2026
   IT: {
     flag: '🇮🇹', name: 'איטליה', currency: 'EUR', usdRate: 0.92,
     brackets: [
-      { upTo: 28_000,   rate: 23 },
-      { upTo: 50_000,   rate: 35 },
-      { upTo: Infinity, rate: 43 },
+      { upTo: 28_000,   rate: 23 },             // unchanged
+      { upTo: 50_000,   rate: 33 },             // 2026: was 35% — Budget Law dropped 2pp on this band
+      { upTo: Infinity, rate: 43 },             // unchanged
     ],
-    credit: 1_955,           // detrazione base lavoro dipendente (avg)
-    socialSec: 9.49,         // INPS employee contribution
-    socialCeil: 119_650,     // massimale contributivo 2025
-    health: 0,               // health funded through general taxation
+    credit: 1_955,                              // detrazione base lavoro dipendente (avg)
+    socialSec: 9.49,                            // INPS employee contribution
+    socialCeil: 119_650,
+    health: 0,                                  // health funded through general taxation
     healthCeil: null,
-    notes: 'משטר "Lavoratori Impatriati" — 50%-70% פטור על הכנסה ל-5 שנים לעולים חדשים. בנוסף Flat-tax €100K לעולים עתירי-נכסים.',
+    notes: '2026: מדרגת €28K-€50K ירדה 35%→33% (חיסכון עד €440/שנה). "Lavoratori Impatriati" 2024+: רק 50% פטור (לא 70%), cap €600K, 5 שנים. INPS חייב ללא תלות.',
+    lastVerified: '2026-01',
   },
 
   // ── CYPRUS ──────────────────────────────────── source: Cyprus Tax Authority 2026 + 2026 tax reform
