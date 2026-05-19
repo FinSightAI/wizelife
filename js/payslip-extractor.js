@@ -19,19 +19,27 @@ window.PayslipExtractor = (function () {
     // Each entry: [field, [hebrew or english labels…]]
     // Order matters — most-specific first.
     const FIELD_PATTERNS = [
-        // Gross — try MANY variants (Hebrew gershayim ״ vs ASCII ", short
-        // labels, alternative spellings). Same coverage as WizeMoney's
-        // image-import.js which has been battle-tested on real payslips.
+        // Gross — many variants. Real Israeli payslips often have MULTIPLE
+        // 'ברוטו' lines (למס, לביטוח לאומי, לפנסיה, לקרן השתלמות). For
+        // headline "gross salary" we want the LARGEST number found — that's
+        // the total gross before any deduction. extractFields() handles
+        // max-over-matches when field name is 'gross'.
         ['gross',            [
-            /סה[\"״]?כ\s*ברוטו/,        // סה"כ ברוטו / סה״כ ברוטו / סהכ ברוטו (OCR may drop the quote)
-            /משכורת\s*ברוטו/,            // משכורת ברוטו
-            /שכר\s*ברוטו/,              // שכר ברוטו
-            /ברוטו\s*למס/,              // ברוטו למס
-            /סה[\"״]?כ\s*תשלומים/,      // סה"כ תשלומים
-            /סך[־\-]?כל\s*ה?תשלומים/,   // סך-כל התשלומים / סךכל התשלומים
+            /סה[\"״]?כ\s*ברוטו/,                // סה"כ ברוטו / סה״כ ברוטו
+            /משכורת\s*ברוטו/,
+            /שכר\s*ברוטו/,
+            /ברוטו\s*למס\s*הכנסה/,             // ברוטו למס הכנסה
+            /ברוטו\s*למס/,                     // ברוטו למס (short)
+            /ברוטו\s*לביטוח\s*לאומי/,           // ברוטו לביטוח לאומי
+            /ברוטו\s*ב[\.\"]?ל[\.\"]?/,         // ברוטו ב.ל. / ברוטו בל
+            /ברוטו\s*לפנסיה/,                  // ברוטו לפנסיה
+            /ברוטו\s*לקרן\s*השתלמות/,           // ברוטו לקרן השתלמות
+            /ברוטו\s*לחישוב/,                   // ברוטו לחישוב
+            /סה[\"״]?כ\s*תשלומים/,             // סה"כ תשלומים
+            /סך[־\-]?כל\s*ה?תשלומים/,          // סך-כל התשלומים
             /Gross\s*Pay/i,
             /Gross\s*Salary/i,
-            /\bברוטו\b/,                // last resort — any standalone "ברוטו"
+            /\bברוטו\b/,                       // last resort
         ]],
         ['net',              [
             /נטו\s*לתשלום/,
@@ -134,13 +142,13 @@ window.PayslipExtractor = (function () {
         const result = { raw_text: text };
         const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 
-        function findAmountNearAnyPattern(patterns, min, max) {
+        function findAmountNearAnyPattern(patterns, min, max, takeMax) {
             min = min || 0;
             max = max || Infinity;
+            const collected = [];
             for (const pat of patterns) {
                 for (let i = 0; i < lines.length; i++) {
                     if (!pat.test(lines[i])) continue;
-                    // Same line + neighbors — same as WizeMoney
                     const candidates = [lines[i]];
                     if (i + 1 < lines.length) candidates.push(lines[i + 1]);
                     if (i - 1 >= 0)            candidates.push(lines[i - 1]);
@@ -149,11 +157,15 @@ window.PayslipExtractor = (function () {
                         if (!nums) continue;
                         for (const n of nums) {
                             const val = parseNumber(n);
-                            if (val !== null && val >= min && val <= max) return val;
+                            if (val !== null && val >= min && val <= max) {
+                                if (!takeMax) return val;        // first-match (default)
+                                collected.push(val);             // keep collecting for max
+                            }
                         }
                     }
                 }
             }
+            if (takeMax && collected.length) return Math.max(...collected);
             return null;
         }
 
@@ -175,7 +187,11 @@ window.PayslipExtractor = (function () {
         let confidence = 0;
         for (const [field, patterns] of FIELD_PATTERNS) {
             const [min, max] = BOUNDS[field] || [0, Infinity];
-            const v = findAmountNearAnyPattern(patterns, min, max);
+            // For 'gross' + 'net' take the MAX over all matches — payslips
+            // often have multiple "ברוטו" lines (למס/לב״ל/לפנסיה) and the
+            // headline gross is the highest. Other fields use first-match.
+            const takeMax = field === 'gross' || field === 'net';
+            const v = findAmountNearAnyPattern(patterns, min, max, takeMax);
             if (v !== null) {
                 result[field] = v;
                 confidence++;
