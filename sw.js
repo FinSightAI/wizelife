@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v151';
+const CACHE = 'wizelife-v152';
 const SHELL = [
   // Core flow
   '/index.html',
@@ -71,7 +71,17 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fresh = fetch(e.request).then(res => {
-        if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        // Clone SYNCHRONOUSLY before returning res to the page. If we cloned
+        // inside the `.then(c => c.put(e.request, res.clone()))` callback,
+        // the page may have already started reading `res` body by the time
+        // the cache.open() promise resolves — making the response uncloneable
+        // and throwing "Response body is already used".
+        // Bug surfaced 2026-05-19 on payslip-extractor.js → pdf.js → Tesseract
+        // chain when the SW corrupted the script load.
+        if (res.ok) {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
         return res;
       }).catch(() => cached);
       return cached || fresh;
