@@ -19,7 +19,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { TAX_DATA, calcNet, TAX_META } = require('../js/tax-data.js');
+const { TAX_DATA, calcNet, TAX_META, REGIMES } = require('../js/tax-data.js');
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -200,12 +200,18 @@ test('Edge: gross 0 — no NaN, all zeros', () => {
   });
 });
 
-test('Edge: very high income (₪500K/mo) — no NaN, effective rate in [10, 60]', () => {
+test('Edge: very high income (₪500K/mo) — no NaN, effective rate sane', () => {
+  // Zero-income-tax jurisdictions: AE (0% tax + 0% SS), MC (0% tax + ~13% SS capped low)
+  const ZERO_TAX_HAVENS = new Set(['AE', 'MC']);
   Object.keys(TAX_DATA).forEach(code => {
     const r = calcNet(code, 500000, 'single', 0);
     assert.ok(r, `${code}@500K: returned null`);
     assert.ok(!isNaN(r.netUSD), `${code}@500K: netUSD is NaN`);
-    if (code !== 'AE') {
+    if (ZERO_TAX_HAVENS.has(code)) {
+      // Tax havens: effective rate just needs to be in [0, 20]
+      assert.ok(r.effectiveRate >= 0 && r.effectiveRate <= 20,
+        `${code}@500K: tax-haven effective rate ${r.effectiveRate}% out of [0, 20] range`);
+    } else {
       assert.ok(r.effectiveRate >= 10 && r.effectiveRate <= 60,
         `${code}@500K: effective rate ${r.effectiveRate}% out of [10, 60] range`);
     }
@@ -233,4 +239,105 @@ test('TAX_META: matches expected shape', () => {
   assert.equal(TAX_META.validYear, 2026, 'validYear should be 2026 after today\'s update');
   assert.ok(Array.isArray(TAX_META.sources) && TAX_META.sources.length > 0, 'sources missing');
   assert.ok(Array.isArray(TAX_META.knownPending), 'knownPending should be array');
+});
+
+// ─── Special tax regimes for new residents ────────────────────────────────
+
+test('Regime PT.nhr: 20% flat saves vs standard PT brackets', () => {
+  const standard = calcNet('PT', 25000, 'single', 0);
+  const nhr      = calcNet('PT', 25000, 'single', 0, 'PT.nhr');
+  assert.ok(nhr.netUSD > standard.netUSD,
+    `PT.nhr should give higher net than standard (${nhr.netUSD} vs ${standard.netUSD})`);
+  assert.ok(nhr.regime, 'PT.nhr should populate regime field');
+  assert.ok(nhr.regime.flatRate === 20, 'PT.nhr flat rate must be 20%');
+});
+
+test('Regime CY.nondom: 50% exemption — significantly better than standard', () => {
+  const standard = calcNet('CY', 25000, 'single', 0);
+  const nondom   = calcNet('CY', 25000, 'single', 0, 'CY.nondom');
+  assert.ok(nondom.netUSD > standard.netUSD,
+    `CY.nondom should beat standard (${nondom.netUSD} vs ${standard.netUSD})`);
+  // 50% exemption — expect ~30-50% more net
+  const delta = (nondom.netUSD / standard.netUSD - 1) * 100;
+  assert.ok(delta > 15, `CY.nondom net should be ≥15% above standard, got ${delta.toFixed(1)}%`);
+});
+
+test('Regime IT.impatriati: 50% exemption — at least 30% better', () => {
+  const standard = calcNet('IT', 25000, 'single', 0);
+  const impat    = calcNet('IT', 25000, 'single', 0, 'IT.impatriati');
+  assert.ok(impat.netUSD > standard.netUSD, 'IT.impatriati should beat standard');
+});
+
+test('Regime ES.beckham: 24% flat — saves vs Spanish progressive', () => {
+  const standard = calcNet('ES', 25000, 'single', 0);
+  const beck     = calcNet('ES', 25000, 'single', 0, 'ES.beckham');
+  assert.ok(beck.netUSD > standard.netUSD, 'ES.beckham should beat standard');
+  assert.equal(beck.regime.flatRate, 24, 'ES.beckham flat rate must be 24%');
+});
+
+test('Regime IL.toshav-hozer-vatik: foreign-exempt = zero income tax', () => {
+  const r = calcNet('IL', 25000, 'single', 0, 'IL.toshav-hozer-vatik');
+  assert.equal(r.incomeTax, 0, 'Toshav Hozer Vatik should pay 0 income tax (foreign-exempt)');
+});
+
+test('Regime GE.smallbiz: 1% flat — way under standard 20%', () => {
+  const standard = calcNet('GE', 25000, 'single', 0);
+  const sbiz     = calcNet('GE', 25000, 'single', 0, 'GE.smallbiz');
+  // 1% vs 20% = ~19% point difference in effective rate on income portion
+  assert.ok(sbiz.netUSD > standard.netUSD, 'GE.smallbiz should beat standard');
+});
+
+test('Regime: invalid key gracefully ignored', () => {
+  const a = calcNet('PT', 25000, 'single', 0, 'INVALID.nope');
+  const b = calcNet('PT', 25000, 'single', 0);
+  assert.equal(a.netUSD, b.netUSD, 'invalid regime should fall through to standard calc');
+  assert.equal(a.regime, null, 'invalid regime: regime field must be null');
+});
+
+test('Regime: mismatched country gracefully ignored', () => {
+  // Trying to apply PT.nhr while calculating CY — should not apply
+  const a = calcNet('CY', 25000, 'single', 0, 'PT.nhr');
+  const b = calcNet('CY', 25000, 'single', 0);
+  assert.equal(a.netUSD, b.netUSD, 'wrong-country regime key should be ignored');
+});
+
+test('REGIMES catalog: all keys are well-formed', () => {
+  Object.keys(REGIMES).forEach(k => {
+    const [country, _name] = k.split('.');
+    assert.ok(country.length === 2, `regime key ${k}: country prefix must be 2 chars`);
+    assert.ok(TAX_DATA[country], `regime ${k}: country ${country} not in TAX_DATA`);
+    const r = REGIMES[k];
+    assert.ok(r.label && r.label.he && r.label.en, `regime ${k}: label.he and label.en required`);
+    assert.ok(['flat-rate','exemption-pct','foreign-exempt','min-tax'].includes(r.type),
+      `regime ${k}: unknown type "${r.type}"`);
+  });
+});
+
+// ─── New countries (Malta, Bulgaria, Romania, Monaco, Georgia) ────────────
+
+test('Malta: typical (₪25K/mo)', () => {
+  const r = calc('MT', 25000);
+  assert.ok(r.netUSD > 4000 && r.netUSD < 7000, `MT@25K netUSD ${r.netUSD} out of range`);
+});
+
+test('Bulgaria: 10% flat tax — high net', () => {
+  const r = calc('BG', 25000);
+  assert.ok(r.netUSD > 5000, `BG@25K net should be high (10% tax), got ${r.netUSD}`);
+});
+
+test('Monaco: ~0% income tax — only social', () => {
+  const r = calc('MC', 25000);
+  assert.equal(r.incomeTax, 0, 'MC income tax should be 0');
+});
+
+test('Georgia: 20% flat standard', () => {
+  const r = calc('GE', 25000);
+  assert.ok(r.incomeTax > 0, 'GE@25K should have non-zero tax (20% flat)');
+});
+
+test('Romania: high combined social burden (~35%)', () => {
+  const r = calc('RO', 25000);
+  // CAS 25% + CASS 10% = 35% social burden
+  const socialEffective = (r.socialSec + r.health) / (r.grossLocal) * 100;
+  assert.ok(socialEffective > 25, `RO social burden should be high (~35%), got ${socialEffective.toFixed(1)}%`);
 });

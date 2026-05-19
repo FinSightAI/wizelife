@@ -441,6 +441,84 @@ const TAX_DATA = {
     lastVerified: '2026-01',
   },
 
+  // ── MALTA ──────────────────────────────── source: PwC Malta 2026 + Mercans alert Jan 2026
+  MT: {
+    flag: '🇲🇹', name: 'מלטה', currency: 'EUR', usdRate: 0.92,
+    brackets: [
+      { upTo: 12_000,   rate: 0  },
+      { upTo: 16_000,   rate: 15 },
+      { upTo: 60_000,   rate: 25 },
+      { upTo: Infinity, rate: 35 },
+    ],
+    credit: 0,
+    socialSec: 10,                              // employee SSC — capped
+    socialCeil: 29_084,                          // 2026 insurable wage ceiling
+    health: 0,                                   // bundled into general taxation
+    healthCeil: null,
+    notes: '2026: 0%/15%/25%/35% מדרגות. אנגלית רשמית. Non-Dom remittance מאפשר 0% על הכנסה זרה לא-remitted (מינ׳ €5,000 מס שנתי). קהילה ישראלית גדולה ב-Sliema.',
+    lastVerified: '2026-01',
+  },
+
+  // ── BULGARIA ──────────────────────────────── source: PwC Bulgaria 2026 + TaxRavens 2026
+  BG: {
+    flag: '🇧🇬', name: 'בולגריה', currency: 'BGN', usdRate: 0.55,
+    brackets: [
+      { upTo: Infinity, rate: 10 },              // flat 10% — מהנמוכים ב-EU
+    ],
+    credit: 0,
+    socialSec: 13.78,                            // employee social security
+    socialCeil: 46_200,                          // BGN 3,850/mo × 12
+    health: 0,                                   // bundled into social
+    healthCeil: null,
+    notes: '2026: 10% flat — מהנמוכים ב-EU. סופיה תעשייית tech צומחת. גישת EU מלאה. עלות מחיה ~50% מתל-אביב.',
+    lastVerified: '2026-01',
+  },
+
+  // ── ROMANIA ────────────────────────────── source: ANAF Romania 2026 + countrytaxcalc 2026
+  RO: {
+    flag: '🇷🇴', name: 'רומניה', currency: 'RON', usdRate: 0.22,
+    brackets: [
+      { upTo: Infinity, rate: 10 },              // flat 10% PIT
+    ],
+    credit: 0,
+    socialSec: 25,                               // CAS pension 25% (very high)
+    socialCeil: null,
+    health: 10,                                  // CASS health 10% (no cap, not deductible)
+    healthCeil: null,
+    notes: '2026: 10% flat PIT, אבל ביטוח לאומי גבוה (CAS 25% + CASS 10% = 35% סה״כ). Tech hub בבוקרשט וקלוז׳ — אנגלית רווחת בתעשייה.',
+    lastVerified: '2026-01',
+  },
+
+  // ── MONACO ──────────────────────────────────────── source: Monaco gov + PwC 2026
+  MC: {
+    flag: '🇲🇨', name: 'מונקו', currency: 'EUR', usdRate: 0.92,
+    brackets: [
+      { upTo: Infinity, rate: 0 },               // 0% income tax for residents (non-French)
+    ],
+    credit: 0,
+    socialSec: 13,                               // approximate employee SS
+    socialCeil: 95_000,                          // estimate
+    health: 0,
+    healthCeil: null,
+    notes: 'מס הכנסה 0% למתושבים (לא-צרפתים). דורש 183+ ימי תושבות + פיקדון €500K-1M. למיליונרים בלבד. גישה ל-EU/Schengen.',
+    lastVerified: '2026-01',
+  },
+
+  // ── GEORGIA ────────────────────────────────── source: Revenue Service Georgia 2026
+  GE: {
+    flag: '🇬🇪', name: 'גאורגיה', currency: 'GEL', usdRate: 0.36,
+    brackets: [
+      { upTo: Infinity, rate: 20 },              // 20% flat standard
+    ],
+    credit: 0,
+    socialSec: 2,                                // employee pension contribution
+    socialCeil: null,
+    health: 0,                                   // no employee health contribution
+    healthCeil: null,
+    notes: '20% flat regular, אבל **1% Small Business Entrepreneur status** עד $200K הכנסה שנתית — מצוין לעצמאי / startup founder. Easy residency, growing Israeli community.',
+    lastVerified: '2026-01',
+  },
+
   // ── CYPRUS ──────────────────────────────────── source: Cyprus Tax Authority 2026 + 2026 tax reform
   CY: {
     flag: '🇨🇾', name: 'קפריסין', currency: 'EUR', usdRate: 0.92,
@@ -463,17 +541,79 @@ const TAX_DATA = {
   },
 };
 
+// ── Special tax regimes for new residents / returnees ──────────────────────
+// Each regime modifies how calcNet computes tax for a country, IF the user
+// declares they qualify. Used by calcNet(code, gross, marital, children, regimeKey).
+//
+// Types:
+//   - 'flat-rate'    — replace bracket calc with a single flat rate (with optional cap)
+//   - 'exemption-pct'— reduce taxable income by N%, then apply normal brackets (with optional cap)
+//   - 'foreign-exempt' — 0% income tax (assumes income is foreign-sourced)
+//   - 'min-tax'      — overrides tax to a flat minimum (Malta non-dom remittance basis)
+const REGIMES = {
+  // Portugal NHR/IFICI — 20% on Portuguese employment, foreign income exempt
+  'PT.nhr': {
+    label: { he: 'NHR/IFICI (עולה חדש, 10 שנים)', en: 'NHR/IFICI (new resident, 10 yrs)' },
+    eligibility: { he: 'מקצוע מועיל (tech/research) + לא תושב PT 5 שנים', en: 'High-skilled profession + not PT resident in last 5 yrs' },
+    type: 'flat-rate', flatRate: 20, durationYrs: 10,
+  },
+  // Cyprus Non-Dom — 50% exemption on employment income >€55K
+  'CY.nondom': {
+    label: { he: 'Non-Dom 50% פטור (17 שנים)', en: 'Non-Dom 50% exemption (17 yrs)' },
+    eligibility: { he: 'משכורת >€55K + לא תושב CY 15 שנים', en: 'Salary >€55K + not CY resident in last 15 yrs' },
+    type: 'exemption-pct', exemptionPct: 50, durationYrs: 17, minSalaryEUR: 55_000,
+  },
+  // Italy Lavoratori Impatriati — 50% exemption, cap €600K, 5 years
+  'IT.impatriati': {
+    label: { he: 'Lavoratori Impatriati (5 שנים)', en: 'Lavoratori Impatriati (5 yrs)' },
+    eligibility: { he: '"highly qualified" + לא תושב IT 3 שנים + מחויב 5 שנים', en: 'High-skilled + not IT resident 3 yrs + 5-yr commitment' },
+    type: 'exemption-pct', exemptionPct: 50, durationYrs: 5, capEUR: 600_000,
+  },
+  // Spain Beckham Law — 24% flat up to €600K
+  'ES.beckham': {
+    label: { he: 'Beckham Law 24% flat (6 שנים)', en: 'Beckham Law 24% flat (6 yrs)' },
+    eligibility: { he: 'לא תושב ES 5 שנים + Modelo 149 תוך 6 חודשים', en: 'Not ES resident 5 yrs + Modelo 149 within 6 months' },
+    type: 'flat-rate', flatRate: 24, durationYrs: 6, capEUR: 600_000,
+  },
+  // Greece olim 7% on foreign income
+  'GR.olim': {
+    label: { he: '7% flat על הכנסה זרה (15 שנים)', en: '7% flat on foreign income (15 yrs)' },
+    eligibility: { he: 'לא תושב GR 7 מתוך 8 שנים', en: 'Not GR resident 7 of 8 yrs' },
+    type: 'flat-rate', flatRate: 7, durationYrs: 15,
+  },
+  // Israel returning resident (10+ years abroad)
+  'IL.toshav-hozer-vatik': {
+    label: { he: 'תושב חוזר ותיק (10 שנים פטור הכנסה זרה)', en: 'Senior returning resident (10-yr foreign exemption)' },
+    eligibility: { he: 'שהה בחו״ל ≥10 שנים', en: 'Was non-resident ≥10 yrs' },
+    type: 'foreign-exempt', durationYrs: 10,
+  },
+  // Malta Non-Dom remittance
+  'MT.nondom': {
+    label: { he: 'Non-Dom remittance basis', en: 'Non-Dom remittance basis' },
+    eligibility: { he: 'תושב MT לא domiciled', en: 'MT resident, non-domiciled' },
+    type: 'min-tax', minTaxEUR: 5_000,
+  },
+  // Georgia Small Business
+  'GE.smallbiz': {
+    label: { he: 'Small Business Entrepreneur 1% (עד $200K)', en: 'Small Business Entrepreneur 1% (up to $200K)' },
+    eligibility: { he: 'הכנסה <$200K + רישום במשרד המסים', en: 'Income <$200K + register with tax office' },
+    type: 'flat-rate', flatRate: 1, capUSD: 200_000,
+  },
+};
+
 // ── Calculation engine ──────────────────────────────────────────────────────
 
 /**
- * calcNet(countryCode, grossILS, marital, children) → result object
+ * calcNet(countryCode, grossILS, marital, children, regimeKey?) → result object
  *
  * @param {string} grossILS   - gross monthly salary in ILS
  * @param {string} marital    - 'single' | 'married' | 'married_working'
  * @param {number} children   - number of children
- * @returns {{ grossLocal, incomeTax, socialSec, health, netMonthly, netUSD, effectiveRate }}
+ * @param {string} [regimeKey] - optional regime key e.g. 'PT.nhr', 'CY.nondom'.
+ *                                When provided + matches REGIMES, overrides tax calc.
+ * @returns {{ grossLocal, incomeTax, socialSec, health, netMonthly, netUSD, effectiveRate, regime? }}
  */
-function calcNet(countryCode, grossILS, marital, children) {
+function calcNet(countryCode, grossILS, marital, children, regimeKey) {
   const c = TAX_DATA[countryCode];
   if (!c) return null;
 
@@ -495,6 +635,46 @@ function calcNet(countryCode, grossILS, marital, children) {
     prev = b.upTo;
   }
   taxAnnual = Math.max(0, taxAnnual - (c.credit || 0));
+
+  // ── Special regime override ────────────────────────────────────────────
+  // If user declares they qualify for a special new-resident regime, replace
+  // the standard tax calc with the regime's rule. Capped where applicable.
+  let regimeApplied = null;
+  if (regimeKey && REGIMES[regimeKey] && regimeKey.split('.')[0] === countryCode) {
+    const r = REGIMES[regimeKey];
+    regimeApplied = r;
+    if (r.type === 'flat-rate') {
+      // Apply flat rate, capped at capEUR/capUSD if specified
+      const grossLocalForCap = grossAnnual;
+      let taxableForFlat = grossAnnual;
+      if (r.capEUR && c.currency === 'EUR') taxableForFlat = Math.min(grossAnnual, r.capEUR);
+      else if (r.capUSD) {
+        const capLocal = r.capUSD / c.usdRate;
+        taxableForFlat = Math.min(grossAnnual, capLocal);
+      }
+      taxAnnual = taxableForFlat * (r.flatRate / 100);
+    } else if (r.type === 'exemption-pct') {
+      // Reduce taxable income by exemption %, then re-apply brackets
+      const cap = r.capEUR && c.currency === 'EUR' ? r.capEUR : Infinity;
+      const exemptIncome = Math.min(grossAnnual, cap) * (r.exemptionPct / 100);
+      const newTaxable = Math.max(0, grossAnnual - exemptIncome - (c.deduction || 0));
+      let newTax = 0; let p = 0;
+      for (const b of c.brackets) {
+        const slice = Math.min(newTaxable, b.upTo) - p;
+        if (slice <= 0) break;
+        newTax += slice * b.rate / 100;
+        p = b.upTo;
+      }
+      taxAnnual = Math.max(0, newTax - (c.credit || 0));
+    } else if (r.type === 'foreign-exempt') {
+      // Assume income is foreign-sourced (common for Israeli remote workers
+      // returning home — they keep their foreign employer)
+      taxAnnual = 0;
+    } else if (r.type === 'min-tax') {
+      // Malta-style: minimum tax in local currency
+      taxAnnual = r.minTaxEUR && c.currency === 'EUR' ? r.minTaxEUR : taxAnnual;
+    }
+  }
 
   // ── 2-tier social security & health (Israel) ───────────────────────────
   // For countries with `socialSec_tier1/tier2/threshold`, apply low rate
@@ -553,9 +733,10 @@ function calcNet(countryCode, grossILS, marital, children) {
     health:        Math.round(healthAnnual / 12),
     netMonthly:    Math.round(netAnnual    / 12),
     netUSD:        Math.round((netAnnual / 12) * c.usdRate),
-    effectiveRate: Math.round(deductAnnual / grossAnnual * 100),
+    effectiveRate: grossAnnual > 0 ? Math.round(deductAnnual / grossAnnual * 100) : 0,
     currency:      c.currency,
     notes:         c.notes,
+    regime:        regimeApplied,                // null if no regime applied
   };
 }
 
@@ -583,5 +764,5 @@ const TAX_META = {
 
 // Node export — for unit tests in qa/tax-data-tests.js. No-op in browser.
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { TAX_DATA, calcNet, TAX_META };
+  module.exports = { TAX_DATA, calcNet, TAX_META, REGIMES };
 }

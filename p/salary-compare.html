@@ -186,6 +186,13 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
       </select>
     </div>
   </div>
+  <label style="display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:10px;cursor:pointer">
+    <input type="checkbox" id="olimToggle" style="width:18px;height:18px;accent-color:#10b981;cursor:pointer">
+    <div>
+      <div style="font:700 13px Inter,sans-serif;color:#6ee7b7" data-i18n="olimToggle">⭐ אני עולה חדש / תושב חוזר ותיק</div>
+      <div style="font:500 11.5px Inter,sans-serif;color:var(--muted);margin-top:2px" data-i18n="olimToggleHint">החל משטרי מס מיוחדים: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · ת״ח ותיק (IL) ועוד</div>
+    </div>
+  </label>
 </div>
 
 <div class="results" id="results">
@@ -312,7 +319,21 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 // feedback — Switzerland too expensive to realistically consider, Estonia data
 // felt fringe). Added IT, CY, TH — IT/CY are real Israeli relocation patterns
 // (tax-haven status + Mediterranean lifestyle), TH for digital-nomad audience.
-const COUNTRY_CODES = ['IL','PT','CY','IT','AE','SG','US','DE','PL','GB','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
+// Country mix — adds MT/BG/RO/MC/GE in 2026-05-19 update. Removed CH+EE earlier.
+const COUNTRY_CODES = ['IL','PT','CY','IT','MT','BG','RO','MC','GE','AE','SG','US','DE','PL','GB','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
+
+// When user declares they qualify for a special new-resident regime, apply
+// the country's most favorable regime automatically (this is the "olim view").
+const REGIME_BY_COUNTRY = {
+  PT: 'PT.nhr',
+  CY: 'CY.nondom',
+  IT: 'IT.impatriati',
+  ES: 'ES.beckham',
+  GR: 'GR.olim',
+  IL: 'IL.toshav-hozer-vatik',
+  MT: 'MT.nondom',
+  GE: 'GE.smallbiz',
+};
 
 // Cost-of-Living index — Tel Aviv = 100 (Numbeo 2025). Used to convert raw
 // net USD into real purchasing power "of Tel Aviv equivalent". Lower index
@@ -322,6 +343,12 @@ const COL_DATA = {
   US: 130, DE: 85,  PL: 50,  GB: 115, IE: 95,  GR: 60,
   CA: 105, AU: 110, ES: 65,  FR: 90,  NL: 90,  CZ: 60,
   BR: 50,  TH: 35,
+  // 2026-05-19 additions
+  MT: 70,  // Valletta — slightly cheaper than Tel Aviv
+  BG: 45,  // Sofia — significantly cheaper
+  RO: 50,  // Bucharest — similar to Bulgaria
+  MC: 200, // Monaco — among most expensive globally
+  GE: 35,  // Tbilisi — very affordable
 };
 
 // ── i18n ────────────────────────────────────────────────────────────────────
@@ -334,6 +361,8 @@ const TR = {
     hintGross: 'משכורת חודשית, לפני מס',
     lblFamily: 'מצב משפחתי',
     famSingle: 'רווק/ה', famMarried: 'נשוי/ה', famMarriedW: 'נשוי/ה + בן/בת זוג עובד/ת',
+    olimToggle: '⭐ אני עולה חדש / תושב חוזר ותיק',
+    olimToggleHint: 'החל משטרי מס מיוחדים: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · ת״ח ותיק (IL) ועוד',
     calculating: 'מחשב…',
     shareTitle: 'חברים שלך מסקרנים. שלח להם 👇',
     shareSub: 'שיתוף ב-WhatsApp / Email / קישור',
@@ -397,6 +426,8 @@ const TR = {
     hintGross: 'Monthly, before tax',
     lblFamily: 'Family status',
     famSingle: 'Single', famMarried: 'Married', famMarriedW: 'Married + working spouse',
+    olimToggle: '⭐ I\'m a new immigrant / senior returning resident',
+    olimToggleHint: 'Apply special regimes: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · Senior returning IL · more',
     calculating: 'Calculating…',
     shareTitle: 'Your friends are curious. Send it 👇',
     shareSub: 'Share via WhatsApp / Email / link',
@@ -478,6 +509,7 @@ applyLang(_lang);
 function recalc() {
   const gross = parseFloat(document.getElementById('gross').value) || 0;
   const family = document.getElementById('family').value;
+  const olim = document.getElementById('olimToggle').checked;
   if (gross < 3000) {
     document.getElementById('results').innerHTML = '<div class="skeleton">' + (TR[_lang].calculating) + '</div>';
     document.getElementById('shareWrap').style.display = 'none';
@@ -487,7 +519,8 @@ function recalc() {
     .map(code => {
       const d = TAX_DATA[code];
       if (!d) return null;
-      const r = calcNet(code, gross, family, 0);
+      const regimeKey = olim ? REGIME_BY_COUNTRY[code] : null;
+      const r = calcNet(code, gross, family, 0, regimeKey);
       if (!r) return null;
       return { code, flag: d.flag, name: d.name, ...r };
     })
@@ -523,10 +556,14 @@ function recalc() {
     const ppLine = (r.code === 'IL')
       ? `<span class="pp-baseline">— ${ppLabel} —</span>`
       : `<span class="pp-val ${ppDeltaCls}">${ppLabel} $${r.realPP.toLocaleString()}</span>`;
+    // Regime badge — only shown if regime was applied (olim toggle on + this country has one)
+    const regimeBadge = r.regime
+      ? `<span style="display:inline-block;background:rgba(16,185,129,0.15);color:#6ee7b7;font:700 9.5px Inter,sans-serif;padding:2px 6px;border-radius:99px;margin-inline-start:6px;letter-spacing:.3px">⭐ ${r.regime.label[_lang] || r.regime.label.en}</span>`
+      : '';
     return `<div class="${cls}">
       <span class="flag">${r.flag}</span>
       <div class="info">
-        <div class="name">${r.name}</div>
+        <div class="name">${r.name}${regimeBadge}</div>
         <div class="meta">${TR[_lang].effective}: ${r.effectiveRate}% · ${colLabel} ${r.col}</div>
         <div class="pp">${ppLine}</div>
       </div>
@@ -545,6 +582,7 @@ function recalc() {
 }
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('family').addEventListener('change', recalc);
+document.getElementById('olimToggle').addEventListener('change', recalc);
 recalc();
 
 // ── Share ───────────────────────────────────────────────────────────────────
