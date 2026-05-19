@@ -1,16 +1,42 @@
 # WizeLife — Strategy Document
 
-> **Last updated:** 2026-05-18 (Session 9 — late evening)
+> **Last updated:** 2026-05-19 (Session 10 — Monday)
 > **Status:** Pre-launch, pre-revenue. 6-app suite live. Solo founder.
-> **Pre-HN verification:** 23/23 critical checks pass (qa/deep-qa-sunday.js)
-> **Tax data:** 8 countries verified 2026, 24/24 unit tests pass
+> **Pre-HN verification:** 23/23 critical checks pass · 38/38 unit tests pass · 6/6 regime end-to-end
+> **Tax data:** **25 countries** in calc, **14 verified 2026-01** brackets+social, **8 olim regimes** implemented
 > **North-star metric:** First 1,000 active users.
 
 This doc is updated by Claude. Open it whenever you want to recalibrate priorities, then ask Claude to refresh it. Treat sections marked 🟢 as "doing now," 🟡 as "next 2-4 weeks," 🔴 as "after first 100 paying users."
 
 ---
 
-## 0. What shipped in Session 9 (today, 2026-05-18)
+## 0a. What shipped in Session 10 (Monday 2026-05-19)
+
+| What | Where |
+|---|---|
+| 5 new countries: 🇲🇹 Malta · 🇧🇬 Bulgaria · 🇷🇴 Romania · 🇲🇨 Monaco · 🇬🇪 Georgia | tax-data.js + /p/salary-compare (25 countries total) |
+| **8 special olim regimes** auto-applied via "I'm a new immigrant" toggle | engine + UI |
+| Engine: regime selector (`flat-rate` · `exemption-pct` · `foreign-exempt` · `min-tax`) | calcNet() new optional param |
+| 14 unit tests added → 38/38 pass | qa/tax-data-tests.js |
+| End-to-end regime flow test | qa/check-regime-flow.js |
+| CSP fix on homepage — pre-warm pings now allowed | index.html |
+
+**The 8 regimes implemented:**
+
+| Country | Regime | What changes | Duration |
+|---|---|---|---|
+| 🇵🇹 PT | NHR / IFICI | 20% flat on PT employment, foreign income exempt | 10 yrs |
+| 🇨🇾 CY | Non-Dom | 50% exemption on employment >€55K | 17 yrs |
+| 🇮🇹 IT | Lavoratori Impatriati | 50% exemption (60% w/kids), cap €600K | 5 yrs |
+| 🇪🇸 ES | Beckham Law | 24% flat up to €600K | 6 yrs |
+| 🇬🇷 GR | Special olim regime | 7% flat on foreign income | 15 yrs |
+| 🇮🇱 IL | Toshav Hozer Vatik | 10-year exemption on foreign income | 10 yrs |
+| 🇲🇹 MT | Non-Dom (remittance) | Foreign income exempt unless remitted (min €5K tax) | unlimited |
+| 🇬🇪 GE | Small Business Entrepreneur | 1% flat tax up to $200K | unlimited while eligible |
+
+**Real impact** for typical Israeli at ₪25K/mo: toggle = +$1,079/mo via PT NHR ($130K over 10 years).
+
+## 0b. What shipped in Session 9 (Sunday 2026-05-18)
 
 Decision-quality WizeTax now lives — relocation funnel is real product, not headline calculator.
 

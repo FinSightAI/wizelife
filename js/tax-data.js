@@ -292,21 +292,22 @@ const TAX_DATA = {
     lastVerified: '2026-01',
   },
 
-  // ── UAE ──────────────────────────────────────────────────────── source: MoF UAE
+  // ── UAE ────────────────────────────────────── source: MoF UAE + PwC 2026
   AE: {
     flag: '🇦🇪', name: 'איחוד האמירויות', currency: 'USD', usdRate: 1,
     brackets: [
       { upTo: Infinity, rate: 0 },
     ],
     credit: 0,
-    socialSec: 0,
+    socialSec: 0,                                  // non-GCC expats: no SS
     socialCeil: null,
     health: 0,
     healthCeil: null,
-    notes: 'אפס מס הכנסה אישי. אין ביטוח לאומי לעובדים זרים. ביטוח בריאות חובה על המעסיק. עלות מחיה גבוהה (דובאי).',
+    notes: '2026: אפס מס הכנסה לכל התושבים — בלי שינוי. עובדים לא-GCC: בלי SS. ביטוח בריאות חובת מעסיק. VAT 5%. תושבי GCC משלמים 5% SS.',
+    lastVerified: '2026-01',
   },
 
-  // ── SINGAPORE ─────────────────────────────────────── source: IRAS YA2025
+  // ── SINGAPORE ────────────────────────── source: IRAS YA2026 (income year 2025)
   SG: {
     flag: '🇸🇬', name: 'סינגפור', currency: 'SGD', usdRate: 0.74,
     brackets: [
@@ -320,53 +321,58 @@ const TAX_DATA = {
       { upTo: 240_000,  rate: 19 },
       { upTo: 280_000,  rate: 19.5},
       { upTo: 320_000,  rate: 20 },
-      { upTo: Infinity, rate: 22 },
+      { upTo: 500_000,  rate: 22 },
+      { upTo: 1_000_000,rate: 23 },
+      { upTo: Infinity, rate: 24 },                // NEW top rate 24% above SGD 1M (from YA2024+)
     ],
     credit: 0,
-    socialSec: 20.0,        // CPF employee contribution (age < 55, varies by age)
-    socialCeil: 72_000,     // ordinary wage ceiling annual
-    health: 0,              // bundled in CPF (Medisave)
+    socialSec: 20.0,                              // CPF employee (citizens/PR only, age <55)
+    socialCeil: 72_000,
+    health: 0,                                    // bundled in CPF (Medisave)
     healthCeil: null,
-    notes: 'CPF הוא חיסכון לפרישה + בריאות שחוזר אליך — לא מס. עובדים זרים (EP) פטורים מ-CPF.',
+    notes: '2026: top bracket 24% מעל SGD $1M (תוקף YA2024+). Employment Pass holders פטורים מ-CPF. Non-residents משלמים 15% flat על משכורת.',
+    lastVerified: '2026-01',
   },
 
-  // ── CANADA ────────────────────────────────────────── source: CRA 2025
+  // ── CANADA ──────────────────────── source: CRA 2026 + Federal Budget 2026
   CA: {
     flag: '🇨🇦', name: 'קנדה (פדרלי)', currency: 'CAD', usdRate: 0.73,
     brackets: [
-      { upTo: 57_375,   rate: 15 },
+      { upTo: 57_375,   rate: 14 },                // 2026: dropped from 15% to 14%
       { upTo: 114_750,  rate: 20.5 },
-      { upTo: 158_519,  rate: 26 },
-      { upTo: 220_000,  rate: 29 },
+      { upTo: 177_882,  rate: 26 },                // 2026 inflated
+      { upTo: 253_414,  rate: 29 },                // 2026 inflated
       { upTo: Infinity, rate: 33 },
     ],
-    credit: 2_306,          // basic personal amount credit
-    socialSec: 5.95,        // CPP employee (2025)
+    credit: 2_355,                                // 2026 basic personal amount credit (inflated)
+    socialSec: 5.95,                              // CPP employee
     socialCeil: 73_200,
-    health: 1.66,           // EI employee premium
+    health: 1.66,                                 // EI employee premium
     healthCeil: 65_700,
-    notes: 'Provincial tax מוסיף 6%-25% על הפדרלי. מחוז קוויבק — הגבוה ביותר. אלברטה — הנמוך.',
+    notes: '2026: מדרגה תחתונה 15%→14%. Provincial tax מוסיף 6%-25% על הפדרלי (Quebec הגבוה, Alberta הנמוך).',
+    lastVerified: '2026-01',
   },
 
-  // ── AUSTRALIA ─────────────────────────────────── source: ATO 2024-25
+  // ── AUSTRALIA ─────────────────────────── source: ATO 2025-26 + Budget 2026
   AU: {
     flag: '🇦🇺', name: 'אוסטרליה', currency: 'AUD', usdRate: 0.65,
     brackets: [
       { upTo: 18_200,   rate: 0  },
-      { upTo: 45_000,   rate: 19 },
-      { upTo: 120_000,  rate: 32.5},
-      { upTo: 180_000,  rate: 37 },
+      { upTo: 45_000,   rate: 16 },                // 2025-26: was 19% in 2024-25; will drop to 15% from July 2026
+      { upTo: 135_000,  rate: 30 },                // 2025-26: was 32.5% on 45K-120K
+      { upTo: 190_000,  rate: 37 },                // 2025-26: was 37% on 120K-180K
       { upTo: Infinity, rate: 45 },
     ],
-    credit: 700,            // Low Income Tax Offset (max, phases out)
-    socialSec: 0,           // Superannuation is employer-paid (11% on top of salary)
+    credit: 700,                                  // Low Income Tax Offset
+    socialSec: 0,                                 // Super is EMPLOYER-paid (11.5% on top of salary)
     socialCeil: null,
-    health: 2.0,            // Medicare Levy
+    health: 2.0,                                  // Medicare Levy
     healthCeil: null,
-    notes: 'Superannuation 11% — חיסכון פנסיוני שמעסיק מוסיף מעבר לברוטו. שנת מס יולי–יוני.',
+    notes: '2025-26: מדרגה 2 ירדה 19%→16% (יורד 15% מ-יולי 2026). Super 11.5% משולם ע״י מעסיק מעבר לברוטו. Medicare Levy 2% כלול. שנת מס יולי–יוני.',
+    lastVerified: '2026-01',
   },
 
-  // ── BRAZIL ─────────────────────────────────────────── source: Receita Federal 2025
+  // ── BRAZIL ───────────────────────────── source: Receita Federal 2026
   BR: {
     flag: '🇧🇷', name: 'ברזיל', currency: 'BRL', usdRate: 0.19,
     brackets: [
@@ -377,14 +383,15 @@ const TAX_DATA = {
       { upTo: Infinity, rate: 27.5 },
     ],
     credit: 0,
-    socialSec: 7.5,         // INSS employee (reduced rate for lower brackets, simplified)
-    socialCeil: 90_396,
+    socialSec: 7.5,                               // INSS — tiered 7.5%/9%/12%/14% (simplified to lowest)
+    socialCeil: 90_396,                           // 2026 INSS cap (~R$877/mo)
     health: 0,
     healthCeil: null,
-    notes: 'INSS מדורג 7.5%–14% לפי שכר. עלות מחיה נמוכה אך אינפלציה ואי-יציבות מטבע.',
+    notes: '2026: מדרגות IRPF ללא שינוי. INSS מדורג 7.5%–14% עד תקרה R$877/חודש. עלות מחיה נמוכה, מטבע תנודתי.',
+    lastVerified: '2026-01',
   },
 
-  // ── THAILAND ──────────────────────────────────────── source: Revenue Dept. Thailand 2025
+  // ── THAILAND ──────────────────────── source: Revenue Dept. Thailand 2026
   TH: {
     flag: '🇹🇭', name: 'תאילנד', currency: 'THB', usdRate: 0.028,
     brackets: [
@@ -402,7 +409,8 @@ const TAX_DATA = {
     socialCeil: 180_000,    // monthly ceiling 15,000 THB
     health: 0,
     healthCeil: null,
-    notes: 'Thailand LTR Visa — עד 17% מס על הכנסה ממקורות חוץ. עלות מחיה נמוכה מאוד.',
+    notes: '2026: שיעורים יציבים מאז 2013 (0-35%). Thailand LTR Visa — 17% flat על הכנסה זרה לעובדים highly-skilled. עלות מחיה מהנמוכות בעולם.',
+    lastVerified: '2026-01',
   },
 
   // ── GREECE ────────────────────── source: AADE 2026 + Law 5246/2025 (effective Jan 2026)
@@ -746,12 +754,13 @@ const TAX_META = {
   updatedAt:   '2026-05-18',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   knownPending: [
-    'Israel credit-point value (₪2,904) — frozen for 2026; an unfreeze would raise it ~3-5%',
-    'EE/CZ — not yet verified to 2026 (low priority — not on /p/salary-compare default mix)',
-    'CA/AU/BR/TH/SG — not yet verified to 2026 (low priority — niche destinations)',
+    'EE/CZ — not yet verified to 2026 (removed from default mix; low priority)',
     'NL: arbeidskorting phase-out curve not modeled (uses fixed credit; impact ~€500-1500)',
     'IE: USC tiered structure not modeled (uses 8% flat — overcharges low earners)',
     'CH: brackets here are federal-only — actual tax includes cantonal/municipal (~10-25% addition)',
+    'AU: Super 11.5% not added to gross (it\'s employer-paid above salary)',
+    'BR: INSS tiered 7.5%/9%/12%/14% simplified to 7.5% (overcharges low earners)',
+    'Israel credit-point ₪2,904 frozen for 2026 — unfreeze would raise ~3-5%',
   ],
   sources: [
     'PwC Worldwide Tax Summaries 2025 — taxsummaries.pwc.com',
