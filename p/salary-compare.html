@@ -780,15 +780,14 @@ async function handlePayslip(file) {
   const progressEl = document.getElementById('ocrProgress');
   const lang = _lang || 'he';
 
-  // PDF NOT supported by Tesseract.js — early bail with actionable message.
-  // Most Israeli payslips arrive as PDF, so this caught a lot of failures
-  // before the OCR engine even loaded.
+  // PDF support — payslip-extractor now rasterizes PDF→canvas→Tesseract
+  // via pdf.js. No early-bail needed. Just notify the user that PDF takes
+  // a moment longer (extra render pass).
   const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
   if (isPdf) {
-    progressEl.innerHTML = lang === 'he'
-      ? '📄 קובץ PDF לא נתמך כרגע ב-OCR. <strong>פתח את ה-PDF, צלם מסך</strong> (Cmd+Shift+4 ב-Mac / Win+Shift+S בווינדוס) <strong>והעלה את הצילום</strong>. או הזן ידנית.'
-      : '📄 PDF not supported yet. <strong>Open the PDF, take a screenshot</strong> (Cmd+Shift+4 on Mac / Win+Shift+S on Windows) <strong>and upload the screenshot</strong> — or type the fields manually.';
-    return;
+    progressEl.textContent = lang === 'he'
+      ? '📄 ממיר PDF לתמונה (פעם ראשונה ~5MB pdf.js)…'
+      : '📄 Converting PDF to image (first time ~5MB pdf.js)…';
   }
 
   // Size sanity — refuse anything > 8MB (mobile camera shots are typically 2-4MB)
