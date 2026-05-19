@@ -19,14 +19,57 @@ window.PayslipExtractor = (function () {
     // Each entry: [field, [hebrew or english labels…]]
     // Order matters — most-specific first.
     const FIELD_PATTERNS = [
-        ['gross',            [/משכורת\s*ברוטו/, /שכר\s*ברוטו/, /סה"כ\s*ברוטו/, /Gross\s*Pay/i, /Gross\s*Salary/i]],
-        ['net',              [/שכר\s*נטו/, /נטו\s*לתשלום/, /סה"כ\s*נטו/, /Net\s*Pay/i, /Take\s*Home/i]],
+        // Gross — try MANY variants (Hebrew gershayim ״ vs ASCII ", short
+        // labels, alternative spellings). Same coverage as WizeMoney's
+        // image-import.js which has been battle-tested on real payslips.
+        ['gross',            [
+            /סה[\"״]?כ\s*ברוטו/,        // סה"כ ברוטו / סה״כ ברוטו / סהכ ברוטו (OCR may drop the quote)
+            /משכורת\s*ברוטו/,            // משכורת ברוטו
+            /שכר\s*ברוטו/,              // שכר ברוטו
+            /ברוטו\s*למס/,              // ברוטו למס
+            /סה[\"״]?כ\s*תשלומים/,      // סה"כ תשלומים
+            /סך[־\-]?כל\s*ה?תשלומים/,   // סך-כל התשלומים / סךכל התשלומים
+            /Gross\s*Pay/i,
+            /Gross\s*Salary/i,
+            /\bברוטו\b/,                // last resort — any standalone "ברוטו"
+        ]],
+        ['net',              [
+            /נטו\s*לתשלום/,
+            /סה[\"״]?כ\s*נטו/,
+            /שכר\s*נטו/,
+            /שכר\s*103/,                // some payslips label net as "שכר 103"
+            /Net\s*Pay/i,
+            /Take\s*Home/i,
+            /\bנטו\b/,                  // last resort
+        ]],
         ['income_tax',       [/מס\s*הכנסה/, /Income\s*Tax/i, /\bTax\b/]],
         ['bituach_leumi',    [/ביטוח\s*לאומי/, /National\s*Insurance/i, /Bituach\s*Leumi/i]],
         ['mas_briut',        [/מס\s*בריאות/, /Health\s*Tax/i]],
-        ['pension_employee', [/ניכוי\s*פנסיה/, /הפרשת\s*עובד.*פנסיה/, /פנסיוני\s*עובד/, /Pension\s*Employee/i]],
-        ['pension_employer', [/הפרשת\s*מעביד.*פנסיה/, /מעביד\s*פנסיה/, /Pension\s*Employer/i, /Employer.*Pension/i]],
-        ['keren_hishtalmut', [/קרן\s*השתלמות/, /השתלמות\s*עובד/, /Study\s*Fund/i, /Keren\s*Hishtalmut/i]],
+        ['pension_employee', [
+            /ניכוי\s*פנסיה/,
+            /הפרשת\s*עובד.*פנסיה/,
+            /פנסיוני\s*עובד/,
+            /תגמולים\s*עובד/,
+            /תגמולים\s*לקצבה/,
+            /קצבה\s*שכיר/,
+            /Pension\s*Employee/i,
+        ]],
+        ['pension_employer', [
+            /הפרשת\s*מעביד.*פנסיה/,
+            /הפרשת\s*מעסיק.*פנסיה/,
+            /מעביד\s*פנסיה/,
+            /פנסיה\s*מעסיק/,
+            /תגמולים\s*מעביד/,
+            /Pension\s*Employer/i,
+            /Employer.*Pension/i,
+        ]],
+        ['keren_hishtalmut', [
+            /קרן\s*השתלמות/,
+            /השתלמות\s*עובד/,
+            /\bהשתלמות\b/,              // last resort
+            /Study\s*Fund/i,
+            /Keren\s*Hishtalmut/i,
+        ]],
         ['bituach_menahalim',[/ביטוח\s*מנהלים/, /Executive\s*Insurance/i, /Bituach\s*Menahalim/i]],
         ['gemel',            [/קופת\s*גמל/, /גמל\s*עובד/, /Provident\s*Fund/i, /Gemel/i]],
     ];
