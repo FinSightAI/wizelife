@@ -318,5 +318,9 @@ window.PayslipExtractor = (function () {
         });
     }
 
-    return { pickAndExtract, extractFields, recognize };
+    return { pickAndExtract, extractFields, recognize, VERSION: '2026-05-19-v3' };
 })();
+// Console-friendly version check:
+//   window.PayslipExtractor.VERSION   → "2026-05-19-v3" = latest
+// If you see anything else, the SW is serving cached old code.
+console.log('[payslip-extractor] version:', window.PayslipExtractor.VERSION);
