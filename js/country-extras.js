@@ -18,6 +18,12 @@
  *   notesShort     — one short line per country for the "Keren" + healthcare
  *                    columns. 4-lang.
  *
+ * PENSION FORECAST source: OECD Pensions at a Glance 2024 (laws as of 2023).
+ *   Exceptions (post-2024 updates from national sources):
+ *   - FR: 74→68% (Macron 2023 retirement-age reform)
+ *   - SG: CPF private-fund replacement rate ~70% (OECD lists 0 since no public pillar)
+ *   - AU: Super ~65% (OECD lists 0 since no public pillar beyond Age Pension means-test)
+ *
  * SOURCES (verified Jan-May 2026):
  *   - PwC Worldwide Tax Summaries → "Other taxes" section
  *   - OECD Pensions at a Glance 2024
@@ -217,7 +223,7 @@ const COUNTRY_EXTRAS = {
   },
   // Other 12 countries — defaults / partial data, table renders '—' for missing values.
   SG: { pensionEmpPct: 20, pensionErPct: 17,
-        pensionPctFinalSalary: 0, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 80,
+        pensionPctFinalSalary: 70, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 80,
         notesShort: { he: 'CPF 20%+17% — חיסכון/פנסיה/בריאות יחד. דומה חלקית לקרן השתלמות. Medisave מובנה.',
                       en: 'CPF 20%+17% bundles savings/pension/health. Partial Keren analogue. Medisave built-in.',
                       pt: 'CPF 20%+17% acumulado.', es: 'CPF 20%+17% acumulado.' }},
@@ -234,11 +240,11 @@ const COUNTRY_EXTRAS = {
         notesShort: { he: 'CPP 5.95%+5.95% פנסיה. RRSP/TFSA חלקית דומה לקרן השתלמות.', en: 'CPP 5.95%+5.95%. RRSP/TFSA partial Keren analogue.',
                       pt: 'CPP 5.95%+5.95%.', es: 'CPP 5.95%+5.95%.' }},
   AU: { pensionEmpPct: 0, pensionErPct: 11.5,
-        pensionPctFinalSalary: 41, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 80, healthcareQual: 78,
+        pensionPctFinalSalary: 65, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 80, healthcareQual: 78,
         notesShort: { he: 'Superannuation 11.5% מעסיק בלבד — דומה חלקית לקרן השתלמות.', en: 'Super 11.5% employer-only — partial Keren analogue.',
                       pt: 'Super 11.5% empregador.', es: 'Super 11.5% empleador.' }},
   FR: { pensionEmpPct: 11, pensionErPct: 16.5,
-        pensionPctFinalSalary: 74, kerenEquiv: 'no', healthcareSys: 'public_free', healthCostUSD: 60, healthcareQual: 81,
+        pensionPctFinalSalary: 68, kerenEquiv: 'no', healthcareSys: 'public_free', healthCostUSD: 60, healthcareQual: 81,
         notesShort: { he: 'URSSAF 11%+16.5%. בריאות מצוינת.', en: 'URSSAF 11%+16.5%. Excellent healthcare.',
                       pt: 'URSSAF 11%+16.5%.', es: 'URSSAF 11%+16.5%.' }},
   NL: { pensionEmpPct: 9.65, pensionErPct: 0,

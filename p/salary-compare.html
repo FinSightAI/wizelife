@@ -1056,7 +1056,9 @@ function buildLineItemTable(grossILS, rows) {
     + '<p style="margin:0 0 12px;color:#9ca3af;font:500 12px Inter,sans-serif">' + (_lang === 'he' ? 'ישראל מול 4 היעדים המובילים לפי כוח קנייה. עברית: ערכים שמופיעים בתלוש שלך + מקבילות בחו״ל.' : 'Israel vs your top 4 destinations. Real payslip line-items + what each country has.') + '</p>'
     + '<table style="width:100%;border-collapse:collapse;min-width:520px"><thead>' + head + '</thead><tbody>' + body + '</tbody></table>'
     + notes
-    + '<div style="margin-top:10px;font:500 11px Inter,sans-serif;color:#64748b">' + (_lang === 'he' ? 'מקור: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025' : 'Sources: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025') + '</div>'
+    + '<div style="margin-top:10px;font:500 11px Inter,sans-serif;color:#64748b">' + (_lang === 'he'
+        ? 'מקור: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. צפי פנסיה משוער — אמת מול רשות הפנסיה במדינת היעד לפני החלטה.'
+        : 'Sources: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. Pension forecast is approximate — verify with national pension authority before relocating.') + '</div>'
     + '</div>';
 }
 
