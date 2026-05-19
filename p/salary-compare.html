@@ -336,6 +336,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 </div>
 
 <script src="/js/tax-data.js"></script>
+<script src="/js/country-extras.js"></script>
 <script src="/js/wize-share.js" defer></script>
 <script>
 // Country mix — Israeli-relevant destinations. Removed CH+EE (2026-05-18 per user
@@ -866,10 +867,140 @@ function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
   return rows.slice(0, 5);
 }
 
+// Plan-tier detection — returns 'free' / 'pro' / 'yolo' from the WizeLife SSO
+// cookie that auth.html drops into localStorage after sign-in.
+function getUserPlan() {
+  try {
+    const sso = JSON.parse(localStorage.getItem('wl_sso') || '{}');
+    const p = (sso.plan || '').toLowerCase();
+    if (p === 'pro' || p === 'yolo') return p;
+  } catch (_) {}
+  return 'free';
+}
+
+// Build the line-item comparison table: ISRAEL components vs each country's
+// equivalent. 9 rows: effective tax %, social-security %, health %, pension
+// employee %, pension employer %, Keren Hishtalmut equivalence, healthcare
+// system, out-of-pocket health $/mo, healthcare quality (Numbeo).
+function buildLineItemTable(grossILS, rows) {
+  if (typeof COUNTRY_EXTRAS === 'undefined') return ''; // graceful fallback
+  const T = TR[_lang];
+  // Localized labels for the 9 rows
+  const ROWS = (_lang === 'he') ? [
+    { k: 'tax',      label: 'מס הכנסה אפקטיבי' },
+    { k: 'social',   label: 'ביטוח לאומי / Social Security' },
+    { k: 'health',   label: 'מס בריאות' },
+    { k: 'pensEmp',  label: 'פנסיה — עובד (חובה)' },
+    { k: 'pensEr',   label: 'פנסיה — מעסיק (חובה)' },
+    { k: 'keren',    label: 'קרן השתלמות (או מקבילה)' },
+    { k: 'system',   label: 'מערכת בריאות' },
+    { k: 'health$',  label: 'בריאות מהכיס ($/חודש)' },
+    { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)' },
+  ] : [
+    { k: 'tax',      label: 'Effective income tax' },
+    { k: 'social',   label: 'Bituach Leumi / Social Security' },
+    { k: 'health',   label: 'Health tax' },
+    { k: 'pensEmp',  label: 'Pension — employee (mandatory)' },
+    { k: 'pensEr',   label: 'Pension — employer (mandatory)' },
+    { k: 'keren',    label: 'Keren Hishtalmut (or equivalent)' },
+    { k: 'system',   label: 'Healthcare system' },
+    { k: 'health$',  label: 'Out-of-pocket health ($/mo)' },
+    { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)' },
+  ];
+  const SYS_LABEL = (s) => {
+    const M = (_lang === 'he') ? {
+      public_free: 'ציבורית חינם', public_subsidized: 'ציבורית מסובסדת',
+      mandatory_private: 'פרטית חובה', optional_private: 'פרטית אופציונלית', mixed: 'מעורבת',
+    } : {
+      public_free: 'Public (free)', public_subsidized: 'Public (subsidized)',
+      mandatory_private: 'Private (mandatory)', optional_private: 'Private (optional)', mixed: 'Mixed',
+    };
+    return M[s] || '—';
+  };
+  const KEREN = (k) => (_lang === 'he')
+    ? ({ yes: '✓ קיים', partial: '~ דומה חלקית', no: '✗ לא קיים' }[k] || '—')
+    : ({ yes: '✓ Yes', partial: '~ Partial', no: '✗ No' }[k] || '—');
+
+  // Build columns: IL first, then top 4 destinations from rows (excluding IL).
+  const cols = [rows.find(r => r.code === 'IL')]
+    .concat(rows.filter(r => r.code !== 'IL').slice(0, 4));
+
+  // Compute effective tax % per country using calcNet (already supports per-country brackets)
+  function effTaxPct(code) {
+    try {
+      const fam = document.getElementById('family')?.value || 'single';
+      const r = calcNet(code, grossILS, fam, 0, null);
+      return r ? (r.effectiveRate + '%') : '—';
+    } catch (_) { return '—'; }
+  }
+  function socialPct(code) {
+    const d = TAX_DATA[code]; if (!d) return '—';
+    // Prefer tier2 (above-threshold) if present, otherwise socialSec scalar
+    const v = d.socialSec_tier2 ?? d.socialSec ?? 0;
+    return v ? v.toFixed(2) + '%' : '0%';
+  }
+  function healthPct(code) {
+    const d = TAX_DATA[code]; if (!d) return '—';
+    const v = d.health_tier2 ?? d.health ?? 0;
+    return v ? v.toFixed(2) + '%' : (_lang === 'he' ? 'אין נפרד' : 'bundled');
+  }
+
+  // Header row of country names (with flag)
+  const head = '<tr><th style="text-align:start;padding:8px 10px;color:#9ca3af;font-weight:600;font-size:11.5px">' + (_lang === 'he' ? 'רכיב' : 'Item') + '</th>'
+    + cols.map(c => `<th style="text-align:center;padding:8px 10px;color:#eef2ff;font-weight:700;font-size:13px">${c ? c.flag : ''}<br><span style="font-weight:500;font-size:11px;color:#9ca3af">${c ? shortName(c.name) : '—'}</span></th>`).join('')
+    + '</tr>';
+
+  // Body rows — one per line-item
+  const body = ROWS.map(row => {
+    const cells = cols.map(c => {
+      if (!c) return '<td style="text-align:center;color:#475569">—</td>';
+      const ext = COUNTRY_EXTRAS[c.code] || {};
+      let val;
+      switch (row.k) {
+        case 'tax':     val = effTaxPct(c.code); break;
+        case 'social':  val = socialPct(c.code); break;
+        case 'health':  val = healthPct(c.code); break;
+        case 'pensEmp': val = ext.pensionEmpPct != null ? ext.pensionEmpPct + '%' : '—'; break;
+        case 'pensEr':  val = ext.pensionErPct  != null ? ext.pensionErPct  + '%' : '—'; break;
+        case 'keren':   val = KEREN(ext.kerenEquiv); break;
+        case 'system':  val = SYS_LABEL(ext.healthcareSys); break;
+        case 'health$': val = ext.healthCostUSD != null ? '$' + ext.healthCostUSD : '—'; break;
+        case 'quality': val = ext.healthcareQual != null ? ext.healthcareQual : '—'; break;
+        default: val = '—';
+      }
+      const isIL = c.code === 'IL';
+      return `<td style="text-align:center;padding:9px 10px;color:${isIL ? '#a5b4fc' : '#eef2ff'};font:600 12.5px Inter,sans-serif;border-top:1px solid rgba(255,255,255,0.04)">${val}</td>`;
+    }).join('');
+    return `<tr><td style="text-align:start;padding:9px 10px;color:#9ca3af;font:500 12px Inter,sans-serif;border-top:1px solid rgba(255,255,255,0.04)">${row.label}</td>${cells}</tr>`;
+  }).join('');
+
+  // Per-country notes block (Keren + healthcare clarifications)
+  const notes = '<div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px">'
+    + cols.map(c => {
+        if (!c) return '';
+        const ext = COUNTRY_EXTRAS[c.code] || {};
+        const note = ext.notesShort ? (ext.notesShort[_lang] || ext.notesShort.en) : '';
+        if (!note) return '';
+        return `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:11px 12px"><div style="font:700 12px Inter,sans-serif;color:#eef2ff;margin-bottom:4px">${c.flag} ${shortName(c.name)}</div><div style="font:500 11.5px Inter,sans-serif;color:#9ca3af;line-height:1.5">${note}</div></div>`;
+      }).join('')
+    + '</div>';
+
+  return '<div style="margin-top:24px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.05));border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:16px;overflow-x:auto">'
+    + '<h4 style="margin:0 0 6px;color:#eef2ff;font:800 15px Inter,sans-serif">' + (_lang === 'he' ? '📊 השוואה רכיב-מול-רכיב — מה קיים בכל מדינה' : '📊 Line-item comparison — what exists where') + '</h4>'
+    + '<p style="margin:0 0 12px;color:#9ca3af;font:500 12px Inter,sans-serif">' + (_lang === 'he' ? 'ישראל מול 4 היעדים המובילים לפי כוח קנייה. עברית: ערכים שמופיעים בתלוש שלך + מקבילות בחו״ל.' : 'Israel vs your top 4 destinations. Real payslip line-items + what each country has.') + '</p>'
+    + '<table style="width:100%;border-collapse:collapse;min-width:520px"><thead>' + head + '</thead><tbody>' + body + '</tbody></table>'
+    + notes
+    + '<div style="margin-top:10px;font:500 11px Inter,sans-serif;color:#64748b">' + (_lang === 'he' ? 'מקור: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025' : 'Sources: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025') + '</div>'
+    + '</div>';
+}
+
 function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
   const T = TR[_lang];
   const rows = calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children);
   const ilNet = rows.find(r => r.code === 'IL').realNetUSD;
+  const plan = getUserPlan(); // 'free' | 'pro' | 'yolo'
+  const isPaid = plan === 'pro' || plan === 'yolo';
+
   const html = '<div class="deep-result">'
     + '<h3>' + T.deepResT + '</h3>'
     + rows.map(r => {
@@ -884,6 +1015,15 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
           + '<div class="extras">' + extras + '</div>'
           + '</div>';
       }).join('')
+    // Pro/YOLO unlock: line-item comparison table.
+    // Free users see a teaser banner + upgrade CTA.
+    + (isPaid
+        ? buildLineItemTable(grossILS, rows)
+        : ('<div style="margin-top:24px;background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.35);border-radius:14px;padding:18px;text-align:center">'
+            + '<div style="font:700 14px Inter,sans-serif;color:#fbbf24;margin-bottom:6px">🔓 ' + (_lang === 'he' ? 'משתמש Pro/YOLO רואים כאן את ההשוואה המלאה' : 'Pro/YOLO sees the full breakdown here') + '</div>'
+            + '<div style="font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6;margin-bottom:12px">' + (_lang === 'he' ? 'מס הכנסה · ביטוח לאומי · מס בריאות · פנסיה (עובד+מעסיק) · קרן השתלמות (יחיד בישראל!) · מערכת בריאות · הוצאת בריאות מהכיס · מדד איכות בריאות — כל רכיב, בכל מדינה.' : 'Income tax · Bituach Leumi · Health tax · Pension (employee+employer) · Keren Hishtalmut (Israel-only!) · Healthcare system · Out-of-pocket · Quality index — every line, every country.') + '</div>'
+            + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 26px;border-radius:99px;font:800 13px Inter,sans-serif">' + (_lang === 'he' ? 'שדרג ל-Pro / YOLO →' : 'Upgrade to Pro / YOLO →') + '</a>'
+          + '</div>'))
     + '<div style="margin-top:14px;text-align:center">'
     + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
     + T.deepCTASignup + '</a></div>'
