@@ -108,65 +108,79 @@ window.PayslipExtractor = (function () {
         });
     }
 
-    // pdf.js — used to rasterize PDF first page to a canvas before OCR.
-    // Most Israeli payslips arrive as PDF; without this, only image uploads worked.
-    const PDFJS_CDN_LIB    = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs';
-    const PDFJS_CDN_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+    // pdf.js — same version + UMD form as WizeMoney/FinSight (proven working there).
+    // v3 UMD works without dynamic import + has stable worker URL handling.
+    const PDFJS_CDN_LIB    = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+    const PDFJS_CDN_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
     async function ensurePdfJs() {
         if (window.pdfjsLib) return;
-        // pdf.js v4 is ESM-only — load as module
-        const mod = await import(/* webpackIgnore: true */ PDFJS_CDN_LIB);
-        // Expose globally for any future caller
-        window.pdfjsLib = mod;
-        mod.GlobalWorkerOptions.workerSrc = PDFJS_CDN_WORKER;
+        await new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = PDFJS_CDN_LIB;
+            s.onload = () => {
+                if (window.pdfjsLib) {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_CDN_WORKER;
+                    resolve();
+                } else {
+                    reject(new Error('pdfjsLib not on window after script load'));
+                }
+            };
+            s.onerror = () => reject(new Error('Failed to load pdf.js from CDN — CSP block?'));
+            document.head.appendChild(s);
+        });
     }
 
     /**
-     * Convert PDF Blob → PNG Blob by rendering the first page to canvas.
-     * For multi-page payslips we only render page 1 (which always contains
-     * the gross/net summary in Israeli format).
+     * Convert PDF → combined OCR text across all pages (Israeli payslips can
+     * span 2 pages — first has identity, second has gross/net summary).
+     * Mirrors finance dashboard/js/image-import.js processPayslipPDF logic
+     * since that one is field-tested on real payslips.
      */
-    async function pdfToImage(file) {
+    async function pdfToText(file, onProgress) {
         await ensurePdfJs();
         const buf = await file.arrayBuffer();
         const pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
-        const page = await pdf.getPage(1);
-        // Render at 2x scale for OCR quality. Most Israeli payslips render
-        // ~600px wide at scale=1; 2x gives Tesseract enough resolution.
-        const viewport = page.getViewport({ scale: 2 });
-        const canvas = document.createElement('canvas');
-        canvas.width  = viewport.width;
-        canvas.height = viewport.height;
-        const ctx = canvas.getContext('2d');
-        // White background — payslip PDFs sometimes have transparent backgrounds
-        // which Tesseract reads poorly.
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-        return await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const totalPages = pdf.numPages;
+        let combined = '';
+        for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+            const page = await pdf.getPage(pageNum);
+            const viewport = page.getViewport({ scale: 2.0 }); // 2x for OCR quality
+            const canvas = document.createElement('canvas');
+            canvas.width  = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext('2d');
+            // White background — transparent PDFs read poorly in Tesseract.
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            await page.render({ canvasContext: ctx, viewport }).promise;
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+            const { data } = await window.Tesseract.recognize(blob, 'heb+eng', {
+                logger: (m) => {
+                    if (m.status === 'recognizing text' && typeof onProgress === 'function') {
+                        // Map per-page 0-100 into overall progress across totalPages.
+                        const pageBase = ((pageNum - 1) / totalPages) * 100;
+                        const pageSlice = (1 / totalPages) * 100;
+                        onProgress(Math.round(pageBase + m.progress * pageSlice));
+                    }
+                },
+            });
+            combined += data.text + '\n';
+        }
+        return combined;
     }
 
     async function recognize(file, onProgress) {
         await ensureTesseract();
-        // PDF? Rasterize to PNG first, then run OCR on that.
         const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
-        let input = file;
         if (isPdf) {
-            if (typeof onProgress === 'function') onProgress(5);
-            try {
-                input = await pdfToImage(file);
-                if (typeof onProgress === 'function') onProgress(15);
-            } catch (e) {
-                throw new Error('PDF render failed: ' + (e.message || 'unknown').slice(0, 60));
-            }
+            return await pdfToText(file, onProgress);
         }
-        const { data } = await window.Tesseract.recognize(input, 'heb+eng', {
+        // Plain image — direct Tesseract.
+        const { data } = await window.Tesseract.recognize(file, 'heb+eng', {
             logger: (m) => {
                 if (m.status === 'recognizing text' && typeof onProgress === 'function') {
-                    // PDF path already used 0-15%; map OCR 0-100 to 15-100.
-                    const pct = isPdf ? 15 + Math.round(m.progress * 85) : Math.round(m.progress * 100);
-                    onProgress(pct);
+                    onProgress(Math.round(m.progress * 100));
                 }
             },
         });
