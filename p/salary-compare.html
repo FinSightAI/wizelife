@@ -71,6 +71,13 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 .r-row .pp .pp-val.pos{background:rgba(16,185,129,0.12);color:#6ee7b7}
 .r-row .pp .pp-val.neg{background:rgba(239,68,68,0.10);color:#fca5a5}
 .r-row .pp .pp-baseline{color:var(--muted);font-style:italic;font-size:10.5px}
+
+/* Country selector chips */
+.cchip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:99px;font:600 12px Inter,sans-serif;color:var(--muted);cursor:pointer;transition:all .12s;user-select:none}
+.cchip:hover{background:rgba(99,102,241,0.10);border-color:rgba(99,102,241,0.3);color:#a5b4fc}
+.cchip.on{background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.5);color:#eef2ff}
+.cchip.locked{opacity:.85;cursor:default;background:rgba(99,102,241,0.25);border-color:rgba(99,102,241,0.55)}
+.cchip .flag{font-size:14px;line-height:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* Loading */
@@ -193,6 +200,22 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
       <div style="font:500 11.5px Inter,sans-serif;color:var(--muted);margin-top:2px" data-i18n="olimToggleHint">החל משטרי מס מיוחדים: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · ת״ח ותיק (IL) ועוד</div>
     </div>
   </label>
+</div>
+
+<!-- Country selector chips -->
+<div class="card" style="padding:14px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;gap:10px;flex-wrap:wrap">
+    <div>
+      <div style="font:700 13px Inter,sans-serif" data-i18n="selectorT">מדינות להשוואה</div>
+      <div style="font:500 11px Inter,sans-serif;color:var(--muted);margin-top:2px" data-i18n="selectorHint">לחץ על דגל כדי להוסיף/להסיר. ישראל תמיד מסומנת.</div>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button id="selAll" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);color:#a5b4fc;font:700 11px Inter,sans-serif;padding:5px 11px;border-radius:7px;cursor:pointer" data-i18n="selectAll">כולן</button>
+      <button id="selDefault" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);font:700 11px Inter,sans-serif;padding:5px 11px;border-radius:7px;cursor:pointer" data-i18n="selectDefault">ברירת מחדל</button>
+      <button id="selClear" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);font:700 11px Inter,sans-serif;padding:5px 11px;border-radius:7px;cursor:pointer" data-i18n="selectClear">נקה</button>
+    </div>
+  </div>
+  <div id="countriesChips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
 </div>
 
 <div class="results" id="results">
@@ -322,6 +345,26 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 // Country mix — adds MT/BG/RO/MC/GE in 2026-05-19 update. Removed CH+EE earlier.
 const COUNTRY_CODES = ['IL','PT','CY','IT','MT','BG','RO','MC','GE','AE','SG','US','DE','PL','GB','IE','GR','CA','AU','ES','FR','NL','CZ','BR','TH'];
 
+// Default selection — top destinations actually considered by Israeli relocators
+const DEFAULT_SELECTED = new Set(['IL','PT','CY','IT','ES','AE','US','GB']);
+
+// Persisted selection from localStorage; falls back to DEFAULT.
+function loadSelected() {
+  try {
+    const raw = localStorage.getItem('wl_selected_countries');
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length > 0) return new Set(arr);
+    }
+  } catch (_) {}
+  return new Set(DEFAULT_SELECTED);
+}
+function saveSelected(set) {
+  try { localStorage.setItem('wl_selected_countries', JSON.stringify([...set])); } catch (_) {}
+}
+let _selected = loadSelected();
+_selected.add('IL'); // Israel always on (locked)
+
 // When user declares they qualify for a special new-resident regime, apply
 // the country's most favorable regime automatically (this is the "olim view").
 const REGIME_BY_COUNTRY = {
@@ -363,6 +406,11 @@ const TR = {
     famSingle: 'רווק/ה', famMarried: 'נשוי/ה', famMarriedW: 'נשוי/ה + בן/בת זוג עובד/ת',
     olimToggle: '⭐ אני עולה חדש / תושב חוזר ותיק',
     olimToggleHint: 'החל משטרי מס מיוחדים: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · ת״ח ותיק (IL) ועוד',
+    selectorT: 'מדינות להשוואה',
+    selectorHint: 'לחץ על דגל כדי להוסיף/להסיר. ישראל תמיד מסומנת.',
+    selectAll: 'כולן',
+    selectDefault: 'ברירת מחדל',
+    selectClear: 'נקה',
     calculating: 'מחשב…',
     shareTitle: 'חברים שלך מסקרנים. שלח להם 👇',
     shareSub: 'שיתוף ב-WhatsApp / Email / קישור',
@@ -428,6 +476,11 @@ const TR = {
     famSingle: 'Single', famMarried: 'Married', famMarriedW: 'Married + working spouse',
     olimToggle: '⭐ I\'m a new immigrant / senior returning resident',
     olimToggleHint: 'Apply special regimes: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · Senior returning IL · more',
+    selectorT: 'Countries to compare',
+    selectorHint: 'Tap a flag to add/remove. Israel always selected.',
+    selectAll: 'All',
+    selectDefault: 'Default',
+    selectClear: 'Clear',
     calculating: 'Calculating…',
     shareTitle: 'Your friends are curious. Send it 👇',
     shareSub: 'Share via WhatsApp / Email / link',
@@ -498,12 +551,57 @@ function applyLang(l) {
   document.querySelectorAll('#langSwitch button').forEach(b => {
     b.classList.toggle('on', b.dataset.l === l);
   });
+  if (typeof renderChips === 'function') renderChips();
   recalc();
 }
 document.querySelectorAll('#langSwitch button').forEach(b => {
   b.addEventListener('click', () => applyLang(b.dataset.l));
 });
 applyLang(_lang);
+
+// ── Country selector chips ─────────────────────────────────────────────────
+function renderChips() {
+  const host = document.getElementById('countriesChips');
+  if (!host) return;
+  host.innerHTML = COUNTRY_CODES.map(code => {
+    const d = TAX_DATA[code];
+    if (!d) return '';
+    const on = _selected.has(code);
+    const locked = code === 'IL';
+    const nm = (typeof d.name === 'object') ? (d.name[_lang] || d.name.en || code) : (d.name || code);
+    const cls = 'cchip' + (on ? ' on' : '') + (locked ? ' locked' : '');
+    return `<span class="${cls}" data-code="${code}"${locked ? ' aria-disabled="true"' : ''}>
+      <span class="flag">${d.flag}</span><span>${nm}</span>
+    </span>`;
+  }).join('');
+  host.querySelectorAll('.cchip').forEach(el => {
+    el.addEventListener('click', () => {
+      const c = el.dataset.code;
+      if (c === 'IL') return; // locked
+      if (_selected.has(c)) _selected.delete(c);
+      else _selected.add(c);
+      saveSelected(_selected);
+      renderChips();
+      recalc();
+    });
+  });
+}
+document.getElementById('selAll').addEventListener('click', () => {
+  _selected = new Set(COUNTRY_CODES);
+  saveSelected(_selected);
+  renderChips(); recalc();
+});
+document.getElementById('selDefault').addEventListener('click', () => {
+  _selected = new Set(DEFAULT_SELECTED);
+  _selected.add('IL');
+  saveSelected(_selected);
+  renderChips(); recalc();
+});
+document.getElementById('selClear').addEventListener('click', () => {
+  _selected = new Set(['IL']); // IL always stays
+  saveSelected(_selected);
+  renderChips(); recalc();
+});
 
 // ── Calculation + render ────────────────────────────────────────────────────
 function recalc() {
@@ -516,6 +614,7 @@ function recalc() {
     return;
   }
   const rows = COUNTRY_CODES
+    .filter(code => _selected.has(code) || code === 'IL')
     .map(code => {
       const d = TAX_DATA[code];
       if (!d) return null;
@@ -583,6 +682,7 @@ function recalc() {
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('family').addEventListener('change', recalc);
 document.getElementById('olimToggle').addEventListener('change', recalc);
+renderChips();
 recalc();
 
 // ── Share ───────────────────────────────────────────────────────────────────
