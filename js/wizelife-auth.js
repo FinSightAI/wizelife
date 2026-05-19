@@ -289,9 +289,60 @@ function requireAuth(redirectTo = "auth.html") {
     });
 }
 
-// Redirect to dashboard if already logged in (for auth page)
+// Redirect already-logged-in user away from auth page.
+// Honors ?next=<url> when the host is on the SAFE_HOSTS allow-list, otherwise
+// falls back to the default redirect (dashboard.html). Without this, YOLO/Pro
+// users clicking a deep-link CTA (e.g., salary-compare → "open Pro account")
+// ended up on the dashboard with no obvious path back to the deep analysis
+// they came to do.
 function redirectIfLoggedIn(redirectTo = "dashboard.html") {
-    wlAuth.onAuthStateChanged(user => {
-        if (user) window.location.href = redirectTo;
+    const SAFE_HOSTS = [
+        'finsightai.github.io', 'check-deal.vercel.app', 'mastermove.vercel.app',
+        'wizetravel.hf.space', 'ofirofir-wizetravel.hf.space', 'vitara.onrender.com',
+        'wizelife.ai', 'tax.wizelife.ai', 'deal.wizelife.ai', 'travel.wizelife.ai',
+        'health.wizelife.ai', 'money.wizelife.ai',
+    ];
+    wlAuth.onAuthStateChanged(async user => {
+        if (!user) return;
+        // Try ?next= first
+        try {
+            const next = new URLSearchParams(window.location.search).get('next');
+            if (next) {
+                const u = new URL(next, window.location.origin);
+                const safe = SAFE_HOSTS.some(h => u.hostname === h || u.hostname.endsWith('.' + h));
+                if (safe) {
+                    // For cross-app destinations, hand off the token via URL fragment
+                    // (same shape that _afterAuthRedirect uses on the login flow).
+                    const sameOrigin = u.origin === window.location.origin;
+                    if (sameOrigin) {
+                        window.location.href = next;
+                        return;
+                    }
+                    try {
+                        const token = await user.getIdToken();
+                        const nick  = localStorage.getItem('wl_nickname') || user.displayName || '';
+                        let plan = 'free';
+                        try {
+                            if (typeof wlDb !== 'undefined') {
+                                const d = await wlDb.collection('users').doc(user.uid).get();
+                                if (d.exists && d.data().plan) plan = d.data().plan;
+                            }
+                        } catch {}
+                        const params = 'wl_token=' + encodeURIComponent(token)
+                                     + '&wl_nick=' + encodeURIComponent(nick)
+                                     + '&wl_plan=' + encodeURIComponent(plan);
+                        const sep = next.indexOf('#') === -1 ? '#' : '&';
+                        window.location.href = next + sep + params;
+                        return;
+                    } catch {
+                        // Token attach failed — still send them to the destination,
+                        // they can sign in there if needed.
+                        window.location.href = next;
+                        return;
+                    }
+                }
+            }
+        } catch {}
+        window.location.href = redirectTo;
     });
 }

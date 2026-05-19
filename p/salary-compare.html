@@ -320,7 +320,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 <div class="cta" id="ctaPortugal" style="display:none">
   <h4>🇵🇹 חושב על פורטוגל?</h4>
   <p data-i18n="ctaPortugalP">משטר ה-<strong>NHR (Non-Habitual Resident)</strong> מאפשר 0% מס על הכנסה זרה ל-10 שנים. הרשמה ל-WizeTax = מודל אישי + תזרים לאורך 10 שנים + תכנון מס יציאה מישראל.</p>
-  <a href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" data-i18n="ctaPortugalBtn">קבל ניתוח מלא ←</a>
+  <a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Ftax.wizelife.ai%2Frelocation-analyzer" data-i18n="ctaPortugalBtn">קבל ניתוח מלא ←</a>
 </div>
 
 <div class="cta">
@@ -726,12 +726,21 @@ function shareTo(channel) {
 const deepModal = document.getElementById('deepModal');
 const deepResultEl = document.getElementById('deepResult');
 
-document.getElementById('openDeepBtn').addEventListener('click', () => {
+function openDeepModalNow() {
   // Pre-fill gross from the top input so user doesn't re-type
   const topGross = parseFloat(document.getElementById('gross').value) || 0;
   if (topGross) document.getElementById('dGross').value = topGross;
   deepModal.classList.add('on');
-});
+}
+document.getElementById('openDeepBtn').addEventListener('click', openDeepModalNow);
+
+// Auto-open the deep-analysis modal when the URL hash is #deep.
+// Used by the post-login redirect from auth.html so YOLO/Pro users land
+// directly inside the deep flow instead of stuck on the dashboard.
+if (window.location.hash === '#deep') {
+  // Defer one tick so all listeners + UI are wired
+  setTimeout(openDeepModalNow, 350);
+}
 document.getElementById('closeDeep').addEventListener('click', () => deepModal.classList.remove('on'));
 deepModal.addEventListener('click', e => { if (e.target === deepModal) deepModal.classList.remove('on'); });
 
@@ -876,7 +885,7 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
           + '</div>';
       }).join('')
     + '<div style="margin-top:14px;text-align:center">'
-    + '<a href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
+    + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
     + T.deepCTASignup + '</a></div>'
     + '</div>';
   deepResultEl.innerHTML = html;
