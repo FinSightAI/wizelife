@@ -896,14 +896,18 @@ function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
     let extraDeduction = 0;
     let pensionLine = '';
     let studyLine = '';
+    const _lang = (typeof window !== 'undefined' && window._lang) || 'he';
+    const _L = (he, en, pt, es) => _lang === 'he' ? he : _lang === 'pt' ? (pt||en) : _lang === 'es' ? (es||en) : en;
     if (code === 'IL') {
       const pensEmpILS  = grossILS * (pensEmpPct / 100);
       const kerenEmpILS = hasKeren ? grossILS * 0.025 : 0;
       extraDeduction = (pensEmpILS + kerenEmpILS) * 0.27; // ILS → USD
       pensionLine = '+' + (pensErPct + pensEmpPct).toFixed(1) + '%';
-      studyLine   = hasKeren ? '+10% (employer + you)' : '—';
+      studyLine   = hasKeren ? _L('+10% (מעסיק + אתה)', '+10% (employer + you)', '+10% (empregador + você)', '+10% (empleador + tú)') : '—';
     } else {
-      pensionLine = (meta.pensionMandatory ? 'mandatory' : 'optional');
+      pensionLine = meta.pensionMandatory
+        ? _L('חובה', 'mandatory', 'obrigatório', 'obligatorio')
+        : _L('אופציונלי', 'optional', 'opcional', 'opcional');
       studyLine   = (meta.studyFund ? '+10%' : '—');
     }
     // Subtract estimated health cost (US/CH/AE/SG/IE)
@@ -1062,7 +1066,15 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
         const delta = r.realNetUSD - ilNet;
         const deltaTxt = r.code === 'IL' ? '<strong>' + T.deepNetReal + '</strong>'
           : (delta >= 0 ? '<span style="color:#6ee7b7">+$' : '<span style="color:#fca5a5">-$') + Math.abs(Math.round(delta)).toLocaleString() + '</span>';
-        const extras = T.deepPension + r.pensionLine + '<br>' + T.deepStudy + r.studyLine + (r.healthCostUSD ? '<br>Health: -$' + r.healthCostUSD + '/mo' : '');
+        const healthLabel = _lang === 'he' ? 'בריאות'
+                          : _lang === 'pt' ? 'Saúde'
+                          : _lang === 'es' ? 'Salud'
+                          : 'Health';
+        const perMonth = _lang === 'he' ? '/חודש'
+                       : _lang === 'pt' ? '/mês'
+                       : _lang === 'es' ? '/mes'
+                       : '/mo';
+        const extras = T.deepPension + r.pensionLine + '<br>' + T.deepStudy + r.studyLine + (r.healthCostUSD ? '<br>' + healthLabel + ': -$' + r.healthCostUSD + perMonth : '');
         return '<div class="' + cls + '">'
           + '<div class="name">' + shortName(r.name) + '<span class="sub">' + deltaTxt + '</span></div>'
           + '<div class="net">$' + Math.round(r.realNetUSD).toLocaleString() + '</div>'
