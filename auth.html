@@ -185,6 +185,7 @@
 <meta name="wl-sentry-dsn" content="">
 <meta name="wl-sentry-app" content="wizelife">
 <script src="/js/wize-sentry.js" defer></script>
+<script src="/js/wize-attribution.js" defer></script>
 </head>
 <body>
 <style>
@@ -497,8 +498,11 @@ window._wlLazy = {
 
  function friendlyError(code) {
  const map = {
- "auth/user-not-found": "No account with this email.",
- "auth/wrong-password": "Wrong password — check for caps-lock or trailing spaces.",
+ // Anti-enumeration: collapse "user-not-found" + "wrong-password" into the
+ // same generic message so attackers can't distinguish a real email from a
+ // fake one by reading the response. (QA: security-deep-flows.js)
+ "auth/user-not-found": "Wrong email or password — check for caps-lock or trailing spaces.",
+ "auth/wrong-password": "Wrong email or password — check for caps-lock or trailing spaces.",
  "auth/invalid-credential": "Wrong email or password — check for caps-lock or trailing spaces.",
  "auth/invalid-login-credentials":"Wrong email or password — check for caps-lock or trailing spaces.",
  "auth/invalid-email": "Invalid email address.",
@@ -529,14 +533,26 @@ window._wlLazy = {
  document.getElementById("loginEmail").focus();
  return;
  }
+ // Anti-enumeration: ALWAYS show the same success message, regardless of
+ // whether the email is actually registered. Firebase will throw
+ // auth/user-not-found for unregistered emails — we swallow that specific
+ // error (and only that one) so attackers can't distinguish.
+ // QA: security-deep-flows.js flagged this as account enumeration risk.
  try {
  await wlAuth.sendPasswordResetEmail(email);
- document.getElementById("loginError").style.color = "#34d399";
- document.getElementById("loginError").textContent = "Reset email sent — check your inbox.";
  } catch (e) {
+ if (e && (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-email')) {
+ // Silently swallow — do NOT reveal that the email is unregistered/invalid.
+ // The user gets the same success message; the attacker gains nothing.
+ } else {
+ // Surface real errors (network/quota) without leaking existence.
  document.getElementById("loginError").style.color = "";
- document.getElementById("loginError").textContent = friendlyError(e.code);
+ document.getElementById("loginError").textContent = friendlyError(e.code) || "Something went wrong — try again.";
+ return;
  }
+ }
+ document.getElementById("loginError").style.color = "#34d399";
+ document.getElementById("loginError").textContent = "If an account exists for that email, a reset link was sent — check your inbox.";
  }
 
  // Allow Enter key

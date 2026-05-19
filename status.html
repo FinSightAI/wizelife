@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<title>WizeLife — System Status</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0a0e1a; --card:#11142a; --border:rgba(255,255,255,0.08); --text:#eef2ff; --muted:#9ca3af; --ok:#10b981; --warn:#f59e0b; --err:#ef4444; }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  body { background:var(--bg); color:var(--text); font-family:Inter,-apple-system,sans-serif; min-height:100vh; padding:24px 16px 60px }
+  .wrap { max-width:720px; margin:0 auto }
+  h1 { font-size:28px; font-weight:700; margin-bottom:6px; letter-spacing:-0.5px }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:24px }
+  .overall { padding:18px 20px; border-radius:14px; border:1px solid var(--border); background:var(--card); margin-bottom:18px; display:flex; align-items:center; gap:14px }
+  .overall .dot { width:16px; height:16px; border-radius:50%; background:var(--muted); flex-shrink:0 }
+  .overall .dot.ok { background:var(--ok); box-shadow:0 0 12px var(--ok) }
+  .overall .dot.warn { background:var(--warn); box-shadow:0 0 12px var(--warn) }
+  .overall .dot.err { background:var(--err); box-shadow:0 0 12px var(--err) }
+  .overall .lbl { font-size:17px; font-weight:700 }
+  .overall .meta { font-size:12px; color:var(--muted); margin-top:2px }
+  .grid { display:grid; gap:10px }
+  .row { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border:1px solid var(--border); background:var(--card); border-radius:12px; font-size:14px }
+  .row .left { display:flex; align-items:center; gap:12px }
+  .row .dot { width:10px; height:10px; border-radius:50%; background:var(--muted) }
+  .row .dot.ok { background:var(--ok) }
+  .row .dot.warn { background:var(--warn) }
+  .row .dot.err { background:var(--err) }
+  .row .name { font-weight:600 }
+  .row .url { font-size:11.5px; color:var(--muted); margin-top:2px }
+  .row .latency { font-variant-numeric:tabular-nums; color:var(--muted); font-size:12.5px }
+  .row .latency.warn { color:var(--warn) }
+  .row .latency.err { color:var(--err) }
+  .foot { text-align:center; color:var(--muted); font-size:11.5px; margin-top:30px; line-height:1.6 }
+  .foot a { color:#a5b4fc; text-decoration:none }
+  .legend { display:flex; gap:18px; justify-content:center; font-size:11.5px; color:var(--muted); margin:18px 0 8px }
+  .legend span { display:flex; align-items:center; gap:6px }
+  .legend i { width:9px; height:9px; border-radius:50%; display:inline-block }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>WizeLife System Status</h1>
+  <p class="sub">בודק את כל 6 השירותים כל 60 שניות. נתונים מ-fetch ישירים מהדפדפן שלך — אין שרת באמצע.</p>
+
+  <div class="overall" id="overall">
+    <div class="dot" id="overallDot"></div>
+    <div>
+      <div class="lbl" id="overallLbl">בודק…</div>
+      <div class="meta" id="overallMeta"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--ok)"></i> פעיל</span>
+    <span><i style="background:var(--warn)"></i> איטי (>2s)</span>
+    <span><i style="background:var(--err)"></i> תקלה</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">
+    Last checked: <span id="last">—</span><br>
+    For real-time alerts → Sentry + UptimeRobot (Pro). Issues? <a href="mailto:ofirshamir57@gmail.com">דווח</a>
+  </div>
+</div>
+
+<script>
+// Apps to monitor — same as tools/uptime-tripwire.js
+const APPS = [
+  { name: 'WizeLife Portal',     host: 'wizelife.ai',          url: 'https://wizelife.ai/' },
+  { name: 'WizeMoney (FinSight)',host: 'money.wizelife.ai',    url: 'https://money.wizelife.ai/' },
+  { name: 'WizeTax',             host: 'tax.wizelife.ai',      url: 'https://tax.wizelife.ai/relocation-analyzer' },
+  { name: 'WizeHealth (Vitara)', host: 'health.wizelife.ai',   url: 'https://health.wizelife.ai/' },
+  { name: 'WizeTravel',          host: 'travel.wizelife.ai',   url: 'https://travel.wizelife.ai/' },
+  { name: 'WizeDeal',            host: 'deal.wizelife.ai',     url: 'https://deal.wizelife.ai/' },
+];
+
+const grid = document.getElementById('grid');
+const overallDot = document.getElementById('overallDot');
+const overallLbl = document.getElementById('overallLbl');
+const overallMeta = document.getElementById('overallMeta');
+const last = document.getElementById('last');
+
+// Render the rows once
+APPS.forEach((app, i) => {
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.id = 'row-' + i;
+  row.innerHTML = `
+    <div class="left">
+      <div class="dot" id="dot-${i}"></div>
+      <div><div class="name">${app.name}</div><div class="url">${app.host}</div></div>
+    </div>
+    <div class="latency" id="lat-${i}">—</div>`;
+  grid.appendChild(row);
+});
+
+async function check(app, i) {
+  const dot = document.getElementById('dot-' + i);
+  const lat = document.getElementById('lat-' + i);
+  const start = Date.now();
+  let status = 'err', ms = 0;
+  try {
+    // Use no-cors HEAD with timeout — we can't read response but we know if it connected
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 10000);
+    await fetch(app.url, { method: 'GET', mode: 'no-cors', cache: 'no-cache', signal: ctrl.signal });
+    clearTimeout(t);
+    ms = Date.now() - start;
+    status = ms > 2000 ? 'warn' : 'ok';
+  } catch (e) {
+    ms = Date.now() - start;
+    status = 'err';
+  }
+  dot.className = 'dot ' + status;
+  lat.className = 'latency ' + (status === 'ok' ? '' : status);
+  lat.textContent = status === 'err' ? 'unreachable' : ms + ' ms';
+  return status;
+}
+
+async function runAll() {
+  const results = await Promise.all(APPS.map((a, i) => check(a, i)));
+  const errs = results.filter(r => r === 'err').length;
+  const warns = results.filter(r => r === 'warn').length;
+  const oks = results.filter(r => r === 'ok').length;
+  let overall = 'ok', lbl = 'הכל פועל', meta = `${oks}/${APPS.length} services healthy`;
+  if (errs > 0)      { overall = 'err';  lbl = errs === APPS.length ? 'תקלה כללית' : `${errs} שירותים לא זמינים`; meta = `${oks}/${APPS.length} healthy · ${errs} down · ${warns} slow`; }
+  else if (warns > 0){ overall = 'warn'; lbl = 'ביצועים מואטים';                                                  meta = `${oks}/${APPS.length} healthy · ${warns} slow`; }
+  overallDot.className = 'dot ' + overall;
+  overallLbl.textContent = lbl;
+  overallMeta.textContent = meta;
+  last.textContent = new Date().toLocaleString('he-IL');
+}
+
+runAll();
+setInterval(runAll, 60000); // every 60s
+</script>
+</body>
+</html>
