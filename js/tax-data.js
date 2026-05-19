@@ -59,7 +59,7 @@ const TAX_DATA = {
     socialSec: 7.0,                           // legacy single-rate fallback
     health:    5.17,
     notes: 'מדרגות 2026 (חוק ההסדרים): 20% הורחבה עד ₪19K/חודש, 31% עד ₪25.1K. ביטוח לאומי 2-tier: 1.04% עד ₪7,703/חודש, 7% מעל (תקרה ₪51,910). מס בריאות 3.23%/5.17%. מס יסף 3% כלול ב-50%. נקודת זיכוי ₪242/חודש (₪2,904/שנה).',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── USA ────────────────────────────────── source: IRS Rev. Proc. 2025-XX + One Big Beautiful Bill Act (Jul 2025)
@@ -84,7 +84,7 @@ const TAX_DATA = {
     health: 1.45,             // Medicare (no ceiling)
     healthCeil: null,
     notes: 'פדרלי בלבד — מס מדינה מוסיף 0%–13.3%. Standard deduction $16,100 (single 2026). OBBBA הפך קבוע את שינויי TCJA.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── GERMANY ───────────────────────────── source: deutsche-rentenversicherung.de + §32a EStG 2026
@@ -102,7 +102,7 @@ const TAX_DATA = {
     health: 7.3,                               // Krankenversicherung employee half
     healthCeil: 66_150,
     notes: '2026: Grundfreibetrag עלה ל-€12,348. Kirchensteuer ~8-9% מהמס. Solidaritätszuschlag בוטל ל-90%.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── FRANCE ────────────────────────── source: PwC France 2026 + Loi de Finances 2026
@@ -121,7 +121,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026: סיפי המדרגות עלו 0.9% (אינפלציה). Prélèvement à la source. Cotisations 22%-23%. PFU (רווחי הון) 30%→31.4%.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── NETHERLANDS ─────────────────────── source: Belastingdienst 2026 + Dutch Tax Budget 2026
@@ -139,7 +139,7 @@ const TAX_DATA = {
     health: 1_964,                                // Zvw nominale premie (fixed annual)
     healthCeil: null,
     notes: '2026: Box 1 שיעורי 35.75% / 37.56% / 49.5%. תקרת AHK ירדה €3,362→€3,115. Arbeidskorting מקס €5,685.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── PORTUGAL ─────────────────────────────────────── source: PwC Portugal 2025, CIRS
@@ -147,15 +147,19 @@ const TAX_DATA = {
     flag: '🇵🇹', name: 'פורטוגל', currency: 'EUR', usdRate: 0.92,
     // 2026 IRS brackets — thresholds inflated ~3.51% for inflation;
     // brackets 2-5 rates reduced 0.3pp (PwC 2026 State Budget summary).
+    // 2026-05 update — PwC Portugal re-verified Jan 5, 2026 (Lei 45-A/2025).
+    // Both rates AND thresholds shifted from the January data we had — a
+    // further round of rate cuts (0.3-0.5pp across bands 2-7) and threshold
+    // increases (~3-5%).
     brackets: [
-      { upTo: 7_973,    rate: 13.25 },          // bottom rate unchanged
-      { upTo: 12_031,   rate: 16.5  },          // was 18% (-0.3pp inflated below)
-      { upTo: 17_050,   rate: 22    },          // was 23%
-      { upTo: 22_069,   rate: 25    },          // was 26%
-      { upTo: 28_099,   rate: 32    },          // was 32.75%
-      { upTo: 41_188,   rate: 35.5  },          // was 37% (-1.5pp + inflation)
-      { upTo: 53_822,   rate: 43.5  },          // unchanged
-      { upTo: 84_049,   rate: 45    },          // unchanged rate, inflated threshold
+      { upTo: 8_342,    rate: 12.50 },          // 2026-05: was 13.25%/7,973
+      { upTo: 12_587,   rate: 15.70 },          // 2026-05: was 16.5%/12,031
+      { upTo: 17_838,   rate: 21.20 },          // 2026-05: was 22%/17,050
+      { upTo: 23_089,   rate: 24.10 },          // 2026-05: was 25%/22,069
+      { upTo: 29_397,   rate: 31.10 },          // 2026-05: was 32%/28,099
+      { upTo: 43_090,   rate: 34.90 },          // 2026-05: was 35.5%/41,188
+      { upTo: 46_566,   rate: 43.10 },          // 2026-05: was 43.5%/53,822
+      { upTo: 86_634,   rate: 44.60 },          // 2026-05: NEW band — 45→44.6%
       { upTo: Infinity, rate: 48    },          // top unchanged
     ],
     credit: 0,
@@ -164,7 +168,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026: שיעורי מדרגות 2-5 הופחתו 0.3pp. סיפי מדרגות עלו ~3.51%. NHR/IFICI — 10 שנות מס 20% לעולים מקצועות "מועילים". Seg. Social 11%.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── SPAIN ──────────────────────────────────── source: AEAT 2026 + PwC Spain 2026
@@ -184,7 +188,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026: שיעורים לאומיים ללא שינוי (חבל אוטונומי מוסיף עוד 0-7%). מקס׳ בסיס ביטוח לאומי €61,214/שנה. Beckham Law — עולים: 24% flat עד €600K ל-6 שנים.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── POLAND ─────────────────────────────────── source: Ministerstwo Finansów 2026 + PwC 2026
@@ -201,14 +205,16 @@ const TAX_DATA = {
     health: 9.0,                                   // NFZ — no cap, not tax-deductible
     healthCeil: null,
     notes: '2026: PIT-0 על PLN 30K ראשון. 12% עד 120K, 32% מעל. ZUS cap PLN 282,600. אין אמנת מניעת כפל מס עם ישראל.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
-  // ── CZECH REPUBLIC ────────────────────────────────────── source: PwC CZ 2025
+  // ── CZECH REPUBLIC ────────────────────────────────────── source: PwC CZ 2026-01 (verified 2026-05)
   CZ: {
     flag: '🇨🇿', name: "צ'כיה", currency: 'CZK', usdRate: 0.044,
+    // 2026: threshold for top rate calculated as 36× average monthly salary.
+    // 2026 figure CZK 1,762,812 (per PwC last reviewed 2026-01-07).
     brackets: [
-      { upTo: 1_935_552, rate: 15 },
+      { upTo: 1_762_812, rate: 15 },        // 2026: was 1,935,552
       { upTo: Infinity,  rate: 23 },
     ],
     credit: 30_840,         // základní sleva na poplatníka
@@ -216,21 +222,24 @@ const TAX_DATA = {
     socialCeil: null,
     health: 4.5,            // zdravotní pojištění employee
     healthCeil: null,
-    notes: 'עלות מחיה נמוכה. פראג פופולרית לטכנולוגיסטים. Flat tax פשוט יחסית.',
+    notes: '2026: סף שיעור 23% הורד ל-CZK 1.76M (36× שכר ממוצע). עלות מחיה נמוכה. פראג פופולרית לטכנולוגיסטים. Flat tax יחסית פשוט.',
+    lastVerified: '2026-05',
   },
 
-  // ── ESTONIA ────────────────────────────────────────── source: MTA (Maksu- ja Tolliamet) 2025
+  // ── ESTONIA ────────────────────────────────────────── source: PwC Estonia 2026-02-25 (verified 2026-05)
   EE: {
     flag: '🇪🇪', name: 'אסטוניה', currency: 'EUR', usdRate: 0.92,
+    // 2026 — flat 22% (raised from 20% effective Jan 2025; remained 22% for 2026).
     brackets: [
-      { upTo: Infinity, rate: 22 }, // flat rate from 2024
+      { upTo: Infinity, rate: 22 }, // flat rate
     ],
     credit: 7_848,          // basic exemption annual (reduces at higher income)
     socialSec: 1.6,         // unemployment insurance employee
     socialCeil: null,
     health: 0,              // employer pays social tax (33%), no employee health contrib
     healthCeil: null,
-    notes: 'E-residency מאפשר ניהול עסק אירופי. Employer social tax 33% — גבוה, אבל רוב עלות הביטוח לאומי על המעסיק.',
+    notes: '2026: שיעור שטוח 22% (היה 20% עד 2024). E-residency מאפשר ניהול עסק אירופי. Employer social tax 33% — גבוה, אבל רוב עלות הביטוח לאומי על המעסיק.',
+    lastVerified: '2026-05',
   },
 
   // ── IRELAND ────────────────────────────────────────── source: Revenue.ie 2025
@@ -246,7 +255,7 @@ const TAX_DATA = {
     health: 8.0,                                   // USC max band (avg effective ~4-5%)
     healthCeil: null,
     notes: '2026 Budget: standard 20% band הורחב €42K→€44K. PRSI עלה ל-4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── SWITZERLAND ──────────────────── source: ESTV 2026 + EY tax alert 2025/2026
@@ -271,7 +280,7 @@ const TAX_DATA = {
     health: 0,                                     // private insurance ~CHF 350-600/mo separately
     healthCeil: null,
     notes: '2026: רק רמה פדרלית — מס קנטונלי + מוניציפלי מוסיפים 10-25% מעל. AHV/IV/EO 5.3% ללא תקרה. ביטוח בריאות פרטי חובה ~CHF 450/חודש.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── UK ───────────────────────────────────────── source: HMRC 2025/26 (Apr 2025)
@@ -289,7 +298,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026/27: ללא שינוי מ-2025/26 — Personal allowance £12,570 (קפוא עד 2031). NHS = ללא פרמיית בריאות.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── UAE ────────────────────────────────────── source: MoF UAE + PwC 2026
@@ -304,7 +313,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026: אפס מס הכנסה לכל התושבים — בלי שינוי. עובדים לא-GCC: בלי SS. ביטוח בריאות חובת מעסיק. VAT 5%. תושבי GCC משלמים 5% SS.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── SINGAPORE ────────────────────────── source: IRAS YA2026 (income year 2025)
@@ -331,7 +340,7 @@ const TAX_DATA = {
     health: 0,                                    // bundled in CPF (Medisave)
     healthCeil: null,
     notes: '2026: top bracket 24% מעל SGD $1M (תוקף YA2024+). Employment Pass holders פטורים מ-CPF. Non-residents משלמים 15% flat על משכורת.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── CANADA ──────────────────────── source: CRA 2026 + Federal Budget 2026
@@ -350,7 +359,7 @@ const TAX_DATA = {
     health: 1.66,                                 // EI employee premium
     healthCeil: 65_700,
     notes: '2026: מדרגה תחתונה 15%→14%. Provincial tax מוסיף 6%-25% על הפדרלי (Quebec הגבוה, Alberta הנמוך).',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── AUSTRALIA ─────────────────────────── source: ATO 2025-26 + Budget 2026
@@ -369,7 +378,7 @@ const TAX_DATA = {
     health: 2.0,                                  // Medicare Levy
     healthCeil: null,
     notes: '2025-26: מדרגה 2 ירדה 19%→16% (יורד 15% מ-יולי 2026). Super 11.5% משולם ע״י מעסיק מעבר לברוטו. Medicare Levy 2% כלול. שנת מס יולי–יוני.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── BRAZIL ───────────────────────────── source: Receita Federal 2026
@@ -388,7 +397,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026: מדרגות IRPF ללא שינוי. INSS מדורג 7.5%–14% עד תקרה R$877/חודש. עלות מחיה נמוכה, מטבע תנודתי.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── THAILAND ──────────────────────── source: Revenue Dept. Thailand 2026
@@ -410,17 +419,21 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: '2026: שיעורים יציבים מאז 2013 (0-35%). Thailand LTR Visa — 17% flat על הכנסה זרה לעובדים highly-skilled. עלות מחיה מהנמוכות בעולם.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── GREECE ────────────────────── source: AADE 2026 + Law 5246/2025 (effective Jan 2026)
   GR: {
     flag: '🇬🇷', name: 'יוון', currency: 'EUR', usdRate: 0.92,
+    // 2026-05 update — PwC Greece re-verified Feb 16, 2026 + Law 5246/2025.
+    // Rates lowered across mid-bands + new 39% band 40K-60K inserted.
+    // Lower scales available based on number of children / age<30 (not modeled).
     brackets: [
       { upTo: 10_000,   rate: 9  },               // unchanged
-      { upTo: 20_000,   rate: 22 },               // unchanged
-      { upTo: 30_000,   rate: 28 },               // unchanged
-      { upTo: 40_000,   rate: 36 },               // unchanged
+      { upTo: 20_000,   rate: 20 },               // 2026: was 22%
+      { upTo: 30_000,   rate: 26 },               // 2026: was 28%
+      { upTo: 40_000,   rate: 34 },               // 2026: was 36%
+      { upTo: 60_000,   rate: 39 },               // 2026: NEW band (40-60K @ 39%)
       { upTo: Infinity, rate: 44 },               // unchanged
     ],
     credit: 777,                                   // employee credit for income up to €12K
@@ -429,7 +442,7 @@ const TAX_DATA = {
     health: 0,                                     // bundled in EFKA
     healthCeil: null,
     notes: '2026: שיעורים ללא שינוי. EFKA cap €93,143/שנה. עובדים מתחת גיל 25 — 0% עד €20K. תוכנית עולים: 7% flat ל-15 שנה.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── ITALY ─────────────────────────────────── source: Agenzia delle Entrate 2026 + Budget Law 2026
@@ -446,7 +459,7 @@ const TAX_DATA = {
     health: 0,                                  // health funded through general taxation
     healthCeil: null,
     notes: '2026: מדרגת €28K-€50K ירדה 35%→33% (חיסכון עד €440/שנה). "Lavoratori Impatriati" 2024+: רק 50% פטור (לא 70%), cap €600K, 5 שנים. INPS חייב ללא תלות.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── MALTA ──────────────────────────────── source: PwC Malta 2026 + Mercans alert Jan 2026
@@ -464,7 +477,7 @@ const TAX_DATA = {
     health: 0,                                   // bundled into general taxation
     healthCeil: null,
     notes: '2026: 0%/15%/25%/35% מדרגות. אנגלית רשמית. Non-Dom remittance מאפשר 0% על הכנסה זרה לא-remitted (מינ׳ €5,000 מס שנתי). קהילה ישראלית גדולה ב-Sliema.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── BULGARIA ──────────────────────────────── source: PwC Bulgaria 2026 + TaxRavens 2026
@@ -479,7 +492,7 @@ const TAX_DATA = {
     health: 0,                                   // bundled into social
     healthCeil: null,
     notes: '2026: 10% flat — מהנמוכים ב-EU. סופיה תעשייית tech צומחת. גישת EU מלאה. עלות מחיה ~50% מתל-אביב.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── ROMANIA ────────────────────────────── source: ANAF Romania 2026 + countrytaxcalc 2026
@@ -494,7 +507,7 @@ const TAX_DATA = {
     health: 10,                                  // CASS health 10% (no cap, not deductible)
     healthCeil: null,
     notes: '2026: 10% flat PIT, אבל ביטוח לאומי גבוה (CAS 25% + CASS 10% = 35% סה״כ). Tech hub בבוקרשט וקלוז׳ — אנגלית רווחת בתעשייה.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── MONACO ──────────────────────────────────────── source: Monaco gov + PwC 2026
@@ -509,7 +522,7 @@ const TAX_DATA = {
     health: 0,
     healthCeil: null,
     notes: 'מס הכנסה 0% למתושבים (לא-צרפתים). דורש 183+ ימי תושבות + פיקדון €500K-1M. למיליונרים בלבד. גישה ל-EU/Schengen.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── GEORGIA ────────────────────────────────── source: Revenue Service Georgia 2026
@@ -524,7 +537,7 @@ const TAX_DATA = {
     health: 0,                                   // no employee health contribution
     healthCeil: null,
     notes: '20% flat regular, אבל **1% Small Business Entrepreneur status** עד $200K הכנסה שנתית — מצוין לעצמאי / startup founder. Easy residency, growing Israeli community.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 
   // ── CYPRUS ──────────────────────────────────── source: Cyprus Tax Authority 2026 + 2026 tax reform
@@ -532,11 +545,14 @@ const TAX_DATA = {
     flag: '🇨🇾', name: 'קפריסין', currency: 'EUR', usdRate: 0.92,
     // 2026 reform: tax-free threshold raised €19,500 → €22,000; all
     // bracket ceilings shifted UP. Result: meaningful tax reduction.
+    // 2026-05 update — PwC re-verified May 18, 2026. The threshold table
+    // shifted again slightly from the January version (band ceilings are now
+    // €22K / €32K / €42K / €72K — narrower mid-bands than first reported).
     brackets: [
-      { upTo: 22_000,   rate: 0  },             // was 19,500
-      { upTo: 35_000,   rate: 20 },             // was 28,000
-      { upTo: 60_000,   rate: 25 },             // was 36,300
-      { upTo: 72_000,   rate: 30 },             // was 60,000
+      { upTo: 22_000,   rate: 0  },             // unchanged
+      { upTo: 32_000,   rate: 20 },             // 2026-05: was 35,000 (Jan)
+      { upTo: 42_000,   rate: 25 },             // 2026-05: was 60,000 (Jan)
+      { upTo: 72_000,   rate: 30 },             // unchanged
       { upTo: Infinity, rate: 35 },             // unchanged
     ],
     credit: 0,
@@ -545,7 +561,7 @@ const TAX_DATA = {
     health: 2.65,                               // GHS (Gesy) — unchanged
     healthCeil: 180_000,
     notes: '2026 reform: סף פטור עלה ל-€22K. Non-Dom: 0% מס הכנסה + 0% SDC על דיווידנדים ל-17 שנה; רק GHS 2.65% (תקרה €180K = €4,770 max). אחד ממשטרי המס הנדיבים באירופה.',
-    lastVerified: '2026-01',
+    lastVerified: '2026-05',
   },
 };
 
@@ -751,19 +767,26 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
   validYear:   2026,
-  updatedAt:   '2026-05-18',
+  updatedAt:   '2026-05-19',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
+  changes_since_2026_01: [
+    'PT — all 9 brackets shifted lower (12.5/15.7/21.2/24.1/31.1/34.9/43.1/44.6/48). Per PwC Lei 45-A/2025 re-verify 2026-01-05.',
+    'CY — Jan-2026 bracket thresholds revised again in May: €32K/€42K (was €35K/€60K). Per PwC 2026-05-18.',
+    'GR — rates lowered to 9/20/26/34/39/44 + new 39% band 40-60K. Per Law 5246/2025 + PwC 2026-02-16.',
+    'CZ — top-rate threshold lowered to CZK 1.76M (36× average salary). Per PwC 2026-01-07.',
+    'EE — flat rate confirmed 22% for 2026 (raised from 20% in 2025). Per PwC 2026-02-25.',
+  ],
   knownPending: [
-    'EE/CZ — not yet verified to 2026 (removed from default mix; low priority)',
     'NL: arbeidskorting phase-out curve not modeled (uses fixed credit; impact ~€500-1500)',
     'IE: USC tiered structure not modeled (uses 8% flat — overcharges low earners)',
     'CH: brackets here are federal-only — actual tax includes cantonal/municipal (~10-25% addition)',
     'AU: Super 11.5% not added to gross (it\'s employer-paid above salary)',
     'BR: INSS tiered 7.5%/9%/12%/14% simplified to 7.5% (overcharges low earners)',
     'Israel credit-point ₪2,904 frozen for 2026 — unfreeze would raise ~3-5%',
+    'IT: Impatriati moved to 50% exempt (was 70%/90% under old regime — confirm via PwC',
   ],
   sources: [
-    'PwC Worldwide Tax Summaries 2025 — taxsummaries.pwc.com',
+    'PwC Worldwide Tax Summaries 2026 — taxsummaries.pwc.com (re-verified May 2026)',
     'OECD Taxing Wages 2024',
     'KPMG Individual Tax Rates Table 2025',
     'rashut hamissim (taxes.gov.il) + btl.gov.il for Israel-specific',
