@@ -829,9 +829,13 @@ async function handlePayslip(file) {
     }
     const data = window.PayslipExtractor.extractFields(text);
     if (!data || !data.gross) {
-      progressEl.textContent = lang === 'he'
-        ? '⚠ לא מצאתי "ברוטו" בתלוש. ייתכן שזה תלוש זר/לא סטנדרטי. הזן ידנית.'
-        : '⚠ Could not find a "gross" line. Probably non-Israeli or non-standard payslip. Type manually.';
+      // DEBUG: surface raw OCR so we can identify which Hebrew variant is missing.
+      try { localStorage.setItem('wl_last_ocr_text', text.slice(0, 4000)); } catch (_) {}
+      console.log('[payslip] OCR raw text (first 1500 chars):\n' + text.slice(0, 1500));
+      console.log('[payslip] parsed fields:', data);
+      progressEl.innerHTML = lang === 'he'
+        ? '⚠ לא מצאתי "ברוטו" בתלוש. <strong>פתח Console (Cmd+Opt+I) → תראה את הטקסט שזוהה</strong>. שלח לי את 3-4 השורות עם המספרים. או הזן ידנית.'
+        : '⚠ Could not find a "gross" line. <strong>Open Console (Cmd+Opt+I) → you\'ll see the OCR text</strong>. Send me the 3-4 lines with numbers. Or type manually.';
       return;
     }
     progressEl.textContent = lang === 'he'
