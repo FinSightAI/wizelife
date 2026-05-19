@@ -326,9 +326,12 @@
     var closeBtn = document.createElement('button');
     closeBtn.setAttribute('aria-label', lb.close);
     closeBtn.textContent = '✕';
-    closeBtn.style.cssText = 'background:none;border:none;color:rgba(255,255,255,0.55);font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;font-family:inherit;border-radius:8px;';
-    closeBtn.addEventListener('mouseenter', function(){ closeBtn.style.color='#fff'; closeBtn.style.background='rgba(255,255,255,0.06)'; });
-    closeBtn.addEventListener('mouseleave', function(){ closeBtn.style.color='rgba(255,255,255,0.55)'; closeBtn.style.background='none'; });
+    // Larger + more visible on mobile (was 18px / 4px×8px padding —
+    // a 24px touch target falls below WCAG 2.5.5 / iOS HIG 44px minimum,
+    // which is why users perceived the page as frozen behind the modal).
+    closeBtn.style.cssText = 'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:#fff;font-size:20px;cursor:pointer;padding:8px 12px;line-height:1;font-family:inherit;border-radius:10px;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;';
+    closeBtn.addEventListener('mouseenter', function(){ closeBtn.style.background='rgba(255,255,255,0.18)'; });
+    closeBtn.addEventListener('mouseleave', function(){ closeBtn.style.background='rgba(255,255,255,0.10)'; });
     top.appendChild(dots);
     top.appendChild(closeBtn);
     card.appendChild(top);
@@ -355,7 +358,9 @@
     var bottom = document.createElement('div');
     bottom.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;';
     var skipBtn = document.createElement('button');
-    skipBtn.style.cssText = 'background:none;border:none;color:rgba(255,255,255,0.45);font-size:13px;cursor:pointer;padding:8px 12px;font-family:inherit;border-radius:8px;';
+    // Bumped contrast + size — old style had near-invisible color:rgba(255,255,255,0.45),
+    // many users didn't notice they could skip the 6-slide tour at all.
+    skipBtn.style.cssText = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-size:14px;font-weight:600;cursor:pointer;padding:10px 18px;font-family:inherit;border-radius:10px;min-height:44px;';
     skipBtn.textContent = lb.skip;
     var nextBtn = document.createElement('button');
     nextBtn.style.cssText = 'background:linear-gradient(135deg,' + color + ',' + color + 'dd);border:none;color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;padding:12px 26px;border-radius:99px;font-family:inherit;box-shadow:0 10px 30px ' + color + '70, inset 0 1px 0 rgba(255,255,255,0.2);transition:transform .15s, box-shadow .15s;letter-spacing:.2px;';
