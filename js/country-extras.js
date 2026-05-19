@@ -35,6 +35,7 @@
 const COUNTRY_EXTRAS = {
   IL: {
     pensionEmpPct: 6,    pensionErPct: 6.5,
+    pensionPctFinalSalary: 50,    // typical Israeli replacement rate (mandatory pension + keren over career)
     kerenEquiv: 'yes', // it IS the keren-hishtalmut
     healthcareSys: 'public_free',
     healthCostUSD: 0,
@@ -47,7 +48,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   PT: {
-    pensionEmpPct: 11, pensionErPct: 23.75, // Segurança Social — covers pension/health/unemployment
+    pensionEmpPct: 11, pensionErPct: 23.75,
+        pensionPctFinalSalary: 74, // Segurança Social — covers pension/health/unemployment
     kerenEquiv: 'no',
     healthcareSys: 'public_free',
     healthCostUSD: 50, // private top-up if any
@@ -61,6 +63,7 @@ const COUNTRY_EXTRAS = {
   },
   CY: {
     pensionEmpPct: 8.3, pensionErPct: 8.3,
+        pensionPctFinalSalary: 50,
     kerenEquiv: 'no',
     healthcareSys: 'public_subsidized', // GeSY since 2019
     healthCostUSD: 60,
@@ -73,7 +76,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   IT: {
-    pensionEmpPct: 9.19, pensionErPct: 23.81, // INPS
+    pensionEmpPct: 9.19, pensionErPct: 23.81,
+        pensionPctFinalSalary: 75, // INPS
     kerenEquiv: 'partial', // TFR — severance fund, sort of like Keren
     healthcareSys: 'public_free',
     healthCostUSD: 40,
@@ -86,7 +90,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   US: {
-    pensionEmpPct: 7.65, pensionErPct: 7.65, // Social Security 6.2% + Medicare 1.45%
+    pensionEmpPct: 7.65, pensionErPct: 7.65,
+        pensionPctFinalSalary: 50, // Social Security 6.2% + Medicare 1.45%
     kerenEquiv: 'partial', // 401(k) tax-deferred up to $23K/yr
     healthcareSys: 'mandatory_private',
     healthCostUSD: 600, // average family premium share after employer contribution
@@ -99,7 +104,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   DE: {
-    pensionEmpPct: 9.3, pensionErPct: 9.3, // Rentenversicherung
+    pensionEmpPct: 9.3, pensionErPct: 9.3,
+        pensionPctFinalSalary: 53, // Rentenversicherung
     kerenEquiv: 'partial', // Riester / Rürup voluntary tax-incentivized
     healthcareSys: 'mandatory_private', // gesetzlich or privat — required
     healthCostUSD: 0, // bundled in payroll deductions
@@ -112,7 +118,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   GB: {
-    pensionEmpPct: 8, pensionErPct: 3, // workplace auto-enrol since 2017
+    pensionEmpPct: 8, pensionErPct: 3,
+        pensionPctFinalSalary: 49, // workplace auto-enrol since 2017
     kerenEquiv: 'partial', // ISA tax-free savings (£20K/yr) — closest to Keren
     healthcareSys: 'public_free',
     healthCostUSD: 0,
@@ -125,7 +132,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   ES: {
-    pensionEmpPct: 6.4, pensionErPct: 30, // Seguridad Social — massive employer share
+    pensionEmpPct: 6.4, pensionErPct: 30,
+        pensionPctFinalSalary: 80, // Seguridad Social — massive employer share
     kerenEquiv: 'no',
     healthcareSys: 'public_free',
     healthCostUSD: 50,
@@ -138,7 +146,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   GR: {
-    pensionEmpPct: 13.87, pensionErPct: 22.29, // IKA-ETAM
+    pensionEmpPct: 13.87, pensionErPct: 22.29,
+        pensionPctFinalSalary: 80, // IKA-ETAM
     kerenEquiv: 'no',
     healthcareSys: 'public_subsidized',
     healthCostUSD: 80,
@@ -151,7 +160,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   MT: {
-    pensionEmpPct: 10, pensionErPct: 10, // SSC
+    pensionEmpPct: 10, pensionErPct: 10,
+        pensionPctFinalSalary: 51, // SSC
     kerenEquiv: 'no',
     healthcareSys: 'public_free',
     healthCostUSD: 70,
@@ -164,7 +174,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   GE: {
-    pensionEmpPct: 2, pensionErPct: 2, // mandatory pension reform 2019
+    pensionEmpPct: 2, pensionErPct: 2,
+        pensionPctFinalSalary: 38, // mandatory pension reform 2019
     kerenEquiv: 'no',
     healthcareSys: 'mixed',
     healthCostUSD: 100,
@@ -177,7 +188,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   AE: {
-    pensionEmpPct: 0, pensionErPct: 0, // no payroll deductions for expats
+    pensionEmpPct: 0, pensionErPct: 0,
+        pensionPctFinalSalary: 0, // no payroll deductions for expats
     kerenEquiv: 'no',
     healthcareSys: 'mandatory_private', // expats — employer-provided
     healthCostUSD: 0, // bundled in employment package
@@ -190,7 +202,8 @@ const COUNTRY_EXTRAS = {
     },
   },
   BR: {
-    pensionEmpPct: 11, pensionErPct: 20, // INSS — capped progressively
+    pensionEmpPct: 11, pensionErPct: 20,
+        pensionPctFinalSalary: 70, // INSS — capped progressively
     kerenEquiv: 'no',
     healthcareSys: 'mixed', // SUS public + private widespread
     healthCostUSD: 150,
@@ -203,41 +216,53 @@ const COUNTRY_EXTRAS = {
     },
   },
   // Other 12 countries — defaults / partial data, table renders '—' for missing values.
-  SG: { pensionEmpPct: 20, pensionErPct: 17, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 80,
+  SG: { pensionEmpPct: 20, pensionErPct: 17,
+        pensionPctFinalSalary: 0, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 80,
         notesShort: { he: 'CPF 20%+17% — חיסכון/פנסיה/בריאות יחד. דומה חלקית לקרן השתלמות. Medisave מובנה.',
                       en: 'CPF 20%+17% bundles savings/pension/health. Partial Keren analogue. Medisave built-in.',
                       pt: 'CPF 20%+17% acumulado.', es: 'CPF 20%+17% acumulado.' }},
-  PL: { pensionEmpPct: 11.26, pensionErPct: 17.48, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 80, healthcareQual: 64,
+  PL: { pensionEmpPct: 11.26, pensionErPct: 17.48,
+        pensionPctFinalSalary: 41, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 80, healthcareQual: 64,
         notesShort: { he: 'ZUS 11.26%+17.48%. NFZ ציבורית.', en: 'ZUS 11.26%+17.48%. NFZ public.',
                       pt: 'ZUS 11.26%+17.48%.', es: 'ZUS 11.26%+17.48%.' }},
-  IE: { pensionEmpPct: 4, pensionErPct: 11.05, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 200, healthcareQual: 64,
+  IE: { pensionEmpPct: 4, pensionErPct: 11.05,
+        pensionPctFinalSalary: 36, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 200, healthcareQual: 64,
         notesShort: { he: 'PRSI 4%+11.05%. PRSA (חיסכון פנסיוני) חלקית דומה.', en: 'PRSI 4%+11.05%. PRSA partially similar.',
                       pt: 'PRSI 4%+11.05%.', es: 'PRSI 4%+11.05%.' }},
-  CA: { pensionEmpPct: 5.95, pensionErPct: 5.95, kerenEquiv: 'partial', healthcareSys: 'public_free', healthCostUSD: 50, healthcareQual: 71,
+  CA: { pensionEmpPct: 5.95, pensionErPct: 5.95,
+        pensionPctFinalSalary: 45, kerenEquiv: 'partial', healthcareSys: 'public_free', healthCostUSD: 50, healthcareQual: 71,
         notesShort: { he: 'CPP 5.95%+5.95% פנסיה. RRSP/TFSA חלקית דומה לקרן השתלמות.', en: 'CPP 5.95%+5.95%. RRSP/TFSA partial Keren analogue.',
                       pt: 'CPP 5.95%+5.95%.', es: 'CPP 5.95%+5.95%.' }},
-  AU: { pensionEmpPct: 0, pensionErPct: 11.5, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 80, healthcareQual: 78,
+  AU: { pensionEmpPct: 0, pensionErPct: 11.5,
+        pensionPctFinalSalary: 41, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 80, healthcareQual: 78,
         notesShort: { he: 'Superannuation 11.5% מעסיק בלבד — דומה חלקית לקרן השתלמות.', en: 'Super 11.5% employer-only — partial Keren analogue.',
                       pt: 'Super 11.5% empregador.', es: 'Super 11.5% empleador.' }},
-  FR: { pensionEmpPct: 11, pensionErPct: 16.5, kerenEquiv: 'no', healthcareSys: 'public_free', healthCostUSD: 60, healthcareQual: 81,
+  FR: { pensionEmpPct: 11, pensionErPct: 16.5,
+        pensionPctFinalSalary: 74, kerenEquiv: 'no', healthcareSys: 'public_free', healthCostUSD: 60, healthcareQual: 81,
         notesShort: { he: 'URSSAF 11%+16.5%. בריאות מצוינת.', en: 'URSSAF 11%+16.5%. Excellent healthcare.',
                       pt: 'URSSAF 11%+16.5%.', es: 'URSSAF 11%+16.5%.' }},
-  NL: { pensionEmpPct: 9.65, pensionErPct: 0, kerenEquiv: 'partial', healthcareSys: 'mandatory_private', healthCostUSD: 150, healthcareQual: 75,
+  NL: { pensionEmpPct: 9.65, pensionErPct: 0,
+        pensionPctFinalSalary: 80, kerenEquiv: 'partial', healthcareSys: 'mandatory_private', healthCostUSD: 150, healthcareQual: 75,
         notesShort: { he: 'AOW 9.65%. ביטוח בריאות פרטי חובה ~€130/חודש.', en: 'AOW 9.65%. Mandatory private health ~€130/mo.',
                       pt: 'AOW 9.65%.', es: 'AOW 9.65%.' }},
-  CZ: { pensionEmpPct: 6.5, pensionErPct: 24.8, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 40, healthcareQual: 66,
+  CZ: { pensionEmpPct: 6.5, pensionErPct: 24.8,
+        pensionPctFinalSalary: 49, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 40, healthcareQual: 66,
         notesShort: { he: 'CSSZ 6.5%+24.8%.', en: 'CSSZ 6.5%+24.8%.',
                       pt: 'CSSZ 6.5%+24.8%.', es: 'CSSZ 6.5%+24.8%.' }},
-  TH: { pensionEmpPct: 5, pensionErPct: 5, kerenEquiv: 'no', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 68,
+  TH: { pensionEmpPct: 5, pensionErPct: 5,
+        pensionPctFinalSalary: 35, kerenEquiv: 'no', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 68,
         notesShort: { he: 'SSO 5%+5% (תקרה נמוכה). בריאות מעורבת — פרטית חיונית.', en: 'SSO 5%+5% (low cap). Mixed — private essential.',
                       pt: 'SSO 5%+5%.', es: 'SSO 5%+5%.' }},
-  BG: { pensionEmpPct: 10.58, pensionErPct: 14.82, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 60, healthcareQual: 60,
+  BG: { pensionEmpPct: 10.58, pensionErPct: 14.82,
+        pensionPctFinalSalary: 47, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 60, healthcareQual: 60,
         notesShort: { he: 'NSSI 10.58%+14.82%.', en: 'NSSI 10.58%+14.82%.',
                       pt: 'NSSI 10.58%+14.82%.', es: 'NSSI 10.58%+14.82%.' }},
-  RO: { pensionEmpPct: 25, pensionErPct: 2.25, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 50, healthcareQual: 56,
+  RO: { pensionEmpPct: 25, pensionErPct: 2.25,
+        pensionPctFinalSalary: 39, kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 50, healthcareQual: 56,
         notesShort: { he: 'CAS 25% עובד.', en: 'CAS 25% employee.',
                       pt: 'CAS 25%.', es: 'CAS 25%.' }},
-  MC: { pensionEmpPct: 0, pensionErPct: 0, kerenEquiv: 'no', healthcareSys: 'mandatory_private', healthCostUSD: 300, healthcareQual: 70,
+  MC: { pensionEmpPct: 0, pensionErPct: 0,
+        pensionPctFinalSalary: 0, kerenEquiv: 'no', healthcareSys: 'mandatory_private', healthCostUSD: 300, healthcareQual: 70,
         notesShort: { he: 'Monaco — 0% מס הכנסה, אין פנסיה ציבורית. בריאות פרטית.', en: 'Monaco — 0% income tax, no public pension. Private health.',
                       pt: 'Mônaco — 0% imposto.', es: 'Mónaco — 0% impuesto.' }},
 };

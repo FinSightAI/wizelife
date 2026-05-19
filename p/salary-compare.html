@@ -896,7 +896,8 @@ function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
     let extraDeduction = 0;
     let pensionLine = '';
     let studyLine = '';
-    const _lang = (typeof window !== 'undefined' && window._lang) || 'he';
+    // _lang is the outer module-level state — reuse it directly. Helper
+    // for localizing per-row badge strings inline.
     const _L = (he, en, pt, es) => _lang === 'he' ? he : _lang === 'pt' ? (pt||en) : _lang === 'es' ? (es||en) : en;
     if (code === 'IL') {
       const pensEmpILS  = grossILS * (pensEmpPct / 100);
@@ -945,25 +946,27 @@ function buildLineItemTable(grossILS, rows) {
   const T = TR[_lang];
   // Localized labels for the 9 rows
   const ROWS = (_lang === 'he') ? [
-    { k: 'tax',      label: 'מס הכנסה אפקטיבי' },
-    { k: 'social',   label: 'ביטוח לאומי / Social Security' },
-    { k: 'health',   label: 'מס בריאות' },
-    { k: 'pensEmp',  label: 'פנסיה — עובד (חובה)' },
-    { k: 'pensEr',   label: 'פנסיה — מעסיק (חובה)' },
-    { k: 'keren',    label: 'קרן השתלמות (או מקבילה)' },
-    { k: 'system',   label: 'מערכת בריאות' },
-    { k: 'health$',  label: 'בריאות מהכיס ($/חודש)' },
-    { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)' },
+    { k: 'tax',      label: 'מס הכנסה אפקטיבי', cat: 'tax' },
+    { k: 'social',   label: 'ביטוח לאומי / Social Security', cat: 'tax' },
+    { k: 'health',   label: 'מס בריאות', cat: 'tax' },
+    { k: 'pensEmp',  label: 'פנסיה — עובד (חובה)', cat: 'pension' },
+    { k: 'pensEr',   label: 'פנסיה — מעסיק (חובה)', cat: 'pension' },
+    { k: 'pensFc',   label: 'צפי פנסיה (% מהשכר הסופי)', cat: 'pension' },
+    { k: 'keren',    label: 'קרן השתלמות (או מקבילה)', cat: 'pension' },
+    { k: 'system',   label: 'מערכת בריאות', cat: 'health' },
+    { k: 'health$',  label: 'בריאות מהכיס ($/חודש)', cat: 'health' },
+    { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)', cat: 'health' },
   ] : [
-    { k: 'tax',      label: 'Effective income tax' },
-    { k: 'social',   label: 'Bituach Leumi / Social Security' },
-    { k: 'health',   label: 'Health tax' },
-    { k: 'pensEmp',  label: 'Pension — employee (mandatory)' },
-    { k: 'pensEr',   label: 'Pension — employer (mandatory)' },
-    { k: 'keren',    label: 'Keren Hishtalmut (or equivalent)' },
-    { k: 'system',   label: 'Healthcare system' },
-    { k: 'health$',  label: 'Out-of-pocket health ($/mo)' },
-    { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)' },
+    { k: 'tax',      label: 'Effective income tax', cat: 'tax' },
+    { k: 'social',   label: 'Bituach Leumi / Social Security', cat: 'tax' },
+    { k: 'health',   label: 'Health tax', cat: 'tax' },
+    { k: 'pensEmp',  label: 'Pension — employee (mandatory)', cat: 'pension' },
+    { k: 'pensEr',   label: 'Pension — employer (mandatory)', cat: 'pension' },
+    { k: 'pensFc',   label: 'Pension forecast (% of final salary)', cat: 'pension' },
+    { k: 'keren',    label: 'Keren Hishtalmut (or equivalent)', cat: 'pension' },
+    { k: 'system',   label: 'Healthcare system', cat: 'health' },
+    { k: 'health$',  label: 'Out-of-pocket health ($/mo)', cat: 'health' },
+    { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)', cat: 'health' },
   ];
   const SYS_LABEL = (s) => {
     const M = (_lang === 'he') ? {
@@ -1020,6 +1023,11 @@ function buildLineItemTable(grossILS, rows) {
         case 'health':  val = healthPct(c.code); break;
         case 'pensEmp': val = ext.pensionEmpPct != null ? ext.pensionEmpPct + '%' : '—'; break;
         case 'pensEr':  val = ext.pensionErPct  != null ? ext.pensionErPct  + '%' : '—'; break;
+        case 'pensFc':  val = ext.pensionPctFinalSalary != null
+                          ? (ext.pensionPctFinalSalary === 0
+                              ? (_lang === 'he' ? '✗ אין פנסיה ציבורית' : '✗ No public pension')
+                              : '~' + ext.pensionPctFinalSalary + '%')
+                          : '—'; break;
         case 'keren':   val = KEREN(ext.kerenEquiv); break;
         case 'system':  val = SYS_LABEL(ext.healthcareSys); break;
         case 'health$': val = ext.healthCostUSD != null ? '$' + ext.healthCostUSD : '—'; break;
@@ -1081,15 +1089,9 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
           + '<div class="extras">' + extras + '</div>'
           + '</div>';
       }).join('')
-    // Pro/YOLO unlock: line-item comparison table.
-    // Free users see a teaser banner + upgrade CTA.
-    + (isPaid
-        ? buildLineItemTable(grossILS, rows)
-        : ('<div style="margin-top:24px;background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.35);border-radius:14px;padding:18px;text-align:center">'
-            + '<div style="font:700 14px Inter,sans-serif;color:#fbbf24;margin-bottom:6px">🔓 ' + (_lang === 'he' ? 'משתמש Pro/YOLO רואים כאן את ההשוואה המלאה' : 'Pro/YOLO sees the full breakdown here') + '</div>'
-            + '<div style="font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6;margin-bottom:12px">' + (_lang === 'he' ? 'מס הכנסה · ביטוח לאומי · מס בריאות · פנסיה (עובד+מעסיק) · קרן השתלמות (יחיד בישראל!) · מערכת בריאות · הוצאת בריאות מהכיס · מדד איכות בריאות — כל רכיב, בכל מדינה.' : 'Income tax · Bituach Leumi · Health tax · Pension (employee+employer) · Keren Hishtalmut (Israel-only!) · Healthcare system · Out-of-pocket · Quality index — every line, every country.') + '</div>'
-            + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 26px;border-radius:99px;font:800 13px Inter,sans-serif">' + (_lang === 'he' ? 'שדרג ל-Pro / YOLO →' : 'Upgrade to Pro / YOLO →') + '</a>'
-          + '</div>'))
+    // Line-item comparison is now visible to EVERYONE — value gating moved
+    // to the deeper Pro tool at tax.wizelife.ai/relocation-analyzer.
+    + buildLineItemTable(grossILS, rows)
     + '<div style="margin-top:14px;text-align:center">'
     + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
     + T.deepCTASignup + '</a></div>'
