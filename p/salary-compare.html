@@ -778,20 +778,64 @@ document.getElementById('payslipFile').addEventListener('change', e => {
 
 async function handlePayslip(file) {
   const progressEl = document.getElementById('ocrProgress');
-  progressEl.textContent = '⏳ Loading OCR engine (~3MB, once)…';
-  // Wait for PayslipExtractor to be ready
+  const lang = _lang || 'he';
+
+  // PDF NOT supported by Tesseract.js — early bail with actionable message.
+  // Most Israeli payslips arrive as PDF, so this caught a lot of failures
+  // before the OCR engine even loaded.
+  const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
+  if (isPdf) {
+    progressEl.innerHTML = lang === 'he'
+      ? '📄 קובץ PDF לא נתמך כרגע ב-OCR. <strong>פתח את ה-PDF, צלם מסך</strong> (Cmd+Shift+4 ב-Mac / Win+Shift+S בווינדוס) <strong>והעלה את הצילום</strong>. או הזן ידנית.'
+      : '📄 PDF not supported yet. <strong>Open the PDF, take a screenshot</strong> (Cmd+Shift+4 on Mac / Win+Shift+S on Windows) <strong>and upload the screenshot</strong> — or type the fields manually.';
+    return;
+  }
+
+  // Size sanity — refuse anything > 8MB (mobile camera shots are typically 2-4MB)
+  if (file.size > 8 * 1024 * 1024) {
+    progressEl.textContent = lang === 'he'
+      ? '⚠ הקובץ גדול מ-8MB. צמצם / חתוך את התמונה.'
+      : '⚠ File over 8MB. Resize/crop the image first.';
+    return;
+  }
+
+  progressEl.textContent = lang === 'he'
+    ? '⏳ טוען את מנוע ה-OCR (~3MB, פעם אחת)…'
+    : '⏳ Loading OCR engine (~3MB, once)…';
+
+  // Lazy-trigger the extractor load if it isn't already in flight
+  if (typeof loadPayslipExtractor === 'function') loadPayslipExtractor();
   let waited = 0;
-  while (!window.PayslipExtractor && waited < 30) { await new Promise(r => setTimeout(r, 300)); waited++; }
-  if (!window.PayslipExtractor) { progressEl.textContent = '❌ OCR failed to load — please type the fields instead'; return; }
+  while (!window.PayslipExtractor && waited < 60) { await new Promise(r => setTimeout(r, 300)); waited++; }
+  if (!window.PayslipExtractor) {
+    progressEl.textContent = lang === 'he'
+      ? '❌ מנוע ה-OCR לא נטען (אולי CSP חוסם cdn.jsdelivr.net?). הזן ידנית.'
+      : '❌ OCR engine failed to load (CSP may block cdn.jsdelivr.net). Please type manually.';
+    return;
+  }
+
   try {
-    // PayslipExtractor exposes: recognize(file, onProgress) → text,
-    // and extractFields(text) → structured. We call both directly so we can
-    // wire it into our own drop-zone instead of the built-in file picker.
+    // PayslipExtractor.recognize passes a NUMBER 0-100 to onProgress (already
+    // multiplied + rounded in the extractor) — bug fix: was treating p as 0-1.
     const text = await window.PayslipExtractor.recognize(file, p => {
-      progressEl.textContent = '🔍 Reading payslip… ' + Math.round(p * 100) + '%';
+      progressEl.textContent = (lang === 'he' ? '🔍 קורא תלוש… ' : '🔍 Reading payslip… ') + p + '%';
     });
+    if (!text || text.trim().length < 20) {
+      progressEl.textContent = lang === 'he'
+        ? '⚠ הטקסט שזוהה ריק או קצר מדי. נסה תמונה ברורה יותר, או הזן ידנית.'
+        : '⚠ OCR returned empty/short text. Try a clearer image, or type manually.';
+      return;
+    }
     const data = window.PayslipExtractor.extractFields(text);
-    progressEl.textContent = '✓ Extracted — review and adjust if needed';
+    if (!data || !data.gross) {
+      progressEl.textContent = lang === 'he'
+        ? '⚠ לא מצאתי "ברוטו" בתלוש. ייתכן שזה תלוש זר/לא סטנדרטי. הזן ידנית.'
+        : '⚠ Could not find a "gross" line. Probably non-Israeli or non-standard payslip. Type manually.';
+      return;
+    }
+    progressEl.textContent = lang === 'he'
+      ? '✓ זוהה — בדוק ותקן במידת הצורך'
+      : '✓ Extracted — review and adjust if needed';
     // Auto-fill manual fields with what was extracted
     if (data.gross) document.getElementById('dGross').value = Math.round(data.gross);
     if (data.pension_employee && data.gross) {
@@ -808,7 +852,12 @@ async function handlePayslip(file) {
     // Switch to manual tab so user can review + run
     document.querySelector('.deep-modal-tabs button[data-tab=manual]').click();
   } catch (e) {
-    progressEl.textContent = '❌ Could not read payslip — please type the fields instead';
+    // Surface the real error class — silent catch was masking root cause.
+    console.error('[payslip] OCR failed:', e);
+    const msg = (e && e.message) ? e.message.slice(0, 80) : 'unknown';
+    progressEl.textContent = (lang === 'he'
+      ? '❌ קריאת תלוש נכשלה: '
+      : '❌ Payslip read failed: ') + msg + ' — ' + (lang === 'he' ? 'הזן ידנית' : 'type manually');
   }
 }
 
