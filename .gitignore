@@ -1,2 +1,5 @@
 .DS_Store
 .env.qa.local
+
+# Local Claude Code settings (may contain tokens)
+.claude/
