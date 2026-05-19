@@ -122,20 +122,65 @@ window.PayslipExtractor = (function () {
         return null;
     }
 
+    /**
+     * Adjacent-line aware extractor — ported from WizeMoney's working
+     * extractPayslip (finance dashboard/js/image-import.js). For each
+     * field, walk through ALL lines; when a label matches, scan the
+     * matching line + the line before + the line after for a number
+     * in the valid range. This handles the common payslip layout where
+     * the label is on one line and the number on the next.
+     */
     function extractFields(text) {
         const result = { raw_text: text };
-        let confidence = 0;
-        for (const [field, patterns] of FIELD_PATTERNS) {
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+        function findAmountNearAnyPattern(patterns, min, max) {
+            min = min || 0;
+            max = max || Infinity;
             for (const pat of patterns) {
-                const v = findValueNearLabel(text, pat);
-                if (v !== null) {
-                    result[field] = v;
-                    confidence++;
-                    break;
+                for (let i = 0; i < lines.length; i++) {
+                    if (!pat.test(lines[i])) continue;
+                    // Same line + neighbors — same as WizeMoney
+                    const candidates = [lines[i]];
+                    if (i + 1 < lines.length) candidates.push(lines[i + 1]);
+                    if (i - 1 >= 0)            candidates.push(lines[i - 1]);
+                    for (const cand of candidates) {
+                        const nums = cand.match(/-?[\d][,\d]*\.?\d*/g);
+                        if (!nums) continue;
+                        for (const n of nums) {
+                            const val = parseNumber(n);
+                            if (val !== null && val >= min && val <= max) return val;
+                        }
+                    }
                 }
             }
+            return null;
         }
-        // Confidence: 0-10 based on how many fields we got out of FIELD_PATTERNS
+
+        // Per-field min/max bounds — prevent matching unrelated tiny numbers
+        // (e.g., "3" from a row count) when looking for a salary.
+        const BOUNDS = {
+            gross:              [3000, 200000],   // monthly gross in ILS
+            net:                [2000, 200000],
+            income_tax:         [0,    100000],
+            bituach_leumi:      [0,    20000],
+            mas_briut:          [0,    20000],
+            pension_employee:   [50,   10000],
+            pension_employer:   [50,   10000],
+            keren_hishtalmut:   [0,    20000],
+            bituach_menahalim:  [0,    20000],
+            gemel:              [0,    20000],
+        };
+
+        let confidence = 0;
+        for (const [field, patterns] of FIELD_PATTERNS) {
+            const [min, max] = BOUNDS[field] || [0, Infinity];
+            const v = findAmountNearAnyPattern(patterns, min, max);
+            if (v !== null) {
+                result[field] = v;
+                confidence++;
+            }
+        }
         result.confidence = Math.round((confidence / FIELD_PATTERNS.length) * 10);
         return result;
     }
