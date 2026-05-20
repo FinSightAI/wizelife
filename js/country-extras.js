@@ -72,7 +72,7 @@ const COUNTRY_EXTRAS = {
   PT: {
     pensionEmpPct: 11, pensionErPct: 23.75,
         pensionPctFinalSalary: 74,
-    digitalNomad: { he: 'D8 (~€3,480/חודש) — אפשר לשלב עם NHR 20%', en: 'D8 (~€3,480/mo) — combine with NHR 20%', pt: 'D8 (~€3.480/mês) — combinar com NHR 20%', es: 'D8 (~€3.480/mes) — combinar con NHR 20%' },
+    digitalNomad: { he: 'D8 — 4× שכר מינ׳ (~€3,680/חודש, 2026). שילוב עם NHR/IFICI', en: 'D8 — 4× min wage (~€3,680/mo, 2026). Combine with NHR/IFICI', pt: 'D8 — 4× salário mínimo (~€3.680/mês, 2026). Combinar com NHR/IFICI', es: 'D8 — 4× salario mínimo (~€3.680/mes, 2026). Combinar con NHR/IFICI' },
     retirementAge: 66,
     vacationDays: 22,
     maternityWeeks: 21,
@@ -102,7 +102,7 @@ const COUNTRY_EXTRAS = {
   CY: {
     pensionEmpPct: 8.3, pensionErPct: 8.3,
         pensionPctFinalSalary: 50,
-    digitalNomad: { he: 'Cyprus DNV — ~€3,500/חודש נטו, מכסה 500', en: 'Cyprus DNV — ~€3,500/mo net, 500 cap', pt: 'Cyprus DNV — ~€3.500/mês líquido, limite 500', es: 'Cyprus DNV — ~€3.500/mes neto, cupo 500' },
+    digitalNomad: { he: 'Cyprus DNV — ~€3,500/חודש נטו, מכסה 1,000', en: 'Cyprus DNV — ~€3,500/mo net, 1,000 cap', pt: 'Cyprus DNV — ~€3.500/mês líquido, limite 1.000', es: 'Cyprus DNV — ~€3.500/mes neto, cupo 1.000' },
     retirementAge: 65,
     vacationDays: 20,
     maternityWeeks: 18,
@@ -382,7 +382,7 @@ const COUNTRY_EXTRAS = {
   BR: {
     pensionEmpPct: 11, pensionErPct: 20,
         pensionPctFinalSalary: 70,
-    digitalNomad: { he: 'DNV — שנה, ~$1,500/חודש', en: 'DNV — 1yr, ~$1,500/mo', pt: 'DNV — 1 ano, ~US$1.500/mês', es: 'DNV — 1 año, ~US$1.500/mes' }, // INSS — capped progressively
+    digitalNomad: { he: 'DNV — שנה (מתחדש), $1,500/חודש או $18k חיסכון', en: 'DNV — 1yr (renewable), $1,500/mo or $18k savings', pt: 'DNV — 1 ano (renovável), US$1.500/mês ou US$18k poupança', es: 'DNV — 1 año (renovable), US$1.500/mes o US$18k ahorros' }, // INSS — capped progressively
     kerenEquiv: 'no',
     healthcareSys: 'mixed', // SUS public + private widespread
     healthCostUSD: 150,
@@ -479,7 +479,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'CSSZ 6.5%+24.8%.', es: 'CSSZ 6.5%+24.8%.' }},
   TH: { pensionEmpPct: 5, pensionErPct: 5,
         pensionPctFinalSalary: 35,
-    digitalNomad: { he: 'DTV 2024 — 5 שנים', en: 'DTV 2024 — 5 years', pt: 'DTV 2024 — 5 anos', es: 'DTV 2024 — 5 años' },
+    digitalNomad: { he: 'DTV (07/2024) — 5 שנים, 180 יום/כניסה, ฿500k חיסכון', en: 'DTV (Jul 2024) — 5yr, 180 days/entry, ฿500k savings', pt: 'DTV (07/2024) — 5 anos, 180 dias/entrada, ฿500k poupança', es: 'DTV (07/2024) — 5 años, 180 días/entrada, ฿500k ahorros' },
     retirementAge: 55,
     vacationDays: 6,
     maternityWeeks: 14,
@@ -511,7 +511,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'NSSI 10.58%+14.82%.', es: 'NSSI 10.58%+14.82%.' }},
   RO: { pensionEmpPct: 25, pensionErPct: 2.25,
         pensionPctFinalSalary: 39,
-    digitalNomad: { he: 'DNV 2022 — ~€3,300/חודש', en: 'DNV 2022 — ~€3,300/mo', pt: 'DNV 2022 — ~€3.300/mês', es: 'DNV 2022 — ~€3.300/mes' },
+    digitalNomad: { he: 'DNV — 3× שכר ממוצע (~€3,700/חודש, 2025)', en: 'DNV — 3× avg wage (~€3,700/mo, 2025)', pt: 'DNV — 3× salário médio (~€3.700/mês, 2025)', es: 'DNV — 3× salario medio (~€3.700/mes, 2025)' },
     retirementAge: 65,
     vacationDays: 20,
     maternityWeeks: 18,
