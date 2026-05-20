@@ -883,13 +883,24 @@ const DEEP_META = {
   TH: { pensionMandatory: false, studyFund: false, healthFree: false, socialName: '—',           socialPct: 5,  healthCost: 80  },
   GR: { pensionMandatory: true,  studyFund: false, healthFree: true,  socialName: 'IKA',         socialPct: 13.87 },
 };
+// Countries with DEEP_META metadata required for the deep analysis. Any
+// other country in COUNTRY_CODES that's in the user's chip selection but
+// not here will be silently skipped (no pension/keren breakdown available).
 const TOP5_CODES = ['IL','PT','CY','IT','AE','SG','US','DE','GB','IE','TH','GR'];
 
 function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
+  // Honor the user's chip selection from the top of the page — only deep-
+  // analyze countries they actually want to compare against. IL is always
+  // included even if they didn't tick it (anchor for the comparison).
+  const userSelection = (typeof _selected !== 'undefined') ? _selected : new Set(TOP5_CODES);
+  const codesToScore = TOP5_CODES.filter(code => code === 'IL' || userSelection.has(code));
+  // If user de-selected everything but Israel, fall back to defaults so the
+  // deep view doesn't render a single-row IL-only table.
+  const codes = codesToScore.length >= 2 ? codesToScore : TOP5_CODES;
   // Israel: subtract employee pension + study fund (real take-home including
   // mandatory savings vehicles); employer contributions are tax-free "shadow
   // comp" but money the EMPLOYEE doesn't see today.
-  const rows = TOP5_CODES.map(code => {
+  const rows = codes.map(code => {
     const r = calcNet(code, grossILS, 'single', children);
     if (!r) return null;
     const meta = DEEP_META[code];
