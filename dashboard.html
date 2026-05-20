@@ -454,6 +454,21 @@ window._wlLazy = {
 };
 </script>
 <script src="js/wizelife-auth.js"></script>
+<script src="js/wize-track.js"></script>
+<script>
+  // Funnel: log the dashboard view + which tool the user opens (the step
+  // between signup and activation). Fire-and-forget; see /funnel.html.
+  (function () {
+    try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}
+    document.addEventListener('click', function (ev) {
+      var card = ev.target && ev.target.closest && ev.target.closest('.tool-card');
+      if (!card || !window.WizeTrack) return;
+      var sub = card.querySelector('.tool-sub');
+      var tool = (sub && sub.textContent.trim()) || (card.getAttribute('href') || '').slice(0, 40);
+      WizeTrack.toolOpen({ tool: tool });
+    }, true);
+  })();
+</script>
 <script>
 const PAYPAL_PLAN_ID = "P-42B26777LT293231BNHMVWNA";
 const PAYPAL_YOLO_PLAN_ID = "P-3WT61990FP2103335NH32GVA";

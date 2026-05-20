@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>WizeLife — Funnel (admin)</title>
+<style>
+  :root { --bg:#0b0f1a; --card:#141a2b; --border:rgba(255,255,255,0.08); --muted:#7b88ad; --text:#eef2ff; --accent:#6366f1; --ok:#10b981; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:400 14px Inter,-apple-system,system-ui,sans-serif; padding:24px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:12px; margin-bottom:20px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+  select, button { background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); font-weight:700; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:14px; }
+  .gate { max-width:560px; }
+  .uid { font-family:ui-monospace,Menlo,monospace; font-size:12px; background:rgba(99,102,241,0.12); padding:3px 8px; border-radius:6px; word-break:break-all; }
+  .funnel-step { display:flex; align-items:center; gap:12px; margin:8px 0; }
+  .funnel-bar { height:34px; border-radius:8px; background:linear-gradient(90deg,var(--accent),#8b5cf6); display:flex; align-items:center; padding:0 12px; font-weight:700; color:#fff; min-width:60px; transition:width .4s; white-space:nowrap; }
+  .funnel-label { width:160px; flex-shrink:0; color:var(--muted); font-size:13px; }
+  .funnel-conv { color:var(--ok); font-size:12px; font-weight:700; margin-inline-start:8px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.4px; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .hint { color:var(--muted); font-size:12px; line-height:1.6; }
+  .err { color:#fca5a5; }
+  code { background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:4px; font-size:12px; }
+</style>
+</head>
+<body>
+
+<h1>📊 WizeLife — Activation Funnel</h1>
+<div class="sub">First-party, privacy-first. Source: Firestore <code>events</code> collection. Not a public page.</div>
+
+<div id="gate" class="card gate" style="display:none">
+  <div id="gateMsg" class="hint"></div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="row">
+    <label class="hint">Range:</label>
+    <select id="range">
+      <option value="7">Last 7 days</option>
+      <option value="14" selected>Last 14 days</option>
+      <option value="30">Last 30 days</option>
+      <option value="90">Last 90 days</option>
+    </select>
+    <button class="primary" id="reload">Reload</button>
+    <span id="status" class="hint"></span>
+  </div>
+
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Funnel (unique visitors by anonymous id)</div>
+    <div id="funnel"></div>
+  </div>
+
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Activation by app (unique visitors who reached the "aha")</div>
+    <table id="byApp"><thead><tr><th>App</th><th class="num">Tool opens</th><th class="num">Activations</th><th class="num">Open→Aha</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Top activation actions</div>
+    <table id="byAction"><thead><tr><th>App</th><th>Action</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="hint">Totals: <span id="totals"></span></div>
+</div>
+
+<!-- Firebase compat (same versions as the rest of WizeLife) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
+<script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
+<script src="js/wizelife-auth.js"></script>
+
+<script>
+// ── Admin allow-list (defence-in-depth; the real gate is Firestore rules) ──
+// Add your own uid here once — it's printed on screen when you sign in.
+const ADMIN_UIDS = [];
+
+const db = firebase.firestore();
+const auth = firebase.auth();
+const $ = (id) => document.getElementById(id);
+
+function showGate(html) { $('gate').style.display = 'block'; $('gateMsg').innerHTML = html; $('app').style.display = 'none'; }
+
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    showGate('Please <a href="auth.html" style="color:#a5b4fc">sign in</a> with an admin account, then return here.');
+    return;
+  }
+  // If the allow-list is set and you're not on it, deny early (rules also enforce).
+  if (ADMIN_UIDS.length && ADMIN_UIDS.indexOf(user.uid) < 0) {
+    showGate('This account is not an admin.<br><br>Your uid:<br><span class="uid">' + user.uid + '</span><br><br>Add it to <code>ADMIN_UIDS</code> in funnel.html and to the Firestore rules.');
+    return;
+  }
+  $('gate').style.display = 'none';
+  $('app').style.display = 'block';
+  $('status').innerHTML = 'admin: <span class="uid">' + user.uid + '</span>';
+  load();
+});
+
+$('reload').onclick = load;
+$('range').onchange = load;
+
+function cutoffDay(days) {
+  const d = new Date(); d.setDate(d.getDate() - (days - 1));
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+async function load() {
+  const days = parseInt($('range').value, 10) || 14;
+  $('status').textContent = 'loading…';
+  let docs = [];
+  try {
+    const snap = await db.collection('events').where('day', '>=', cutoffDay(days)).get();
+    snap.forEach((d) => docs.push(d.data()));
+  } catch (e) {
+    showGate('Could not read <code>events</code>. Either the collection is empty, or Firestore rules block reads for your uid.<br><br>Your uid:<br><span class="uid">' + (auth.currentUser ? auth.currentUser.uid : '?') + '</span><br><br><span class="err">' + (e && e.message ? e.message : e) + '</span>');
+    return;
+  }
+  render(docs, days);
+}
+
+// A visitor "reached" a step if their anonId fired that event at least once.
+function uniqueAnonWith(docs, pred) {
+  const s = new Set();
+  docs.forEach((d) => { if (pred(d) && d.anonId) s.add(d.anonId); });
+  return s;
+}
+
+function render(docs, days) {
+  const visitors = uniqueAnonWith(docs, () => true);
+  const signups  = uniqueAnonWith(docs, (d) => d.event === 'signup');
+  const opens    = uniqueAnonWith(docs, (d) => d.event === 'tool_open');
+  const activated= uniqueAnonWith(docs, (d) => d.event === 'activation');
+
+  // Returned = anonId seen on >= 2 distinct days.
+  const daysByAnon = {};
+  docs.forEach((d) => { if (!d.anonId) return; (daysByAnon[d.anonId] = daysByAnon[d.anonId] || new Set()).add(d.day); });
+  const returned = new Set(Object.keys(daysByAnon).filter((a) => daysByAnon[a].size >= 2));
+
+  const steps = [
+    ['Visitors', visitors.size],
+    ['Signed up', signups.size],
+    ['Opened a tool', opens.size],
+    ['Reached "aha"', activated.size],
+    ['Returned (2+ days)', returned.size]
+  ];
+  const top = steps[0][1] || 1;
+  $('funnel').innerHTML = steps.map((s, i) => {
+    const pct = Math.max(4, Math.round((s[1] / top) * 100));
+    const conv = i > 0 && steps[i - 1][1] ? Math.round((s[1] / steps[i - 1][1]) * 100) : null;
+    return '<div class="funnel-step"><div class="funnel-label">' + s[0] + '</div>'
+      + '<div class="funnel-bar" style="width:' + pct + '%">' + s[1] + '</div>'
+      + (conv !== null ? '<span class="funnel-conv">' + conv + '% ▸</span>' : '') + '</div>';
+  }).join('');
+
+  // By app: tool opens + activations (unique anonId) + open→aha rate.
+  const apps = {};
+  docs.forEach((d) => { const a = d.app || '?'; (apps[a] = apps[a] || { opens: new Set(), act: new Set() }); });
+  docs.forEach((d) => {
+    if (!d.anonId) return;
+    if (d.event === 'tool_open') apps[d.app].opens.add(d.anonId);
+    if (d.event === 'activation') apps[d.app].act.add(d.anonId);
+  });
+  $('byApp').querySelector('tbody').innerHTML = Object.keys(apps).sort().map((a) => {
+    const o = apps[a].opens.size, ac = apps[a].act.size;
+    const r = o ? Math.round((ac / o) * 100) + '%' : '—';
+    return '<tr><td>' + a + '</td><td class="num">' + o + '</td><td class="num">' + ac + '</td><td class="num">' + r + '</td></tr>';
+  }).join('') || '<tr><td colspan="4" class="hint">No data yet</td></tr>';
+
+  // Top activation actions.
+  const actions = {};
+  docs.forEach((d) => {
+    if (d.event !== 'activation') return;
+    const key = (d.app || '?') + '||' + ((d.meta && d.meta.action) || '(unspecified)');
+    actions[key] = (actions[key] || 0) + 1;
+  });
+  $('byAction').querySelector('tbody').innerHTML = Object.keys(actions).sort((a, b) => actions[b] - actions[a]).slice(0, 20).map((k) => {
+    const p = k.split('||');
+    return '<tr><td>' + p[0] + '</td><td>' + p[1] + '</td><td class="num">' + actions[k] + '</td></tr>';
+  }).join('') || '<tr><td colspan="3" class="hint">No activations yet</td></tr>';
+
+  $('totals').textContent = docs.length + ' events · ' + visitors.size + ' visitors · last ' + days + ' days';
+  $('status').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+</script>
+</body>
+</html>

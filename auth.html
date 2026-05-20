@@ -305,6 +305,7 @@ window._wlLazy = {
 };
 </script>
 <script src="js/wizelife-auth.js"></script>
+<script src="js/wize-track.js"></script>
 <script>
  redirectIfLoggedIn("dashboard.html");
 
@@ -334,6 +335,7 @@ window._wlLazy = {
  setLoading("loginBtn", true);
  try {
  await wlAuth.signInWithEmailAndPassword(email, pass);
+ try { await window.WizeTrack?.login({ method: 'email' }); } catch {}
  await _afterAuthRedirect();
  } catch (e) {
  document.getElementById("loginError").textContent = friendlyError(e.code);
@@ -383,6 +385,7 @@ window._wlLazy = {
  }, { merge: true });
  localStorage.setItem("wl_nickname", name);
  try { await applyReferralOnSignup(cred.user.uid); } catch {}
+ try { await window.WizeTrack?.signup({ method: 'email' }); } catch {}
  await _afterAuthRedirect();
  } catch (e) {
  document.getElementById("signupError").textContent = friendlyError(e.code);
@@ -397,9 +400,11 @@ window._wlLazy = {
  if (!doc.exists) {
  await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
  try { await applyReferralOnSignup(cred.user.uid); } catch {}
+ try { await window.WizeTrack?.signup({ method: 'google' }); } catch {}
  } else {
  const d = doc.data();
  if (!d.nickname) await ref.update({ nickname: nick });
+ try { await window.WizeTrack?.login({ method: 'google' }); } catch {}
  }
  localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
  await _afterAuthRedirect();
