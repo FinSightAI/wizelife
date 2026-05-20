@@ -994,6 +994,7 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'retage',   label: 'גיל פרישה', cat: 'life' },
     { k: 'vacation', label: 'ימי חופשה (מינימום חוקי)', cat: 'life' },
     { k: 'maternity',label: 'חופשת לידה בתשלום', cat: 'life' },
+    { k: 'dnv',      label: '💻 ויזת נוודות דיגיטלית', cat: 'life' },
     { k: 'olim',     label: '⭐ הטבת מס לעולים חדשים', cat: 'olim' },
     { k: 'totalDed', label: '💰 סך ניכויים חודשיים (ללא תוספת מעסיק)', cat: 'total' },
   ] : [
@@ -1012,6 +1013,7 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'retage',   label: 'Retirement age', cat: 'life' },
     { k: 'vacation', label: 'Vacation days (statutory min)', cat: 'life' },
     { k: 'maternity',label: 'Paid maternity leave', cat: 'life' },
+    { k: 'dnv',      label: '💻 Digital nomad visa', cat: 'life' },
     { k: 'olim',     label: '⭐ New-immigrant tax break', cat: 'olim' },
     { k: 'totalDed', label: '💰 Total monthly deductions (excl. employer add-on)', cat: 'total' },
   ];
@@ -1223,6 +1225,11 @@ function buildLineItemTable(grossILS, rows) {
                                ? (_lang === 'he' ? '0 בתשלום (חוק)' : '0 paid (statutory)')
                                : ext.maternityWeeks + (_lang === 'he' ? ' שבועות' : ' weeks'))
                            : '—'; break;
+        case 'dnv': {
+          const dnv = ext.digitalNomad ? (ext.digitalNomad[_lang] || ext.digitalNomad.en) : null;
+          val = dnv ? `<div style="font-size:11px;color:#cbd5e1;line-height:1.4">${dnv}</div>` : '—';
+          break;
+        }
         case 'olim': {
           // Pull from the REGIMES catalog in tax-data.js. REGIME_BY_COUNTRY maps
           // each country to its primary olim/immigrant regime key.

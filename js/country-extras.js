@@ -71,6 +71,7 @@ const COUNTRY_EXTRAS = {
   PT: {
     pensionEmpPct: 11, pensionErPct: 23.75,
         pensionPctFinalSalary: 74,
+    digitalNomad: { he: 'D8 (~€3,480/חודש) — אפשר לשלב עם NHR 20%', en: 'D8 (~€3,480/mo) — combine with NHR 20%' },
     retirementAge: 66,
     vacationDays: 22,
     maternityWeeks: 21,
@@ -129,6 +130,7 @@ const COUNTRY_EXTRAS = {
   IT: {
     pensionEmpPct: 9.19, pensionErPct: 23.81,
         pensionPctFinalSalary: 75,
+    digitalNomad: { he: 'DNV 2024 — מקצועות מיומנים', en: 'DNV 2024 — highly-skilled' },
     retirementAge: 67,
     vacationDays: 20,
     maternityWeeks: 21,
@@ -185,6 +187,7 @@ const COUNTRY_EXTRAS = {
   DE: {
     pensionEmpPct: 9.3, pensionErPct: 9.3,
         pensionPctFinalSalary: 53,
+    digitalNomad: { he: 'אין DNV ייעודי (Freelance Visa)', en: 'No dedicated DNV (Freelance Visa)' },
     retirementAge: 67,
     vacationDays: 20,
     maternityWeeks: 14,
@@ -241,6 +244,7 @@ const COUNTRY_EXTRAS = {
   ES: {
     pensionEmpPct: 6.4, pensionErPct: 30,
         pensionPctFinalSalary: 80,
+    digitalNomad: { he: 'DNV 2023 — שילוב Beckham 24% flat', en: 'DNV 2023 — combine Beckham 24% flat' },
     retirementAge: 65,
     vacationDays: 22,
     maternityWeeks: 16,
@@ -270,6 +274,7 @@ const COUNTRY_EXTRAS = {
   GR: {
     pensionEmpPct: 13.87, pensionErPct: 22.29,
         pensionPctFinalSalary: 80,
+    digitalNomad: { he: 'DNV — הטבת 50% למעבירי תושבות', en: 'DNV — 50% break for relocators' },
     retirementAge: 67,
     vacationDays: 20,
     maternityWeeks: 17,
@@ -299,6 +304,7 @@ const COUNTRY_EXTRAS = {
   MT: {
     pensionEmpPct: 10, pensionErPct: 10,
         pensionPctFinalSalary: 51,
+    digitalNomad: { he: 'Nomad Permit — 10% מס על הכנסת DN', en: 'Nomad Permit — 10% tax on DN income' },
     retirementAge: 65,
     vacationDays: 24,
     maternityWeeks: 18,
@@ -341,6 +347,7 @@ const COUNTRY_EXTRAS = {
   AE: {
     pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    digitalNomad: { he: 'Dubai Virtual Working — 0% מס, שנה', en: 'Dubai Virtual Working — 0% tax, 1yr' },
     retirementAge: 0,
     vacationDays: 22,
     maternityWeeks: 0,
@@ -369,7 +376,8 @@ const COUNTRY_EXTRAS = {
   },
   BR: {
     pensionEmpPct: 11, pensionErPct: 20,
-        pensionPctFinalSalary: 70, // INSS — capped progressively
+        pensionPctFinalSalary: 70,
+    digitalNomad: { he: 'DNV — שנה, ~$1,500/חודש', en: 'DNV — 1yr, ~$1,500/mo' }, // INSS — capped progressively
     kerenEquiv: 'no',
     healthcareSys: 'mixed', // SUS public + private widespread
     healthCostUSD: 150,
@@ -410,6 +418,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'ZUS 11.26%+17.48%.', es: 'ZUS 11.26%+17.48%.' }},
   IE: { pensionEmpPct: 4, pensionErPct: 11.05,
         pensionPctFinalSalary: 36,
+    digitalNomad: { he: 'אין DNV ייעודי', en: 'No dedicated DNV' },
     retirementAge: 66,
     vacationDays: 20,
     maternityWeeks: 26,
@@ -458,6 +467,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'CSSZ 6.5%+24.8%.', es: 'CSSZ 6.5%+24.8%.' }},
   TH: { pensionEmpPct: 5, pensionErPct: 5,
         pensionPctFinalSalary: 35,
+    digitalNomad: { he: 'DTV 2024 — 5 שנים', en: 'DTV 2024 — 5 years' },
     retirementAge: 55,
     vacationDays: 6,
     maternityWeeks: 14,
@@ -477,6 +487,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'SSO 5%+5%.', es: 'SSO 5%+5%.' }},
   BG: { pensionEmpPct: 10.58, pensionErPct: 14.82,
         pensionPctFinalSalary: 47,
+    digitalNomad: { he: 'אין DNV', en: 'No DNV' },
     retirementAge: 64,
     vacationDays: 20,
     maternityWeeks: 58,
@@ -488,6 +499,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'NSSI 10.58%+14.82%.', es: 'NSSI 10.58%+14.82%.' }},
   RO: { pensionEmpPct: 25, pensionErPct: 2.25,
         pensionPctFinalSalary: 39,
+    digitalNomad: { he: 'DNV 2022 — ~€3,300/חודש', en: 'DNV 2022 — ~€3,300/mo' },
     retirementAge: 65,
     vacationDays: 20,
     maternityWeeks: 18,
@@ -499,6 +511,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'CAS 25%.', es: 'CAS 25%.' }},
   MC: { pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    digitalNomad: { he: 'אין DNV (תושבות יקרה)', en: 'No DNV (expensive residency)' },
     retirementAge: 65,
     vacationDays: 30,
     maternityWeeks: 16,
