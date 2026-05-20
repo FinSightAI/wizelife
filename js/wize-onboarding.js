@@ -254,8 +254,17 @@
   }
 
   function getLang() {
-    try { return (localStorage.getItem('wl_lang') || (document.documentElement.lang || 'he')).slice(0, 2); }
-    catch (e) { return 'he'; }
+    try {
+      var stored = localStorage.getItem('wl_lang');
+      if (stored) return stored.slice(0, 2);
+      var htmlLang = (document.documentElement.lang || '').slice(0, 2);
+      if (htmlLang) return htmlLang;
+      // Fall back to the device language before defaulting to Hebrew, so a
+      // first-time visitor on a Portuguese/Spanish device sees their language.
+      var nav = ((navigator.language || navigator.userLanguage || '').slice(0, 2)).toLowerCase();
+      if (['he', 'en', 'pt', 'es'].indexOf(nav) >= 0) return nav;
+      return 'he';
+    } catch (e) { return 'he'; }
   }
 
   function buildModal(appId, force) {
@@ -289,7 +298,12 @@
       'padding:36px 32px 28px','box-sizing:border-box',
       // Stronger color-aware halo behind card
       'box-shadow:0 40px 120px rgba(0,0,0,0.65), 0 0 0 1px ' + color + '33, 0 0 80px ' + color + '22',
-      'animation:wbo-pop .4s cubic-bezier(.16,1,.3,1)','overflow:hidden'
+      'animation:wbo-pop .4s cubic-bezier(.16,1,.3,1)',
+      // Cap to the viewport and scroll inside on short screens, so the close /
+      // next buttons are NEVER clipped off-screen on mobile (the body has
+      // overflow:hidden, so an unreachable button = a frozen, unescapable page).
+      'max-height:calc(100vh - 40px)', 'max-height:calc(100dvh - 40px)',
+      'overflow-y:auto', 'overflow-x:hidden'
     ].join(';');
 
     /* Aurora blob behind icon */
