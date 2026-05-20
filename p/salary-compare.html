@@ -319,6 +319,51 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
 <!-- Deep-result panel (rendered after run) -->
 <div id="deepResult" style="display:none"></div>
 
+<!-- ─── Residency-status checker ─────────────────────────────────────── -->
+<div class="card" id="residencyCard" style="padding:16px;margin-top:18px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;cursor:pointer" onclick="document.getElementById('residencyBody').style.display = document.getElementById('residencyBody').style.display==='none'?'block':'none'">
+    <div>
+      <div style="font:800 15px Inter,sans-serif;color:#eef2ff">🏛️ <span data-i18n="resT">בדיקת תושבות מס — נווד דיגיטלי</span></div>
+      <div style="font:500 11.5px Inter,sans-serif;color:#9ca3af;margin-top:2px" data-i18n="resSub">גר בחו״ל? עובד מרחוק? בדוק אם אתה עדיין תושב מס ישראלי — והשלכות על מס/ביטוח לאומי/בריאות.</div>
+    </div>
+    <span style="font-size:18px;color:#a5b4fc">▾</span>
+  </div>
+  <div id="residencyBody" style="display:none;margin-top:16px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <div>
+        <label style="font:600 12px Inter,sans-serif;color:#cbd5e1;display:block;margin-bottom:5px" data-i18n="resQDays">כמה ימים בשנה אתה פיזית בישראל?</label>
+        <input type="number" id="resDays" min="0" max="365" value="60" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:#eef2ff;font:600 14px Inter,sans-serif">
+      </div>
+      <div>
+        <label style="font:600 12px Inter,sans-serif;color:#cbd5e1;display:block;margin-bottom:5px" data-i18n="resQFamily">איפה המשפחה הקרובה (בן/בת זוג + ילדים)?</label>
+        <select id="resFamily" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:#eef2ff;font:600 14px Inter,sans-serif">
+          <option value="il" data-i18n="resIL">בישראל</option>
+          <option value="abroad" data-i18n="resAbroad">בחו״ל איתי</option>
+          <option value="none" data-i18n="resNone">אין / לא רלוונטי</option>
+        </select>
+      </div>
+      <div>
+        <label style="font:600 12px Inter,sans-serif;color:#cbd5e1;display:block;margin-bottom:5px" data-i18n="resQHome">בית קבע (בעלות/שכירות ארוכה)?</label>
+        <select id="resHome" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:#eef2ff;font:600 14px Inter,sans-serif">
+          <option value="il" data-i18n="resHomeIL">רק בישראל</option>
+          <option value="both" data-i18n="resHomeBoth">בשתי המדינות</option>
+          <option value="abroad" data-i18n="resHomeAbroad">רק בחו״ל</option>
+        </select>
+      </div>
+      <div>
+        <label style="font:600 12px Inter,sans-serif;color:#cbd5e1;display:block;margin-bottom:5px" data-i18n="resQEmployer">איפה המעסיק / מקור ההכנסה?</label>
+        <select id="resEmployer" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:#eef2ff;font:600 14px Inter,sans-serif">
+          <option value="il" data-i18n="resEmpIL">מעסיק ישראלי</option>
+          <option value="abroad" data-i18n="resEmpAbroad">מעסיק זר</option>
+          <option value="self" data-i18n="resEmpSelf">עצמאי / חברה שלי</option>
+        </select>
+      </div>
+    </div>
+    <button id="resCheck" style="margin-top:14px;width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;padding:12px;font:800 14px Inter,sans-serif;cursor:pointer" data-i18n="resCheckBtn">בדוק סטטוס תושבות ←</button>
+    <div id="resResult" style="margin-top:16px"></div>
+  </div>
+</div>
+
 <div class="cta" id="ctaPortugal" style="display:none">
   <h4>🇵🇹 חושב על פורטוגל?</h4>
   <p data-i18n="ctaPortugalP">משטר ה-<strong>NHR (Non-Habitual Resident)</strong> מאפשר 0% מס על הכנסה זרה ל-10 שנים. הרשמה ל-WizeTax = מודל אישי + תזרים לאורך 10 שנים + תכנון מס יציאה מישראל.</p>
@@ -1376,6 +1421,94 @@ document.getElementById('runDeep').addEventListener('click', () => {
 
 // Close on Esc
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && deepModal.classList.contains('on')) deepModal.classList.remove('on'); });
+
+// ─── Residency-status checker ─────────────────────────────────────────────
+// Logic mirrors WizeTax backend ISRAEL_RESIDENCY_RULES (main.py): the 183-day
+// primary test, the 30+/425-over-3yr secondary test, and the center-of-life
+// override. We don't have a per-user 3-year history here, so the secondary
+// test is approximated via the family/home/employer "center of life" signals.
+const _resBtn = document.getElementById('resCheck');
+if (_resBtn) _resBtn.addEventListener('click', () => {
+  const he = _lang === 'he';
+  const days     = parseInt(document.getElementById('resDays').value, 10) || 0;
+  const family   = document.getElementById('resFamily').value;   // il/abroad/none
+  const home     = document.getElementById('resHome').value;     // il/both/abroad
+  const employer = document.getElementById('resEmployer').value; // il/abroad/self
+
+  // ── Center-of-life scoring (0 = clearly non-resident, 100 = clearly resident)
+  let score = 0;
+  // Days in Israel — the heaviest single factor
+  if (days >= 183) score += 55;            // primary test triggers presumption
+  else if (days >= 100) score += 30;
+  else if (days >= 60) score += 18;
+  else if (days >= 30) score += 8;
+  // Family location — very heavy in center-of-life jurisprudence
+  if (family === 'il') score += 30;
+  else if (family === 'none') score += 5;
+  // Permanent home
+  if (home === 'il') score += 12;
+  else if (home === 'both') score += 6;
+  // Employer/source — light (doesn't determine residency, but a signal)
+  if (employer === 'il') score += 3;
+
+  let status, color, statusNote;
+  if (score >= 60) {
+    status = he ? 'ככל הנראה תושב מס ישראלי' : 'Likely Israeli tax resident';
+    color = '#fca5a5'; // red — taxed on worldwide income
+    statusNote = he ? 'מרכז החיים שלך עדיין בישראל לפי המבחנים.' : 'Your center of life is still Israel per the tests.';
+  } else if (score >= 35) {
+    status = he ? '⚠️ אזור אפור — חייב חוות דעת מקצועית' : '⚠️ Gray zone — needs a professional ruling';
+    color = '#fbbf24';
+    statusNote = he ? 'הסימנים מעורבים. רשות המסים עלולה לטעון שאתה עדיין תושב. חובה יועץ מס.' : 'Signals are mixed. The ITA may argue you are still resident. Get a tax ruling.';
+  } else {
+    status = he ? 'ככל הנראה תושב חוץ (לא-תושב)' : 'Likely non-resident';
+    color = '#6ee7b7'; // green — only Israeli-source taxed
+    statusNote = he ? 'מרכז החיים נראה מחוץ לישראל — אבל צריך לבצע ניתוק רשמי.' : 'Center of life appears abroad — but you must formalize the break.';
+  }
+
+  // ── Per-parameter implications, branching on resident vs non-resident
+  const isResident = score >= 60;
+  const isGray = score >= 35 && score < 60;
+
+  const row = (label, val) => `<div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid rgba(255,255,255,0.05)"><span style="color:#9ca3af;font:500 12px Inter,sans-serif">${label}</span><span style="color:#eef2ff;font:600 12px Inter,sans-serif;text-align:end;max-width:62%">${val}</span></div>`;
+
+  let implications = '';
+  if (isResident || isGray) {
+    // STAY-RESIDENT branch — what you keep + what you owe (user explicitly asked)
+    implications = '<div style="margin-top:12px;font:700 13px Inter,sans-serif;color:#a5b4fc">' + (he ? '📋 אם נשארת תושב — מה צריך + מה מקבלים' : '📋 If you stay resident — requirements + benefits') + '</div>'
+      + row(he ? 'מס הכנסה' : 'Income tax', he ? 'על הכנסה <strong>עולמית</strong> (כולל משכורת מחו״ל). זיכוי מס זר לפי אמנה.' : 'Worldwide income (incl. foreign salary). Foreign-tax credit per treaty.')
+      + row(he ? 'ביטוח לאומי' : 'Bituach Leumi', he ? 'ממשיך לשלם (1.04%/7%). <strong>שומר על כל הזכויות.</strong>' : 'Keep paying (1.04%/7%). Keeps ALL rights.')
+      + row(he ? 'זכויות מל״ל שנשמרות' : 'BL rights retained', he ? 'סל בריאות · קצבת זקנה (צבירת נק׳) · נכות · אבטלה · קצבת ילדים · דמי לידה' : 'Health basket · old-age pension accrual · disability · unemployment · child allowance · maternity')
+      + row(he ? 'בריאות' : 'Healthcare', he ? 'סל בריאות מלא נשמר כל עוד משלם מל״ל. גם בחו״ל — כיסוי בחזרה.' : 'Full health basket retained while paying BL.')
+      + row(he ? 'מה צריך לתחזק תושבות' : 'To maintain residency', he ? 'לשלם מל״ל + מס · להגיש דוח שנתי · לשמור מרכז חיים בארץ (בית/משפחה/קשרים)' : 'Pay BL + tax · file annual return · keep center of life in Israel')
+      + row(he ? 'תקופת חסד' : 'Grace period', he ? '4 שנים ראשונות בחו״ל — בדיקת מרכז חיים בלבד (לא ימים)' : 'First 4 years abroad — center-of-life test only');
+  }
+  if (!isResident) {
+    // NON-RESIDENT / break branch
+    implications += '<div style="margin-top:14px;font:700 13px Inter,sans-serif;color:#6ee7b7">' + (he ? '🛫 אם אתה מנתק תושבות' : '🛫 If you break residency') + '</div>'
+      + row(he ? 'מס הכנסה' : 'Income tax', he ? 'רק על הכנסה ממקור <strong>ישראלי</strong>. משכורת לעבודה שבוצעה בחו״ל = מקור זר, פטור.' : 'Only Israeli-source income. Salary for work done abroad = foreign source.')
+      + row(he ? 'ביטוח לאומי' : 'Bituach Leumi', he ? 'מפסיק. חובה להודיע (טופס מל״ל) אחרת ימשיכו לחייב.' : 'Stops. Must notify BL or they keep charging.')
+      + row(he ? 'בריאות' : 'Healthcare', he ? 'מאבד אחרי ~6 חודשים. בחזרה — תקופת המתנה (חודש/שנת חו״ל, מקס׳ 6).' : 'Lost after ~6 months. Re-entry waiting period.')
+      + row(he ? '⚠️ מס יציאה (100A)' : '⚠️ Exit tax (100A)', he ? 'מכירה רעיונית 25% על רווחים לא ממומשים (מניות/קריפטו/נדל״ן). רק רווח מ-2003.' : 'Deemed 25% sale on unrealized gains. Only gains since 2003.')
+      + row(he ? 'צעדים' : 'Steps', he ? 'טופס 1348 · דוח שנת פרישה · הודעה למל״ל + קופ״ח · קרן השתלמות: פדה לפני אם 6+ שנים' : 'Form 1348 · departure-year return · notify BL + Kupah · withdraw Keren if 6+ yrs');
+  }
+
+  // The "salary from Israel" clarification — always show
+  const salaryNote = employer === 'il'
+    ? `<div style="margin-top:12px;padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:9px;font:500 11.5px Inter,sans-serif;color:#fcd34d;line-height:1.6">⚠️ ${he ? '<strong>משכורת ממעסיק ישראלי ≠ הכנסה ממקור ישראלי.</strong> מה שקובע הוא איפה העבודה בוצעה פיזית. עבדת מחו״ל? לרוב מקור זר. אבל המעסיק ימשיך לנכות מס במקור עד שתביא אישור פקיד שומה / תיאום מס.' : '<strong>Salary from an Israeli employer ≠ Israeli-source income.</strong> What matters is where the work was physically performed. The employer keeps withholding until you get an assessor ruling.'}</div>`
+    : '';
+
+  document.getElementById('resResult').innerHTML =
+      `<div style="background:rgba(255,255,255,0.03);border:1px solid ${color}55;border-radius:12px;padding:16px">`
+    + `<div style="font:800 16px Inter,sans-serif;color:${color}">${status}</div>`
+    + `<div style="font:500 12px Inter,sans-serif;color:#cbd5e1;margin-top:4px">${statusNote}</div>`
+    + `<div style="font:500 10.5px Inter,sans-serif;color:#64748b;margin-top:6px">${he ? 'ניקוד מרכז-חיים' : 'Center-of-life score'}: ${score}/100 · ${days} ${he ? 'ימים בישראל' : 'days in Israel'}</div>`
+    + implications
+    + salaryNote
+    + `<div style="margin-top:14px;font:600 11px Inter,sans-serif;color:#94a3b8;line-height:1.6">ℹ️ ${he ? 'הערכה אוטומטית בלבד — לא ייעוץ. מבחן מרכז החיים נתון לפרשנות רשות המסים. למקרה אמיתי: יועץ מס בינלאומי / רו״ח.' : 'Automated estimate only — not advice. The center-of-life test is subject to ITA interpretation. For a real case: international tax advisor / CPA.'}</div>`
+    + `</div>`;
+  document.getElementById('resResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
 </script>
 
 <!-- Cloudflare Web Analytics is auto-injected by the Cloudflare proxy when
