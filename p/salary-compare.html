@@ -1019,56 +1019,58 @@ function buildLineItemTable(grossILS, rows) {
   const cols = [rows.find(r => r.code === 'IL')]
     .concat(rows.filter(r => r.code !== 'IL').slice(0, 4));
 
-  // ---- Compute "$/mo" amount per country, at the user's actual gross ----
-  // calcNet already produces actual monthly tax/social/health in USD via the
-  // country's fxFromILS conversion. We multiply % by gross-in-local to get
-  // the actual monthly dollar value.
-  const grossUSD = grossILS * 0.27;                  // ~current USD per ILS rate
-  const fmtUsd = (usd) => usd >= 1000
-    ? '~$' + Math.round(usd).toLocaleString() + '/' + (_lang === 'he' ? 'חודש' : 'mo')
-    : '~$' + Math.round(usd) + '/' + (_lang === 'he' ? 'חודש' : 'mo');
+  // ---- Compute amount + percentage formatting ----
+  // Per user feedback: $/mo amount is the headline, % is secondary/muted.
+  // Layout: large amount on top, small % below (or inline subdued).
+  const monthLbl = _lang === 'he' ? '/חודש' : '/mo';
+  const fmtUsd = (usd) => '$' + Math.round(usd).toLocaleString();
+  // Build the dual-line value: amount prominent, % small + muted
+  function amountWithPct(usd, pct, suffix) {
+    const amountStr = fmtUsd(usd) + monthLbl;
+    const pctStr = (typeof pct === 'number' ? pct.toFixed(pct >= 10 || pct === 0 ? 0 : 2) : pct) + '%' + (suffix ? ' ' + suffix : '');
+    return `<div style="font-weight:700;font-size:13px;color:#eef2ff">${amountStr}</div><div style="font-size:10px;color:#64748b;margin-top:1px">${pctStr}</div>`;
+  }
 
   function effTaxPct(code) {
     try {
       const fam = document.getElementById('family')?.value || 'single';
       const r = calcNet(code, grossILS, fam, 0, null);
       if (!r) return '—';
-      // r.incomeTax is monthly in LOCAL currency; convert to USD via TAX_DATA[code]
       const d = TAX_DATA[code];
       const usdRate = d && d.usdRate ? d.usdRate : 0.27;
       const taxUsd = (r.incomeTax || 0) * usdRate;
-      return r.effectiveRate + '% — ' + fmtUsd(taxUsd);
+      return amountWithPct(taxUsd, r.effectiveRate);
     } catch (_) { return '—'; }
   }
   function socialPct(code) {
     const d = TAX_DATA[code]; if (!d) return '—';
     const pct = d.socialSec_tier2 ?? d.socialSec ?? 0;
-    if (!pct) return '0%';
-    // Approximate annual gross in local currency = grossILS * fxFromILS * 12
+    if (!pct) return '<div style="font-size:11px;color:#64748b">0%</div>';
     const annualLocal = grossILS * (d.fxFromILS || 1) * 12;
     const ceiling = d.socialCeil || annualLocal;
     const annualTax = Math.min(annualLocal, ceiling) * (pct / 100);
     const monthlyUsd = (annualTax / 12) * (d.usdRate || 0.27);
-    return pct.toFixed(2) + '% — ' + fmtUsd(monthlyUsd);
+    return amountWithPct(monthlyUsd, pct);
   }
   function healthPct(code) {
     const d = TAX_DATA[code]; if (!d) return '—';
     const pct = d.health_tier2 ?? d.health ?? 0;
-    if (!pct) return _lang === 'he' ? 'אין נפרד' : 'bundled';
+    if (!pct) return '<div style="font-size:11px;color:#64748b">' + (_lang === 'he' ? 'בתוך SS' : 'bundled') + '</div>';
     const annualLocal = grossILS * (d.fxFromILS || 1) * 12;
     const ceiling = d.healthCeil || annualLocal;
     const annualTax = Math.min(annualLocal, ceiling) * (pct / 100);
     const monthlyUsd = (annualTax / 12) * (d.usdRate || 0.27);
-    return pct.toFixed(2) + '% — ' + fmtUsd(monthlyUsd);
+    return amountWithPct(monthlyUsd, pct);
   }
-  // Also: pension contribution amount per month in USD
-  function pensionAmount(code, who /* 'emp' or 'er' */) {
-    const d = TAX_DATA[code]; if (!d) return null;
+  function pensionCell(code, who /* 'emp' or 'er' */) {
+    const d = TAX_DATA[code]; if (!d) return '—';
     const ext = COUNTRY_EXTRAS[code] || {};
     const pct = who === 'emp' ? ext.pensionEmpPct : ext.pensionErPct;
-    if (pct == null) return null;
+    if (pct == null) return '—';
     const monthlyLocal = grossILS * (d.fxFromILS || 1) * (pct / 100);
-    return monthlyLocal * (d.usdRate || 0.27);
+    const monthlyUsd = monthlyLocal * (d.usdRate || 0.27);
+    const whoLbl = _lang === 'he' ? (who === 'emp' ? 'עובד' : 'מעסיק') : (who === 'emp' ? 'employee' : 'employer');
+    return amountWithPct(monthlyUsd, pct, '(' + whoLbl + ')');
   }
 
   // Header row of country names (with flag)
@@ -1093,20 +1095,8 @@ function buildLineItemTable(grossILS, rows) {
         case 'tax':     val = wrap(lt.incomeTax, effTaxPct(c.code)); break;
         case 'social':  val = wrap(lt.socialSec, socialPct(c.code)); break;
         case 'health':  val = wrap(lt.healthTax, healthPct(c.code)); break;
-        case 'pensEmp': {
-          const empUsd = pensionAmount(c.code, 'emp');
-          val = wrap(lt.pension, ext.pensionEmpPct != null
-            ? ext.pensionEmpPct + '% (עובד)' + (empUsd ? ' — ' + fmtUsd(empUsd) : '')
-            : '—');
-          break;
-        }
-        case 'pensEr': {
-          const erUsd = pensionAmount(c.code, 'er');
-          val = ext.pensionErPct != null
-            ? ext.pensionErPct + '% (מעסיק)' + (erUsd ? ' — ' + fmtUsd(erUsd) : '')
-            : '—';
-          break;
-        }
+        case 'pensEmp': val = wrap(lt.pension, pensionCell(c.code, 'emp')); break;
+        case 'pensEr':  val = pensionCell(c.code, 'er'); break;
         case 'pensFc': {
                           if (ext.pensionPctFinalSalary == null) { val = '—'; break; }
                           const pctText = ext.pensionPctFinalSalary === 0
