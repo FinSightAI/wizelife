@@ -729,10 +729,32 @@ function shareTo(channel) {
 const deepModal = document.getElementById('deepModal');
 const deepResultEl = document.getElementById('deepResult');
 
+// Persist deep-modal inputs so users don't re-type 5 fields each session.
+const DEEP_INPUTS_KEY = 'wl_deep_inputs';
+function loadDeepInputs() {
+  try { return JSON.parse(localStorage.getItem(DEEP_INPUTS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveDeepInputs(d) {
+  try { localStorage.setItem(DEEP_INPUTS_KEY, JSON.stringify(d)); } catch {}
+}
+
 function openDeepModalNow() {
-  // Pre-fill gross from the top input so user doesn't re-type
+  // Pre-fill order: last-saved inputs → top-page gross → defaults.
+  const saved = loadDeepInputs();
   const topGross = parseFloat(document.getElementById('gross').value) || 0;
-  if (topGross) document.getElementById('dGross').value = topGross;
+  const gEl   = document.getElementById('dGross');
+  const peEl  = document.getElementById('dPensionEmp');
+  const prEl  = document.getElementById('dPensionEr');
+  const kkEl  = document.getElementById('dKeren');
+  const chEl  = document.getElementById('dChildren');
+  // Gross: saved > top input > existing/default
+  if (saved.gross && saved.gross >= 3000)         gEl.value  = saved.gross;
+  else if (topGross)                              gEl.value  = topGross;
+  if (saved.pensionEmp != null)                   peEl.value = saved.pensionEmp;
+  if (saved.pensionEr  != null)                   prEl.value = saved.pensionEr;
+  if (saved.keren === 'full' || saved.keren === 'none') kkEl.value = saved.keren;
+  if (saved.children != null)                     chEl.value = String(saved.children);
   deepModal.classList.add('on');
 }
 document.getElementById('openDeepBtn').addEventListener('click', openDeepModalNow);
@@ -1139,12 +1161,31 @@ document.getElementById('runDeep').addEventListener('click', () => {
   if (g < 3000) { alert('Please enter a valid gross salary'); return; }
   const pe = parseFloat(document.getElementById('dPensionEmp').value) || 6;
   const pr = parseFloat(document.getElementById('dPensionEr').value)  || 6.5;
-  const kk = document.getElementById('dKeren').value === 'full';
+  const kkRaw = document.getElementById('dKeren').value;
+  const kk = kkRaw === 'full';
   const ch = parseInt(document.getElementById('dChildren').value, 10);
+  // Persist so next visit doesn't make user re-enter the same 5 numbers.
+  saveDeepInputs({ gross: g, pensionEmp: pe, pensionEr: pr, keren: kkRaw, children: ch });
   deepModal.classList.remove('on');
   renderDeep(g, pe, pr, kk, ch);
   deepResultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
+
+// If the user already entered values once, automatically render the deep
+// analysis on next page load — skipping the modal entirely. They can still
+// open it via the "קבל ניתוח אמיתי" button if they want to edit.
+(function autoRunIfSaved() {
+  const saved = loadDeepInputs();
+  if (!saved.gross || saved.gross < 3000) return;
+  // Defer until after recalc() + chips render so DOM is stable.
+  setTimeout(() => {
+    const pe = saved.pensionEmp != null ? saved.pensionEmp : 6;
+    const pr = saved.pensionEr  != null ? saved.pensionEr  : 6.5;
+    const kk = saved.keren === 'full';
+    const ch = saved.children != null ? saved.children : 0;
+    renderDeep(saved.gross, pe, pr, kk, ch);
+  }, 700);
+})();
 
 // Close on Esc
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && deepModal.classList.contains('on')) deepModal.classList.remove('on'); });
