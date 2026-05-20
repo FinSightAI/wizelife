@@ -986,6 +986,7 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'pensEr',   label: 'פנסיה — תוספת מעסיק (לא יורד משכר)', cat: 'pension' },
     { k: 'pensFc',   label: 'צפי פנסיה (% מהשכר הסופי)', cat: 'pension' },
     { k: 'keren',    label: 'קרן השתלמות (או מקבילה)', cat: 'pension' },
+    { k: 'supp',     label: 'חיסכון משלים / מוצרים נוספים', cat: 'pension' },
     { k: 'system',   label: 'מערכת בריאות', cat: 'health' },
     { k: 'health$',  label: 'בריאות מהכיס', cat: 'health' },
     { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)', cat: 'health' },
@@ -999,6 +1000,7 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'pensEr',   label: 'Pension — employer add-on (not from salary)', cat: 'pension' },
     { k: 'pensFc',   label: 'Pension forecast (% of final salary)', cat: 'pension' },
     { k: 'keren',    label: 'Keren Hishtalmut (or equivalent)', cat: 'pension' },
+    { k: 'supp',     label: 'Supplementary savings / other products', cat: 'pension' },
     { k: 'system',   label: 'Healthcare system', cat: 'health' },
     { k: 'health$',  label: 'Out-of-pocket health', cat: 'health' },
     { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)', cat: 'health' },
@@ -1182,6 +1184,13 @@ function buildLineItemTable(grossILS, rows) {
                           break;
                         }
         case 'keren':   val = wrap(lt.kerenEquiv, KEREN(ext.kerenEquiv)); break;
+        case 'supp': {
+          const sp = ext.suppProducts ? (ext.suppProducts[_lang] || ext.suppProducts.en) : null;
+          val = sp
+            ? `<div style="font-size:11px;color:#cbd5e1;line-height:1.4">${sp}</div>`
+            : '<div style="font-size:11px;color:#64748b">—</div>';
+          break;
+        }
         case 'system':  val = wrap(lt.healthSys, SYS_LABEL(ext.healthcareSys)); break;
         case 'health$': {
           if (ext.healthCostUSD == null) { val = '—'; break; }

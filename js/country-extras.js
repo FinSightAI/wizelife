@@ -42,6 +42,7 @@ const COUNTRY_EXTRAS = {
   IL: {
     pensionEmpPct: 6,    pensionErPct: 6.5,
     pensionPctFinalSalary: 50,
+    suppProducts: { he: 'קרן השתלמות (פטור ממס) + פיצויים', en: 'Keren Hishtalmut (tax-free) + severance' },
     localTerms: {
       incomeTax: 'מס הכנסה',
       socialSec: 'ביטוח לאומי',
@@ -66,6 +67,7 @@ const COUNTRY_EXTRAS = {
   PT: {
     pensionEmpPct: 11, pensionErPct: 23.75,
         pensionPctFinalSalary: 74,
+    suppProducts: { he: 'PPR (חיסכון פנסיוני מוטב מס)', en: 'PPR (tax-advantaged retirement)' },
     localTerms: {
       incomeTax: 'IRS',
       socialSec: 'Segurança Social (פנסיה+בריאות+אבטלה)',
@@ -90,6 +92,7 @@ const COUNTRY_EXTRAS = {
   CY: {
     pensionEmpPct: 8.3, pensionErPct: 8.3,
         pensionPctFinalSalary: 50,
+    suppProducts: { he: 'Provident Funds (דרך מעסיק)', en: 'Provident Funds (employer)' },
     localTerms: {
       incomeTax: 'Income Tax',
       socialSec: 'Social Insurance',
@@ -114,6 +117,7 @@ const COUNTRY_EXTRAS = {
   IT: {
     pensionEmpPct: 9.19, pensionErPct: 23.81,
         pensionPctFinalSalary: 75,
+    suppProducts: { he: 'TFR (פיצויים) + Fondi Pensione', en: 'TFR (severance) + Fondi Pensione' },
     localTerms: {
       incomeTax: 'IRPEF',
       socialSec: 'INPS',
@@ -138,6 +142,7 @@ const COUNTRY_EXTRAS = {
   US: {
     pensionEmpPct: 7.65, pensionErPct: 7.65,
         pensionPctFinalSalary: 50,
+    suppProducts: { he: '401(k) + Roth IRA + HSA (בריאות)', en: '401(k) + Roth IRA + HSA' },
     localTerms: {
       incomeTax: 'Federal Income Tax (+ state 0-13%)',
       socialSec: 'FICA (SS+Medicare) 7.65%',
@@ -160,6 +165,7 @@ const COUNTRY_EXTRAS = {
   DE: {
     pensionEmpPct: 9.3, pensionErPct: 9.3,
         pensionPctFinalSalary: 53,
+    suppProducts: { he: 'Riester/Rürup + VWL (תוספת מעסיק)', en: 'Riester/Rürup + VWL' },
     localTerms: {
       incomeTax: 'Einkommensteuer',
       socialSec: 'Sozialversicherung',
@@ -184,6 +190,7 @@ const COUNTRY_EXTRAS = {
   GB: {
     pensionEmpPct: 8, pensionErPct: 3,
         pensionPctFinalSalary: 49,
+    suppProducts: { he: 'ISA £20K/שנה + LISA (bonus 25%)', en: 'ISA £20K/yr + LISA (25% bonus)' },
     localTerms: {
       incomeTax: 'PAYE Income Tax',
       socialSec: 'National Insurance (NI)',
@@ -206,6 +213,7 @@ const COUNTRY_EXTRAS = {
   ES: {
     pensionEmpPct: 6.4, pensionErPct: 30,
         pensionPctFinalSalary: 80,
+    suppProducts: { he: 'Planes de Pensiones + PPA', en: 'Planes de Pensiones + PPA' },
     localTerms: {
       incomeTax: 'IRPF',
       socialSec: 'Seguridad Social',
@@ -230,6 +238,7 @@ const COUNTRY_EXTRAS = {
   GR: {
     pensionEmpPct: 13.87, pensionErPct: 22.29,
         pensionPctFinalSalary: 80,
+    suppProducts: { he: '— מינימלי', en: '— minimal' },
     localTerms: {
       incomeTax: 'Income Tax',
       socialSec: 'EFKA (IKA לשעבר)',
@@ -254,6 +263,7 @@ const COUNTRY_EXTRAS = {
   MT: {
     pensionEmpPct: 10, pensionErPct: 10,
         pensionPctFinalSalary: 51,
+    suppProducts: { he: 'Private pension plans (מוטב מס)', en: 'Private pension plans (tax-advantaged)' },
     pensionAuthorityUrl: 'https://socialsecurity.gov.mt/',
     pensionForecastAsOf: '2024-Q1', // SSC
     kerenEquiv: 'no',
@@ -270,6 +280,7 @@ const COUNTRY_EXTRAS = {
   GE: {
     pensionEmpPct: 2, pensionErPct: 2,
         pensionPctFinalSalary: 38,
+    suppProducts: { he: '— אין', en: '— none' },
     pensionAuthorityUrl: 'https://www.pensions.ge/',
     pensionForecastAsOf: '2023-Q4', // mandatory pension reform 2019
     kerenEquiv: 'no',
@@ -286,6 +297,7 @@ const COUNTRY_EXTRAS = {
   AE: {
     pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    suppProducts: { he: 'End-of-Service Gratuity (מענק סיום)', en: 'End-of-Service Gratuity' },
     localTerms: {
       incomeTax: '0% — אין',
       socialSec: '0% לאקספטים',
@@ -324,6 +336,7 @@ const COUNTRY_EXTRAS = {
   // Other 12 countries — defaults / partial data, table renders '—' for missing values.
   SG: { pensionEmpPct: 20, pensionErPct: 17,
         pensionPctFinalSalary: 70,
+    suppProducts: { he: 'CPF (3 חשבונות) + SRS', en: 'CPF (3 accounts) + SRS' },
     localTerms: {
       incomeTax: 'Income Tax',
       socialSec: 'CPF 20%+17%',
@@ -345,6 +358,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'ZUS 11.26%+17.48%.', es: 'ZUS 11.26%+17.48%.' }},
   IE: { pensionEmpPct: 4, pensionErPct: 11.05,
         pensionPctFinalSalary: 36,
+    suppProducts: { he: 'PRSA + AVCs', en: 'PRSA + AVCs' },
     localTerms: {
       incomeTax: 'Income Tax + USC',
       socialSec: 'PRSI 4%',
@@ -356,7 +370,8 @@ const COUNTRY_EXTRAS = {
         notesShort: { he: 'PRSI 4%+11.05%. PRSA (חיסכון פנסיוני) חלקית דומה.', en: 'PRSI 4%+11.05%. PRSA partially similar.',
                       pt: 'PRSI 4%+11.05%.', es: 'PRSI 4%+11.05%.' }},
   CA: { pensionEmpPct: 5.95, pensionErPct: 5.95,
-        pensionPctFinalSalary: 45, kerenEquiv: 'partial', healthcareSys: 'public_free', healthCostUSD: 50, healthcareQual: 71,
+        pensionPctFinalSalary: 45,
+    suppProducts: { he: 'RRSP + TFSA (פטור ממס)', en: 'RRSP + TFSA' }, kerenEquiv: 'partial', healthcareSys: 'public_free', healthCostUSD: 50, healthcareQual: 71,
         notesShort: { he: 'CPP 5.95%+5.95% פנסיה. RRSP/TFSA חלקית דומה לקרן השתלמות.', en: 'CPP 5.95%+5.95%. RRSP/TFSA partial Keren analogue.',
                       pt: 'CPP 5.95%+5.95%.', es: 'CPP 5.95%+5.95%.' }},
   AU: { pensionEmpPct: 0, pensionErPct: 11.5,
@@ -383,6 +398,7 @@ const COUNTRY_EXTRAS = {
                       pt: 'CSSZ 6.5%+24.8%.', es: 'CSSZ 6.5%+24.8%.' }},
   TH: { pensionEmpPct: 5, pensionErPct: 5,
         pensionPctFinalSalary: 35,
+    suppProducts: { he: 'Provident Fund (וולנטרי) + RMF', en: 'Provident Fund + RMF' },
     localTerms: {
       incomeTax: 'Personal Income Tax',
       socialSec: 'SSO 5% (תקרה נמוכה)',
@@ -397,18 +413,21 @@ const COUNTRY_EXTRAS = {
                       pt: 'SSO 5%+5%.', es: 'SSO 5%+5%.' }},
   BG: { pensionEmpPct: 10.58, pensionErPct: 14.82,
         pensionPctFinalSalary: 47,
+    suppProducts: { he: '— מינימלי', en: '— minimal' },
     pensionAuthorityUrl: 'https://www.nssi.bg/',
     pensionForecastAsOf: '2023-Q4', kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 60, healthcareQual: 60,
         notesShort: { he: 'NSSI 10.58%+14.82%.', en: 'NSSI 10.58%+14.82%.',
                       pt: 'NSSI 10.58%+14.82%.', es: 'NSSI 10.58%+14.82%.' }},
   RO: { pensionEmpPct: 25, pensionErPct: 2.25,
         pensionPctFinalSalary: 39,
+    suppProducts: { he: 'Pilonul III (וולנטרי)', en: 'Pillar III (voluntary)' },
     pensionAuthorityUrl: 'https://www.cnpp.ro/',
     pensionForecastAsOf: '2023-Q4', kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 50, healthcareQual: 56,
         notesShort: { he: 'CAS 25% עובד.', en: 'CAS 25% employee.',
                       pt: 'CAS 25%.', es: 'CAS 25%.' }},
   MC: { pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    suppProducts: { he: '— אין', en: '— none' },
     pensionAuthorityUrl: null,
     pensionForecastAsOf: '2024', kerenEquiv: 'no', healthcareSys: 'mandatory_private', healthCostUSD: 300, healthcareQual: 70,
         notesShort: { he: 'Monaco — 0% מס הכנסה, אין פנסיה ציבורית. בריאות פרטית.', en: 'Monaco — 0% income tax, no public pension. Private health.',
