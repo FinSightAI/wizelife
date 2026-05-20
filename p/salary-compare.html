@@ -989,6 +989,7 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'system',   label: 'מערכת בריאות', cat: 'health' },
     { k: 'health$',  label: 'בריאות מהכיס', cat: 'health' },
     { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)', cat: 'health' },
+    { k: 'olim',     label: '⭐ הטבת מס לעולים חדשים', cat: 'olim' },
     { k: 'totalDed', label: '💰 סך ניכויים חודשיים (ללא תוספת מעסיק)', cat: 'total' },
   ] : [
     { k: 'tax',      label: 'Income tax', cat: 'tax' },
@@ -1001,6 +1002,7 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'system',   label: 'Healthcare system', cat: 'health' },
     { k: 'health$',  label: 'Out-of-pocket health', cat: 'health' },
     { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)', cat: 'health' },
+    { k: 'olim',     label: '⭐ New-immigrant tax break', cat: 'olim' },
     { k: 'totalDed', label: '💰 Total monthly deductions (excl. employer add-on)', cat: 'total' },
   ];
   const SYS_LABEL = (s) => {
@@ -1156,6 +1158,27 @@ function buildLineItemTable(grossILS, rows) {
           break;
         }
         case 'quality': val = ext.healthcareQual != null ? ext.healthcareQual : '—'; break;
+        case 'olim': {
+          // Pull from the REGIMES catalog in tax-data.js. REGIME_BY_COUNTRY maps
+          // each country to its primary olim/immigrant regime key.
+          const regimeKey = (typeof REGIME_BY_COUNTRY !== 'undefined') ? REGIME_BY_COUNTRY[c.code] : null;
+          const r = (typeof REGIMES !== 'undefined' && regimeKey) ? REGIMES[regimeKey] : null;
+          if (!r) {
+            val = `<div style="font-size:11px;color:#64748b">${_lang === 'he' ? '— אין' : '— none'}</div>`;
+            break;
+          }
+          const lbl = (r.label && (r.label[_lang] || r.label.en)) || '';
+          // Extract years from label if present, else from durationYrs
+          const yrs = r.durationYrs ? r.durationYrs : '?';
+          // What kind of benefit?
+          let benefit = '';
+          if (r.type === 'flat-rate') benefit = (_lang === 'he' ? 'מס שטוח ' : 'flat ') + r.flatRate + '%';
+          else if (r.type === 'exemption-pct') benefit = (_lang === 'he' ? 'פטור ' : '') + r.exemptionPct + '% ' + (_lang === 'he' ? 'מההכנסה' : 'exempt');
+          else if (r.type === 'foreign-exempt') benefit = (_lang === 'he' ? 'פטור מהכנסה זרה' : 'foreign income exempt');
+          else if (r.type === 'min-tax') benefit = (_lang === 'he' ? 'מס מינימום' : 'min tax');
+          val = `<div style="font-weight:700;font-size:11.5px;color:#fbbf24">${benefit}</div><div style="font-size:10px;color:#9ca3af;margin-top:2px">${yrs} ${_lang === 'he' ? 'שנים' : 'years'}</div>`;
+          break;
+        }
         case 'totalDed': {
           // Sum: income tax + social + health + pension employee + OoP health.
           // EXCLUDES employer pension (not deducted from worker's salary).
