@@ -42,6 +42,14 @@ const COUNTRY_EXTRAS = {
   IL: {
     pensionEmpPct: 6,    pensionErPct: 6.5,
     pensionPctFinalSalary: 50,
+    localTerms: {
+      incomeTax: 'מס הכנסה',
+      socialSec: 'ביטוח לאומי',
+      healthTax: 'מס בריאות',
+      pension: 'פנסיה חובה',
+      kerenEquiv: 'קרן השתלמות ✓',
+      healthSys: 'קופות חולים — חינם',
+    },
     pensionAuthorityUrl: 'https://www.btl.gov.il/Pages/default.aspx',
     pensionForecastAsOf: '2024-Q1',    // typical Israeli replacement rate (mandatory pension + keren over career)
     kerenEquiv: 'yes', // it IS the keren-hishtalmut
@@ -58,6 +66,14 @@ const COUNTRY_EXTRAS = {
   PT: {
     pensionEmpPct: 11, pensionErPct: 23.75,
         pensionPctFinalSalary: 74,
+    localTerms: {
+      incomeTax: 'IRS',
+      socialSec: 'Segurança Social (פנסיה+בריאות+אבטלה)',
+      healthTax: '(בתוך Seg. Social)',
+      pension: '(בתוך Seg. Social)',
+      kerenEquiv: '— אין מקבילה',
+      healthSys: 'SNS — חינם',
+    },
     pensionAuthorityUrl: 'https://www.seg-social.pt/inicio',
     pensionForecastAsOf: '2024-Q1', // Segurança Social — covers pension/health/unemployment
     kerenEquiv: 'no',
@@ -74,6 +90,14 @@ const COUNTRY_EXTRAS = {
   CY: {
     pensionEmpPct: 8.3, pensionErPct: 8.3,
         pensionPctFinalSalary: 50,
+    localTerms: {
+      incomeTax: 'Income Tax',
+      socialSec: 'Social Insurance',
+      healthTax: 'GHS (Gesy) 2.65%',
+      pension: 'Social Insurance (פנסיה)',
+      kerenEquiv: '— אין',
+      healthSys: 'GeSY — מסובסד',
+    },
     pensionAuthorityUrl: 'https://www.mlsi.gov.cy/sid',
     pensionForecastAsOf: '2024-Q1',
     kerenEquiv: 'no',
@@ -90,6 +114,14 @@ const COUNTRY_EXTRAS = {
   IT: {
     pensionEmpPct: 9.19, pensionErPct: 23.81,
         pensionPctFinalSalary: 75,
+    localTerms: {
+      incomeTax: 'IRPEF',
+      socialSec: 'INPS',
+      healthTax: '(בתוך INPS)',
+      pension: 'INPS (פנסיה ציבורית)',
+      kerenEquiv: 'TFR (פיצויים) ~דומה',
+      healthSys: 'SSN — חינם',
+    },
     pensionAuthorityUrl: 'https://www.inps.it/',
     pensionForecastAsOf: '2024-Q1', // INPS
     kerenEquiv: 'partial', // TFR — severance fund, sort of like Keren
@@ -105,7 +137,15 @@ const COUNTRY_EXTRAS = {
   },
   US: {
     pensionEmpPct: 7.65, pensionErPct: 7.65,
-        pensionPctFinalSalary: 50, // Social Security 6.2% + Medicare 1.45%
+        pensionPctFinalSalary: 50,
+    localTerms: {
+      incomeTax: 'Federal Income Tax (+ state 0-13%)',
+      socialSec: 'FICA (SS+Medicare) 7.65%',
+      healthTax: '(בתוך FICA — Medicare 1.45%)',
+      pension: 'Social Security + 401(k) (וולנטרי)',
+      kerenEquiv: '401(k) — ~דומה (נעול עד 59½)',
+      healthSys: 'פרטי חובה — $400-1500/חודש',
+    }, // Social Security 6.2% + Medicare 1.45%
     kerenEquiv: 'partial', // 401(k) tax-deferred up to $23K/yr
     healthcareSys: 'mandatory_private',
     healthCostUSD: 600, // average family premium share after employer contribution
@@ -120,6 +160,14 @@ const COUNTRY_EXTRAS = {
   DE: {
     pensionEmpPct: 9.3, pensionErPct: 9.3,
         pensionPctFinalSalary: 53,
+    localTerms: {
+      incomeTax: 'Einkommensteuer',
+      socialSec: 'Sozialversicherung',
+      healthTax: 'Krankenversicherung 7.3%',
+      pension: 'Rentenversicherung 9.3%+9.3%',
+      kerenEquiv: 'Riester / Rürup ~דומה',
+      healthSys: 'GKV/PKV — חובה',
+    },
     pensionAuthorityUrl: 'https://www.deutsche-rentenversicherung.de/',
     pensionForecastAsOf: '2024-Q1', // Rentenversicherung
     kerenEquiv: 'partial', // Riester / Rürup voluntary tax-incentivized
@@ -135,7 +183,15 @@ const COUNTRY_EXTRAS = {
   },
   GB: {
     pensionEmpPct: 8, pensionErPct: 3,
-        pensionPctFinalSalary: 49, // workplace auto-enrol since 2017
+        pensionPctFinalSalary: 49,
+    localTerms: {
+      incomeTax: 'PAYE Income Tax',
+      socialSec: 'National Insurance (NI)',
+      healthTax: '(בתוך NI)',
+      pension: 'State Pension + Workplace 8%+3%',
+      kerenEquiv: 'ISA £20K/שנה — הכי דומה',
+      healthSys: 'NHS — חינם',
+    }, // workplace auto-enrol since 2017
     kerenEquiv: 'partial', // ISA tax-free savings (£20K/yr) — closest to Keren
     healthcareSys: 'public_free',
     healthCostUSD: 0,
@@ -150,6 +206,14 @@ const COUNTRY_EXTRAS = {
   ES: {
     pensionEmpPct: 6.4, pensionErPct: 30,
         pensionPctFinalSalary: 80,
+    localTerms: {
+      incomeTax: 'IRPF',
+      socialSec: 'Seguridad Social',
+      healthTax: '(בתוך SS)',
+      pension: 'Seguridad Social 6.4%+30%',
+      kerenEquiv: '— אין',
+      healthSys: 'SNS — חינם',
+    },
     pensionAuthorityUrl: 'https://www.seg-social.es/',
     pensionForecastAsOf: '2024-Q1', // Seguridad Social — massive employer share
     kerenEquiv: 'no',
@@ -166,6 +230,14 @@ const COUNTRY_EXTRAS = {
   GR: {
     pensionEmpPct: 13.87, pensionErPct: 22.29,
         pensionPctFinalSalary: 80,
+    localTerms: {
+      incomeTax: 'Income Tax',
+      socialSec: 'EFKA (IKA לשעבר)',
+      healthTax: '(בתוך EFKA)',
+      pension: 'EFKA 13.87%+22.29%',
+      kerenEquiv: '— אין',
+      healthSys: 'ESY — ציבורי, ביטוח פרטי משלים',
+    },
     pensionAuthorityUrl: 'https://www.efka.gov.gr/',
     pensionForecastAsOf: '2024-Q1', // IKA-ETAM
     kerenEquiv: 'no',
@@ -214,6 +286,14 @@ const COUNTRY_EXTRAS = {
   AE: {
     pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    localTerms: {
+      incomeTax: '0% — אין',
+      socialSec: '0% לאקספטים',
+      healthTax: '(אין)',
+      pension: 'אין ציבורי — חיסכון פרטי',
+      kerenEquiv: '— אין',
+      healthSys: 'פרטי חובה — דרך מעסיק',
+    },
     pensionAuthorityUrl: null,
     pensionForecastAsOf: '2024', // no payroll deductions for expats
     kerenEquiv: 'no',
@@ -244,6 +324,14 @@ const COUNTRY_EXTRAS = {
   // Other 12 countries — defaults / partial data, table renders '—' for missing values.
   SG: { pensionEmpPct: 20, pensionErPct: 17,
         pensionPctFinalSalary: 70,
+    localTerms: {
+      incomeTax: 'Income Tax',
+      socialSec: 'CPF 20%+17%',
+      healthTax: '(CPF Medisave)',
+      pension: 'CPF (חיסכון/פנסיה/בריאות)',
+      kerenEquiv: 'CPF Ordinary Account ~דומה',
+      healthSys: 'CPF Medisave + פרטי',
+    },
     pensionAuthorityUrl: 'https://www.cpf.gov.sg/',
     pensionForecastAsOf: '2024-Q1', kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 80,
         notesShort: { he: 'CPF 20%+17% — חיסכון/פנסיה/בריאות יחד. דומה חלקית לקרן השתלמות. Medisave מובנה.',
@@ -256,7 +344,15 @@ const COUNTRY_EXTRAS = {
         notesShort: { he: 'ZUS 11.26%+17.48%. NFZ ציבורית.', en: 'ZUS 11.26%+17.48%. NFZ public.',
                       pt: 'ZUS 11.26%+17.48%.', es: 'ZUS 11.26%+17.48%.' }},
   IE: { pensionEmpPct: 4, pensionErPct: 11.05,
-        pensionPctFinalSalary: 36, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 200, healthcareQual: 64,
+        pensionPctFinalSalary: 36,
+    localTerms: {
+      incomeTax: 'Income Tax + USC',
+      socialSec: 'PRSI 4%',
+      healthTax: '(בתוך USC)',
+      pension: 'State Pension + PRSA וולנטרי',
+      kerenEquiv: 'PRSA ~דומה',
+      healthSys: 'HSE — מעורב',
+    }, kerenEquiv: 'partial', healthcareSys: 'mixed', healthCostUSD: 200, healthcareQual: 64,
         notesShort: { he: 'PRSI 4%+11.05%. PRSA (חיסכון פנסיוני) חלקית דומה.', en: 'PRSI 4%+11.05%. PRSA partially similar.',
                       pt: 'PRSI 4%+11.05%.', es: 'PRSI 4%+11.05%.' }},
   CA: { pensionEmpPct: 5.95, pensionErPct: 5.95,
@@ -287,6 +383,14 @@ const COUNTRY_EXTRAS = {
                       pt: 'CSSZ 6.5%+24.8%.', es: 'CSSZ 6.5%+24.8%.' }},
   TH: { pensionEmpPct: 5, pensionErPct: 5,
         pensionPctFinalSalary: 35,
+    localTerms: {
+      incomeTax: 'Personal Income Tax',
+      socialSec: 'SSO 5% (תקרה נמוכה)',
+      healthTax: '(בתוך SSO)',
+      pension: 'SSO — מינימלי',
+      kerenEquiv: '— אין',
+      healthSys: 'מערכת מעורבת — פרטי חיוני',
+    },
     pensionAuthorityUrl: 'https://www.sso.go.th/',
     pensionForecastAsOf: '2024-Q1', kerenEquiv: 'no', healthcareSys: 'mixed', healthCostUSD: 100, healthcareQual: 68,
         notesShort: { he: 'SSO 5%+5% (תקרה נמוכה). בריאות מעורבת — פרטית חיונית.', en: 'SSO 5%+5% (low cap). Mixed — private essential.',

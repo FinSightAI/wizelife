@@ -1028,12 +1028,19 @@ function buildLineItemTable(grossILS, rows) {
       if (!c) return '<td style="text-align:center;color:#475569">—</td>';
       const ext = COUNTRY_EXTRAS[c.code] || {};
       let val;
+      // localTerms maps each concept to the LOCAL product name in that country.
+      // Each cell shows: "Local Product Name — Rate%" so users see what the
+      // equivalent is called (e.g., FICA, INPS, NHS) rather than just numbers.
+      const lt = ext.localTerms || {};
+      const wrap = (name, rate) => name
+        ? `<div style="font-weight:600;font-size:11.5px;color:#eef2ff">${name}</div><div style="font-size:11.5px;color:#a5b4fc;margin-top:2px">${rate}</div>`
+        : rate;
       switch (row.k) {
-        case 'tax':     val = effTaxPct(c.code); break;
-        case 'social':  val = socialPct(c.code); break;
-        case 'health':  val = healthPct(c.code); break;
-        case 'pensEmp': val = ext.pensionEmpPct != null ? ext.pensionEmpPct + '%' : '—'; break;
-        case 'pensEr':  val = ext.pensionErPct  != null ? ext.pensionErPct  + '%' : '—'; break;
+        case 'tax':     val = wrap(lt.incomeTax, effTaxPct(c.code)); break;
+        case 'social':  val = wrap(lt.socialSec, socialPct(c.code)); break;
+        case 'health':  val = wrap(lt.healthTax, healthPct(c.code)); break;
+        case 'pensEmp': val = wrap(lt.pension, ext.pensionEmpPct != null ? ext.pensionEmpPct + '% (עובד)' : '—'); break;
+        case 'pensEr':  val = ext.pensionErPct  != null ? ext.pensionErPct  + '% (מעסיק)' : '—'; break;
         case 'pensFc': {
                           if (ext.pensionPctFinalSalary == null) { val = '—'; break; }
                           const pctText = ext.pensionPctFinalSalary === 0
@@ -1046,8 +1053,8 @@ function buildLineItemTable(grossILS, rows) {
                           val = pctText + asOf + verifyLink;
                           break;
                         }
-        case 'keren':   val = KEREN(ext.kerenEquiv); break;
-        case 'system':  val = SYS_LABEL(ext.healthcareSys); break;
+        case 'keren':   val = wrap(lt.kerenEquiv, KEREN(ext.kerenEquiv)); break;
+        case 'system':  val = wrap(lt.healthSys, SYS_LABEL(ext.healthcareSys)); break;
         case 'health$': val = ext.healthCostUSD != null ? '$' + ext.healthCostUSD : '—'; break;
         case 'quality': val = ext.healthcareQual != null ? ext.healthcareQual : '—'; break;
         default: val = '—';
