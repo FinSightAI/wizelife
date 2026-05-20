@@ -1444,7 +1444,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && deepModal.
 // test is approximated via the family/home/employer "center of life" signals.
 const _resBtn = document.getElementById('resCheck');
 if (_resBtn) _resBtn.addEventListener('click', () => {
-  const he = _lang === 'he';
+  const L = _lang;
+  // 4-language string picker (pt/es fall back to en if a translation is missing)
+  const t = (h, e, p, s) => L === 'he' ? h : L === 'pt' ? (p || e) : L === 'es' ? (s || e) : e;
   const days     = parseInt(document.getElementById('resDays').value, 10) || 0;
   const family   = document.getElementById('resFamily').value;   // il/abroad/none
   const home     = document.getElementById('resHome').value;     // il/both/abroad
@@ -1468,17 +1470,17 @@ if (_resBtn) _resBtn.addEventListener('click', () => {
 
   let status, color, statusNote;
   if (score >= 60) {
-    status = he ? 'ככל הנראה תושב מס ישראלי' : 'Likely Israeli tax resident';
+    status = t('ככל הנראה תושב מס ישראלי', 'Likely Israeli tax resident', 'Provavelmente residente fiscal israelense', 'Probablemente residente fiscal israelí');
     color = '#fca5a5'; // red — taxed on worldwide income
-    statusNote = he ? 'מרכז החיים שלך עדיין בישראל לפי המבחנים.' : 'Your center of life is still Israel per the tests.';
+    statusNote = t('מרכז החיים שלך עדיין בישראל לפי המבחנים.', 'Your center of life is still Israel per the tests.', 'Seu centro de vida ainda é Israel segundo os testes.', 'Tu centro de vida sigue siendo Israel según las pruebas.');
   } else if (score >= 35) {
-    status = he ? '⚠️ אזור אפור — חייב חוות דעת מקצועית' : '⚠️ Gray zone — needs a professional ruling';
+    status = t('⚠️ אזור אפור — חייב חוות דעת מקצועית', '⚠️ Gray zone — needs a professional ruling', '⚠️ Zona cinzenta — requer parecer profissional', '⚠️ Zona gris — requiere dictamen profesional');
     color = '#fbbf24';
-    statusNote = he ? 'הסימנים מעורבים. רשות המסים עלולה לטעון שאתה עדיין תושב. חובה יועץ מס.' : 'Signals are mixed. The ITA may argue you are still resident. Get a tax ruling.';
+    statusNote = t('הסימנים מעורבים. רשות המסים עלולה לטעון שאתה עדיין תושב. חובה יועץ מס.', 'Signals are mixed. The ITA may argue you are still resident. Get a tax ruling.', 'Os sinais são mistos. A Receita de Israel pode alegar que você ainda é residente. Consulte um especialista.', 'Las señales son mixtas. La autoridad fiscal israelí podría alegar que sigues siendo residente. Consulta a un asesor.');
   } else {
-    status = he ? 'ככל הנראה תושב חוץ (לא-תושב)' : 'Likely non-resident';
+    status = t('ככל הנראה תושב חוץ (לא-תושב)', 'Likely non-resident', 'Provavelmente não residente', 'Probablemente no residente');
     color = '#6ee7b7'; // green — only Israeli-source taxed
-    statusNote = he ? 'מרכז החיים נראה מחוץ לישראל — אבל צריך לבצע ניתוק רשמי.' : 'Center of life appears abroad — but you must formalize the break.';
+    statusNote = t('מרכז החיים נראה מחוץ לישראל — אבל צריך לבצע ניתוק רשמי.', 'Center of life appears abroad — but you must formalize the break.', 'O centro de vida parece estar no exterior — mas você precisa formalizar o rompimento.', 'El centro de vida parece estar en el extranjero — pero debes formalizar la ruptura.');
   }
 
   // ── Per-parameter implications, branching on resident vs non-resident
@@ -1490,37 +1492,37 @@ if (_resBtn) _resBtn.addEventListener('click', () => {
   let implications = '';
   if (isResident || isGray) {
     // STAY-RESIDENT branch — what you keep + what you owe (user explicitly asked)
-    implications = '<div style="margin-top:12px;font:700 13px Inter,sans-serif;color:#a5b4fc">' + (he ? '📋 אם נשארת תושב — מה צריך + מה מקבלים' : '📋 If you stay resident — requirements + benefits') + '</div>'
-      + row(he ? 'מס הכנסה' : 'Income tax', he ? 'על הכנסה <strong>עולמית</strong> (כולל משכורת מחו״ל). זיכוי מס זר לפי אמנה.' : 'Worldwide income (incl. foreign salary). Foreign-tax credit per treaty.')
-      + row(he ? 'ביטוח לאומי' : 'Bituach Leumi', he ? 'ממשיך לשלם (1.04%/7%). <strong>שומר על כל הזכויות.</strong>' : 'Keep paying (1.04%/7%). Keeps ALL rights.')
-      + row(he ? 'זכויות מל״ל שנשמרות' : 'BL rights retained', he ? 'סל בריאות · קצבת זקנה (צבירת נק׳) · נכות · אבטלה · קצבת ילדים · דמי לידה' : 'Health basket · old-age pension accrual · disability · unemployment · child allowance · maternity')
-      + row(he ? 'בריאות' : 'Healthcare', he ? 'סל בריאות מלא נשמר כל עוד משלם מל״ל. גם בחו״ל — כיסוי בחזרה.' : 'Full health basket retained while paying BL.')
-      + row(he ? 'מה צריך לתחזק תושבות' : 'To maintain residency', he ? 'לשלם מל״ל + מס · להגיש דוח שנתי · לשמור מרכז חיים בארץ (בית/משפחה/קשרים)' : 'Pay BL + tax · file annual return · keep center of life in Israel')
-      + row(he ? 'תקופת חסד' : 'Grace period', he ? '4 שנים ראשונות בחו״ל — בדיקת מרכז חיים בלבד (לא ימים)' : 'First 4 years abroad — center-of-life test only');
+    implications = '<div style="margin-top:12px;font:700 13px Inter,sans-serif;color:#a5b4fc">' + t('📋 אם נשארת תושב — מה צריך + מה מקבלים', '📋 If you stay resident — requirements + benefits', '📋 Se permanecer residente — requisitos + benefícios', '📋 Si sigues residente — requisitos + beneficios') + '</div>'
+      + row(t('מס הכנסה', 'Income tax', 'Imposto de renda', 'Impuesto sobre la renta'), t('על הכנסה <strong>עולמית</strong> (כולל משכורת מחו״ל). זיכוי מס זר לפי אמנה.', 'Worldwide income (incl. foreign salary). Foreign-tax credit per treaty.', 'Renda <strong>mundial</strong> (incl. salário do exterior). Crédito de imposto estrangeiro por tratado.', 'Renta <strong>mundial</strong> (incl. salario del exterior). Crédito por impuesto extranjero según tratado.'))
+      + row(t('ביטוח לאומי', 'Bituach Leumi', 'Bituach Leumi (Seg. Social)', 'Bituach Leumi (Seg. Social)'), t('ממשיך לשלם (1.04%/7%, או מינימום ~₪200/ח׳ אם אין הכנסה). <strong>שומר על כל הזכויות.</strong>', 'Keep paying (1.04%/7%, or ~₪200/mo minimum if no income). Keeps ALL rights.', 'Continue pagando (1,04%/7%, ou mínimo ~₪200/mês sem renda). Mantém TODOS os direitos.', 'Sigue pagando (1,04%/7%, o mínimo ~₪200/mes sin ingresos). Mantiene TODOS los derechos.'))
+      + row(t('זכויות מל״ל שנשמרות', 'BL rights retained', 'Direitos da Seg. Social mantidos', 'Derechos de Seg. Social mantenidos'), t('סל בריאות · קצבת זקנה (צבירת נק׳) · נכות · אבטלה · קצבת ילדים · דמי לידה', 'Health basket · old-age pension accrual · disability · unemployment · child allowance · maternity', 'Cesta de saúde · aposentadoria (acúmulo) · invalidez · desemprego · abono família · maternidade', 'Cesta de salud · pensión de vejez (acumulación) · invalidez · desempleo · asignación por hijos · maternidad'))
+      + row(t('בריאות', 'Healthcare', 'Saúde', 'Salud'), t('סל בריאות מלא נשמר כל עוד משלם מל״ל. גם בחו״ל — כיסוי בחזרה.', 'Full health basket retained while paying BL.', 'Cesta de saúde completa mantida enquanto pagar a Seg. Social.', 'Cesta de salud completa mientras pagues la Seg. Social.'))
+      + row(t('מה צריך לתחזק תושבות', 'To maintain residency', 'Para manter a residência', 'Para mantener la residencia'), t('לשלם מל״ל + מס · להגיש דוח שנתי · לשמור מרכז חיים בארץ (בית/משפחה/קשרים)', 'Pay BL + tax · file annual return · keep center of life in Israel', 'Pagar Seg. Social + imposto · declaração anual · manter centro de vida em Israel', 'Pagar Seg. Social + impuesto · declaración anual · mantener centro de vida en Israel'))
+      + row(t('תקופת חסד', 'Grace period', 'Período de carência', 'Período de gracia'), t('4 שנים ראשונות בחו״ל — בדיקת מרכז חיים בלבד (לא ימים)', 'First 4 years abroad — center-of-life test only', 'Primeiros 4 anos no exterior — apenas teste de centro de vida', 'Primeros 4 años en el extranjero — solo prueba de centro de vida'));
   }
   if (!isResident) {
     // NON-RESIDENT / break branch
-    implications += '<div style="margin-top:14px;font:700 13px Inter,sans-serif;color:#6ee7b7">' + (he ? '🛫 אם אתה מנתק תושבות' : '🛫 If you break residency') + '</div>'
-      + row(he ? 'מס הכנסה' : 'Income tax', he ? 'רק על הכנסה ממקור <strong>ישראלי</strong>. משכורת לעבודה שבוצעה בחו״ל = מקור זר, פטור.' : 'Only Israeli-source income. Salary for work done abroad = foreign source.')
-      + row(he ? 'ביטוח לאומי' : 'Bituach Leumi', he ? 'מפסיק. חובה להודיע (טופס מל״ל) אחרת ימשיכו לחייב.' : 'Stops. Must notify BL or they keep charging.')
-      + row(he ? 'בריאות' : 'Healthcare', he ? 'מאבד אחרי ~6 חודשים. בחזרה — תקופת המתנה (חודש/שנת חו״ל, מקס׳ 6).' : 'Lost after ~6 months. Re-entry waiting period.')
-      + row(he ? '⚠️ מס יציאה (100A)' : '⚠️ Exit tax (100A)', he ? 'מכירה רעיונית 25% על רווחים לא ממומשים (מניות/קריפטו/נדל״ן). רק רווח מ-2003.' : 'Deemed 25% sale on unrealized gains. Only gains since 2003.')
-      + row(he ? 'צעדים' : 'Steps', he ? 'טופס 1348 · דוח שנת פרישה · הודעה למל״ל + קופ״ח · קרן השתלמות: פדה לפני אם 6+ שנים' : 'Form 1348 · departure-year return · notify BL + Kupah · withdraw Keren if 6+ yrs');
+    implications += '<div style="margin-top:14px;font:700 13px Inter,sans-serif;color:#6ee7b7">' + t('🛫 אם אתה מנתק תושבות', '🛫 If you break residency', '🛫 Se romper a residência', '🛫 Si rompes la residencia') + '</div>'
+      + row(t('מס הכנסה', 'Income tax', 'Imposto de renda', 'Impuesto sobre la renta'), t('רק על הכנסה ממקור <strong>ישראלי</strong>. משכורת לעבודה שבוצעה בחו״ל = מקור זר, פטור.', 'Only Israeli-source income. Salary for work done abroad = foreign source.', 'Apenas renda de fonte <strong>israelense</strong>. Salário por trabalho feito no exterior = fonte estrangeira.', 'Solo renta de fuente <strong>israelí</strong>. Salario por trabajo en el extranjero = fuente extranjera.'))
+      + row(t('ביטוח לאומי', 'Bituach Leumi', 'Bituach Leumi (Seg. Social)', 'Bituach Leumi (Seg. Social)'), t('מפסיק. חובה להודיע (טופס מל״ל) אחרת ימשיכו לחייב.', 'Stops. Must notify BL or they keep charging.', 'Cessa. É obrigatório notificar a Seg. Social ou continuarão cobrando.', 'Cesa. Debes notificar a la Seg. Social o seguirán cobrando.'))
+      + row(t('בריאות', 'Healthcare', 'Saúde', 'Salud'), t('מאבד אחרי ~6 חודשים. בחזרה — תקופת המתנה (חודשיים/שנת חו״ל, מקס׳ 6) או כופר.', 'Lost after ~6 months. Re-entry waiting period (2 mo per year abroad, max 6) or redemption fee.', 'Perdido após ~6 meses. No retorno — carência (2 meses/ano no exterior, máx. 6) ou taxa de resgate.', 'Se pierde tras ~6 meses. Al volver — carencia (2 meses/año fuera, máx. 6) o tasa de rescate.'))
+      + row(t('⚠️ מס יציאה (100A)', '⚠️ Exit tax (100A)', '⚠️ Imposto de saída (100A)', '⚠️ Impuesto de salida (100A)'), t('מכירה רעיונית 25% על רווחים לא ממומשים (מניות/קריפטו/נדל״ן). רק רווח מ-2003.', 'Deemed 25% sale on unrealized gains. Only gains since 2003.', 'Venda presumida de 25% sobre ganhos não realizados. Apenas ganhos desde 2003.', 'Venta ficticia del 25% sobre ganancias no realizadas. Solo ganancias desde 2003.'))
+      + row(t('צעדים', 'Steps', 'Passos', 'Pasos'), t('טופס 1348 · דוח שנת פרישה · הודעה למל״ל + קופ״ח · קרן השתלמות: פדה לפני אם 6+ שנים', 'Form 1348 · departure-year return · notify BL + Kupah · withdraw Keren if 6+ yrs', 'Formulário 1348 · declaração do ano de saída · notificar Seg. Social + plano de saúde · sacar Keren se 6+ anos', 'Formulario 1348 · declaración del año de salida · notificar Seg. Social + caja de salud · retirar Keren si 6+ años'));
   }
 
   // The "salary from Israel" clarification — always show
   const salaryNote = employer === 'il'
-    ? `<div style="margin-top:12px;padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:9px;font:500 11.5px Inter,sans-serif;color:#fcd34d;line-height:1.6">⚠️ ${he ? '<strong>משכורת ממעסיק ישראלי ≠ הכנסה ממקור ישראלי.</strong> מה שקובע הוא איפה העבודה בוצעה פיזית. עבדת מחו״ל? לרוב מקור זר. אבל המעסיק ימשיך לנכות מס במקור עד שתביא אישור פקיד שומה / תיאום מס.' : '<strong>Salary from an Israeli employer ≠ Israeli-source income.</strong> What matters is where the work was physically performed. The employer keeps withholding until you get an assessor ruling.'}</div>`
+    ? `<div style="margin-top:12px;padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:9px;font:500 11.5px Inter,sans-serif;color:#fcd34d;line-height:1.6">⚠️ ${t('<strong>משכורת ממעסיק ישראלי ≠ הכנסה ממקור ישראלי.</strong> מה שקובע הוא איפה העבודה בוצעה פיזית. עבדת מחו״ל? לרוב מקור זר. אבל המעסיק ימשיך לנכות מס במקור עד שתביא אישור פקיד שומה / תיאום מס.', '<strong>Salary from an Israeli employer ≠ Israeli-source income.</strong> What matters is where the work was physically performed. The employer keeps withholding until you get an assessor ruling.', '<strong>Salário de empregador israelense ≠ renda de fonte israelense.</strong> O que importa é onde o trabalho foi realizado fisicamente. O empregador continua retendo até você obter um parecer do fisco.', '<strong>Salario de un empleador israelí ≠ renta de fuente israelí.</strong> Lo que importa es dónde se realizó físicamente el trabajo. El empleador sigue reteniendo hasta que obtengas un dictamen del fisco.')}</div>`
     : '';
 
   document.getElementById('resResult').innerHTML =
       `<div style="background:rgba(255,255,255,0.03);border:1px solid ${color}55;border-radius:12px;padding:16px">`
     + `<div style="font:800 16px Inter,sans-serif;color:${color}">${status}</div>`
     + `<div style="font:500 12px Inter,sans-serif;color:#cbd5e1;margin-top:4px">${statusNote}</div>`
-    + `<div style="font:500 10.5px Inter,sans-serif;color:#64748b;margin-top:6px">${he ? 'ניקוד מרכז-חיים' : 'Center-of-life score'}: ${score}/100 · ${days} ${he ? 'ימים בישראל' : 'days in Israel'}</div>`
+    + `<div style="font:500 10.5px Inter,sans-serif;color:#64748b;margin-top:6px">${t('ניקוד מרכז-חיים', 'Center-of-life score', 'Pontuação centro de vida', 'Puntuación centro de vida')}: ${score}/100 · ${days} ${t('ימים בישראל', 'days in Israel', 'dias em Israel', 'días en Israel')}</div>`
     + implications
     + salaryNote
-    + `<div style="margin-top:14px;font:600 11px Inter,sans-serif;color:#94a3b8;line-height:1.6">ℹ️ ${he ? 'הערכה אוטומטית בלבד — לא ייעוץ. מבחן מרכז החיים נתון לפרשנות רשות המסים. למקרה אמיתי: יועץ מס בינלאומי / רו״ח.' : 'Automated estimate only — not advice. The center-of-life test is subject to ITA interpretation. For a real case: international tax advisor / CPA.'}</div>`
+    + `<div style="margin-top:14px;font:600 11px Inter,sans-serif;color:#94a3b8;line-height:1.6">ℹ️ ${t('הערכה אוטומטית בלבד — לא ייעוץ. מבחן מרכז החיים נתון לפרשנות רשות המסים. למקרה אמיתי: יועץ מס בינלאומי / רו״ח.', 'Automated estimate only — not advice. The center-of-life test is subject to ITA interpretation. For a real case: international tax advisor / CPA.', 'Estimativa automática apenas — não é aconselhamento. O teste de centro de vida está sujeito à interpretação do fisco israelense. Para um caso real: consultor fiscal internacional / contador.', 'Solo estimación automática — no es asesoramiento. La prueba de centro de vida está sujeta a la interpretación del fisco israelí. Para un caso real: asesor fiscal internacional / contador.')}</div>`
     + `</div>`;
   document.getElementById('resResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
