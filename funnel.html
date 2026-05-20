@@ -67,6 +67,28 @@
     <table id="byAction"><thead><tr><th>App</th><th>Action</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
   </div>
 
+  <!-- ── Deep analysis ─────────────────────────────────────────────── -->
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Daily activity (visitors · signups · activations)</div>
+    <div id="trend"></div>
+  </div>
+
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Retention &amp; speed</div>
+    <table id="retention"><tbody></tbody></table>
+  </div>
+
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <div class="card" style="flex:1;min-width:240px">
+      <div class="hint" style="margin-bottom:10px">By language</div>
+      <table id="byLang"><thead><tr><th>Lang</th><th class="num">Visitors</th><th class="num">Activations</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="card" style="flex:1;min-width:240px">
+      <div class="hint" style="margin-bottom:10px">Events by type</div>
+      <table id="byEvent"><thead><tr><th>Event</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
   <div class="hint">Totals: <span id="totals"></span></div>
 </div>
 
@@ -186,6 +208,57 @@ function render(docs, days) {
     const p = k.split('||');
     return '<tr><td>' + p[0] + '</td><td>' + p[1] + '</td><td class="num">' + actions[k] + '</td></tr>';
   }).join('') || '<tr><td colspan="3" class="hint">No activations yet</td></tr>';
+
+  // ── Deep analysis ───────────────────────────────────────────────────────
+  // Daily trend: unique visitors / signups / activations per day.
+  const byDay = {};
+  docs.forEach((d) => {
+    if (!d.day || !d.anonId) return;
+    const e = (byDay[d.day] = byDay[d.day] || { vis: new Set(), sign: new Set(), act: new Set() });
+    e.vis.add(d.anonId);
+    if (d.event === 'signup') e.sign.add(d.anonId);
+    if (d.event === 'activation') e.act.add(d.anonId);
+  });
+  const trendDays = Object.keys(byDay).sort();
+  const maxVis = Math.max(1, ...trendDays.map((dy) => byDay[dy].vis.size));
+  $('trend').innerHTML = trendDays.map((dy) => {
+    const e = byDay[dy];
+    const w = Math.max(4, Math.round((e.vis.size / maxVis) * 100));
+    return '<div class="funnel-step"><div class="funnel-label" style="width:110px">' + dy + '</div>'
+      + '<div class="funnel-bar" style="width:' + w + '%;background:linear-gradient(90deg,#334155,#64748b)">'
+      + e.vis.size + ' / ' + e.sign.size + ' / ' + e.act.size + '</div></div>';
+  }).join('') || '<div class="hint">No data yet</div>';
+
+  // Retention & speed (day-granularity).
+  const firstDay = {};
+  docs.forEach((d) => { if (!d.anonId || !d.day) return; if (!firstDay[d.anonId] || d.day < firstDay[d.anonId]) firstDay[d.anonId] = d.day; });
+  const actDay = {};
+  docs.forEach((d) => { if (d.event !== 'activation' || !d.anonId || !d.day) return; if (!actDay[d.anonId] || d.day < actDay[d.anonId]) actDay[d.anonId] = d.day; });
+  const sameDayAct = Object.keys(actDay).filter((a) => actDay[a] === firstDay[a]).length;
+  const actOfSignup = signups.size ? Math.round((Array.from(signups).filter((a) => actDay[a]).length / signups.size) * 100) : 0;
+  const retRow = (label, val) => '<tr><td>' + label + '</td><td class="num">' + val + '</td></tr>';
+  $('retention').querySelector('tbody').innerHTML =
+      retRow('Returned (2+ days)', returned.size + ' (' + (visitors.size ? Math.round(returned.size / visitors.size * 100) : 0) + '% of visitors)')
+    + retRow('Signups who activated', actOfSignup + '%')
+    + retRow('Activated on first-visit day', activated.size ? Math.round(sameDayAct / activated.size * 100) + '%' : '—');
+
+  // By language.
+  const langs = {};
+  docs.forEach((d) => {
+    const L = d.lang || '?';
+    const x = (langs[L] = langs[L] || { vis: new Set(), act: new Set() });
+    if (d.anonId) { x.vis.add(d.anonId); if (d.event === 'activation') x.act.add(d.anonId); }
+  });
+  $('byLang').querySelector('tbody').innerHTML = Object.keys(langs).sort((a, b) => langs[b].vis.size - langs[a].vis.size).map((L) =>
+    '<tr><td>' + L + '</td><td class="num">' + langs[L].vis.size + '</td><td class="num">' + langs[L].act.size + '</td></tr>'
+  ).join('') || '<tr><td colspan="3" class="hint">No data</td></tr>';
+
+  // Events by type.
+  const evt = {};
+  docs.forEach((d) => { evt[d.event || '?'] = (evt[d.event || '?'] || 0) + 1; });
+  $('byEvent').querySelector('tbody').innerHTML = Object.keys(evt).sort((a, b) => evt[b] - evt[a]).map((e) =>
+    '<tr><td>' + e + '</td><td class="num">' + evt[e] + '</td></tr>'
+  ).join('') || '<tr><td colspan="2" class="hint">No data</td></tr>';
 
   $('totals').textContent = docs.length + ' events · ' + visitors.size + ' visitors · last ' + days + ' days';
   $('status').textContent = 'updated ' + new Date().toLocaleTimeString();
