@@ -1023,11 +1023,18 @@ function buildLineItemTable(grossILS, rows) {
         case 'health':  val = healthPct(c.code); break;
         case 'pensEmp': val = ext.pensionEmpPct != null ? ext.pensionEmpPct + '%' : '—'; break;
         case 'pensEr':  val = ext.pensionErPct  != null ? ext.pensionErPct  + '%' : '—'; break;
-        case 'pensFc':  val = ext.pensionPctFinalSalary != null
-                          ? (ext.pensionPctFinalSalary === 0
+        case 'pensFc': {
+                          if (ext.pensionPctFinalSalary == null) { val = '—'; break; }
+                          const pctText = ext.pensionPctFinalSalary === 0
                               ? (_lang === 'he' ? '✗ אין פנסיה ציבורית' : '✗ No public pension')
-                              : '~' + ext.pensionPctFinalSalary + '%')
-                          : '—'; break;
+                              : '~' + ext.pensionPctFinalSalary + '%';
+                          const asOf = ext.pensionForecastAsOf ? ` <span style="font-size:9.5px;color:#64748b">(${ext.pensionForecastAsOf})</span>` : '';
+                          const verifyLink = ext.pensionAuthorityUrl
+                              ? ` <a href="${ext.pensionAuthorityUrl}" target="_blank" rel="noopener" style="color:#a5b4fc;text-decoration:none;font-size:9.5px" title="${_lang === 'he' ? 'אמת ברשות הפנסיה הלאומית' : 'Verify with national pension authority'}">↗</a>`
+                              : '';
+                          val = pctText + asOf + verifyLink;
+                          break;
+                        }
         case 'keren':   val = KEREN(ext.kerenEquiv); break;
         case 'system':  val = SYS_LABEL(ext.healthcareSys); break;
         case 'health$': val = ext.healthCostUSD != null ? '$' + ext.healthCostUSD : '—'; break;
@@ -1091,9 +1098,16 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
           + '<div class="extras">' + extras + '</div>'
           + '</div>';
       }).join('')
-    // Line-item comparison is now visible to EVERYONE — value gating moved
-    // to the deeper Pro tool at tax.wizelife.ai/relocation-analyzer.
-    + buildLineItemTable(grossILS, rows)
+    // Pro/YOLO gate restored — table is a key Pro feature. Free users see
+    // a teaser banner + upgrade CTA pointing to auth.html (the YOLO redirect
+    // flow lands them back on this page with #deep, modal auto-opens).
+    + (isPaid
+        ? buildLineItemTable(grossILS, rows)
+        : ('<div style="margin-top:24px;background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.35);border-radius:14px;padding:18px;text-align:center">'
+            + '<div style="font:700 14px Inter,sans-serif;color:#fbbf24;margin-bottom:6px">🔓 ' + (_lang === 'he' ? 'משתמשי Pro / YOLO רואים כאן את ההשוואה המלאה' : 'Pro/YOLO users see the full breakdown here') + '</div>'
+            + '<div style="font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6;margin-bottom:12px">' + (_lang === 'he' ? '10 שורות: מס הכנסה · ביטוח לאומי · מס בריאות · פנסיה (עובד+מעסיק) · צפי פנסיה · קרן השתלמות (יחיד בישראל!) · מערכת בריאות · עלות מהכיס · מדד איכות · קישור לרשות הפנסיה הלאומית.' : '10 rows: Income tax · Social Security · Health tax · Pension (employee+employer) · Pension forecast · Keren Hishtalmut (Israel-only!) · Healthcare system · Out-of-pocket · Quality index · Link to national pension authority.') + '</div>'
+            + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 26px;border-radius:99px;font:800 13px Inter,sans-serif">' + (_lang === 'he' ? 'שדרג ל-Pro / YOLO →' : 'Upgrade to Pro / YOLO →') + '</a>'
+          + '</div>'))
     + '<div style="margin-top:14px;text-align:center">'
     + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
     + T.deepCTASignup + '</a></div>'
