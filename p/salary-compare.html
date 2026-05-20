@@ -1563,11 +1563,16 @@ if (_resBtn) _resBtn.addEventListener('click', () => {
         ? 'Datos fiscales de ' + M.validYear + ' · verificado ' + M.updatedAt + ' · fuentes oficiales: Autoridad Fiscal de Israel, Bituach Leumi, PwC. Datos de visa/pensión/salud actualizados periódicamente. Información general — no constituye asesoramiento fiscal, legal ni financiero.'
         : 'Tax data for ' + M.validYear + ' · verified ' + M.updatedAt + ' · official sources: Israel Tax Authority, Bituach Leumi, PwC. Visa/pension/health data refreshed periodically. All information is general and for educational purposes only — not tax, legal or financial advice.';
     document.getElementById('dataFooter').textContent = txt;
+
   };
   render();
   window.addEventListener('wl-lang-change', render);
 })();
 </script>
+
+<!-- Funnel: log the landing-page visit (top of funnel). -->
+<script src="/js/wize-track-beacon.js"></script>
+<script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
 
 </body>
 </html>
