@@ -16,7 +16,7 @@
  *
  * STRUCTURE per country:
  *   currency     — ISO code
- *   usdRate      — 1 USD = X local (approximate, update if >10% drift)
+ *   usdRate      — 1 LOCAL = X USD (e.g. ILS=0.27, EUR=1.08, GBP=1.27). Update if >10% drift
  *   brackets     — annual income thresholds in LOCAL currency, marginal rate %
  *   credit       — annual tax credit deducted from liability (in local currency)
  *   socialSec    — employee % (up to ceiling; null = no ceiling)
@@ -89,7 +89,7 @@ const TAX_DATA = {
 
   // ── GERMANY ───────────────────────────── source: deutsche-rentenversicherung.de + §32a EStG 2026
   DE: {
-    flag: '🇩🇪', name: 'גרמניה', currency: 'EUR', usdRate: 0.92,
+    flag: '🇩🇪', name: 'גרמניה', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 12_348,   rate: 0  },            // Grundfreibetrag 2026 (was 12,096)
       { upTo: 68_480,   rate: 42 },            // progressive 14%→42% simplified to midpoint
@@ -107,7 +107,7 @@ const TAX_DATA = {
 
   // ── FRANCE ────────────────────────── source: PwC France 2026 + Loi de Finances 2026
   FR: {
-    flag: '🇫🇷', name: 'צרפת', currency: 'EUR', usdRate: 0.92,
+    flag: '🇫🇷', name: 'צרפת', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 11_600,   rate: 0  },            // 2026: was 11,294 (+0.9% inflation)
       { upTo: 29_579,   rate: 11 },            // 2026: was 28,797
@@ -126,7 +126,7 @@ const TAX_DATA = {
 
   // ── NETHERLANDS ─────────────────────── source: Belastingdienst 2026 + Dutch Tax Budget 2026
   NL: {
-    flag: '🇳🇱', name: 'הולנד', currency: 'EUR', usdRate: 0.92,
+    flag: '🇳🇱', name: 'הולנד', currency: 'EUR', usdRate: 1.08,
     // 2026 Box 1 brackets — thresholds inflation-adjusted, rates unchanged
     brackets: [
       { upTo: 38_883,   rate: 35.75 },           // 2026 box 1 (was 38,441)
@@ -144,7 +144,7 @@ const TAX_DATA = {
 
   // ── PORTUGAL ─────────────────────────────────────── source: PwC Portugal 2025, CIRS
   PT: {
-    flag: '🇵🇹', name: 'פורטוגל', currency: 'EUR', usdRate: 0.92,
+    flag: '🇵🇹', name: 'פורטוגל', currency: 'EUR', usdRate: 1.08,
     // 2026 IRS brackets — thresholds inflated ~3.51% for inflation;
     // brackets 2-5 rates reduced 0.3pp (PwC 2026 State Budget summary).
     // 2026-05 update — PwC Portugal re-verified Jan 5, 2026 (Lei 45-A/2025).
@@ -173,7 +173,7 @@ const TAX_DATA = {
 
   // ── SPAIN ──────────────────────────────────── source: AEAT 2026 + PwC Spain 2026
   ES: {
-    flag: '🇪🇸', name: 'ספרד', currency: 'EUR', usdRate: 0.92,
+    flag: '🇪🇸', name: 'ספרד', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 12_450,   rate: 19 },               // unchanged for 2026 (national)
       { upTo: 20_200,   rate: 24 },
@@ -228,7 +228,7 @@ const TAX_DATA = {
 
   // ── ESTONIA ────────────────────────────────────────── source: PwC Estonia 2026-02-25 (verified 2026-05)
   EE: {
-    flag: '🇪🇪', name: 'אסטוניה', currency: 'EUR', usdRate: 0.92,
+    flag: '🇪🇪', name: 'אסטוניה', currency: 'EUR', usdRate: 1.08,
     // 2026 — flat 22% (raised from 20% effective Jan 2025; remained 22% for 2026).
     brackets: [
       { upTo: Infinity, rate: 22 }, // flat rate
@@ -244,7 +244,7 @@ const TAX_DATA = {
 
   // ── IRELAND ────────────────────────────────────────── source: Revenue.ie 2025
   IE: {
-    flag: '🇮🇪', name: 'אירלנד', currency: 'EUR', usdRate: 0.92,
+    flag: '🇮🇪', name: 'אירלנד', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 44_000,   rate: 20 },               // 2026: was 42,000 — Budget 2026 widened standard band
       { upTo: Infinity, rate: 40 },
@@ -424,7 +424,7 @@ const TAX_DATA = {
 
   // ── GREECE ────────────────────── source: AADE 2026 + Law 5246/2025 (effective Jan 2026)
   GR: {
-    flag: '🇬🇷', name: 'יוון', currency: 'EUR', usdRate: 0.92,
+    flag: '🇬🇷', name: 'יוון', currency: 'EUR', usdRate: 1.08,
     // 2026-05 update — PwC Greece re-verified Feb 16, 2026 + Law 5246/2025.
     // Rates lowered across mid-bands + new 39% band 40K-60K inserted.
     // Lower scales available based on number of children / age<30 (not modeled).
@@ -447,7 +447,7 @@ const TAX_DATA = {
 
   // ── ITALY ─────────────────────────────────── source: Agenzia delle Entrate 2026 + Budget Law 2026
   IT: {
-    flag: '🇮🇹', name: 'איטליה', currency: 'EUR', usdRate: 0.92,
+    flag: '🇮🇹', name: 'איטליה', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 28_000,   rate: 23 },             // unchanged
       { upTo: 50_000,   rate: 33 },             // 2026: was 35% — Budget Law dropped 2pp on this band
@@ -464,7 +464,7 @@ const TAX_DATA = {
 
   // ── MALTA ──────────────────────────────── source: PwC Malta 2026 + Mercans alert Jan 2026
   MT: {
-    flag: '🇲🇹', name: 'מלטה', currency: 'EUR', usdRate: 0.92,
+    flag: '🇲🇹', name: 'מלטה', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 12_000,   rate: 0  },
       { upTo: 16_000,   rate: 15 },
@@ -512,7 +512,7 @@ const TAX_DATA = {
 
   // ── MONACO ──────────────────────────────────────── source: Monaco gov + PwC 2026
   MC: {
-    flag: '🇲🇨', name: 'מונקו', currency: 'EUR', usdRate: 0.92,
+    flag: '🇲🇨', name: 'מונקו', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: Infinity, rate: 0 },               // 0% income tax for residents (non-French)
     ],
@@ -542,7 +542,7 @@ const TAX_DATA = {
 
   // ── CYPRUS ──────────────────────────────────── source: Cyprus Tax Authority 2026 + 2026 tax reform
   CY: {
-    flag: '🇨🇾', name: 'קפריסין', currency: 'EUR', usdRate: 0.92,
+    flag: '🇨🇾', name: 'קפריסין', currency: 'EUR', usdRate: 1.08,
     // 2026 reform: tax-free threshold raised €19,500 → €22,000; all
     // bracket ceilings shifted UP. Result: meaningful tax reduction.
     // 2026-05 update — PwC re-verified May 18, 2026. The threshold table

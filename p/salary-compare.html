@@ -1071,9 +1071,13 @@ function buildLineItemTable(grossILS, rows) {
 
   function effTaxPct(code) {
     const r = _calc(code);
-    if (!r) return '—';
-    // r.effectiveRate is already a %. Apply to USD gross.
-    return amountWithPct(grossUsdMonthly * (r.effectiveRate / 100), r.effectiveRate);
+    if (!r || !r.grossLocal) return '—';
+    // PURE income tax % = r.incomeTax / r.grossLocal (NOT effectiveRate —
+    // that one bundles social + health into one rate, double-counting if we
+    // also display the social/health rows separately + total row).
+    const pct = (r.incomeTax || 0) / r.grossLocal;
+    const pctNum = +(pct * 100).toFixed(2);
+    return amountWithPct(grossUsdMonthly * pct, pctNum);
   }
   function socialPct(code) {
     const d = TAX_DATA[code]; if (!d) return '—';
@@ -1138,7 +1142,10 @@ function buildLineItemTable(grossILS, rows) {
         const extLocal = COUNTRY_EXTRAS[code] || {};
         if (kind === 'tax') {
           const r = _calc(code);
-          return r ? grossUsdMonthly * ((r.effectiveRate || 0) / 100) : 0;
+          if (!r || !r.grossLocal) return 0;
+          // Income tax only — exclude social/health (they have their own rows
+          // and are summed separately into the total).
+          return grossUsdMonthly * ((r.incomeTax || 0) / r.grossLocal);
         }
         if (kind === 'social') {
           const pct = _effPctOfGross(code, 'socialSec');
