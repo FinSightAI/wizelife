@@ -1047,28 +1047,58 @@ function buildLineItemTable(grossILS, rows) {
     return `<div style="font-weight:700;font-size:13px;color:#eef2ff">${amountStr}</div><div style="font-size:10px;color:#64748b;margin-top:1px">${pctStr}</div>`;
   }
 
-  function effTaxPct(code) {
+  // Cache calcNet result per country so we don't recompute 4× per row
+  const _calcCache = {};
+  function _calc(code) {
+    if (_calcCache[code]) return _calcCache[code];
     try {
       const fam = document.getElementById('family')?.value || 'single';
-      const r = calcNet(code, grossILS, fam, 0, null);
-      if (!r) return '—';
-      // r.effectiveRate is % of gross. Apply directly to grossUsdMonthly —
-      // currency-agnostic.
-      const taxUsd = grossUsdMonthly * (r.effectiveRate / 100);
-      return amountWithPct(taxUsd, r.effectiveRate);
-    } catch (_) { return '—'; }
+      _calcCache[code] = calcNet(code, grossILS, fam, 0, null) || null;
+    } catch { _calcCache[code] = null; }
+    return _calcCache[code];
+  }
+  // Derive the EFFECTIVE percentage of social/health from calcNet's monthly
+  // amount (which already honors tiers + ceilings) divided by gross-local.
+  // Then apply that % to gross-USD. This way we get currency-agnostic USD
+  // amounts that reflect the country's REAL bracket/tier rules.
+  function _effPctOfGross(code, field) {
+    const r = _calc(code);
+    if (!r) return null;
+    // r.grossLocal is monthly local; r[field] is also monthly local.
+    if (!r.grossLocal || r[field] == null) return null;
+    return r[field] / r.grossLocal;
+  }
+
+  function effTaxPct(code) {
+    const r = _calc(code);
+    if (!r) return '—';
+    // r.effectiveRate is already a %. Apply to USD gross.
+    return amountWithPct(grossUsdMonthly * (r.effectiveRate / 100), r.effectiveRate);
   }
   function socialPct(code) {
     const d = TAX_DATA[code]; if (!d) return '—';
-    const pct = d.socialSec_tier2 ?? d.socialSec ?? 0;
-    if (!pct) return '<div style="font-size:11px;color:#64748b">0%</div>';
-    return amountWithPct(grossUsdMonthly * (pct / 100), pct);
+    // Use the EFFECTIVE pct from calcNet (which honors IL 2-tier 1.04%/7%
+    // below/above threshold + ceiling). For flat-rate countries this just
+    // matches the headline %.
+    const pct = _effPctOfGross(code, 'socialSec');
+    if (pct == null) {
+      const flat = d.socialSec_tier2 ?? d.socialSec ?? 0;
+      if (!flat) return '<div style="font-size:11px;color:#64748b">0%</div>';
+      return amountWithPct(grossUsdMonthly * (flat / 100), flat);
+    }
+    const pctNum = +(pct * 100).toFixed(2);
+    return amountWithPct(grossUsdMonthly * pct, pctNum);
   }
   function healthPct(code) {
     const d = TAX_DATA[code]; if (!d) return '—';
-    const pct = d.health_tier2 ?? d.health ?? 0;
-    if (!pct) return '<div style="font-size:11px;color:#64748b">' + (_lang === 'he' ? 'בתוך SS' : 'bundled') + '</div>';
-    return amountWithPct(grossUsdMonthly * (pct / 100), pct);
+    const pct = _effPctOfGross(code, 'health');
+    if (pct == null || pct === 0) {
+      const flat = d.health_tier2 ?? d.health ?? 0;
+      if (!flat) return '<div style="font-size:11px;color:#64748b">' + (_lang === 'he' ? 'בתוך SS' : 'bundled') + '</div>';
+      return amountWithPct(grossUsdMonthly * (flat / 100), flat);
+    }
+    const pctNum = +(pct * 100).toFixed(2);
+    return amountWithPct(grossUsdMonthly * pct, pctNum);
   }
   function pensionCell(code, who /* 'emp' or 'er' */) {
     const ext = COUNTRY_EXTRAS[code] || {};
@@ -1105,29 +1135,25 @@ function buildLineItemTable(grossILS, rows) {
       function _amountFor(kind, code) {
         code = code || (c && c.code);
         if (!code) return 0;
-        const d = TAX_DATA[code]; if (!d) return 0;
         const extLocal = COUNTRY_EXTRAS[code] || {};
         if (kind === 'tax') {
-          try {
-            const fam = document.getElementById('family')?.value || 'single';
-            const rr = calcNet(code, grossILS, fam, 0, null);
-            return rr ? grossUsdMonthly * ((rr.effectiveRate || 0) / 100) : 0;
-          } catch { return 0; }
+          const r = _calc(code);
+          return r ? grossUsdMonthly * ((r.effectiveRate || 0) / 100) : 0;
         }
         if (kind === 'social') {
-          const pct = d.socialSec_tier2 ?? d.socialSec ?? 0;
-          return grossUsdMonthly * (pct / 100);
+          const pct = _effPctOfGross(code, 'socialSec');
+          if (pct != null) return grossUsdMonthly * pct;
+          const d = TAX_DATA[code]; const flat = (d && (d.socialSec_tier2 ?? d.socialSec)) || 0;
+          return grossUsdMonthly * (flat / 100);
         }
         if (kind === 'health') {
-          const pct = d.health_tier2 ?? d.health ?? 0;
-          return grossUsdMonthly * (pct / 100);
+          const pct = _effPctOfGross(code, 'health');
+          if (pct != null) return grossUsdMonthly * pct;
+          const d = TAX_DATA[code]; const flat = (d && (d.health_tier2 ?? d.health)) || 0;
+          return grossUsdMonthly * (flat / 100);
         }
-        if (kind === 'pensEmp') {
-          return grossUsdMonthly * ((extLocal.pensionEmpPct || 0) / 100);
-        }
-        if (kind === 'health$') {
-          return extLocal.healthCostUSD || 0;
-        }
+        if (kind === 'pensEmp') return grossUsdMonthly * ((extLocal.pensionEmpPct || 0) / 100);
+        if (kind === 'health$') return extLocal.healthCostUSD || 0;
         return 0;
       }
       switch (row.k) {
