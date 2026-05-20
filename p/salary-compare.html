@@ -1171,7 +1171,14 @@ function buildLineItemTable(grossILS, rows) {
 
   // Header row of country names (with flag)
   const head = '<tr><th style="text-align:start;padding:8px 10px;color:#9ca3af;font-weight:600;font-size:11.5px">' + (_lang === 'he' ? 'רכיב' : 'Item') + '</th>'
-    + cols.map(c => `<th style="text-align:center;padding:8px 10px;color:#eef2ff;font-weight:700;font-size:13px">${c ? c.flag : ''}<br><span style="font-weight:500;font-size:11px;color:#9ca3af">${c ? shortName(c.name) : '—'}</span></th>`).join('')
+    + cols.map(c => {
+        if (!c) return '<th>—</th>';
+        // calcDeep rows don't carry .flag — pull from TAX_DATA. Guard every
+        // interpolation so a missing field renders '' not literal 'undefined'.
+        const flag = (c.flag) || (TAX_DATA[c.code] && TAX_DATA[c.code].flag) || '';
+        const nm = shortName(c.name) || (TAX_DATA[c.code] && shortName(TAX_DATA[c.code].name)) || c.code || '';
+        return `<th style="text-align:center;padding:8px 10px;color:#eef2ff;font-weight:700;font-size:13px">${flag}<br><span style="font-weight:500;font-size:11px;color:#9ca3af">${nm}</span></th>`;
+      }).join('')
     + '</tr>';
 
   // Body rows — one per line-item
@@ -1326,7 +1333,9 @@ function buildLineItemTable(grossILS, rows) {
         const ext = COUNTRY_EXTRAS[c.code] || {};
         const note = ext.notesShort ? (ext.notesShort[_lang] || ext.notesShort.en) : '';
         if (!note) return '';
-        return `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:11px 12px"><div style="font:700 12px Inter,sans-serif;color:#eef2ff;margin-bottom:4px">${c.flag} ${shortName(c.name)}</div><div style="font:500 11.5px Inter,sans-serif;color:#9ca3af;line-height:1.5">${note}</div></div>`;
+        const flag = c.flag || (TAX_DATA[c.code] && TAX_DATA[c.code].flag) || '';
+        const nm = shortName(c.name) || (TAX_DATA[c.code] && shortName(TAX_DATA[c.code].name)) || c.code || '';
+        return `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:11px 12px"><div style="font:700 12px Inter,sans-serif;color:#eef2ff;margin-bottom:4px">${flag} ${nm}</div><div style="font:500 11.5px Inter,sans-serif;color:#9ca3af;line-height:1.5">${note}</div></div>`;
       }).join('')
     + '</div>';
 
