@@ -990,6 +990,10 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'system',   label: 'מערכת בריאות', cat: 'health' },
     { k: 'health$',  label: 'בריאות מהכיס', cat: 'health' },
     { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)', cat: 'health' },
+    { k: 'capgains', label: 'מס רווחי הון / דיבידנד', cat: 'tax' },
+    { k: 'retage',   label: 'גיל פרישה', cat: 'life' },
+    { k: 'vacation', label: 'ימי חופשה (מינימום חוקי)', cat: 'life' },
+    { k: 'maternity',label: 'חופשת לידה בתשלום', cat: 'life' },
     { k: 'olim',     label: '⭐ הטבת מס לעולים חדשים', cat: 'olim' },
     { k: 'totalDed', label: '💰 סך ניכויים חודשיים (ללא תוספת מעסיק)', cat: 'total' },
   ] : [
@@ -1004,6 +1008,10 @@ function buildLineItemTable(grossILS, rows) {
     { k: 'system',   label: 'Healthcare system', cat: 'health' },
     { k: 'health$',  label: 'Out-of-pocket health', cat: 'health' },
     { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)', cat: 'health' },
+    { k: 'capgains', label: 'Capital gains / dividend tax', cat: 'tax' },
+    { k: 'retage',   label: 'Retirement age', cat: 'life' },
+    { k: 'vacation', label: 'Vacation days (statutory min)', cat: 'life' },
+    { k: 'maternity',label: 'Paid maternity leave', cat: 'life' },
     { k: 'olim',     label: '⭐ New-immigrant tax break', cat: 'olim' },
     { k: 'totalDed', label: '💰 Total monthly deductions (excl. employer add-on)', cat: 'total' },
   ];
@@ -1199,6 +1207,22 @@ function buildLineItemTable(grossILS, rows) {
           break;
         }
         case 'quality': val = ext.healthcareQual != null ? ext.healthcareQual : '—'; break;
+        case 'capgains': {
+          const cg = ext.capGains ? (ext.capGains[_lang] || ext.capGains.en) : null;
+          val = cg ? `<div style="font-size:11px;color:#cbd5e1;line-height:1.4">${cg}</div>` : '—';
+          break;
+        }
+        case 'retage':   val = ext.retirementAge ? ext.retirementAge : (_lang === 'he' ? 'אין רשמי' : 'none'); break;
+        case 'vacation': val = ext.vacationDays != null
+                           ? (ext.vacationDays === 0
+                               ? (_lang === 'he' ? '0 (אין חובה!)' : '0 (none!)')
+                               : ext.vacationDays + (_lang === 'he' ? ' ימים' : ' days'))
+                           : '—'; break;
+        case 'maternity':val = ext.maternityWeeks != null
+                           ? (ext.maternityWeeks === 0
+                               ? (_lang === 'he' ? '0 בתשלום (חוק)' : '0 paid (statutory)')
+                               : ext.maternityWeeks + (_lang === 'he' ? ' שבועות' : ' weeks'))
+                           : '—'; break;
         case 'olim': {
           // Pull from the REGIMES catalog in tax-data.js. REGIME_BY_COUNTRY maps
           // each country to its primary olim/immigrant regime key.

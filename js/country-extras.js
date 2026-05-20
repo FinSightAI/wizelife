@@ -42,6 +42,10 @@ const COUNTRY_EXTRAS = {
   IL: {
     pensionEmpPct: 6,    pensionErPct: 6.5,
     pensionPctFinalSalary: 50,
+    retirementAge: 67,
+    vacationDays: 12,
+    maternityWeeks: 15,
+    capGains: { he: '25-30% (רווחי הון + מס יסף)', en: '25-30% (CGT + surtax)' },
     suppProducts: { he: 'קרן השתלמות (פטור ממס) + פיצויים', en: 'Keren Hishtalmut (tax-free) + severance' },
     localTerms: {
       incomeTax: 'מס הכנסה',
@@ -67,6 +71,10 @@ const COUNTRY_EXTRAS = {
   PT: {
     pensionEmpPct: 11, pensionErPct: 23.75,
         pensionPctFinalSalary: 74,
+    retirementAge: 66,
+    vacationDays: 22,
+    maternityWeeks: 21,
+    capGains: { he: '28% (רווחי הון + דיבידנד)', en: '28% (CGT + dividend)' },
     suppProducts: { he: 'PPR (חיסכון פנסיוני מוטב מס)', en: 'PPR (tax-advantaged retirement)' },
     localTerms: {
       incomeTax: 'IRS',
@@ -92,6 +100,10 @@ const COUNTRY_EXTRAS = {
   CY: {
     pensionEmpPct: 8.3, pensionErPct: 8.3,
         pensionPctFinalSalary: 50,
+    retirementAge: 65,
+    vacationDays: 20,
+    maternityWeeks: 18,
+    capGains: { he: '0% על ני״ע! (Non-Dom)', en: '0% on securities! (Non-Dom)' },
     suppProducts: { he: 'Provident Funds (דרך מעסיק)', en: 'Provident Funds (employer)' },
     localTerms: {
       incomeTax: 'Income Tax',
@@ -117,6 +129,10 @@ const COUNTRY_EXTRAS = {
   IT: {
     pensionEmpPct: 9.19, pensionErPct: 23.81,
         pensionPctFinalSalary: 75,
+    retirementAge: 67,
+    vacationDays: 20,
+    maternityWeeks: 21,
+    capGains: { he: '26%', en: '26%' },
     suppProducts: { he: 'TFR (פיצויים) + Fondi Pensione', en: 'TFR (severance) + Fondi Pensione' },
     localTerms: {
       incomeTax: 'IRPEF',
@@ -142,6 +158,10 @@ const COUNTRY_EXTRAS = {
   US: {
     pensionEmpPct: 7.65, pensionErPct: 7.65,
         pensionPctFinalSalary: 50,
+    retirementAge: 67,
+    vacationDays: 0,
+    maternityWeeks: 0,
+    capGains: { he: '0/15/20% (LTCG ארוך טווח)', en: '0/15/20% (long-term CGT)' },
     suppProducts: { he: '401(k) + Roth IRA + HSA (בריאות)', en: '401(k) + Roth IRA + HSA' },
     localTerms: {
       incomeTax: 'Federal Income Tax (+ state 0-13%)',
@@ -165,6 +185,10 @@ const COUNTRY_EXTRAS = {
   DE: {
     pensionEmpPct: 9.3, pensionErPct: 9.3,
         pensionPctFinalSalary: 53,
+    retirementAge: 67,
+    vacationDays: 20,
+    maternityWeeks: 14,
+    capGains: { he: '26.375% (Abgeltungsteuer)', en: '26.375% (Abgeltungsteuer)' },
     suppProducts: { he: 'Riester/Rürup + VWL (תוספת מעסיק)', en: 'Riester/Rürup + VWL' },
     localTerms: {
       incomeTax: 'Einkommensteuer',
@@ -190,6 +214,10 @@ const COUNTRY_EXTRAS = {
   GB: {
     pensionEmpPct: 8, pensionErPct: 3,
         pensionPctFinalSalary: 49,
+    retirementAge: 66,
+    vacationDays: 28,
+    maternityWeeks: 39,
+    capGains: { he: '20% רווחי הון, 33.75% דיבידנד', en: '20% CGT, 33.75% dividend' },
     suppProducts: { he: 'ISA £20K/שנה + LISA (bonus 25%)', en: 'ISA £20K/yr + LISA (25% bonus)' },
     localTerms: {
       incomeTax: 'PAYE Income Tax',
@@ -213,6 +241,10 @@ const COUNTRY_EXTRAS = {
   ES: {
     pensionEmpPct: 6.4, pensionErPct: 30,
         pensionPctFinalSalary: 80,
+    retirementAge: 65,
+    vacationDays: 22,
+    maternityWeeks: 16,
+    capGains: { he: '19-28% מדורג', en: '19-28% tiered' },
     suppProducts: { he: 'Planes de Pensiones + PPA', en: 'Planes de Pensiones + PPA' },
     localTerms: {
       incomeTax: 'IRPF',
@@ -238,6 +270,10 @@ const COUNTRY_EXTRAS = {
   GR: {
     pensionEmpPct: 13.87, pensionErPct: 22.29,
         pensionPctFinalSalary: 80,
+    retirementAge: 67,
+    vacationDays: 20,
+    maternityWeeks: 17,
+    capGains: { he: '15% דיבידנד + רווחי הון', en: '15% dividend + CGT' },
     suppProducts: { he: '— מינימלי', en: '— minimal' },
     localTerms: {
       incomeTax: 'Income Tax',
@@ -263,6 +299,10 @@ const COUNTRY_EXTRAS = {
   MT: {
     pensionEmpPct: 10, pensionErPct: 10,
         pensionPctFinalSalary: 51,
+    retirementAge: 65,
+    vacationDays: 24,
+    maternityWeeks: 18,
+    capGains: { he: '0% לרוב (Non-Dom)', en: '0% often (Non-Dom)' },
     suppProducts: { he: 'Private pension plans (מוטב מס)', en: 'Private pension plans (tax-advantaged)' },
     pensionAuthorityUrl: 'https://socialsecurity.gov.mt/',
     pensionForecastAsOf: '2024-Q1', // SSC
@@ -280,6 +320,10 @@ const COUNTRY_EXTRAS = {
   GE: {
     pensionEmpPct: 2, pensionErPct: 2,
         pensionPctFinalSalary: 38,
+    retirementAge: 65,
+    vacationDays: 24,
+    maternityWeeks: 18,
+    capGains: { he: 'מקור זר 0%, מקומי 5%', en: 'foreign 0%, local 5%' },
     suppProducts: { he: '— אין', en: '— none' },
     pensionAuthorityUrl: 'https://www.pensions.ge/',
     pensionForecastAsOf: '2023-Q4', // mandatory pension reform 2019
@@ -297,6 +341,10 @@ const COUNTRY_EXTRAS = {
   AE: {
     pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    retirementAge: 0,
+    vacationDays: 22,
+    maternityWeeks: 0,
+    capGains: { he: '0% — אין מס רווחי הון', en: '0% — no CGT' },
     suppProducts: { he: 'End-of-Service Gratuity (מענק סיום)', en: 'End-of-Service Gratuity' },
     localTerms: {
       incomeTax: '0% — אין',
@@ -336,6 +384,10 @@ const COUNTRY_EXTRAS = {
   // Other 12 countries — defaults / partial data, table renders '—' for missing values.
   SG: { pensionEmpPct: 20, pensionErPct: 17,
         pensionPctFinalSalary: 70,
+    retirementAge: 63,
+    vacationDays: 14,
+    maternityWeeks: 16,
+    capGains: { he: '0% רווחי הון! 0% דיבידנד', en: '0% CGT! 0% dividend' },
     suppProducts: { he: 'CPF (3 חשבונות) + SRS', en: 'CPF (3 accounts) + SRS' },
     localTerms: {
       incomeTax: 'Income Tax',
@@ -358,6 +410,10 @@ const COUNTRY_EXTRAS = {
                       pt: 'ZUS 11.26%+17.48%.', es: 'ZUS 11.26%+17.48%.' }},
   IE: { pensionEmpPct: 4, pensionErPct: 11.05,
         pensionPctFinalSalary: 36,
+    retirementAge: 66,
+    vacationDays: 20,
+    maternityWeeks: 26,
+    capGains: { he: '33% רווחי הון', en: '33% CGT' },
     suppProducts: { he: 'PRSA + AVCs', en: 'PRSA + AVCs' },
     localTerms: {
       incomeTax: 'Income Tax + USC',
@@ -371,6 +427,10 @@ const COUNTRY_EXTRAS = {
                       pt: 'PRSI 4%+11.05%.', es: 'PRSI 4%+11.05%.' }},
   CA: { pensionEmpPct: 5.95, pensionErPct: 5.95,
         pensionPctFinalSalary: 45,
+    retirementAge: 65,
+    vacationDays: 10,
+    maternityWeeks: 52,
+    capGains: { he: '50% הכללה × שיעור שולי', en: '50% inclusion × marginal' },
     suppProducts: { he: 'RRSP + TFSA (פטור ממס)', en: 'RRSP + TFSA' }, kerenEquiv: 'partial', healthcareSys: 'public_free', healthCostUSD: 50, healthcareQual: 71,
         notesShort: { he: 'CPP 5.95%+5.95% פנסיה. RRSP/TFSA חלקית דומה לקרן השתלמות.', en: 'CPP 5.95%+5.95%. RRSP/TFSA partial Keren analogue.',
                       pt: 'CPP 5.95%+5.95%.', es: 'CPP 5.95%+5.95%.' }},
@@ -398,6 +458,10 @@ const COUNTRY_EXTRAS = {
                       pt: 'CSSZ 6.5%+24.8%.', es: 'CSSZ 6.5%+24.8%.' }},
   TH: { pensionEmpPct: 5, pensionErPct: 5,
         pensionPctFinalSalary: 35,
+    retirementAge: 55,
+    vacationDays: 6,
+    maternityWeeks: 14,
+    capGains: { he: '0% על מניות SET', en: '0% on SET shares' },
     suppProducts: { he: 'Provident Fund (וולנטרי) + RMF', en: 'Provident Fund + RMF' },
     localTerms: {
       incomeTax: 'Personal Income Tax',
@@ -413,6 +477,10 @@ const COUNTRY_EXTRAS = {
                       pt: 'SSO 5%+5%.', es: 'SSO 5%+5%.' }},
   BG: { pensionEmpPct: 10.58, pensionErPct: 14.82,
         pensionPctFinalSalary: 47,
+    retirementAge: 64,
+    vacationDays: 20,
+    maternityWeeks: 58,
+    capGains: { he: '10% (0% על בורסת EU)', en: '10% (0% on EU exchanges)' },
     suppProducts: { he: '— מינימלי', en: '— minimal' },
     pensionAuthorityUrl: 'https://www.nssi.bg/',
     pensionForecastAsOf: '2023-Q4', kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 60, healthcareQual: 60,
@@ -420,6 +488,10 @@ const COUNTRY_EXTRAS = {
                       pt: 'NSSI 10.58%+14.82%.', es: 'NSSI 10.58%+14.82%.' }},
   RO: { pensionEmpPct: 25, pensionErPct: 2.25,
         pensionPctFinalSalary: 39,
+    retirementAge: 65,
+    vacationDays: 20,
+    maternityWeeks: 18,
+    capGains: { he: '10% רווחי הון + דיבידנד 8%', en: '10% CGT + 8% dividend' },
     suppProducts: { he: 'Pilonul III (וולנטרי)', en: 'Pillar III (voluntary)' },
     pensionAuthorityUrl: 'https://www.cnpp.ro/',
     pensionForecastAsOf: '2023-Q4', kerenEquiv: 'no', healthcareSys: 'public_subsidized', healthCostUSD: 50, healthcareQual: 56,
@@ -427,6 +499,10 @@ const COUNTRY_EXTRAS = {
                       pt: 'CAS 25%.', es: 'CAS 25%.' }},
   MC: { pensionEmpPct: 0, pensionErPct: 0,
         pensionPctFinalSalary: 0,
+    retirementAge: 65,
+    vacationDays: 30,
+    maternityWeeks: 16,
+    capGains: { he: '0% — אין מס', en: '0% — no tax' },
     suppProducts: { he: '— אין', en: '— none' },
     pensionAuthorityUrl: null,
     pensionForecastAsOf: '2024', kerenEquiv: 'no', healthcareSys: 'mandatory_private', healthCostUSD: 300, healthcareQual: 70,
