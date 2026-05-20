@@ -979,27 +979,29 @@ function buildLineItemTable(grossILS, rows) {
   const T = TR[_lang];
   // Localized labels for the 9 rows
   const ROWS = (_lang === 'he') ? [
-    { k: 'tax',      label: 'מס הכנסה אפקטיבי', cat: 'tax' },
+    { k: 'tax',      label: 'מס הכנסה', cat: 'tax' },
     { k: 'social',   label: 'ביטוח לאומי / Social Security', cat: 'tax' },
     { k: 'health',   label: 'מס בריאות', cat: 'tax' },
-    { k: 'pensEmp',  label: 'פנסיה — עובד (חובה)', cat: 'pension' },
-    { k: 'pensEr',   label: 'פנסיה — מעסיק (חובה)', cat: 'pension' },
+    { k: 'pensEmp',  label: 'פנסיה — ניכוי מעובד', cat: 'pension' },
+    { k: 'pensEr',   label: 'פנסיה — תוספת מעסיק (לא יורד משכר)', cat: 'pension' },
     { k: 'pensFc',   label: 'צפי פנסיה (% מהשכר הסופי)', cat: 'pension' },
     { k: 'keren',    label: 'קרן השתלמות (או מקבילה)', cat: 'pension' },
     { k: 'system',   label: 'מערכת בריאות', cat: 'health' },
-    { k: 'health$',  label: 'בריאות מהכיס ($/חודש)', cat: 'health' },
+    { k: 'health$',  label: 'בריאות מהכיס', cat: 'health' },
     { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)', cat: 'health' },
+    { k: 'totalDed', label: '💰 סך ניכויים חודשיים (ללא תוספת מעסיק)', cat: 'total' },
   ] : [
-    { k: 'tax',      label: 'Effective income tax', cat: 'tax' },
+    { k: 'tax',      label: 'Income tax', cat: 'tax' },
     { k: 'social',   label: 'Bituach Leumi / Social Security', cat: 'tax' },
     { k: 'health',   label: 'Health tax', cat: 'tax' },
-    { k: 'pensEmp',  label: 'Pension — employee (mandatory)', cat: 'pension' },
-    { k: 'pensEr',   label: 'Pension — employer (mandatory)', cat: 'pension' },
+    { k: 'pensEmp',  label: 'Pension — employee deduction', cat: 'pension' },
+    { k: 'pensEr',   label: 'Pension — employer add-on (not from salary)', cat: 'pension' },
     { k: 'pensFc',   label: 'Pension forecast (% of final salary)', cat: 'pension' },
     { k: 'keren',    label: 'Keren Hishtalmut (or equivalent)', cat: 'pension' },
     { k: 'system',   label: 'Healthcare system', cat: 'health' },
-    { k: 'health$',  label: 'Out-of-pocket health ($/mo)', cat: 'health' },
+    { k: 'health$',  label: 'Out-of-pocket health', cat: 'health' },
     { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)', cat: 'health' },
+    { k: 'totalDed', label: '💰 Total monthly deductions (excl. employer add-on)', cat: 'total' },
   ];
   const SYS_LABEL = (s) => {
     const M = (_lang === 'he') ? {
@@ -1088,9 +1090,45 @@ function buildLineItemTable(grossILS, rows) {
       // Each cell shows: "Local Product Name — Rate%" so users see what the
       // equivalent is called (e.g., FICA, INPS, NHS) rather than just numbers.
       const lt = ext.localTerms || {};
-      const wrap = (name, rate) => name
-        ? `<div style="font-weight:600;font-size:11.5px;color:#eef2ff">${name}</div><div style="font-size:11.5px;color:#a5b4fc;margin-top:2px">${rate}</div>`
-        : rate;
+      // Defensive wrap — never let `undefined` leak as text.
+      const wrap = (name, rate) => {
+        const safe = rate == null || rate === undefined ? '—' : rate;
+        return name
+          ? `<div style="font-weight:600;font-size:11.5px;color:#eef2ff">${name}</div><div style="font-size:11.5px;color:#a5b4fc;margin-top:2px">${safe}</div>`
+          : safe;
+      };
+      // Compute monthly USD totals up-front so 'totalDed' row can use them.
+      function _amountFor(kind) {
+        if (!c.code) return 0;
+        const d = TAX_DATA[c.code]; if (!d) return 0;
+        const usdRate = d.usdRate || 0.27;
+        const annualLocal = grossILS * (d.fxFromILS || 1) * 12;
+        if (kind === 'tax') {
+          try {
+            const fam = document.getElementById('family')?.value || 'single';
+            const rr = calcNet(c.code, grossILS, fam, 0, null);
+            return rr ? (rr.incomeTax || 0) * usdRate : 0;
+          } catch { return 0; }
+        }
+        if (kind === 'social') {
+          const pct = d.socialSec_tier2 ?? d.socialSec ?? 0;
+          const ceil = d.socialCeil || annualLocal;
+          return (Math.min(annualLocal, ceil) * (pct/100) / 12) * usdRate;
+        }
+        if (kind === 'health') {
+          const pct = d.health_tier2 ?? d.health ?? 0;
+          const ceil = d.healthCeil || annualLocal;
+          return (Math.min(annualLocal, ceil) * (pct/100) / 12) * usdRate;
+        }
+        if (kind === 'pensEmp') {
+          const e = (COUNTRY_EXTRAS[c.code] || {}).pensionEmpPct || 0;
+          return grossILS * (d.fxFromILS || 1) * (e/100) * usdRate;
+        }
+        if (kind === 'health$') {
+          return (COUNTRY_EXTRAS[c.code] || {}).healthCostUSD || 0;
+        }
+        return 0;
+      }
       switch (row.k) {
         case 'tax':     val = wrap(lt.incomeTax, effTaxPct(c.code)); break;
         case 'social':  val = wrap(lt.socialSec, socialPct(c.code)); break;
@@ -1111,8 +1149,49 @@ function buildLineItemTable(grossILS, rows) {
                         }
         case 'keren':   val = wrap(lt.kerenEquiv, KEREN(ext.kerenEquiv)); break;
         case 'system':  val = wrap(lt.healthSys, SYS_LABEL(ext.healthcareSys)); break;
-        case 'health$': val = ext.healthCostUSD != null ? '$' + ext.healthCostUSD : '—'; break;
+        case 'health$': {
+          if (ext.healthCostUSD == null) { val = '—'; break; }
+          const usd = ext.healthCostUSD;
+          val = `<div style="font-weight:700;font-size:13px;color:#eef2ff">$${usd.toLocaleString()}${monthLbl}</div>`;
+          break;
+        }
         case 'quality': val = ext.healthcareQual != null ? ext.healthcareQual : '—'; break;
+        case 'totalDed': {
+          // Sum: income tax + social + health + pension employee + OoP health.
+          // EXCLUDES employer pension (not deducted from worker's salary).
+          const total = _amountFor('tax') + _amountFor('social') + _amountFor('health')
+                      + _amountFor('pensEmp') + _amountFor('health$');
+          const ilRow = cols[0];
+          const ilTotal = ilRow && c.code !== ilRow.code
+            ? (function () {
+                // recompute IL total once via the same helper, but using IL code
+                const ilD = TAX_DATA['IL']; if (!ilD) return 0;
+                const ilUsd = ilD.usdRate || 0.27;
+                const ilAnnual = grossILS * (ilD.fxFromILS || 1) * 12;
+                let t = 0;
+                try {
+                  const fam = document.getElementById('family')?.value || 'single';
+                  const rr = calcNet('IL', grossILS, fam, 0, null);
+                  if (rr) t += (rr.incomeTax || 0) * ilUsd;
+                } catch {}
+                const ilSocialPct = ilD.socialSec_tier2 ?? ilD.socialSec ?? 0;
+                const ilSocialCeil = ilD.socialCeil || ilAnnual;
+                t += (Math.min(ilAnnual, ilSocialCeil) * (ilSocialPct/100) / 12) * ilUsd;
+                const ilHealthPct = ilD.health_tier2 ?? ilD.health ?? 0;
+                const ilHealthCeil = ilD.healthCeil || ilAnnual;
+                t += (Math.min(ilAnnual, ilHealthCeil) * (ilHealthPct/100) / 12) * ilUsd;
+                const ilExt = COUNTRY_EXTRAS['IL'] || {};
+                t += grossILS * (ilD.fxFromILS || 1) * ((ilExt.pensionEmpPct || 0)/100) * ilUsd;
+                t += (ilExt.healthCostUSD || 0);
+                return t;
+              })()
+            : 0;
+          const delta = c.code === 'IL' || !ilTotal ? null : (total - ilTotal);
+          const deltaTxt = delta == null ? ''
+            : `<div style="font-size:10px;margin-top:2px;color:${delta > 0 ? '#fca5a5' : '#6ee7b7'}">${delta > 0 ? '+' : ''}$${Math.round(delta).toLocaleString()}${monthLbl} ${_lang === 'he' ? (delta > 0 ? 'יותר מ-IL' : 'פחות מ-IL') : (delta > 0 ? 'vs IL' : 'vs IL')}</div>`;
+          val = `<div style="font-weight:800;font-size:14px;color:#fbbf24">$${Math.round(total).toLocaleString()}${monthLbl}</div>${deltaTxt}`;
+          break;
+        }
         default: val = '—';
       }
       const isIL = c.code === 'IL';
