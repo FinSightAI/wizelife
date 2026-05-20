@@ -1021,6 +1021,23 @@ function getUserPlan() {
   return 'free';
 }
 
+// Provenance badge — surfaces the official source + verification date of the
+// tax data, pulled live from TAX_META so it can't drift from the data itself.
+// Hybrid-visibility policy: shown on the critical tax breakdown (here) and the
+// residency checker; a lighter global footer covers the rest of the page.
+function provenanceBadge() {
+  const M = (typeof TAX_META !== 'undefined') ? TAX_META : { validYear: '', updatedAt: '' };
+  const L = _lang;
+  const txt = L === 'he'
+      ? '📊 מקור: רשות המסים, ביטוח לאומי ו-PwC Worldwide Tax Summaries · מדרגות מס נכון לשנת ' + M.validYear + ' (אומת ' + M.updatedAt + ') · מידע כללי, לא ייעוץ מס.'
+    : L === 'pt'
+      ? '📊 Fontes: Autoridade Fiscal de Israel, Bituach Leumi e PwC Worldwide Tax Summaries · dados fiscais de ' + M.validYear + ' (verificado ' + M.updatedAt + ') · informação geral, não aconselhamento.'
+    : L === 'es'
+      ? '📊 Fuentes: Autoridad Fiscal de Israel, Bituach Leumi y PwC Worldwide Tax Summaries · datos fiscales de ' + M.validYear + ' (verificado ' + M.updatedAt + ') · información general, no asesoramiento.'
+      : '📊 Sources: Israel Tax Authority, Bituach Leumi & PwC Worldwide Tax Summaries · tax data for ' + M.validYear + ' (verified ' + M.updatedAt + ') · general info, not advice.';
+  return '<div style="margin-top:16px;padding:9px 12px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font:500 10.5px Inter,sans-serif;color:#94a3b8;line-height:1.55">' + txt + '</div>';
+}
+
 // Build the line-item comparison table: ISRAEL components vs each country's
 // equivalent. 9 rows: effective tax %, social-security %, health %, pension
 // employee %, pension employer %, Keren Hishtalmut equivalence, healthcare
@@ -1398,6 +1415,7 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
     + '<div style="margin-top:14px;text-align:center">'
     + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'
     + T.deepCTASignup + '</a></div>'
+    + provenanceBadge()
     + '</div>';
   deepResultEl.innerHTML = html;
   deepResultEl.style.display = 'block';
@@ -1523,13 +1541,33 @@ if (_resBtn) _resBtn.addEventListener('click', () => {
     + implications
     + salaryNote
     + `<div style="margin-top:14px;font:600 11px Inter,sans-serif;color:#94a3b8;line-height:1.6">ℹ️ ${t('הערכה אוטומטית בלבד — לא ייעוץ. מבחן מרכז החיים נתון לפרשנות רשות המסים. למקרה אמיתי: יועץ מס בינלאומי / רו״ח.', 'Automated estimate only — not advice. The center-of-life test is subject to ITA interpretation. For a real case: international tax advisor / CPA.', 'Estimativa automática apenas — não é aconselhamento. O teste de centro de vida está sujeito à interpretação do fisco israelense. Para um caso real: consultor fiscal internacional / contador.', 'Solo estimación automática — no es asesoramiento. La prueba de centro de vida está sujeta a la interpretación del fisco israelí. Para un caso real: asesor fiscal internacional / contador.')}</div>`
+    + `<div style="margin-top:6px;font:500 10px Inter,sans-serif;color:#64748b;line-height:1.5">${t('מקורות: פקודת מס הכנסה ס׳ 100A · ביטוח לאומי (btl.gov.il) · חוק ביטוח בריאות ממלכתי · נכון 05/2026.', 'Sources: Income Tax Ordinance §100A · Bituach Leumi (btl.gov.il) · National Health Insurance Law · as of 05/2026.', 'Fontes: Portaria do Imposto de Renda §100A · Bituach Leumi (btl.gov.il) · Lei do Seguro Nacional de Saúde · em 05/2026.', 'Fuentes: Ordenanza del Impuesto sobre la Renta §100A · Bituach Leumi (btl.gov.il) · Ley del Seguro Nacional de Salud · al 05/2026.')}</div>`
     + `</div>`;
   document.getElementById('resResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 </script>
 
-<!-- Cloudflare Web Analytics is auto-injected by the Cloudflare proxy when
-     enabled in the dashboard — no manual tag needed. -->
+<!-- Global data-provenance footer (the lighter "rest of page" tier of the
+     hybrid-visibility policy; critical figures carry their own source badge). -->
+<footer id="dataFooter" style="max-width:920px;margin:28px auto 0;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.07);font:500 10.5px Inter,sans-serif;color:#64748b;line-height:1.6;text-align:center"></footer>
+<script>
+(function () {
+  const M = (typeof TAX_META !== 'undefined') ? TAX_META : { validYear: '', updatedAt: '' };
+  const render = () => {
+    const L = (localStorage.getItem('wl_lang') || 'he');
+    const txt = L === 'he'
+        ? 'נתוני מס נכון לשנת ' + M.validYear + ' · אומת ' + M.updatedAt + ' · מקורות רשמיים: רשות המסים, ביטוח לאומי, PwC. נתוני ויזה/פנסיה/בריאות מתעדכנים תקופתית. כל המידע הוא כללי ולמטרות הסברה בלבד — אינו מהווה ייעוץ מס, משפטי או פיננסי.'
+      : L === 'pt'
+        ? 'Dados fiscais de ' + M.validYear + ' · verificado ' + M.updatedAt + ' · fontes oficiais: Autoridade Fiscal de Israel, Bituach Leumi, PwC. Dados de visto/pensão/saúde atualizados periodicamente. Informação geral apenas — não constitui aconselhamento fiscal, jurídico ou financeiro.'
+      : L === 'es'
+        ? 'Datos fiscales de ' + M.validYear + ' · verificado ' + M.updatedAt + ' · fuentes oficiales: Autoridad Fiscal de Israel, Bituach Leumi, PwC. Datos de visa/pensión/salud actualizados periódicamente. Información general — no constituye asesoramiento fiscal, legal ni financiero.'
+        : 'Tax data for ' + M.validYear + ' · verified ' + M.updatedAt + ' · official sources: Israel Tax Authority, Bituach Leumi, PwC. Visa/pension/health data refreshed periodically. All information is general and for educational purposes only — not tax, legal or financial advice.';
+    document.getElementById('dataFooter').textContent = txt;
+  };
+  render();
+  window.addEventListener('wl-lang-change', render);
+})();
+</script>
 
 </body>
 </html>
