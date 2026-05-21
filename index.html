@@ -25,7 +25,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <!-- Security headers (GH Pages doesn't allow HTTP headers, so meta-equivalent) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://lh3.googleusercontent.com data:; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://vitara.onrender.com https://master-backend-79jx.onrender.com https://ofirofir-wizetravel.hf.space https://*.ingest.sentry.io https://*.ingest.us.sentry.io; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://accounts.google.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://lh3.googleusercontent.com data:; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://ofirofir-wizetravel.hf.space https://*.ingest.sentry.io https://*.ingest.us.sentry.io; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://accounts.google.com;">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <!-- Permissions-Policy via meta — locks down sensors by default on the landing page.
      Sub-apps that need geo/camera (WizeTravel for "use my location", payment in checkout)
@@ -58,10 +58,10 @@
 <!-- Pre-warm the Render-hosted backends so they're awake by the time a user
  taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
  The actual wake-up GET is fired below in a JS block. -->
-<link crossorigin="" href="https://vitara.onrender.com" rel="preconnect"/>
-<link href="https://vitara.onrender.com" rel="dns-prefetch"/>
-<link crossorigin="" href="https://master-backend-79jx.onrender.com" rel="preconnect"/>
-<link href="https://master-backend-79jx.onrender.com" rel="dns-prefetch"/>
+<link crossorigin="" href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="preconnect"/>
+<link href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
+<link crossorigin="" href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="preconnect"/>
+<link href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
 <link crossorigin="" href="https://ofirofir-wizetravel.hf.space" rel="preconnect"/>
 <link href="https://ofirofir-wizetravel.hf.space" rel="dns-prefetch"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -1861,7 +1861,7 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  that by the time the user signs in and clicks Health, it's already up. */
 (function prewarmBackends(){
  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
- var TARGETS = ['https://vitara.onrender.com/', 'https://master-backend-79jx.onrender.com/health', 'https://ofirofir-wizetravel.hf.space/'];
+ var TARGETS = ['https://wizehealth-3ol2retcla-uc.a.run.app/', 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health', 'https://ofirofir-wizetravel.hf.space/'];
  // Fire immediately + every 30 s while landing page is open.
  TARGETS.forEach(ping);
  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);

@@ -41,10 +41,10 @@
 <meta name="twitter:title" content="My Dashboard — WizeLife">
 <meta name="twitter:description" content="Your WizeLife dashboard — access all 5 AI life tools in one place.">
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://vitara.onrender.com" rel="preconnect"/>
-<link href="https://vitara.onrender.com" rel="dns-prefetch"/>
-<link crossorigin="" href="https://master-backend-79jx.onrender.com" rel="preconnect"/>
-<link href="https://master-backend-79jx.onrender.com" rel="dns-prefetch"/>
+<link crossorigin="" href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="preconnect"/>
+<link href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
+<link crossorigin="" href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="preconnect"/>
+<link href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
 <link crossorigin="" href="https://ofirofir-wizetravel.hf.space" rel="preconnect"/>
 <link href="https://ofirofir-wizetravel.hf.space" rel="dns-prefetch"/>
 <!-- Eager prefetch: by the time the user taps a tool card, the browser
@@ -57,7 +57,7 @@
 <link as="document" crossorigin="" href="https://money.wizelife.ai/" rel="prefetch"/>
 <!-- Also prefetch the underlying app HTML so the iframe inside the
  launcher has the real page warmed up too. -->
-<link as="document" crossorigin="" href="https://vitara.onrender.com/" rel="prefetch"/>
+<link as="document" crossorigin="" href="https://wizehealth-3ol2retcla-uc.a.run.app/" rel="prefetch"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1194,8 +1194,8 @@ document.head.appendChild(_swScript);
 (function prewarmBackends(){
  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
  var TARGETS = [
- 'https://vitara.onrender.com/', // WizeHealth (Render free, sleeps at 15min)
- 'https://master-backend-79jx.onrender.com/health',// WizeTax backend (Render free)
+ 'https://wizehealth-3ol2retcla-uc.a.run.app/', // WizeHealth (Render free, sleeps at 15min)
+ 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health',// WizeTax backend (Render free)
  'https://ofirofir-wizetravel.hf.space/' // WizeTravel API (Hugging Face Spaces, also sleeps)
  ];
  // 1) Initial warm-up IMMEDIATELY (was 1.5s, was too late)
@@ -1212,8 +1212,8 @@ document.head.appendChild(_swScript);
  // ping the matching backend so the final cold start finishes by tap-time.
  function attachHover(){
  var map = {
- 'tool-health': 'https://vitara.onrender.com/',
- 'tool-tax': 'https://master-backend-79jx.onrender.com/health',
+ 'tool-health': 'https://wizehealth-3ol2retcla-uc.a.run.app/',
+ 'tool-tax': 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health',
  'tool-travel': 'https://ofirofir-wizetravel.hf.space/'
  };
  Object.keys(map).forEach(function(id){
