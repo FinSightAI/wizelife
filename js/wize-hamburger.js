@@ -120,6 +120,12 @@
     /* WizeLife portal IS the launcher — no need for an apps hamburger here. */
     if (cur === 'portal') return;
 
+    /* Avoid a DOUBLE hamburger: if the host app already renders its own
+       mobile menu toggle (WizeTax .wt-hamburger, WizeMoney .mobile-menu-toggle /
+       .mobile-header-toggle), don't add the shared one too. Cross-app switching
+       on those apps stays available via the shared bottom-nav. */
+    if (document.querySelector('.mobile-menu-toggle, .mobile-header-toggle, .wt-hamburger')) return;
+
     injectStyle();
     var lang = getLang();
     var t = T[lang] || T.en;
@@ -340,6 +346,9 @@
     window.WizeHamburger = { open: open, close: closeFn };
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
-  else build();
+  /* Defer slightly so app-rendered hamburgers (React .wt-hamburger) exist
+     before the duplicate-guard in build() runs. */
+  function start(){ setTimeout(build, 500); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();
