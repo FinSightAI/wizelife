@@ -129,7 +129,7 @@
     wrap.id = 'wlQuickStart';
     wrap.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     wrap.style.cssText = [
-      'position:fixed','inset:0','z-index:99996','display:flex',
+      'position:fixed','inset:0','z-index:2147483000','display:flex',
       'align-items:center','justify-content:center','padding:20px',
       'background:rgba(5,6,15,0.85)','backdrop-filter:blur(8px)',
       '-webkit-backdrop-filter:blur(8px)',
