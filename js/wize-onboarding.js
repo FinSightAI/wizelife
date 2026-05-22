@@ -281,7 +281,7 @@
     root.setAttribute('role', 'dialog');
     root.setAttribute('aria-modal', 'true');
     root.style.cssText = [
-      'position:fixed','inset:0','z-index:99997',
+      'position:fixed','inset:0','z-index:2147483000',
       'display:flex','align-items:center','justify-content:center',
       'background:rgba(5,8,20,0.55)','backdrop-filter:blur(8px)','-webkit-backdrop-filter:blur(8px)',
       'font-family:Inter,-apple-system,system-ui,sans-serif',
