@@ -35,16 +35,20 @@
             });
         });
 
+        // reg.update() returns a PROMISE that rejects (e.g. "Script load failed"
+        // on WebKit/Safari, or transient network) — a try/catch only traps a
+        // synchronous throw, so we must .catch() the promise too, otherwise it
+        // surfaces as an unhandled rejection in the console.
+        const safeUpdate = () => { try { const p = reg.update(); if (p && p.catch) p.catch(() => {}); } catch (e) {} };
+
         // 2. Force-check on every page load (catches PWA reopens quickly)
-        try { reg.update(); } catch (e) {}
+        safeUpdate();
 
         // 3. Poll every 60s while page is open + on focus
-        setInterval(() => { try { reg.update(); } catch (e) {} }, 60 * 1000);
-        window.addEventListener('focus',           () => { try { reg.update(); } catch (e) {} });
+        setInterval(safeUpdate, 60 * 1000);
+        window.addEventListener('focus', safeUpdate);
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                try { reg.update(); } catch (e) {}
-            }
+            if (document.visibilityState === 'visible') safeUpdate();
         });
     }).catch(err => console.warn('SW register failed', err));
 

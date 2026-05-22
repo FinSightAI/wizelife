@@ -89,6 +89,10 @@ function evalClip() {
     let inOffscreenPanel = false;
     for (let p = el.parentElement; p; p = p.parentElement) {
       const ps = getComputedStyle(p);
+      // Intentional horizontal-scroll row (chip carousels) or a clipping marquee/
+      // ticker (overflow hidden/clip on the inline axis): content extending past
+      // the edge is by design and reachable/animated, not a clip BUG.
+      if (/(auto|scroll|hidden|clip)/.test(ps.overflowX)) { inOffscreenPanel = true; break; }
       if (ps.position === 'fixed' || ps.position === 'absolute' || ps.transform !== 'none') {
         const pr = p.getBoundingClientRect();
         if (pr.right <= 1 || pr.left >= vw - 1) { inOffscreenPanel = true; break; }
