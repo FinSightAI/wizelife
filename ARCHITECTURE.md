@@ -1,6 +1,6 @@
 # WizeLife — Architecture & Specification
 
-> Last updated: 2026-05-15
+> Last updated: 2026-05-22
 > Owner: WizeLife / FinSightAI
 > Domain: `wizelife.ai`
 
@@ -15,11 +15,47 @@ authenticates through a unified SSO bridge.
 | App | URL | Purpose |
 |---|---|---|
 | **WizeLife** (landing/dashboard) | https://wizelife.ai | Marketing + account portal |
-| **WizeMoney** | https://finsightai.github.io/finsight/ | Personal finance dashboard |
+| **WizeMoney** | https://money.wizelife.ai | Personal finance dashboard |
 | **WizeTax** | https://tax.wizelife.ai | International tax advisor |
-| **WizeTravel** | https://nodedai.streamlit.app/ | AI trip planner |
-| **WizeHealth** | https://vitara.onrender.com | Medical Q&A + records |
-| **WizeDeal** | https://check-deal.vercel.app/ | Real-estate deal analyzer |
+| **WizeTravel** | https://travel.wizelife.ai | AI trip planner |
+| **WizeHealth** | https://health.wizelife.ai | Medical Q&A + records |
+| **WizeDeal** | https://deal.wizelife.ai | Real-estate deal analyzer |
+
+---
+
+## 1.1 Infrastructure Map (where everything is managed)
+
+> Topology snapshot 2026-05-22 (post Render→Cloud Run migration). **Policy: this
+> topology is frozen — each tool runs on the host that fits it. Do NOT re-migrate
+> a working app; every such change cascades into bugs. Standardize only on a real
+> trigger (a provider causes recurring pain, a teammate is onboarded, or scale
+> demands unified deploy/observability).**
+
+| App | Public URL | Frontend host | Frontend repo | Backend | Backend host | DNS |
+|---|---|---|---|---|---|---|
+| WizeLife (portal) | wizelife.ai | GitHub Pages | `FinSightAI/wizelife` | — | — | Cloudflare (orange) → GitHub Pages |
+| WizeMoney | money.wizelife.ai | GitHub Pages | `FinSightAI/finsight` | AI → Cloud Run `wizetax-backend` `/api/ai-proxy`; prices → Cloudflare Worker (Yahoo proxy) | Cloud Run + CF Worker | Cloudflare (orange) → GitHub Pages |
+| WizeTax | tax.wizelife.ai | Vercel | `FinSightAI/master` (`tax master/frontend`) | FastAPI (Python) | Cloud Run `wizetax-backend` | Cloudflare (orange) → Vercel (cname.vercel-dns) |
+| WizeHealth | health.wizelife.ai | Cloud Run (same app) | `finsightai/vitara` (RAMBAM) | Node/Express (same app serves `/api`) | Cloud Run `wizehealth` | Cloudflare **DNS-only (gray)** → ghs.googlehosted (Cloud Run domain-mapping) |
+| WizeTravel | travel.wizelife.ai | Vercel | `FinSightAI/wizetravel-next` | Python (FastAPI/Streamlit) | **Hugging Face Space** `ofirofir/wizetravel` (+ Streamlit `nodedai.streamlit.app`) | Cloudflare (orange) → Vercel |
+| WizeDeal | deal.wizelife.ai | Vercel | `finsightai/check-deal` | Next.js API routes (serverless) | Vercel (same project) | Cloudflare (orange) → Vercel |
+
+**Shared infrastructure (all apps):**
+
+| Concern | Where it's managed |
+|---|---|
+| Auth + DB | Firebase project `finzilla-7f1f9` (Auth + Firestore) |
+| Cloud Functions | `finzilla-7f1f9` — paypalWebhook, logEvent beacon — repo `finance dashboard/functions` |
+| Cloud Run | project `finzilla-7f1f9`, region `us-central1` — `wizetax-backend` + `wizehealth` (both `min-instances=1`); redeploy via each app's `cloudrun-deploy.sh` |
+| Secrets | GCP Secret Manager (`finzilla-7f1f9`): GEMINI_API_KEY, TAVILY_API_KEY, SESSION_SECRET, PAYPAL_* … (grant `secretAccessor` to the compute SA for new secrets) |
+| DNS | Cloudflare zone `wizelife.ai` — orange proxy everywhere EXCEPT `health` (gray, required for the Cloud Run domain-mapping cert) |
+| AI | Gemini 2.5-flash-lite + Tavily (web search) + Anthropic (doc analysis, WizeTax) |
+| Payments | PayPal (webhook → Cloud Function) |
+| Keepalive | GitHub Actions (`FinSightAI/master`) + Vercel cron → ping Cloud Run `/health` every ~5 min |
+| Service Workers | All network-first for HTML (a fresh deploy reaches clients immediately; never pins a stale shell) |
+| i18n | Unified per app: URL `?lang` (cross-app handoff) → saved `wl_lang` → browser → English. Dashboard tool cards append `?lang` + SSO. `dir`: he=rtl, en/pt/es=ltr |
+
+**Forward rule for NEW apps:** default to **Cloud Run** for backends and **Vercel** for Next.js frontends — to avoid the topology sprawling further.
 
 ---
 
@@ -51,10 +87,17 @@ authenticates through a unified SSO bridge.
 
 ---
 
-## 4. Backend services (Render)
+## 4. Backend services (Google Cloud Run — migrated from Render 2026-05-21)
 
-### 4.1 `master-backend` — shared FastAPI for Tax + Money advisor
-- **URL:** `https://master-backend-79jx.onrender.com`
+> Render free tier was suspended (usage limit), so `master-backend` and `vitara`
+> were migrated to **Google Cloud Run** (project `finzilla-7f1f9`, region
+> `us-central1`, scale-to-zero). Deploy = re-run `<app>/cloudrun-deploy.sh`.
+> Frontend cutover note: WizeTax/WizeHealth call relative `/api`, served by the
+> Vercel `next.config.js` rewrite → set `NEXT_PUBLIC_BACKEND_URL` to the Cloud Run
+> URL on the correct Vercel project + redeploy with build cache OFF.
+
+### 4.1 `wizetax-backend` (was `master-backend`) — shared FastAPI for Tax + Money advisor
+- **URL:** `https://wizetax-backend-3ol2retcla-uc.a.run.app` (Cloud Run service `wizetax-backend`; old Render `master-backend-79jx.onrender.com` is suspended)
 - **Repo:** `FinSightAI/master`, path `tax master/backend/`
 - **Endpoints:**
   - `GET /health` — health probe (returns `{status:"ok",model:"gemini"}`)
@@ -65,10 +108,10 @@ authenticates through a unified SSO bridge.
   - `GET /api/countries`, `/api/regimes`, `/api/country/{code}` — static data lookups
   - `POST /api/company`, `/api/israel` — country-specific calculators
 - **Rate limits:** 20/min on `/api/chat`, 30/min on `/api/ai-proxy`, 10/min on `/api/analyze`
-- **Sleeps:** Free tier sleeps after 15 min idle. Mitigated by GitHub Actions keep-alive (every 10 min).
+- **Cold start:** Cloud Run scales to zero (~2–8s cold start). Mitigated by GitHub Actions keep-alive pinging `/health` (now repointed to Cloud Run).
 
-### 4.2 `vitara` — WizeHealth Node.js server
-- **URL:** `https://vitara.onrender.com`
+### 4.2 `wizehealth` (was `vitara`) — WizeHealth Node.js server
+- **URL:** `https://wizehealth-3ol2retcla-uc.a.run.app` (Cloud Run service `wizehealth`; old Render `vitara.onrender.com` is suspended)
 - **Repo:** `finsightai/vitara`
 - **Endpoints:** `/api/chat` (streaming), `/api/auth/login`, `/api/auth/check`, `/api/config`, file upload
 - **Auth:** Bearer token (Firebase ID token via SSO) → server queries Firestore for plan
@@ -165,7 +208,7 @@ Highest tier wins (yolo > pro > free).
 ### 8.3 `master` Tax frontend (Vercel)
 | Var | Purpose |
 |---|---|
-| `NEXT_PUBLIC_BACKEND_URL` | `https://master-backend-79jx.onrender.com` |
+| `NEXT_PUBLIC_BACKEND_URL` | `https://wizetax-backend-3ol2retcla-uc.a.run.app` (Cloud Run; set on the Vercel project that owns tax.wizelife.ai, build cache OFF) |
 
 ### 8.4 `mega-traveller` (Render)
 | Var | Purpose |
@@ -313,7 +356,7 @@ Deploy via: `firebase deploy --only firestore:rules --project finzilla-7f1f9`
 | SW pages | 38 internal pages (bank, credit, stocks, goals, etc.) |
 | Analytics | Cloudflare Web Analytics (cookieless) — replaces GA + Clarity since 2026-05-15 |
 | Backend (chat) | Firebase Functions `aiProxy` (legacy, not invoked) |
-| Backend (advisor) | `https://master-backend-79jx.onrender.com/api/ai-proxy` |
+| Backend (advisor) | `https://wizetax-backend-3ol2retcla-uc.a.run.app/api/ai-proxy` (Cloud Run; migrated from Render 2026-05-21) |
 | AI providers | Gemini 2.5-flash-lite (via /api/ai-proxy) + Tavily web search (auto-analysis only) |
 | Languages | he / en / pt / es |
 | Auto-update banner | ✓ via `js/app.js` `registerServiceWorker` (banner pattern) |
@@ -326,7 +369,7 @@ Deploy via: `firebase deploy --only firestore:rules --project finzilla-7f1f9`
 |---|---|
 | Production URL | https://tax.wizelife.ai |
 | Frontend hosting | Vercel |
-| Backend hosting | Render (`master-backend-79jx.onrender.com`) |
+| Backend hosting | Google Cloud Run `wizetax-backend` (`wizetax-backend-3ol2retcla-uc.a.run.app`) — migrated from Render 2026-05-21 |
 | Frontend repo | `FinSightAI/master`, path `tax master/frontend/` |
 | Backend repo | `FinSightAI/master`, path `tax master/backend/` |
 | Frontend stack | Next.js 15, React 18, Tailwind |
@@ -364,7 +407,7 @@ Deploy via: `firebase deploy --only firestore:rules --project finzilla-7f1f9`
 
 | Setting | Value |
 |---|---|
-| Production URL | https://vitara.onrender.com |
+| Production URL | https://health.wizelife.ai (backend Cloud Run `wizehealth`; old `vitara.onrender.com` suspended) |
 | Hosting | Render (single Node.js service) |
 | Repo | `finsightai/vitara` |
 | Local path | `RAMBAM/` |
@@ -523,7 +566,7 @@ were rewritten 2026-05-09 (Version 2.0):
 gh workflow run "Daily QA — All Apps" --repo FinSightAI/wizelife
 
 # Test ai-proxy
-curl -m 60 -X POST https://master-backend-79jx.onrender.com/api/ai-proxy \
+curl -m 60 -X POST https://wizetax-backend-3ol2retcla-uc.a.run.app/api/ai-proxy \
   -H 'Content-Type: application/json' \
   -d '{"messages":[{"role":"user","parts":[{"text":"hi"}]}]}'
 
