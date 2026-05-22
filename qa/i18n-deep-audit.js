@@ -33,7 +33,7 @@ const URLS = [
     'https://tax.wizelife.ai/advisor',
     'https://deal.wizelife.ai/',
     'https://travel.wizelife.ai/',
-    'https://vitara.onrender.com/',
+    'https://health.wizelife.ai/',
 ];
 
 // Allow-list: text that legitimately stays Hebrew even in EN mode

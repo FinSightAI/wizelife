@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
 const { makeReporter } = require('../shared-lib/helpers');
 
 const BASE = 'https://health.wizelife.ai';
-const RENDER_ORIGIN = 'https://vitara.onrender.com';
+const RENDER_ORIGIN = 'https://health.wizelife.ai';
 const { step, warn, finalize } = makeReporter('WizeHealth-SecurityV2');
 
 async function fresh(browser, viewport = { width: 1280, height: 800 }, path = '/') {

@@ -8,7 +8,7 @@ const { chromium, devices } = require('playwright');
 const { makeReporter } = require('./shared-lib/helpers');
 
 const BASE_WIZELIFE = 'https://wizelife.ai';
-const VITARA = 'https://vitara.onrender.com/';
+const VITARA = 'https://health.wizelife.ai/';
 const FINSIGHT = 'https://finsightai.github.io/finsight/';
 const { step, warn, finalize } = makeReporter('Reliability-Suite');
 

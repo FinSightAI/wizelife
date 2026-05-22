@@ -28,7 +28,7 @@ const VIEWS = [
     ['wizemoney-landing',         'https://money.wizelife.ai/',                    { width: 1280, height: 800 }, 'body'],
     ['wizetax-advisor',           'https://tax.wizelife.ai/advisor',               { width: 1280, height: 800 }, 'textarea'],
     ['wizetax-mobile',            'https://tax.wizelife.ai/advisor',               { width: 390, height: 844 },  'textarea'],
-    ['wizehealth-vitara',         'https://vitara.onrender.com/',                  { width: 1280, height: 800 }, 'body'],
+    ['wizehealth-vitara',         'https://health.wizelife.ai/',                  { width: 1280, height: 800 }, 'body'],
     ['wizetravel-landing',        'https://travel.wizelife.ai/',                   { width: 1280, height: 800 }, 'body'],
     ['wizedeal-landing',          'https://deal.wizelife.ai/',                     { width: 1280, height: 800 }, 'body'],
 ];

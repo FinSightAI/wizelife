@@ -32,10 +32,10 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
     });
 
     // Vitara cold-start budget
-    await step('vitara.onrender.com loads within 60s', async () => {
+    await step('health.wizelife.ai loads within 60s', async () => {
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
-        await page.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+        await page.goto('https://health.wizelife.ai/', { waitUntil: 'load', timeout: 60000 });
         const len = await page.evaluate(() => document.body.innerText.trim().length);
         await page.close(); await ctx.close();
         if (len < 50) throw new Error(`only ${len} chars rendered`);
@@ -46,7 +46,7 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto('https://vitara.onrender.com/', { timeout: 60000 });
+            await page.goto('https://health.wizelife.ai/', { timeout: 60000 });
             await page.waitForSelector('#txt, textarea, input[type=text]', { timeout: 45000 });
         } finally {
             await page.close(); await ctx.close();
@@ -58,7 +58,7 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto('https://vitara.onrender.com/?wl_plan=yolo&wl_nick=qauser', { timeout: 60000 });
+            await page.goto('https://health.wizelife.ai/?wl_plan=yolo&wl_nick=qauser', { timeout: 60000 });
             await page.waitForTimeout(3000);
             const stored = await page.evaluate(() => {
                 try {
@@ -77,7 +77,7 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         try {
-            await page.goto('https://vitara.onrender.com/', { timeout: 60000 });
+            await page.goto('https://health.wizelife.ai/', { timeout: 60000 });
             const inp = page.locator('#txt, .chat-input, textarea').first();
             await inp.waitFor({ state: 'visible', timeout: 45000 });
             await inp.fill('What helps with a headache?');
@@ -96,7 +96,7 @@ const { step, warn, finalize } = makeReporter('WizeHealth');
     await step('iPhone (390×844): no h-overflow on vitara', async () => {
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
-        await page.goto('https://vitara.onrender.com/', { timeout: 60000 });
+        await page.goto('https://health.wizelife.ai/', { timeout: 60000 });
         const overflow = await page.evaluate(() =>
             document.documentElement.scrollWidth > document.documentElement.clientWidth + 10
         );

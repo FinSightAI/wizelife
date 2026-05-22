@@ -9,7 +9,7 @@ const { makeReporter } = require('./shared-lib/helpers');
 
 const BASE = 'https://wizelife.ai';
 const TAX = 'https://mastermove.vercel.app';
-const VITARA = 'https://vitara.onrender.com';
+const VITARA = 'https://health.wizelife.ai';
 const { step, warn, finalize } = makeReporter('Security-Deep-Flows');
 
 async function fresh(browser, viewport = { width: 1280, height: 800 }, base = BASE, path = '/') {

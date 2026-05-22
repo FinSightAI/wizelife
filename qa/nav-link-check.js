@@ -12,7 +12,7 @@ const APPS = [
     { name: 'WizeTax',    url: 'https://tax.wizelife.ai/' },
     { name: 'WizeDeal',   url: 'https://deal.wizelife.ai/' },
     { name: 'WizeTravel', url: 'https://travel.wizelife.ai/' },
-    { name: 'WizeHealth', url: 'https://vitara.onrender.com/' },
+    { name: 'WizeHealth', url: 'https://health.wizelife.ai/' },
 ];
 
 // Hosts we trust to return 200 even if curl shows weird (HEAD-blocked).
@@ -32,7 +32,7 @@ const { step, warn, finalize } = makeReporter('Nav-Links');
 
             const links = await page.evaluate(() => {
                 const allowedRoots = ['wizelife.ai', 'money.wizelife.ai', 'tax.wizelife.ai',
-                    'deal.wizelife.ai', 'travel.wizelife.ai', 'vitara.onrender.com',
+                    'deal.wizelife.ai', 'travel.wizelife.ai', 'health.wizelife.ai',
                     'finsightai.github.io', 'mastermove.vercel.app', 'check-deal.vercel.app'];
                 const out = new Set();
                 document.querySelectorAll('nav a[href], aside a[href], footer a[href], header a[href], .sidebar a[href]').forEach(a => {

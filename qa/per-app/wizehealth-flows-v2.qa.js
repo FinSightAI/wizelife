@@ -4,7 +4,7 @@
 const { chromium } = require('playwright');
 const { makeReporter } = require('../shared-lib/helpers');
 
-const BASE = 'https://vitara.onrender.com';
+const BASE = 'https://health.wizelife.ai';
 const { step, warn, finalize } = makeReporter('WizeHealth-FlowsV2');
 
 async function fresh(browser, viewport = { width: 1280, height: 800 }) {

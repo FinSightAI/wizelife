@@ -18,7 +18,7 @@ const APPS = [
     { name: 'WizeTax',    url: 'https://tax.wizelife.ai/' },
     { name: 'WizeDeal',   url: 'https://deal.wizelife.ai/' },
     { name: 'WizeTravel', url: 'https://travel.wizelife.ai/' },
-    { name: 'WizeHealth', url: 'https://vitara.onrender.com/' },
+    { name: 'WizeHealth', url: 'https://health.wizelife.ai/' },
 ];
 
 const { step, warn, finalize } = makeReporter('Comprehensive');

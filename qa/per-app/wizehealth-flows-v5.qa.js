@@ -4,7 +4,7 @@
 const { chromium } = require('playwright');
 const { makeReporter } = require('../shared-lib/helpers');
 
-const BASE = 'https://vitara.onrender.com';
+const BASE = 'https://health.wizelife.ai';
 const PUBLIC = 'https://health.wizelife.ai';
 const { step, warn, finalize } = makeReporter('WizeHealth-FlowsV5');
 

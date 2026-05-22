@@ -103,7 +103,7 @@ const ADVICE_PAGES = [
         label: 'WizeTax disclaimer',
     },
     {
-        url: 'https://vitara.onrender.com/',
+        url: 'https://health.wizelife.ai/',
         kind: 'health',
         mustContain: [/consult.*doctor|consult.*physician|not.*medical.*advice|informational/i, /התייעצ.*רופא|אינו.*מהווה/],
         label: 'WizeHealth disclaimer',
@@ -141,8 +141,8 @@ const ALL_TARGETS = [
     'https://tax.wizelife.ai/advisor',
     'https://travel.wizelife.ai/',
     'https://deal.wizelife.ai/',
-    // health.wizelife.ai is just an iframe wrapper — vitara.onrender.com is the actual content
-    'https://vitara.onrender.com/',
+    // health.wizelife.ai is just an iframe wrapper — health.wizelife.ai is the actual content
+    'https://health.wizelife.ai/',
 ];
 
 async function main() {

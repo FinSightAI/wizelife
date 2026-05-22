@@ -18,7 +18,7 @@ const URLS = [
     'https://tax.wizelife.ai/',
     'https://deal.wizelife.ai/',
     'https://travel.wizelife.ai/',
-    'https://vitara.onrender.com/',
+    'https://health.wizelife.ai/',
 ];
 
 const VIEWPORT = { width: 390, height: 844 };

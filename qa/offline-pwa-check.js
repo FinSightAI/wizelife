@@ -7,7 +7,7 @@ const { makeReporter } = require('./shared-lib/helpers');
 const PWA_URLS = [
     'https://wizelife.ai/',
     'https://money.wizelife.ai/',
-    'https://vitara.onrender.com/',
+    'https://health.wizelife.ai/',
 ];
 
 const { step, warn, finalize } = makeReporter('Offline-PWA');

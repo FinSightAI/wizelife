@@ -10,7 +10,7 @@ const URLS = [
     'https://wizelife.ai/', 'https://wizelife.ai/auth.html', 'https://wizelife.ai/about.html',
     'https://wizelife.ai/dashboard.html', 'https://wizelife.ai/feedback.html',
     'https://money.wizelife.ai/', 'https://tax.wizelife.ai/', 'https://deal.wizelife.ai/',
-    'https://travel.wizelife.ai/', 'https://vitara.onrender.com/',
+    'https://travel.wizelife.ai/', 'https://health.wizelife.ai/',
 ];
 
 const { step, warn, finalize } = makeReporter('A11y');

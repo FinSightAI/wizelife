@@ -17,7 +17,7 @@ const TARGETS = [
     { name: 'WizeMoney',            url: 'https://finsightai.github.io/finsight/',  marker: 'wizemoney', app: 'money' },
     { name: 'WizeTax',              url: 'https://tax.wizelife.ai/advisor',         marker: 'wizetax',   app: 'tax' },
     { name: 'WizeTravel',           url: 'https://nodedai.streamlit.app/',          marker: 'stream',    app: 'travel' },
-    { name: 'WizeHealth',           url: 'https://vitara.onrender.com/',            marker: 'wizehealth', app: 'health' },
+    { name: 'WizeHealth',           url: 'https://health.wizelife.ai/',            marker: 'wizehealth', app: 'health' },
     { name: 'WizeDeal',             url: 'https://check-deal.vercel.app/',          marker: 'wizedeal',  app: 'deal' },
 ];
 

@@ -260,7 +260,7 @@ async function main() {
     const healthPage = await healthCtx.newPage();
 
     await step('Vitara loads (60s cold-start budget)', async () => {
-        await healthPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+        await healthPage.goto('https://health.wizelife.ai/', { waitUntil: 'load', timeout: 60000 });
     });
     await step('Chat input present', async () => {
         await healthPage.waitForSelector('#txt, .chat-input, textarea', { timeout: 15000 });
@@ -969,7 +969,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     const healthMobPage = await healthMobCtx.newPage();
 
     await step('Mobile WizeHealth loads (60s budget)', async () => {
-        await healthMobPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+        await healthMobPage.goto('https://health.wizelife.ai/', { waitUntil: 'load', timeout: 60000 });
     });
     await step('Mobile WizeHealth: no horizontal overflow', async () => {
         const overflow = await healthMobPage.evaluate(() =>
@@ -1322,7 +1322,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     const healthCtxCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
     const healthCtxPage = await healthCtxCtx.newPage();
     await step('Open WizeHealth (60s budget)', async () => {
-        await healthCtxPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+        await healthCtxPage.goto('https://health.wizelife.ai/', { waitUntil: 'load', timeout: 60000 });
     });
     await step('Send Q1: headache symptoms', async () => {
         const inp = healthCtxPage.locator('#txt, .chat-input, textarea, input[type=text]').first();
@@ -1841,7 +1841,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     const histCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
     const histPage = await histCtx.newPage();
     await step('WizeHealth loads', async () => {
-        await histPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+        await histPage.goto('https://health.wizelife.ai/', { waitUntil: 'load', timeout: 60000 });
     });
     await step('Sidebar / drawer present', async () => {
         const el = histPage.locator('aside, .sidebar, button:has-text("Memory"), button:has-text("Timeline"), button:has-text("History"), button:has-text("היסטוריה")').first();
@@ -1856,7 +1856,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     const drugCtx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
     const drugPage = await drugCtx.newPage();
     await step('WizeHealth loads', async () => {
-        await drugPage.goto('https://vitara.onrender.com/', { waitUntil: 'load', timeout: 60000 });
+        await drugPage.goto('https://health.wizelife.ai/', { waitUntil: 'load', timeout: 60000 });
     });
     await step('Send drug question', async () => {
         const inp = drugPage.locator('#txt, textarea, input[type=text]').first();
@@ -2251,7 +2251,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
         { name: 'WizeLife',   url: 'https://wizelife.ai/',           setLang: 'localStorage' },
         { name: 'WizeMoney',  url: 'https://money.wizelife.ai/',     setLang: 'localStorage' },
         { name: 'WizeTax',    url: 'https://tax.wizelife.ai/advisor', setLang: 'url' },
-        { name: 'WizeHealth', url: 'https://vitara.onrender.com/',    setLang: 'localStorage', timeout: 60000 },
+        { name: 'WizeHealth', url: 'https://health.wizelife.ai/',    setLang: 'localStorage', timeout: 60000 },
         { name: 'WizeTravel', url: 'https://travel.wizelife.ai/',     setLang: 'url' },
         { name: 'WizeDeal',   url: 'https://deal.wizelife.ai/',       setLang: 'localStorage' },
     ];
