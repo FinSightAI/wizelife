@@ -332,30 +332,37 @@ wlAuth.onAuthStateChanged(async user => {
       const msgs = document.getElementById('messages');
       if (msgs) msgs.innerHTML = '<div style="padding:20px;color:#fbbf24;text-align:center;font-size:14px">⏳ ' + (e.message || 'Context loading…') + '</div>';
     });
-  } else {
-    showPaywall();
   }
+  // else: cached plan is not 'yolo' (free / pro / missing) → do NOT flash the
+  // paywall yet. Keep the loader visible and let the Firestore verification below
+  // decide. This avoids showing "YOLO required" for ~2 s to a user who IS on YOLO
+  // but whose cached plan is stale or absent.
 
-  // 2. BACKGROUND: verify with Firestore (canonical). If plan changed,
-  //    update UI without forcing reload.
+  // 2. BACKGROUND: verify with Firestore (canonical) and render the FINAL state.
   try {
     const verified = await getUserPlan(user.uid);
-    if (verified && verified !== _plan) {
+    if (verified) {
       _plan = verified;
       try { localStorage.setItem('wl_plan', _plan); } catch {}
       updatePlanBadge();
-      console.log('WizeAI plan corrected by Firestore:', _plan);
-      if (_plan === 'yolo') {
-        // Was-paywall, now upgraded → flip to main layout
-        const aw = document.getElementById('authWall'); if (aw) aw.style.display = 'none';
-        document.getElementById('mainLayout').style.display = 'flex';
-        loadContext().catch(e => console.error('loadContext failed:', e));
-      } else {
-        // Was-allowed-by-cache, but Firestore says no → show paywall
-        showPaywall();
-      }
     }
-  } catch (e) { console.warn('plan verification skipped:', e && e.message); }
+    if (_plan === 'yolo') {
+      const aw = document.getElementById('authWall'); if (aw) aw.style.display = 'none';
+      const ml = document.getElementById('mainLayout');
+      if (ml && ml.style.display !== 'flex') {
+        ml.style.display = 'flex';
+        loadContext().catch(e => console.error('loadContext failed:', e));
+      }
+    } else {
+      // Confirmed not YOLO → now it's correct to show the paywall.
+      showPaywall();
+    }
+  } catch (e) {
+    // Verification failed — fall back to the cached decision so the user is never
+    // stuck on the loader.
+    console.warn('plan verification skipped:', e && e.message);
+    if (_plan !== 'yolo') showPaywall();
+  }
 });
 
 function updatePlanBadge() {
