@@ -4,6 +4,11 @@
 <head>
 <script>
 (function(){try{
+ // Unified language: URL ?lang (cross-app handoff) → saved wl_lang → browser → English.
+ var _V=['he','en','pt','es'];
+ var _u=new URLSearchParams(location.search).get('lang');
+ if(_u&&_V.indexOf(_u)>=0){localStorage.setItem('wl_lang',_u);}
+ else if(!localStorage.getItem('wl_lang')){var _bl=(navigator.language||'en').slice(0,2).toLowerCase();localStorage.setItem('wl_lang',(['he','pt','es'].indexOf(_bl)>=0)?_bl:'en');}
  var t=localStorage.getItem('wl_theme');
  var isLight=t==='light';
  document.documentElement.setAttribute('data-theme',isLight?'light':'dark');

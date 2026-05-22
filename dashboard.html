@@ -4,6 +4,11 @@
 <head>
 <script>
 (function(){try{
+ // Unified language: URL ?lang (cross-app handoff) → saved wl_lang → browser → English.
+ var _V=['he','en','pt','es'];
+ var _u=new URLSearchParams(location.search).get('lang');
+ if(_u&&_V.indexOf(_u)>=0){localStorage.setItem('wl_lang',_u);}
+ else if(!localStorage.getItem('wl_lang')){var _bl=(navigator.language||'en').slice(0,2).toLowerCase();localStorage.setItem('wl_lang',(['he','pt','es'].indexOf(_bl)>=0)?_bl:'en');}
  var t=localStorage.getItem('wl_theme');
  var isLight=t==='light';
  document.documentElement.setAttribute('data-theme',isLight?'light':'dark');
@@ -1243,5 +1248,31 @@ window.WL_TR = {"he": {"plan_free": "חינם", "upgrade_pro": "שדרג ל-Pro"
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
 <script>window.WIZE_APP_VERSION = '2026-05-17-1';</script>
 <script src="/js/wize-version-check.js" defer></script>
+<script>
+/* Carry the chosen WizeLife language (+ SSO identity) to the sub-apps when a
+   tool card is launched, so the language picked here continues everywhere.
+   localStorage is per-origin, so the handoff goes via the URL — same as the
+   shared hamburger's app switcher. */
+(function () {
+  function handoff() {
+    try {
+      var lang = (localStorage.getItem('wl_lang') || 'he').slice(0, 2);
+      var sso = {}; try { sso = JSON.parse(localStorage.getItem('wl_sso') || '{}'); } catch (e) {}
+      var nick = sso.nick; var plan = sso.plan || localStorage.getItem('wl_plan'); var token = sso.token;
+      document.querySelectorAll('a.tool-card[href^="https://"]').forEach(function (a) {
+        try {
+          var u = new URL(a.href);
+          if (!/\.wizelife\.ai$/.test(u.hostname)) return;
+          u.searchParams.set('lang', lang);
+          if (nick) u.searchParams.set('wl_nick', nick);
+          if (plan) u.searchParams.set('wl_plan', plan);
+          a.href = u.toString() + (token ? '#wl_token=' + encodeURIComponent(token) : '');
+        } catch (e) {}
+      });
+    } catch (e) {}
+  }
+  if (document.readyState !== 'loading') handoff(); else document.addEventListener('DOMContentLoaded', handoff);
+})();
+</script>
 </body>
 </html>
