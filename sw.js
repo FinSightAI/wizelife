@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v182';
+const CACHE = 'wizelife-v183';
 const SHELL = [
   // Core flow
   '/index.html',
@@ -85,7 +85,11 @@ self.addEventListener('fetch', e => {
         }
         return res;
       }).catch(() => cached);
-      return cached || fresh;
+      // NETWORK-FIRST: serve the fresh network response so new deploys reach
+      // clients immediately; fall back to cache only when offline (the .catch
+      // above). Was `cached || fresh` (stale-while-revalidate) which could pin
+      // users to a stale shell across deploys.
+      return fresh;
     })
   );
 });
