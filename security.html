@@ -98,7 +98,7 @@ footer{padding:32px;text-align:center;color:var(--muted);font-size:.85rem;border
 <h2 data-i18n="2_">2. Encryption</h2>
 <ul>
 <li><strong data-i18n="__2">In transit:</strong> <span data-i18n="_https_tls_1_2_h">all traffic is HTTPS/TLS 1.2+. HSTS preload, no mixed content.</span></li>
-<li><strong data-i18n="__3">At rest:</strong> Firestore encrypts all data with Google-managed keys (AES-256). Render and Vercel encrypt their volumes. Browser localStorage is not encrypted by us — that's handled by the device's OS-level security.</li>
+<li><strong data-i18n="__3">At rest:</strong> Firestore encrypts all data with Google-managed keys (AES-256). Google Cloud Run and Vercel encrypt their volumes. Browser localStorage is not encrypted by us — that's handled by the device's OS-level security.</li>
 <li><strong data-i18n="__4">Secrets:</strong> <span data-i18n="_api_rende">API keys live only in Google Cloud / Vercel / GitHub encrypted secret stores. Never committed to git, never logged.</span></li>
 </ul>
 </section>
