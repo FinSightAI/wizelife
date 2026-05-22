@@ -59,6 +59,13 @@ async function dismissIntros(page) {
           .filter(b => { const r = b.getBoundingClientRect(); return r.width > 0 && r.height > 0; });
         const hit = btns.find(b => { const t = (b.textContent || '').trim(); return re.test(t) && !bad.test(t); });
         if (hit) { hit.click(); did = true; }
+        // Remove known first-run overlays that sit ABOVE the hamburger (z-index ~2e9)
+        // and would otherwise intercept the click → drawer never opens → false SKIP.
+        // These are open-access apps (e.g. WizeHealth), so the drawer IS reachable.
+        ['wize-onboarding', 'wlQuickStart'].forEach(id => {
+          const o = document.getElementById(id);
+          if (o) { o.remove(); did = true; }
+        });
         return did;
       });
     } catch (e) { break; }
@@ -219,30 +226,22 @@ async function findOnscreenDrawer(page) {
         const cy = Math.max(5, Math.min(window.innerHeight - 5, rect.top  + rect.height / 2));
         const topEl = document.elementFromPoint(cx, cy);
         if (!topEl) return { covered: false };
-
-        // Re-find drawer by bounding box match.
-        const allEls = Array.from(document.querySelectorAll('*'));
-        const drawerEl = allEls.find(e => {
-          const cs = getComputedStyle(e);
-          if (cs.position !== 'fixed' && cs.position !== 'absolute') return false;
-          const r = e.getBoundingClientRect();
-          return (
-            Math.abs(r.left - rect.left) < 5 &&
-            Math.abs(r.width - rect.width) < 5 &&
-            Math.abs(r.height - rect.height) < 20
-          );
-        });
-        if (!drawerEl) return { covered: false };
-
-        if (!drawerEl.contains(topEl)) {
-          return {
-            covered: true,
-            topEl: topEl.tagName + '#' + topEl.id + '.' + (topEl.className || '').toString().slice(0, 40),
-            topZ: getComputedStyle(topEl).zIndex,
-            cx: Math.round(cx), cy: Math.round(cy),
-          };
-        }
-        return { covered: false };
+        // The drawer is "covered" ONLY if the topmost element at its center is a
+        // DIMMING OVERLAY/backdrop — NOT the drawer's own content (a menu item /
+        // button / link with text is fine and means the content IS visible).
+        const cs = getComputedStyle(topEl);
+        const r = topEl.getBoundingClientRect();
+        const nameStr = (topEl.id + ' ' + (topEl.className || '')).toString().toLowerCase();
+        const isFixed = cs.position === 'fixed' || cs.position === 'absolute';
+        const namedOverlay = /overlay|backdrop|scrim|\bdim\b/.test(nameStr);
+        const bg = cs.backgroundColor || '';
+        const semiTransp = /rgba?\([^)]*,\s*0?\.\d+\s*\)/.test(bg) || (cs.backdropFilter && cs.backdropFilter !== 'none');
+        const coversScreen = r.width > window.innerWidth * 0.7 && r.height > window.innerHeight * 0.6;
+        const hasText = (topEl.textContent || '').trim().length > 1;
+        const covered = namedOverlay || (isFixed && semiTransp && coversScreen && !hasText);
+        return covered
+          ? { covered: true, topEl: topEl.tagName + '#' + topEl.id + '.' + (topEl.className || '').toString().slice(0, 40), topZ: cs.zIndex, cx: Math.round(cx), cy: Math.round(cy) }
+          : { covered: false };
       }, { rect: dRect });
 
       if (coverResult && coverResult.covered) {
