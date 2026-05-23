@@ -53,6 +53,12 @@
 <meta content="WizeLife — Your AI Life Suite" name="twitter:title"/>
 <meta content="5 AI tools in one place: money, travel, tax, health &amp; real estate. Free to start." name="twitter:description"/>
 <meta content="https://wizelife.ai/og-image.png" name="twitter:image"/>
+<!-- Canonical + i18n: WizeLife serves all 4 languages from the same URL (lang
+     switch is client-side via wl_lang storage), so we only declare x-default
+     here. Per-language paths would require a refactor; x-default tells Google
+     this URL serves all locales. -->
+<link rel="canonical" href="https://wizelife.ai/"/>
+<link rel="alternate" hreflang="x-default" href="https://wizelife.ai/"/>
 <link href="/manifest.json" rel="manifest"/>
 <meta content="#6366f1" name="theme-color"/>
 <meta content="yes" name="mobile-web-app-capable"/>
