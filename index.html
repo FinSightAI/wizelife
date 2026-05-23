@@ -1328,15 +1328,12 @@ document.querySelectorAll('.tool-tab').forEach(btn=>{
    if (window.matchMedia('(max-width: 768px)').matches) {
      const tool = TOOLS[i];
      if (tool && tool.url) {
-       // If already logged in (Firebase auth handler sets window._wlLoggedIn=true),
-       // go straight to the sub-app. Otherwise route via auth.html?next=<sub-app>,
-       // which auth.html already forwards on successful login (line ~432).
-       const isAuthed = window._wlLoggedIn === true;
-       const dest = isAuthed ? tool.url : ('auth.html?next=' + encodeURIComponent(tool.url));
-       // Show a loading state on the tapped card so the user gets immediate
-       // feedback (no "did anything happen?" moment before the navigation).
+       // Go straight to the sub-app. Each one renders the free experience
+       // without requiring login — auth gates only kick in on save/Pro actions
+       // (Firestore rules enforce per-user isolation regardless). Routing
+       // through auth.html was creating a wall users didn't need to hit.
        btn.classList.add('loading');
-       window.location.href = dest; return;
+       window.location.href = tool.url; return;
      }
    }
    setTool(i);
