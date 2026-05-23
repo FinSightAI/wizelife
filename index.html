@@ -464,7 +464,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 @media(max-width:960px){
  .showcase{grid-template-columns:1fr}
  .tool-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
- .tool-tab-desc,.tool-tab-arrow{display:none}
+ .tool-tab-arrow{display:none}
  .testi-grid{grid-template-columns:1fr 1fr}
  .testi-card:last-child{grid-column:span 2}
  .panel-bullets{grid-template-columns:1fr}
@@ -1280,11 +1280,11 @@ const ICONS = {
 };
 
 const TOOLS = [
- {id:'money', name:'Money', em:'Wize', color:'#10b981', desc:'Personal finance & investments'},
- {id:'travel', name:'Travel', em:'Wize', color:'#3b82f6', desc:'Flight AI with hidden-city & virtual interlining'},
- {id:'tax', name:'Tax', em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries'},
- {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Cardiology & nutrition-trained AI'},
- {id:'deal', name:'Deal', em:'Wize', color:'#8b5cf6', desc:'Real-estate ROI & tax analyzer'},
+ {id:'money', name:'Money', em:'Wize', color:'#10b981', desc:'Personal finance & investments', url:'https://money.wizelife.ai/'},
+ {id:'travel', name:'Travel', em:'Wize', color:'#3b82f6', desc:'Flight AI with hidden-city & virtual interlining', url:'https://travel.wizelife.ai/'},
+ {id:'tax', name:'Tax', em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries', url:'https://tax.wizelife.ai/'},
+ {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Cardiology & nutrition-trained AI', url:'https://health.wizelife.ai/'},
+ {id:'deal', name:'Deal', em:'Wize', color:'#8b5cf6', desc:'Real-estate ROI & tax analyzer', url:'https://deal.wizelife.ai/'},
 ];
 
 // Render tabs
@@ -1311,8 +1311,17 @@ function setTool(i){
  stage.style.setProperty('--c-active', c);
  glow.style.background = c;
 }
+// Mobile (≤768): tap → directly open the sub-app (one click, matches mobile
+// expectations). Desktop: tap → reveal the preview panel (rich tour pattern).
 document.querySelectorAll('.tool-tab').forEach(btn=>{
- btn.addEventListener('click',()=>setTool(parseInt(btn.dataset.idx)));
+ btn.addEventListener('click',()=>{
+   const i = parseInt(btn.dataset.idx);
+   if (window.matchMedia('(max-width: 768px)').matches) {
+     const tool = TOOLS[i];
+     if (tool && tool.url) { window.location.href = tool.url; return; }
+   }
+   setTool(i);
+ });
 });
 stage.style.setProperty('--c-active', TOOLS[0].color);
 glow.style.background = TOOLS[0].color;
