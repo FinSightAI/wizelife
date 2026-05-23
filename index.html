@@ -1318,7 +1318,14 @@ document.querySelectorAll('.tool-tab').forEach(btn=>{
    const i = parseInt(btn.dataset.idx);
    if (window.matchMedia('(max-width: 768px)').matches) {
      const tool = TOOLS[i];
-     if (tool && tool.url) { window.location.href = tool.url; return; }
+     if (tool && tool.url) {
+       // If already logged in, go straight to the sub-app. Otherwise route
+       // through auth.html with next=<sub-app>, which auth.html knows how to
+       // honor (line ~432 — only trusted *.wizelife.ai destinations).
+       const isAuthed = !!localStorage.getItem('wize_session') || !!localStorage.getItem('wize_uid');
+       const dest = isAuthed ? tool.url : ('auth.html?next=' + encodeURIComponent(tool.url));
+       window.location.href = dest; return;
+     }
    }
    setTool(i);
  });
