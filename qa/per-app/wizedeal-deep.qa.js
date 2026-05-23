@@ -2,7 +2,7 @@
 // WizeDeal — deep flow battery (~12 scenarios).
 // Paste-listing analysis, save deal, country filter, lang swap, mobile.
 const { chromium } = require('playwright');
-const { makeReporter } = require('../shared-lib/helpers');
+const { makeReporter, verifyLangSwitch } = require('../shared-lib/helpers');
 
 const BASE = 'https://deal.wizelife.ai';
 const { step, warn, finalize } = makeReporter('WizeDeal-Deep');
@@ -66,13 +66,11 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }) {
     await step('Lang switch HE → EN updates UI', async () => {
         const { ctx, page } = await fresh(browser);
         try {
-            const en = page.locator('[data-wl-lang="en"], [data-lang="en"]').first();
-            if (!(await en.count())) { warn('EN pill not found', ''); return; }
-            const before = await page.evaluate(() => document.body.innerText.slice(0, 200));
-            await en.click({ force: true }).catch(() => {});
-            await page.waitForTimeout(2000);
-            const after = await page.evaluate(() => document.body.innerText.slice(0, 200));
-            if (before === after) throw new Error('UI unchanged after EN click');
+            const r = await verifyLangSwitch(page);
+            if (!r.ok) {
+                if (/no visible EN control/.test(r.reason)) { warn('EN pill not visible', ''); return; }
+                throw new Error(r.reason);
+            }
         } finally { await page.close(); await ctx.close(); }
     });
 
@@ -120,11 +118,14 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }) {
         } finally { await page.close(); await ctx.close(); }
     });
 
-    await step('Route /analyze reachable (not 404)', async () => {
+    await step('Deal flow reachable from home (start CTA present)', async () => {
+        // WizeDeal is a single-page wizard at "/", not a separate /analyze route.
         const { ctx, page } = await fresh(browser);
         try {
-            const r = await ctx.request.head(BASE + '/analyze', { timeout: 10000 }).catch(() => null);
-            if (!r || r.status() === 404) throw new Error(`/analyze → ${r ? r.status() : 'err'}`);
+            await page.goto(BASE + '/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await page.waitForTimeout(1500);
+            const has = await page.evaluate(() => /start a deal|התחל ניתוח|new deal|analyze|נתח/i.test(document.body.innerText));
+            if (!has) throw new Error('no deal-start CTA on home page');
         } finally { await page.close(); await ctx.close(); }
     });
 

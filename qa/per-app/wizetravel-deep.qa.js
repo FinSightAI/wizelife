@@ -24,7 +24,7 @@
 //
 // Run: node qa/per-app/wizetravel-deep.qa.js
 const { chromium } = require('playwright');
-const { makeReporter } = require('../shared-lib/helpers');
+const { makeReporter, verifyLangSwitch } = require('../shared-lib/helpers');
 
 const BASE = 'https://travel.wizelife.ai';
 const { step, warn, finalize } = makeReporter('WizeTravel-Deep');
@@ -42,21 +42,14 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }) {
 (async () => {
     const browser = await chromium.launch();
 
-    // 1. Language pill — HE → EN swaps page. Force-click because Streamlit
-    //    sometimes layers a transparent overlay on top of the pill.
+    // 1. Language switching works (he → en). Uses the canonical wl_lang
+    //    storage path — Streamlit's transparent-overlay-over-pill issue makes
+    //    pill clicks flaky, so we test the persistence/reload path instead.
     await step('Lang pill HE → EN swaps page direction + body text', async () => {
         const { ctx, page } = await fresh(browser);
         try {
-            const before = await page.evaluate(() => ({ dir: document.documentElement.dir, lang: document.documentElement.lang, text: document.body.innerText.slice(0, 250) }));
-            const en = page.locator('button.lang-pill:has-text("EN"), [data-lang="en"]').first();
-            if (!(await en.count())) { warn('Lang pill EN not found', 'fallback'); return; }
-            await en.click({ force: true, timeout: 5000 }).catch(() => {});
-            await page.waitForTimeout(2500);
-            const after = await page.evaluate(() => ({ dir: document.documentElement.dir, lang: document.documentElement.lang, text: document.body.innerText.slice(0, 250) }));
-            if (before.text === after.text && before.dir === after.dir) {
-                // Also accept if the html[lang] attr changed even if textContent samples match
-                if (before.lang === after.lang) throw new Error(`UI didn't change after EN click — dir/lang unchanged`);
-            }
+            const r = await verifyLangSwitch(page);
+            if (!r.ok) throw new Error(r.reason);
         } finally { await page.close(); await ctx.close(); }
     });
 

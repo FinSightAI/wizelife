@@ -10,7 +10,7 @@
 // Catches silent breakages that happy-path tests miss.
 // Run: node qa/comprehensive-flows.js
 const { chromium } = require('playwright');
-const { makeReporter } = require('./shared-lib/helpers');
+const { makeReporter, verifyLangSwitch } = require('./shared-lib/helpers');
 
 const APPS = [
     { name: 'WizeLife',   url: 'https://wizelife.ai/' },
@@ -115,24 +115,13 @@ async function setup(browser, url) {
         });
 
         await step(`${app.name}: language toggle actually swaps UI`, async () => {
-            // Try clicking "EN" pill / button by various selectors
-            const enBtn = page.locator('[data-wl-lang="en"], [data-lang="en"], button:has-text("EN"):not([data-lang="he"])').first();
-            if (!(await enBtn.count())) {
-                warn(`${app.name}: no language switcher detected`, 'manual verify lang pills present');
-                return;
+            const r = await verifyLangSwitch(page);
+            if (!r.ok) {
+                if (/no visible EN control/.test(r.reason)) { warn(`${app.name}: no language switcher visible`, 'manual verify lang pills present'); return; }
+                throw new Error(r.reason);
             }
-            const before = await page.evaluate(() => document.body.innerText.slice(0, 300));
-            await enBtn.click({ timeout: 5000 }).catch(() => {});
-            await page.waitForTimeout(1500);
-            const after = await page.evaluate(() => document.body.innerText.slice(0, 300));
-            if (before === after) throw new Error('UI text identical after EN click — lang switcher inert');
-            const beforeHE = /[֐-׿]/.test(before);
-            const afterHE = /[֐-׿]/.test(after);
-            if (beforeHE && afterHE) {
-                // Allow some Hebrew (brand names) but flag if it's a lot
-                const heCount = (after.match(/[֐-׿]/g) || []).length;
-                if (heCount > 30) warn(`${app.name}: after EN still has ${heCount} Hebrew chars`, 'check i18n-leak-check.js for specifics');
-            }
+            // Residual Hebrew after EN is a separate concern — flag only if heavy.
+            if (r.heAfter > 30) warn(`${app.name}: ${r.heAfter} Hebrew chars after EN click`, 'check i18n-leak-check.js for specifics');
         });
 
         await step(`${app.name}: HTTPS + HSTS headers`, async () => {

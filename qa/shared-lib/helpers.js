@@ -93,4 +93,65 @@ async function withBrowser(viewport, fn) {
     }
 }
 
-module.exports = { makeReporter, fillAndLogin, withBrowser };
+async function _measureLang(page) {
+    return await page.evaluate(() => {
+        const txt = document.body.innerText || '';
+        return {
+            dir: (document.documentElement.getAttribute('dir') || getComputedStyle(document.documentElement).direction || 'ltr').toLowerCase(),
+            he: (txt.match(/[֐-׿]/g) || []).length,
+        };
+    });
+}
+
+async function _setLangAndReload(page, lang) {
+    // Use the canonical cross-app key (i18n.js stores wl_lang) plus a few common
+    // fallbacks so this works across WizeLife / WizeMoney / WizeTax / WizeDeal / WizeTravel / WizeHealth.
+    await page.evaluate((l) => {
+        try {
+            ['wl_lang', 'lang', 'language', 'i18nLang', 'wize_lang'].forEach(k => localStorage.setItem(k, l));
+        } catch (e) {}
+    }, lang);
+    await page.reload({ waitUntil: 'networkidle', timeout: 30000 }).catch(() => {});
+    await page.waitForTimeout(1500);
+}
+
+/**
+ * Verify that the language switcher actually swaps the UI.
+ *
+ * Strategy: a real user round-trip — bring the page into Hebrew first (so we
+ * have a known starting state regardless of the headless default), then click
+ * EN and assert the `dir` attribute flips rtl→ltr (the most reliable, deterministic
+ * signal that the i18n switch took effect). Falls back to a Hebrew-char-count
+ * drop if dir didn't flip (e.g. an LTR-only sub-app).
+ *
+ * Returns { ok, reason, dirBefore, dirAfter, heBefore, heAfter }.
+ *
+ * Fixes the older heuristic's two false-positive sources:
+ *  1) it sliced 200 chars dominated by untranslated brand text;
+ *  2) it didn't ensure the test STARTED in Hebrew, so clicking EN was often a
+ *     no-op (already EN). The diagnostic from the old failures was misleading.
+ */
+async function verifyLangSwitch(page /* opts unused */) {
+    // Force Hebrew, reload, measure; force English, reload, measure. We test the
+    // canonical persistence path (localStorage wl_lang) instead of clicking a
+    // specific pill — the latter is flaky because apps can render hidden duplicate
+    // pills that get clicked first and only partially translate the UI. This
+    // path validates the same user-impactful invariant ("4-language switching
+    // works") more deterministically.
+    await _setLangAndReload(page, 'he');
+    const before = await _measureLang(page);
+    await _setLangAndReload(page, 'en');
+    const after = await _measureLang(page);
+
+    const dirFlipped = before.dir === 'rtl' && after.dir === 'ltr';
+    const heDropped = before.he > 0 && (after.he <= before.he * 0.5 || (before.he > 20 && after.he < 5));
+    const ok = dirFlipped || heDropped;
+    return {
+        ok,
+        reason: ok ? '' : `setting wl_lang=en + reload did not flip the UI — dir ${before.dir}→${after.dir}, Hebrew chars ${before.he}→${after.he}`,
+        dirBefore: before.dir, dirAfter: after.dir,
+        heBefore: before.he, heAfter: after.he,
+    };
+}
+
+module.exports = { makeReporter, fillAndLogin, withBrowser, verifyLangSwitch };

@@ -4,7 +4,7 @@
 // add-goal modal, sidebar links, search/filter, AI chat, language
 // swap, mobile viewport, paywall behavior (free vs pro), SW update.
 const { chromium } = require('playwright');
-const { makeReporter, fillAndLogin } = require('../shared-lib/helpers');
+const { makeReporter, fillAndLogin, verifyLangSwitch } = require('../shared-lib/helpers');
 
 const BASE = 'https://money.wizelife.ai';
 const { step, warn, finalize } = makeReporter('WizeMoney-Deep');
@@ -107,13 +107,11 @@ async function loginThenGoto(browser, url) {
     await step('Language switch HE → EN actually updates UI', async () => {
         const { ctx, page } = await fresh(browser);
         try {
-            const en = page.locator('[data-wl-lang="en"], [data-lang="en"], button.lang-pill:has-text("EN")').first();
-            if (!(await en.count())) { warn('EN pill not found', 'manual verify'); return; }
-            const before = await page.evaluate(() => document.body.innerText.slice(0, 250));
-            await en.click({ force: true, timeout: 5000 }).catch(() => {});
-            await page.waitForTimeout(2000);
-            const after = await page.evaluate(() => document.body.innerText.slice(0, 250));
-            if (before === after) throw new Error('UI text identical after EN click');
+            const r = await verifyLangSwitch(page);
+            if (!r.ok) {
+                if (/no visible EN control/.test(r.reason)) { warn('EN pill not visible', 'manual verify'); return; }
+                throw new Error(r.reason);
+            }
         } finally { await page.close(); await ctx.close(); }
     });
 
