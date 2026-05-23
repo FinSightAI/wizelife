@@ -1345,6 +1345,13 @@ document.querySelectorAll('.tool-tab').forEach(btn=>{
    setTool(i);
  });
 });
+// When the user navigates BACK to the portal (browser back / bfcache restore),
+// the .loading spinner can persist on cards from the last click. Clear it so
+// the cards don't show "3 spinning dots forever". pageshow covers both fresh
+// loads and bfcache restoration.
+window.addEventListener('pageshow', function () {
+ document.querySelectorAll('.tool-tab.loading').forEach(el => el.classList.remove('loading'));
+});
 stage.style.setProperty('--c-active', TOOLS[0].color);
 glow.style.background = TOOLS[0].color;
 
