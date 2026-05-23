@@ -39,19 +39,22 @@
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), magnetometer=(), gyroscope=(), accelerometer=()">
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
-<title>WizeLife — Live Smarter. Every Day.</title>
-<meta content="WizeLife — Five AI tools for money, travel, tax, health and real estate. Live smarter, every day." name="description"/>
+<title>AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate Tools | WizeLife</title>
+<meta content="5 free AI tools in one place: personal finance, international tax, flight deals, health Q&amp;A, real estate analysis. 4 languages. Free to start." name="description"/>
 <!-- Open Graph -->
 <meta content="website" property="og:type"/>
 <meta content="https://wizelife.ai/" property="og:url"/>
-<meta content="WizeLife — Your AI Life Suite" property="og:title"/>
-<meta content="5 AI tools in one place: track money, find cheap flights, optimize taxes, analyze health data, and evaluate real estate deals. Free to start." property="og:description"/>
+<meta content="AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate Tools" property="og:title"/>
+<meta content="5 free AI tools in one place: personal finance, international tax, flight deals, health Q&amp;A, real estate analysis. 4 languages. Free to start." property="og:description"/>
 <meta content="https://wizelife.ai/og-image.png" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="WizeLife — Your AI Life Suite" name="twitter:title"/>
-<meta content="5 AI tools in one place: money, travel, tax, health &amp; real estate. Free to start." name="twitter:description"/>
+<meta content="AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate" name="twitter:title"/>
+<meta content="5 free AI tools in one place. 4 languages. Free to start." name="twitter:description"/>
+<!-- Localized <title> — SSR ships the English title (highest search volume),
+     then JS updates it to the user's language for browser tab + bookmarks. -->
+<script>(function(){var T={en:'AI Life Suite — Money, Tax, Travel, Health & Real Estate Tools | WizeLife',he:'סוויטת AI לחיים — כסף, מס, טיסות, בריאות ונדל״ן | WizeLife',pt:'Suite de IA para a Vida — Dinheiro, Impostos, Viagens, Saúde, Imóveis | WizeLife',es:'Suite de IA para la Vida — Dinero, Impuestos, Viajes, Salud, Inmuebles | WizeLife'};function s(){var l=(localStorage.getItem('wl_lang')||(navigator.language||'en').slice(0,2)||'en').toLowerCase();document.title=T[l]||T.en;}s();window.addEventListener('wl-lang-change',s);})();</script>
 <meta content="https://wizelife.ai/og-image.png" name="twitter:image"/>
 <!-- Canonical + i18n: WizeLife serves all 4 languages from the same URL (lang
      switch is client-side via wl_lang storage), so we only declare x-default
@@ -570,6 +573,17 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  "https://finsightai.github.io/wizelife/"
  ]
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is WizeLife really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/mo) for more answers and unlocked features, or go YOLO ($9.99/mo) for unlimited AI across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."}},
+{"@type":"Question","name":"Do I need a separate account for each tool?","acceptedAnswer":{"@type":"Answer","text":"No — one WizeLife account works across all 5 tools. Sign in once, use everything."}},
+{"@type":"Question","name":"How is WizeTax different from a regular tax calculator?","acceptedAnswer":{"@type":"Answer","text":"WizeTax uses AI trained on tax law across 26 countries, with real exit-tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable advice."}},
+{"@type":"Question","name":"Can WizeTravel actually save me money?","acceptedAnswer":{"@type":"Answer","text":"Yes. WizeTravel finds hidden-city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."}},
+{"@type":"Question","name":"What markets does WizeDeal cover?","acceptedAnswer":{"@type":"Answer","text":"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental-yield benchmarks."}},
+{"@type":"Question","name":"Is my data secure?","acceptedAnswer":{"@type":"Answer","text":"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."}},
+{"@type":"Question","name":"Can I cancel anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."}}
+]}
 </script>
 <style>
 [data-theme="light"] { --bg:#f8fafc; --surf:#ffffff; --surf2:#f1f5f9; --text:#1e293b; --muted:#64748b; --muted2:#475569; --border:rgba(0,0,0,.08); --border2:rgba(0,0,0,.14); }
