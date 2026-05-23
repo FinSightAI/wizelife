@@ -471,10 +471,12 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  .calc-wrap{grid-template-columns:1fr}
  .compare-head,.compare-row{grid-template-columns:1.5fr 1fr 1fr 1fr;padding-left:18px;padding-right:18px;font-size:.82rem}
 }
-@media(max-width:700px){
- nav{padding:0 16px}
- .nav-links,.nav-signin,.nav-cta,#langBtn,#navPlanBadge{display:none}
- .hamburger{display:flex}
+@media(max-width:768px){
+ nav{padding:0 16px;padding-inline-start:60px !important}
+ .nav-links,.nav-signin,.nav-cta,#langBtn,#navPlanBadge{display:none !important}
+ /* Hamburger floats to inline-start corner (LTR=left, RTL=right) so the logo
+    sits cleanly in the center-ish without being squeezed. */
+ .hamburger{display:flex;position:fixed !important;top:max(14px,calc(env(safe-area-inset-top) + 14px));inset-inline-start:8px;z-index:250}
  .nav-right{gap:0}
  section{padding:60px 18px}
  .hero{padding:90px 18px 48px;min-height:auto}
