@@ -1328,12 +1328,14 @@ document.querySelectorAll('.tool-tab').forEach(btn=>{
    if (window.matchMedia('(max-width: 768px)').matches) {
      const tool = TOOLS[i];
      if (tool && tool.url) {
-       // Go straight to the sub-app. Each one renders the free experience
-       // without requiring login — auth gates only kick in on save/Pro actions
-       // (Firestore rules enforce per-user isolation regardless). Routing
-       // through auth.html was creating a wall users didn't need to hit.
+       // Go straight to the sub-app. Pass the current language as ?lang= so
+       // the sub-app shows in the same language the user picked here — without
+       // it, localStorage doesn't cross subdomains and the sub-app falls back
+       // to navigator.language. Each sub-app's i18n init reads URL ?lang first.
        btn.classList.add('loading');
-       window.location.href = tool.url; return;
+       const lang = (localStorage.getItem('wl_lang') || document.documentElement.lang || '').slice(0, 2);
+       const url = lang ? tool.url + (tool.url.includes('?') ? '&' : '?') + 'lang=' + encodeURIComponent(lang) : tool.url;
+       window.location.href = url; return;
      }
    }
    setTool(i);
