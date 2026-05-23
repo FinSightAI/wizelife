@@ -1321,10 +1321,10 @@ document.querySelectorAll('.tool-tab').forEach(btn=>{
    if (window.matchMedia('(max-width: 768px)').matches) {
      const tool = TOOLS[i];
      if (tool && tool.url) {
-       // If already logged in, go straight to the sub-app. Otherwise route
-       // through auth.html with next=<sub-app>, which auth.html knows how to
-       // honor (line ~432 — only trusted *.wizelife.ai destinations).
-       const isAuthed = !!localStorage.getItem('wize_session') || !!localStorage.getItem('wize_uid');
+       // If already logged in (Firebase auth handler sets window._wlLoggedIn=true),
+       // go straight to the sub-app. Otherwise route via auth.html?next=<sub-app>,
+       // which auth.html already forwards on successful login (line ~432).
+       const isAuthed = window._wlLoggedIn === true;
        const dest = isAuthed ? tool.url : ('auth.html?next=' + encodeURIComponent(tool.url));
        window.location.href = dest; return;
      }
