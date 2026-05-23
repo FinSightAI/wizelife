@@ -525,6 +525,10 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  .calc-bval{text-align:start !important;font-size:1.1rem !important}
  /* Hebrew-specific: letter-spacing 0 (negative crushes Hebrew) */
  html[dir="rtl"] h1,html[dir="rtl"] h2{letter-spacing:0 !important}
+ /* Tap targets ≥40x40 (a11y / Apple HIG) */
+ .lang-pill,button.lang-pill,[data-lang],[data-wl-lang],[data-sl-lang]{min-width:40px !important;min-height:40px !important;padding:8px 10px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important}
+ .hamburger{min-width:40px;min-height:40px}
+ button:not(.btn-primary):not(.btn-secondary):not(.tool-tab):not(.wbn-btn):not(.bnav-btn):not(.lang-pill){min-height:40px;min-width:40px}
 }
 @media(max-width:380px){
  /* iPhone SE / mini */
