@@ -1963,9 +1963,10 @@ wlAuth.onAuthStateChanged(function(user) {
  signinBtn.href = 'dashboard.html';
  ctaBtn.textContent = 'Dashboard →';
  ctaBtn.href = 'dashboard.html';
- // Also update hero CTAs
+ // Hero CTA: keep marketing text ('Start for free') even for logged-in users —
+ // just redirect to dashboard so the button still functions. The text is the
+ // PRIMARY message of the page; switching it to 'Dashboard' weakens the pitch.
  document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => {
- a.textContent = 'Go to Dashboard →';
  a.href = 'dashboard.html';
  });
  // A logged-in user has no reason to hit the login page: send every remaining

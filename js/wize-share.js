@@ -159,14 +159,19 @@
     ].join(';');
 
     const hasNative = !!navigator.share;
-    const opts4 = [
-      { id: 'whatsapp', icon: '💬', label: tr.whatsapp, fn: function () { shareWhatsApp(d); close(); } },
-      { id: 'email',    icon: '✉️', label: tr.email,    fn: function () { shareEmail(d);    close(); } },
-      { id: 'copy',     icon: '📋', label: tr.copy,     fn: function () { copyLink(d).then(close); } },
-    ];
+    /* On platforms with a native share sheet, 'More' (which opens the system
+       sheet — incl. AirDrop, every installed messaging app, SMS, etc) is the
+       most-useful option. Put it first. WhatsApp/Email/Copy follow as fast
+       paths for the most common destinations. */
+    const opts4 = [];
     if (hasNative) {
       opts4.push({ id: 'more', icon: '•••', label: tr.more, fn: function () { shareMore(d); close(); } });
     }
+    opts4.push(
+      { id: 'copy',     icon: '📋', label: tr.copy,     fn: function () { copyLink(d).then(close); } },
+      { id: 'whatsapp', icon: '💬', label: tr.whatsapp, fn: function () { shareWhatsApp(d); close(); } },
+      { id: 'email',    icon: '✉️', label: tr.email,    fn: function () { shareEmail(d);    close(); } }
+    );
 
     inner.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
       + '<h3 style="margin:0;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#eef2ff;letter-spacing:-.3px;">' + tr.title + '</h3>'
