@@ -255,16 +255,17 @@
 
   function getLang() {
     try {
-      var stored = localStorage.getItem('wl_lang');
-      if (stored) return stored.slice(0, 2);
-      var htmlLang = (document.documentElement.lang || '').slice(0, 2);
-      if (htmlLang) return htmlLang;
-      // Fall back to the device language before defaulting to Hebrew, so a
-      // first-time visitor on a Portuguese/Spanish device sees their language.
+      var stored = (localStorage.getItem('wl_lang') || '').slice(0, 2);
+      if (['he', 'en', 'pt', 'es'].indexOf(stored) >= 0) return stored;
+      // Prefer the device language over <html lang> — many sub-apps SSR with
+      // lang="he" (a stale default) which would otherwise win over the user's
+      // actual locale on a first visit.
       var nav = ((navigator.language || navigator.userLanguage || '').slice(0, 2)).toLowerCase();
       if (['he', 'en', 'pt', 'es'].indexOf(nav) >= 0) return nav;
-      return 'he';
-    } catch (e) { return 'he'; }
+      var htmlLang = (document.documentElement.lang || '').slice(0, 2);
+      if (['he', 'en', 'pt', 'es'].indexOf(htmlLang) >= 0) return htmlLang;
+      return 'en';
+    } catch (e) { return 'en'; }
   }
 
   function buildModal(appId, force) {

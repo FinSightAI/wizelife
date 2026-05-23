@@ -31,8 +31,13 @@
   var BANNER_ID = 'wize-update-banner';
 
   function getLang() {
-    try { return (localStorage.getItem('wl_lang') || 'he').slice(0, 2); }
-    catch (e) { return 'he'; }
+    try {
+      var stored = (localStorage.getItem('wl_lang') || '').slice(0, 2);
+      if (['he', 'en', 'pt', 'es'].indexOf(stored) >= 0) return stored;
+      var nav = ((navigator.language || navigator.userLanguage || '').slice(0, 2)).toLowerCase();
+      if (['he', 'en', 'pt', 'es'].indexOf(nav) >= 0) return nav;
+      return 'en';
+    } catch (e) { return 'en'; }
   }
 
   var TR = {

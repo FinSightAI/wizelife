@@ -232,9 +232,12 @@
 
   function getLang() {
     try {
-      const v = (localStorage.getItem('wl_lang') || '').slice(0, 2);
-      return ['he', 'en', 'pt', 'es'].includes(v) ? v : 'he';
-    } catch { return 'he'; }
+      const stored = (localStorage.getItem('wl_lang') || '').slice(0, 2);
+      if (['he', 'en', 'pt', 'es'].includes(stored)) return stored;
+      const nav = ((navigator.language || navigator.userLanguage || '').slice(0, 2)).toLowerCase();
+      if (['he', 'en', 'pt', 'es'].includes(nav)) return nav;
+      return 'en';
+    } catch { return 'en'; }
   }
 
   function storageKey(app) { return `wl_disclaimer_${app}_v${TOS_VERSION}`; }

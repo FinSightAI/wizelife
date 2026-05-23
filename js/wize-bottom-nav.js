@@ -34,8 +34,15 @@
   }
 
   function getLang() {
-    try { return (localStorage.getItem('wl_lang') || (document.documentElement.lang || 'he')).slice(0, 2); }
-    catch (e) { return 'he'; }
+    try {
+      var stored = (localStorage.getItem('wl_lang') || '').slice(0, 2);
+      if (['he', 'en', 'pt', 'es'].indexOf(stored) >= 0) return stored;
+      var nav = ((navigator.language || navigator.userLanguage || '').slice(0, 2)).toLowerCase();
+      if (['he', 'en', 'pt', 'es'].indexOf(nav) >= 0) return nav;
+      var htmlLang = (document.documentElement.lang || '').slice(0, 2);
+      if (['he', 'en', 'pt', 'es'].indexOf(htmlLang) >= 0) return htmlLang;
+      return 'en';
+    } catch (e) { return 'en'; }
   }
 
   /* SVG icons (Lucide-style), keyed by name */
@@ -85,8 +92,8 @@
     ],
     health: [
       { icon:'home',    key:'new',     action:'newChat',           label:{he:'בית',     en:'Home',    pt:'Início',  es:'Inicio'  } },
-      { icon:'history', key:'history', action:'toggleDrawer',      label:{he:'היסטוריה',en:'History', pt:'Histórico',es:'Historial'} },
-      { icon:'file',    key:'tests',   action:'newChat',           label:{he:'בדיקות',  en:'Tests',   pt:'Exames',  es:'Análisis'} },
+      { icon:'history', key:'history', action:'openHistory',       label:{he:'היסטוריה',en:'History', pt:'Histórico',es:'Historial'} },
+      { icon:'file',    key:'tests',   action:'openTests',         label:{he:'בדיקות',  en:'Tests',   pt:'Exames',  es:'Análisis'} },
       { icon:'user',    key:'profile', action:'openProfile',       label:{he:'פרופיל',  en:'Profile', pt:'Perfil',  es:'Perfil'  } }
     ],
     travel: [
@@ -202,6 +209,11 @@
         var actionName = it.action;
         var handler = function () {
           try {
+            // Close any open modal/overlay first, so tapping a bottom-nav button
+            // from INSIDE a modal (e.g. Profile) actually navigates instead of
+            // leaving the modal stuck on top (app appears frozen).
+            document.querySelectorAll('.overlay:not(.hidden)').forEach(function (o) { o.classList.add('hidden'); });
+            try { document.body.classList.remove('wh-drawer-open'); } catch (e) {}
             var fn = window[actionName];
             if (typeof fn === 'function') fn();
           } catch (e) {}
