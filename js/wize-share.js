@@ -165,7 +165,7 @@
       { id: 'copy',     icon: '📋', label: tr.copy,     fn: function () { copyLink(d).then(close); } },
     ];
     if (hasNative) {
-      opts4.push({ id: 'more', icon: '↗', label: tr.more, fn: function () { shareMore(d); close(); } });
+      opts4.push({ id: 'more', icon: '•••', label: tr.more, fn: function () { shareMore(d); close(); } });
     }
 
     inner.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
