@@ -225,6 +225,11 @@ section{padding:120px 24px;position:relative;z-index:1}
 .tool-tab-desc{font-size:.76rem;color:var(--muted);line-height:1.5}
 .tool-tab-arrow{color:var(--muted);font-size:.85rem;opacity:0;transform:translateX(-4px);transition:all .2s;flex-shrink:0}
 .tool-tab.active .tool-tab-arrow{opacity:1;transform:translateX(0);color:var(--c)}
+/* Loading state — applied on mobile tap right before navigation, so the user
+   gets immediate visual feedback even if the next page takes a beat to load. */
+.tool-tab.loading{pointer-events:none;opacity:.85;position:relative}
+.tool-tab.loading::after{content:'';position:absolute;top:50%;inset-inline-end:14px;width:18px;height:18px;margin-top:-9px;border:2px solid var(--c);border-top-color:transparent;border-radius:50%;animation:wlSpin .7s linear infinite}
+@keyframes wlSpin{to{transform:rotate(360deg)}}
 
 .tool-stage{position:relative;background:linear-gradient(165deg,rgba(255,255,255,.035) 0%,rgba(255,255,255,.01) 100%);border:1px solid var(--border);border-radius:24px;overflow:hidden;min-height:520px}
 .tool-stage::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--c-active,#6366f1),transparent);opacity:.8}
@@ -662,6 +667,8 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <a data-i18n="__8" href="about.html" onclick="toggleMenu()">About</a>
 <a data-i18n="__9" href="auth.html" id="mobile-signin" style="color:var(--text);font-weight:600;">Sign in</a>
 <a href="auth.html" style="color:var(--accent2);font-weight:700;">Get Started Free →</a>
+<!-- PWA install — hidden until the browser fires beforeinstallprompt -->
+<a id="pwa-install-link" href="#" style="display:none;color:var(--text);font-weight:600;" data-en="📱 Install app" data-he="📱 התקן אפליקציה" data-pt="📱 Instalar app" data-es="📱 Instalar app" onclick="event.preventDefault();window.__wlPwaInstall&amp;&amp;window.__wlPwaInstall();toggleMenu();">📱 Install app</a>
 <div style="display:flex;gap:6px;justify-content:center;padding-top:14px;border-top:1px solid var(--border);margin-top:6px;">
 <button class="lang-pill" data-lang="en" onclick="setWlLang('en');toggleMenu()" title="English">EN</button>
 <button class="lang-pill" data-lang="es" onclick="setWlLang('es');toggleMenu()" title="Español">ES</button>
@@ -1326,6 +1333,9 @@ document.querySelectorAll('.tool-tab').forEach(btn=>{
        // which auth.html already forwards on successful login (line ~432).
        const isAuthed = window._wlLoggedIn === true;
        const dest = isAuthed ? tool.url : ('auth.html?next=' + encodeURIComponent(tool.url));
+       // Show a loading state on the tapped card so the user gets immediate
+       // feedback (no "did anything happen?" moment before the navigation).
+       btn.classList.add('loading');
        window.location.href = dest; return;
      }
    }
@@ -1909,6 +1919,35 @@ applyLandingLang();
 <script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
 <script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
 <script src="js/wizelife-auth.js"></script>
+<script>
+// PWA install — capture the deferred prompt so the mobile menu can offer
+// a manual "Install app" entry only when the browser says it's installable.
+(function(){
+  var deferred = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    var link = document.getElementById('pwa-install-link');
+    if (link) {
+      // localize per current language
+      var l = (localStorage.getItem('wl_lang') || (navigator.language||'en').slice(0,2) || 'en').toLowerCase();
+      var t = link.getAttribute('data-' + l) || link.getAttribute('data-en');
+      if (t) link.textContent = t;
+      link.style.display = '';
+    }
+  });
+  window.addEventListener('appinstalled', function () {
+    deferred = null;
+    var link = document.getElementById('pwa-install-link');
+    if (link) link.style.display = 'none';
+  });
+  window.__wlPwaInstall = function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.finally(function(){ deferred = null; });
+  };
+})();
+</script>
 <script>
 wlAuth.onAuthStateChanged(function(user) {
  const signinBtn = document.getElementById('nav-signin');
