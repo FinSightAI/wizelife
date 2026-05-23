@@ -227,10 +227,10 @@
   };
 
   var LB = {
-    he: { skip: 'דלג', next: 'הבא', done: 'הבנתי', prev: 'הקודם', close: 'סגור' },
-    en: { skip: 'Skip',  next: 'Next', done: 'Got it', prev: 'Back', close: 'Close' },
-    pt: { skip: 'Pular', next: 'Próximo', done: 'Entendi', prev: 'Voltar', close: 'Fechar' },
-    es: { skip: 'Saltar', next: 'Siguiente', done: 'Listo', prev: 'Atrás', close: 'Cerrar' },
+    he: { skip: 'דלג', next: 'הבא', done: 'הבנתי', prev: 'הקודם', close: 'סגור', welcome: 'ברוכים הבאים' },
+    en: { skip: 'Skip',  next: 'Next', done: 'Got it', prev: 'Back', close: 'Close', welcome: 'Welcome' },
+    pt: { skip: 'Pular', next: 'Próximo', done: 'Entendi', prev: 'Voltar', close: 'Fechar', welcome: 'Bem-vindo' },
+    es: { skip: 'Saltar', next: 'Siguiente', done: 'Listo', prev: 'Atrás', close: 'Cerrar', welcome: 'Bienvenido' },
   };
 
   function detectApp() {
@@ -326,6 +326,20 @@
         '@keyframes wbo-pop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}';
       document.head.appendChild(st);
     }
+
+    /* Brand row — shows which app you're being onboarded into. Without it the
+       modal felt 'disconnected' from the host app (user feedback). Maps appId
+       → display name. */
+    var BRAND_NAMES = { money:'WizeMoney', tax:'WizeTax', travel:'WizeTravel', deal:'WizeDeal', health:'WizeHealth', portal:'WizeLife' };
+    var brandRow = document.createElement('div');
+    brandRow.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:8px;margin:-4px 0 14px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,0.55);';
+    var brandDot = document.createElement('span');
+    brandDot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:' + color + ';box-shadow:0 0 12px ' + color + '80;';
+    var brandText = document.createElement('span');
+    brandText.textContent = (BRAND_NAMES[appId] || 'WizeLife') + ' · ' + (lb.welcome || 'Welcome');
+    brandRow.appendChild(brandDot);
+    brandRow.appendChild(brandText);
+    card.appendChild(brandRow);
 
     /* Top: progress + close */
     var top = document.createElement('div');
