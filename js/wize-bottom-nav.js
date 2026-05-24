@@ -224,6 +224,27 @@
         el = document.createElement('a');
         el.href = it.href || '#';
         if (isActiveItem(it)) el.classList.add('wbn-active');
+        /* Same-page hash links (e.g. Portal Apps → /#products) caused a full
+           reload when current URL had a query (?lang=he), because '/#products'
+           drops the query and the browser treats it as a new URL. Intercept and
+           scroll smoothly when target is on the current pathname. */
+        var hrefVal = it.href || '';
+        var hashIdx = hrefVal.indexOf('#');
+        if (hashIdx >= 0) {
+          var targetPath = hrefVal.slice(0, hashIdx) || '/';
+          var targetHash = hrefVal.slice(hashIdx + 1);
+          var currentPath = location.pathname.replace(/index\.html$/, '') || '/';
+          var normTarget  = targetPath.replace(/index\.html$/, '') || '/';
+          if (currentPath === normTarget && targetHash) {
+            el.addEventListener('click', function (ev) {
+              var node = document.getElementById(targetHash);
+              if (!node) return;
+              ev.preventDefault();
+              node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              try { history.replaceState(null, '', '#' + targetHash); } catch (_) {}
+            });
+          }
+        }
       }
       el.className = (el.className ? el.className + ' ' : '') + 'wbn-btn';
       el.innerHTML = content;
