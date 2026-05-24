@@ -11,9 +11,13 @@ jobs:
     steps:
       - name: Hit production URL
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://wizelife.ai/)
+          # User-Agent prevents bot-detection 403 responses.
+          # Accept 2xx and 3xx (redirects mean server is alive).
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+            -H "User-Agent: Mozilla/5.0 (compatible; WizeLife-Uptime/1.0; +https://wizelife.ai)" \
+            -L https://wizelife.ai/)
           echo "HTTP $STATUS"
-          if [ "$STATUS" != "200" ]; then
+          if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 400 ]; then
             echo "::warning::WizeLife returned $STATUS"
             exit 1
           fi
