@@ -75,11 +75,8 @@
 <!-- Pre-warm the Render-hosted backends so they're awake by the time a user
  taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
  The actual wake-up GET is fired below in a JS block. -->
-<link crossorigin="" href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="preconnect"/>
 <link href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
-<link crossorigin="" href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="preconnect"/>
 <link href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
-<link crossorigin="" href="https://ofirofir-wizetravel.hf.space" rel="preconnect"/>
 <link href="https://ofirofir-wizetravel.hf.space" rel="dns-prefetch"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
@@ -684,6 +681,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </div>
 </div>
 <!-- HERO -->
+<main role="main">
 <section class="hero">
 <div class="hero-aurora">
 <div class="aurora-1"></div><div class="aurora-2"></div><div class="aurora-3"></div>
@@ -778,7 +776,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_money">Personal finance · Investments · Pension</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://finsightai.github.io/finsight/" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://finsightai.github.io/finsight/" rel="noopener" target="_blank" aria-label="Open WizeMoney tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_money">Complete personal finance dashboard. Track accounts, investments, pension, goals and stocks in one place — with a bilingual AI advisor that actually understands Israeli pension schemes, foreign stocks, and local tax implications.</p>
 <div class="panel-bullets">
@@ -822,7 +820,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_travel">Flight AI · Hidden-city · Virtual interlining</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://travel.wizelife.ai" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://travel.wizelife.ai" rel="noopener" target="_blank" aria-label="Open WizeTravel tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_travel">AI flight price monitor. Finds hidden city tickets, positioning routes and virtual interlining across low-cost carriers — the routes that Google Flights and Kayak completely miss.</p>
 <div class="panel-bullets">
@@ -884,7 +882,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_tax">Relocation · Exit tax · 26 countries</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://mastermove.vercel.app/advisor" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://mastermove.vercel.app/advisor" rel="noopener" target="_blank" aria-label="Open WizeTax tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_tax">Global tax advisor for relocation and exit planning. Compare 26 countries by effective tax rate, model exit-tax scenarios, and generate a ready-to-send relocation letter that accounts for treaties and residency rules.</p>
 <div class="panel-bullets">
@@ -936,7 +934,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_health">Cardiology · Microbiome · Nutrition</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://health.wizelife.ai/" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://health.wizelife.ai/" rel="noopener" target="_blank" aria-label="Open WizeHealth tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_health">Personal AI health advisor specialized in cardiology, microbiome, nutrition and endocrinology. Upload blood work, review vitals, and get context-aware guidance —.</p>
 <div class="panel-bullets">
@@ -1000,7 +998,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_deal">Real estate AI · Brazil · Israel · USA</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://check-deal.vercel.app/" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://check-deal.vercel.app/" rel="noopener" target="_blank" aria-label="Open WizeDeal tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_deal">Paste any listing URL and get a full investment report: ROI, rental yield, tax impact (ITBI, Mas Rechisha, transfer taxes), neighborhood comps and a clear deal-score grade — in under 30 seconds.</p>
 <div class="panel-bullets">
@@ -1048,28 +1046,28 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="calc-lname" data-i18n="__37"><span class="icon" style="background:rgba(16,185,129,.15);color:#34d399"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><path d="M3 17l5-5 4 4 8-8"></path><path d="M14 8h6v6"></path></svg></span> Monthly investments</div>
 <div class="calc-lval" id="v-invest">$2,500</div>
 </div>
-<input class="calc-slider" id="s-invest" max="10000" min="0" step="100" type="range" value="2500"/>
+<input class="calc-slider" aria-label="Monthly investment amount" id="s-invest" max="10000" min="0" step="100" type="range" value="2500"/>
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
 <div class="calc-lname" data-i18n="__38"><span class="icon" style="background:rgba(59,130,246,.15);color:#93c5fd"><svg fill="currentColor" height="14" viewbox="0 0 24 24" width="14"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></span> Flights per year</div>
 <div class="calc-lval" id="v-flights">6</div>
 </div>
-<input class="calc-slider" id="s-flights" max="24" min="0" step="1" type="range" value="6"/>
+<input class="calc-slider" aria-label="Flights per year" id="s-flights" max="24" min="0" step="1" type="range" value="6"/>
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
 <div class="calc-lname" data-i18n="__39"><span class="icon" style="background:rgba(245,158,11,.15);color:#fcd34d"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><rect height="18" rx="2" width="16" x="4" y="3"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span> Annual income (taxable)</div>
 <div class="calc-lval" id="v-income">$120,000</div>
 </div>
-<input class="calc-slider" id="s-income" max="500000" min="30000" step="5000" type="range" value="120000"/>
+<input class="calc-slider" aria-label="Annual income" id="s-income" max="500000" min="30000" step="5000" type="range" value="120000"/>
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
 <div class="calc-lname" data-i18n="__40"><span class="icon" style="background:rgba(139,92,246,.15);color:#c4b5fd"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><path d="M3 12L12 3l9 9"></path><path d="M5 10v10h14V10"></path></svg></span> Property value researched</div>
 <div class="calc-lval" id="v-prop">$350,000</div>
 </div>
-<input class="calc-slider" id="s-prop" max="2000000" min="0" step="25000" type="range" value="350000"/>
+<input class="calc-slider" aria-label="Property value" id="s-prop" max="2000000" min="0" step="25000" type="range" value="350000"/>
 </div>
 </div>
 <div class="calc-result">
@@ -1237,6 +1235,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <a class="btn-secondary" data-i18n="__79" href="#products" style="font-size:1.05rem;padding:18px 36px;">Explore tools</a>
 </div>
 </section>
+</main>
 <!-- FOOTER -->
 <footer>
 <div class="footer-inner">
@@ -1247,7 +1246,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </div>
 <div class="footer-links">
 <div class="footer-col">
-<h4 data-i18n="__80">Products</h4>
+<h3 data-i18n="__80">Products</h3>
 <a href="https://finsightai.github.io/finsight/" target="_blank">WizeMoney</a>
 <a href="https://travel.wizelife.ai" target="_blank">WizeTravel</a>
 <a href="https://mastermove.vercel.app/advisor" target="_blank">WizeTax</a>
@@ -1255,14 +1254,14 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <a href="https://check-deal.vercel.app/" target="_blank">WizeDeal</a>
 </div>
 <div class="footer-col">
-<h4 data-i18n="__81">Account</h4>
+<h3 data-i18n="__81">Account</h3>
 <a data-i18n="__82" href="auth.html">Sign in</a>
 <a data-i18n="__83" href="auth.html">Sign up free</a>
 <a data-i18n="__84" href="#pricing">Pricing</a>
 <a href="#faq">FAQ</a>
 </div>
 <div class="footer-col">
-<h4 data-i18n="__85">Info</h4>
+<h3 data-i18n="__85">Info</h3>
 <a data-i18n="__86" href="about.html">About</a>
 <a data-i18n="__87" href="mailto:hi@wizelife.ai">Contact</a>
 <a data-i18n="__88" href="privacy.html">Privacy Policy</a>
