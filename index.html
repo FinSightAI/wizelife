@@ -662,7 +662,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <button class="lang-pill" data-lang="pt" onclick="setWlLang('pt')" title="Português">PT</button>
 <button class="lang-pill" data-lang="he" onclick="setWlLang('he')" title="Hebrew">HE</button>
 </div>
-<span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);"></span>
+<span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);cursor:pointer;transition:background .2s,color .2s;"></span>
 <a class="nav-signin" data-i18n="__4" href="auth.html" id="nav-signin" rel="nofollow" aria-label="Sign in (top navigation)">Sign in</a>
 <a class="nav-cta" data-i18n="__5" href="auth.html" id="nav-cta" rel="nofollow" aria-label="Get started free (top navigation)">Get Started</a>
 <button aria-label="Menu" class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -2027,7 +2027,15 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  if (!el) return;
  var plan = localStorage.getItem('wl_plan');
  if (!plan || plan === 'free') {
- el.style.display = 'none';
+ var wlLang2=(localStorage.getItem('wl_lang')||'en').toLowerCase();
+ var upgLbls2={he:'חינם · שדרג ←',en:'FREE · Upgrade →',pt:'GRÁTIS · Upgrade →',es:'GRATIS · Upgrade →'};
+ el.innerHTML='<a href="#pricing" style="color:inherit;text-decoration:none;">'+(upgLbls2[wlLang2]||upgLbls2['en'])+'</a>';
+ el.style.display = 'inline';
+ el.style.background = 'rgba(99,102,241,0.15)';
+ el.style.color = '#a5b4fc';
+ el.style.borderColor = 'rgba(99,102,241,0.25)';
+ el.onmouseenter=function(){this.style.background='linear-gradient(135deg,#6366f1,#a78bfa)';this.style.color='#fff';};
+ el.onmouseleave=function(){this.style.background='rgba(99,102,241,0.15)';this.style.color='#a5b4fc';};
  return;
  }
  var labels = { yolo: '⚡ YOLO', pro: '✦ PRO', pro_trial: '✦ PRO' };
