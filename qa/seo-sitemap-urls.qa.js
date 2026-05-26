@@ -23,7 +23,9 @@ function fetchRaw(url, maxRedirects) {
     const mod = url.startsWith('https') ? https : http;
     mod.get(url, { headers: { 'User-Agent': 'WizeLifeQA/1.0' } }, res => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && maxRedirects > 0) {
-        return fetchRaw(res.headers.location, maxRedirects - 1).then(resolve).catch(reject);
+        let loc = res.headers.location;
+        if (loc.startsWith('/')) { const u = new URL(url); loc = u.origin + loc; }
+        return fetchRaw(loc, maxRedirects - 1).then(resolve).catch(reject);
       }
       let body = '';
       res.on('data', c => body += c);
@@ -32,13 +34,21 @@ function fetchRaw(url, maxRedirects) {
   });
 }
 
-function checkStatus(url) {
+function checkStatus(url, baseUrl) {
+  // Resolve relative URLs against baseUrl if provided
+  if (url && url.startsWith('/') && baseUrl) {
+    const u = new URL(baseUrl);
+    url = u.origin + url;
+  }
   return new Promise(resolve => {
+    if (!url || !url.startsWith('http')) return resolve(0);
     const mod = url.startsWith('https') ? https : http;
     const req = mod.get(url, { headers: { 'User-Agent': 'WizeLifeQA/1.0' } }, res => {
       res.resume();
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return checkStatus(res.headers.location).then(resolve);
+        let loc = res.headers.location;
+        if (loc.startsWith('/')) { const u = new URL(url); loc = u.origin + loc; }
+        return checkStatus(loc).then(resolve);
       }
       resolve(res.statusCode);
     });
