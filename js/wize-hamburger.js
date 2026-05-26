@@ -76,10 +76,11 @@
       + '#wize-ham-btn{display:none;}'
       + '@media (max-width: 820px){'
       /* Sit INSIDE the 36px WizeBar (z-index 99999) so it doesn't float
-         below and overlap content. Anchored at inline-END (right in LTR /
-         left in RTL) so it never overlaps the brand logo on the inline-START. */
-      + '  #wize-ham-btn{position:fixed;top:calc(1px + env(safe-area-inset-top));right:8px;left:auto;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
-      + '  html[dir="rtl"] #wize-ham-btn{right:auto;left:8px;}'
+         below and overlap content. Anchored at inline-START (left in LTR /
+         right in RTL) per user convention (FB/Twitter/Material). Drawer slides
+         in from the same edge so the visual relationship is consistent. */
+      + '  #wize-ham-btn{position:fixed;top:calc(1px + env(safe-area-inset-top));left:8px;right:auto;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
+      + '  html[dir="rtl"] #wize-ham-btn{left:auto;right:8px;}'
       /* Hide the inline lang-pill cluster + WizeLife floating theme button on
          mobile — lang+theme live in the drawer instead, so the top bar shows
          brand on inline-START and burger on inline-END only. */
