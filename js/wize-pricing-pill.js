@@ -52,7 +52,7 @@
     pill.style.cssText = [
       'position:fixed',
       'top:calc(36px + env(safe-area-inset-top, 0px))',
-      'inset-inline-start:50%',
+      'left:50%',
       'transform:translateX(-50%)',
       'z-index:380',
       'background:linear-gradient(135deg,rgba(99,102,241,0.95),rgba(167,139,250,0.95))',
