@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // regression test — added 2026-05-25
-// Bug: Googlebot parsed pricing text like "/mo", "/xn--9dbq2a" (Hebrew "month"),
-//      "/mes", "/mes" as URL paths, polluting GSC with fake 404s.
+// Bug: Googlebot parsed pricing text like "/mo", "/mes", "/mês" as URL paths,
+//      polluting GSC with fake 404s.
 // Fix: Pricing period text must NOT start with "/" inside inline tags.
 // Usage: node qa/seo-url-extraction.qa.js
 
 'use strict';
 const https = require('https');
+const http  = require('http');
 
 const APPS = [
   { name: 'Portal',       url: 'https://wizelife.ai/' },
@@ -17,18 +18,21 @@ const APPS = [
   { name: 'WizeTravel',   url: 'https://travel.wizelife.ai/' },
 ];
 
-// Patterns that look like URL paths but are pricing period text
 const URL_LIKE_PATTERNS = [
-  /<sub>\s*\/[a-zA-Zא-תà-ÿ]+\s*<\/sub>/gi,
-  /<span[^>]*>\s*\/[a-zA-Zא-תà-ÿ]+\s*<\/span>/gi,
-  />\$[\d.]+\/(mo|mes|m[eê]s|[a-z]{2,8})</gi,
+  /<sub>\s*\/[a-zA-Zא-תa-ÿ]+\s*<\/sub>/gi,
+  /<span[^>]*>\s*\/[a-zA-Zא-תa-ÿ]+\s*<\/span>/gi,
+  />\$[\d.]+\/(mo|mes|m[e\xea]s|[a-z]{2,8})</gi,
 ];
 
-function fetch(url) {
+function fetch(url, maxRedirects) {
+  if (maxRedirects === undefined) maxRedirects = 5;
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'WizeLifeQA/1.0' } }, res => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetch(res.headers.location).then(resolve).catch(reject);
+    const mod = url.startsWith('https') ? https : http;
+    mod.get(url, { headers: { 'User-Agent': 'WizeLifeQA/1.0' } }, res => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && maxRedirects > 0) {
+        let loc = res.headers.location;
+        if (loc.startsWith('/')) { const u = new URL(url); loc = u.origin + loc; }
+        return fetch(loc, maxRedirects - 1).then(resolve).catch(reject);
       }
       let body = '';
       res.on('data', c => body += c);
