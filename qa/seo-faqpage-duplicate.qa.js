@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // regression test — added 2026-05-25
 // Bug: Google rejects multiple FAQPage schemas on the same URL.
-// Fix: Each URL must have ≤ 1 JSON-LD block with "@type":"FAQPage".
+// Fix: Each URL must have <= 1 JSON-LD block with "@type":"FAQPage".
 // Usage: node qa/seo-faqpage-duplicate.qa.js
 
 'use strict';
 const https = require('https');
+const http  = require('http');
 
 const APPS = [
   { name: 'Portal',       url: 'https://wizelife.ai/' },
@@ -16,11 +17,15 @@ const APPS = [
   { name: 'WizeTravel',   url: 'https://travel.wizelife.ai/' },
 ];
 
-function fetch(url) {
+function fetch(url, maxRedirects) {
+  if (maxRedirects === undefined) maxRedirects = 5;
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'WizeLifeQA/1.0' } }, res => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetch(res.headers.location).then(resolve).catch(reject);
+    const mod = url.startsWith('https') ? https : http;
+    mod.get(url, { headers: { 'User-Agent': 'WizeLifeQA/1.0' } }, res => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && maxRedirects > 0) {
+        let loc = res.headers.location;
+        if (loc.startsWith('/')) { const u = new URL(url); loc = u.origin + loc; }
+        return fetch(loc, maxRedirects - 1).then(resolve).catch(reject);
       }
       let body = '';
       res.on('data', c => body += c);
