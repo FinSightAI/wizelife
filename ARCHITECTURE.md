@@ -609,4 +609,173 @@ keeps Claude pointed at the right path automatically.
 
 ---
 
+## 19. Pre-launch hardening (2026-05-25)
+
+Architectural changes from final pre-launch session — kept here so future
+maintainers understand WHY current patterns exist.
+
+### 19.1 Shared `wize-pricing-pill.js` component
+
+**Purpose**: discovery hook so visitors to sub-apps (money/tax/travel/deal/health)
+see the Free vs YOLO tier difference without bouncing to Portal first.
+
+**Pattern**:
+- Source-of-truth: `TOTALIST/wizelife/js/wize-pricing-pill.js`
+- COPIED (not symlinked or CDN'd) into each sub-app's static dir:
+  - `finance dashboard/js/wize-pricing-pill.js`
+  - `RAMBAM/public/js/wize-pricing-pill.js`
+  - `tax master/frontend/public/wize-pricing-pill.js`
+  - `wizetravel-app/public/wize-pricing-pill.js`
+  - `Check Deal/public/wize-pricing-pill.js`
+- Each app's HTML/layout loads with `<script src="/wize-pricing-pill.js" defer>` or `<Script>` (Next.js)
+- Self-hides on Portal (location.hostname check) — Portal has full Pricing section
+- Self-hides for paid users (`wl_plan === 'pro'|'yolo'`)
+- Dismissal stored in `localStorage.wl_pricing_pill_dismissed` (30-day TTL)
+- 4-lang inline (en/he/pt/es), no fallback leak
+
+**When updating**: edit source in Portal repo, then re-copy + push to all 6 repos.
+
+### 19.2 FAQPage schema — ONE per URL (Google constraint)
+
+**Rule**: Google rejects `Duplicate field 'FAQPage'`. Even though we serve 4
+languages from the same URL via client-side language switching, only ONE
+FAQPage JSON-LD block per page is allowed.
+
+**Decision**: Keep ENGLISH FAQ as the canonical FAQPage (since URL canonical
+points to English version). Other languages remain visible in the UI but have
+no schema markup. This is a deliberate trade-off — full language coverage in
+rich results would require per-language URLs, which we explicitly decided
+against (see canonical x-default pattern in §11.0).
+
+**Note (2026-05-07)**: Google deprecated FAQ Rich Results display in Search.
+FAQ schema still passes validators + is used by voice assistants/aggregators,
+but no longer shows expandable FAQ snippet in Google SERP.
+
+### 19.3 CSP frame-src must include `https://www.google.com` (reCAPTCHA)
+
+**Bug pattern**: any app using Firebase Auth Google sign-in needs to allow
+reCAPTCHA iframes from `www.google.com` (not just `accounts.google.com`).
+Without this, reCAPTCHA fails to load → users can't sign in with Google.
+
+**Fix applied to**: Portal `index.html`, Money `index.html` meta CSP. Next.js
+apps (Tax/Travel/Deal) already had it via `next.config.ts` headers.
+
+**Test**: `qa/security-csp-recaptcha.qa.js` — added 2026-05-25.
+
+### 19.4 `rel="nofollow"` on internal auth.html links
+
+**Bug pattern**: `auth.html` is disallowed in robots.txt (intentional — login
+pages don't belong in search). But Google followed internal `<a href="auth.html">`
+links from index.html → got blocked at robots.txt → spammed Search Console with
+"Blocked by robots.txt" warnings.
+
+**Fix**: every internal link to `auth.html` carries `rel="nofollow"`. Test:
+`qa/seo-auth-nofollow.qa.js`.
+
+### 19.5 Pricing text must NOT look like URL paths
+
+**Bug pattern**: `<sub>/mo</sub>` next to a price ($9.99) was extracted by
+Googlebot as a relative URL path `/mo` → 404 in Search Console. Same for
+`/חודש` `/mês` `/mes`.
+
+**Fix**: Replace `<sub>/mo</sub>` with `<sub>per&nbsp;month</sub>` (full word, no
+slash). Test: `qa/seo-url-extraction.qa.js`.
+
+### 19.6 Dockerfile pattern for non-root user + iCloud file perms
+
+**Bug pattern**: Cloud Run deploy of `wizehealth` failed with `EACCES: permission
+denied, open '/app/server.js'`. Root cause: iCloud-synced files have 600 perms
+(owner-only), Docker COPY preserved them, then `USER appuser` couldn't read.
+
+**Fix template** (now in `RAMBAM/Dockerfile`):
+```dockerfile
+WORKDIR /app
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+COPY --chown=appuser:appgroup package*.json ./
+RUN npm ci --omit=dev && chown -R appuser:appgroup /app/node_modules
+COPY --chown=appuser:appgroup server.js ./
+# ...
+RUN chmod -R a+rX /app
+USER appuser
+```
+
+**Apply to**: any future Cloud Run service deployed `--source .` from iCloud.
+Test: `qa/docker-perms-check.qa.js`.
+
+### 19.7 New tax sub-routes: /reports, /profile
+
+**Tax frontend now has 3 first-class user-facing pages**:
+- `/advisor` — existing AI chat
+- `/reports` — read previous AI sessions + saved calculations + PDF export
+- `/profile` — read-only profile summary + inline edit (5 basic fields)
+
+All read from `localStorage`:
+- `tax_master_sessions` — chat history
+- `taxmaster_saved_calcs` — saved calculations
+- `taxmaster_user_data` — profile data
+
+Bottom-nav fallback handlers (in `layout.tsx`): `window.wizeTaxHome / Advisor /
+Reports / Profile` defined as URL navigations if not already set by advisor.
+
+### 19.8 WizeDeal seller mode (`/sell`)
+
+**New route**: `Check Deal/src/app/sell/page.tsx`
+**New API**: `Check Deal/src/app/api/ai/sell-price/route.ts`
+
+Same architecture as buyer endpoint (`/api/ai/market-data`):
+- 21-country aware with currency + local sites context (BR/IL/AE/US/etc)
+- **Tier-gated grounding**: Yolo only gets Gemini 2.5 Flash + Google Search
+  grounding ($0.04/call); Free/Pro use Flash Lite without grounding ($0.001)
+- **7-day module-scope cache** with sizeBucket key (size rounded to nearest 20m²)
+- **Sanity validation**: price ordering, $/m² USD-equivalent range $200-$50K,
+  ratio checks
+- **Kill switches**: `DEAL_SELL_ENABLED=false` returns 503
+- **Rate limits via `x-wl-plan`**: 3/day free, 15/day pro, 30/day yolo
+
+Pattern repeated from buyer endpoint — both share cost-control discipline.
+
+### 19.9 Regression test suite — codified from today's bugs
+
+New test files in `qa/` (each one represents a bug we won't repeat):
+- `seo-faqpage-duplicate.qa.js` — assert ≤1 FAQPage per URL
+- `security-csp-recaptcha.qa.js` — assert CSP includes www.google.com
+- `seo-url-extraction.qa.js` — scan for `<tag>/word</tag>` URL-bait patterns
+- `seo-sitemap-urls.qa.js` — every sitemap URL must return 200/3xx
+- `docker-perms-check.qa.js` — Dockerfile must have --chown or chmod before USER
+- `seo-auth-nofollow.qa.js` — internal auth.html links must have rel="nofollow"
+- `i18n-jsonld-leak.qa.js` — no language leak within lang-tagged JSON-LD blocks
+- `pricing-pill-coverage.qa.js` — pricing pill loaded on sub-apps, not Portal
+
+Run nightly via existing GH Actions QA workflow.
+
+### 19.10 Performance refactor — deferred
+
+After all today's fixes, Lighthouse Mobile Performance still scores 42-56
+(Desktop 59-81). Remaining issues require multi-day refactors:
+- Render-blocking 2.26s (defer non-critical CSS)
+- Unused JS 1,044 KiB (code splitting + tree-shaking)
+- Main-thread 5.2s (move heavy work to Web Workers)
+- 14 long tasks (chunk via `requestIdleCallback`)
+
+**Deferred to post-launch** — will be data-driven once Vercel Analytics +
+Cloudflare RUM show real user metrics (not synthetic Slow 4G).
+
+### 19.11 SEO infrastructure summary (2026-05-25 state)
+
+| Feature | Status | Where |
+|---------|--------|-------|
+| hreflang in sitemap (xhtml:link) | ✅ all 6 apps | `sitemap.xml` / Next.js sitemap.ts |
+| og:locale + alternateLocale | ✅ all 6 apps | meta tags in head |
+| Canonical + x-default hreflang | ✅ all 6 apps | head |
+| Organization JSON-LD with sameAs | ✅ Portal | `index.html` |
+| SoftwareApplication JSON-LD | ✅ all 6 apps | head |
+| Service JSON-LD with areaServed | ✅ Deal | `layout.tsx` |
+| FAQPage JSON-LD (EN only) | ✅ all 6 apps | head |
+| BreadcrumbList | ✅ Tax /profile, Deal /sell | page.tsx |
+| Cache-Control headers (immutable static) | ✅ Tax/Travel/Deal | `next.config.ts` / `vercel.json` |
+| rel="nofollow" on auth links | ✅ Portal (18 links) | `index.html` and friends |
+| robots.txt + sitemap.xml | ✅ all 6 apps | served from root |
+
+---
+
 _End of document. Update this file alongside any architectural change._
