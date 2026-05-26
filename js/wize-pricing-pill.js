@@ -51,7 +51,9 @@
     pill.dir = isRtl ? 'rtl' : 'ltr';
     pill.style.cssText = [
       'position:fixed',
-      'top:calc(36px + env(safe-area-inset-top, 0px))',
+      /* Bottom-center on mobile (above bottom-nav 56px + safe-area).
+         Below WizeBar on desktop — but only after the page-header area. */
+      'bottom:calc(76px + env(safe-area-inset-bottom, 0px))',
       'left:50%',
       'transform:translateX(-50%)',
       'z-index:380',
