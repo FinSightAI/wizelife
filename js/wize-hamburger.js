@@ -64,10 +64,10 @@
   }
 
   var T = {
-    he: { menu:'תפריט', apps:'אפליקציות', lang:'שפה', theme:'ערכת נושא', dark:'כהה', light:'בהיר', account:'חשבון', back:'חזרה ל-WizeLife', signin:'כניסה', signout:'יציאה', feedback:'משוב / דיווח באג', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    en: { menu:'Menu', apps:'Apps', lang:'Language', theme:'Theme', dark:'Dark', light:'Light', account:'Account', back:'Back to WizeLife', signin:'Sign in', signout:'Sign out', feedback:'Feedback / Report a bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    pt: { menu:'Menu', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Escuro', light:'Claro', account:'Conta', back:'Voltar para WizeLife', signin:'Entrar', signout:'Sair', feedback:'Feedback / Reportar bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    es: { menu:'Menú', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Oscuro', light:'Claro', account:'Cuenta', back:'Volver a WizeLife', signin:'Iniciar', signout:'Salir', feedback:'Feedback / Reportar bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' }
+    he: { menu:'תפריט', apps:'אפליקציות', lang:'שפה', theme:'ערכת נושא', dark:'כהה', light:'בהיר', account:'חשבון', back:'חזרה ל-WizeLife', signin:'כניסה', signout:'יציאה', feedback:'משוב / דיווח באג', plan_free:'FREE · שדרג ←', plan_pro:'PRO', plan_yolo:'YOLO' },
+    en: { menu:'Menu', apps:'Apps', lang:'Language', theme:'Theme', dark:'Dark', light:'Light', account:'Account', back:'Back to WizeLife', signin:'Sign in', signout:'Sign out', feedback:'Feedback / Report a bug', plan_free:'FREE · Upgrade →', plan_pro:'PRO', plan_yolo:'YOLO' },
+    pt: { menu:'Menu', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Escuro', light:'Claro', account:'Conta', back:'Voltar para WizeLife', signin:'Entrar', signout:'Sair', feedback:'Feedback / Reportar bug', plan_free:'GRÁTIS · Upgrade →', plan_pro:'PRO', plan_yolo:'YOLO' },
+    es: { menu:'Menú', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Oscuro', light:'Claro', account:'Cuenta', back:'Volver a WizeLife', signin:'Iniciar', signout:'Salir', feedback:'Feedback / Reportar bug', plan_free:'GRATIS · Upgrade →', plan_pro:'PRO', plan_yolo:'YOLO' }
   };
 
   function injectStyle() {
@@ -194,7 +194,17 @@
       nameDiv.textContent = nick;
       var planDiv = document.createElement('div');
       planDiv.className = 'wh-plan';
-      planDiv.textContent = planLbl;
+      if (planRaw === 'free') {
+        var upgradeA = document.createElement('a');
+        upgradeA.href = 'https://wizelife.ai/#pricing';
+        upgradeA.target = '_blank';
+        upgradeA.rel = 'noopener noreferrer';
+        upgradeA.textContent = planLbl;
+        upgradeA.style.cssText = 'color:inherit;text-decoration:underline;cursor:pointer;';
+        planDiv.appendChild(upgradeA);
+      } else {
+        planDiv.textContent = planLbl;
+      }
       infoDiv.appendChild(nameDiv);
       infoDiv.appendChild(planDiv);
       acct.appendChild(avDiv);
