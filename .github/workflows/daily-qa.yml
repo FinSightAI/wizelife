@@ -34,7 +34,7 @@ jobs:
           cd /tmp/qa-deps
           npm init -y > /dev/null
           npm install --no-save \
-            playwright@1.49.1 \
+            playwright@1.60.0 \
             @axe-core/playwright@4.10.0 \
             @lhci/cli@0.14.0
           npx playwright install chromium chromium-headless-shell --with-deps
