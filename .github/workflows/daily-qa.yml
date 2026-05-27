@@ -37,7 +37,7 @@ jobs:
             playwright@1.49.1 \
             @axe-core/playwright@4.10.0 \
             @lhci/cli@0.14.0
-          npx playwright install chromium chrome-headless-shell --with-deps
+          npx playwright install chromium chromium-headless-shell --with-deps
 
       - name: Wake sleeping services
         run: |
