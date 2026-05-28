@@ -99,6 +99,10 @@ async function checkRequired(page, selectors) {
             deviceScaleFactor: 3, isMobile: width < 768, hasTouch: true,
           });
           const page = await ctx.newPage();
+          // Block analytics beacon — localhost origin returns 403 from logEvent
+          // Cloud Function, which trips the >5/5min error alarm in prod.
+          await page.route('**/wize-track-beacon.js', r => r.abort());
+          await page.route('**/cloudfunctions.net/logEvent**', r => r.abort());
           const errs = [];
           page.on('pageerror', e => errs.push(String(e).slice(0, 120)));
           // Pre-set wl_lang via an init script (localStorage is per-origin so
