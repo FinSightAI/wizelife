@@ -47,7 +47,7 @@ window.NOMAD_SUPPLEMENTS = {
         pt: 'Schengen — 90/180, contagem partilhada com todos os Schengen.',
         es: 'Schengen — 90/180, contador compartido con todos los Schengen.',
       },
-      touristVisaSource: 'https://vistoperitalia.esteri.it/home/en',
+      touristVisaSource: 'https://vistoperitalia.esteri.it/',
     },
     GR: {
       touristVisaDays: 90,
@@ -67,7 +67,7 @@ window.NOMAD_SUPPLEMENTS = {
         pt: 'Chipre NÃO está em Schengen (2026) — 90/180 mas em contagem separada.',
         es: 'Chipre NO está en Schengen (2026) — 90/180 pero conteo separado.',
       },
-      touristVisaSource: 'https://www.mfa.gov.cy/visas/visa-information.html',
+      touristVisaSource: 'https://www.gov.cy/mfa/en/visa-information/',
     },
     MT: {
       touristVisaDays: 90,
@@ -77,7 +77,7 @@ window.NOMAD_SUPPLEMENTS = {
         pt: 'Schengen — 90/180 partilhado.',
         es: 'Schengen — 90/180 compartido.',
       },
-      touristVisaSource: 'https://identita.gov.mt/visas/',
+      touristVisaSource: 'https://identita.gov.mt/central-visa-unit-main-page/',
     },
     GE: {
       touristVisaDays: 365,
@@ -87,7 +87,7 @@ window.NOMAD_SUPPLEMENTS = {
         pt: 'Geórgia — 365 dias sem visto por entrada; relógio reinicia a cada entrada.',
         es: 'Georgia — 365 días sin visado por entrada; el reloj se reinicia con cada entrada.',
       },
-      touristVisaSource: 'https://www.geoconsul.gov.ge/en/visaInformation',
+      touristVisaSource: 'https://geoconsul.gov.ge/en/entering-georgia-visa',
     },
     AE: {
       touristVisaDays: 90,
