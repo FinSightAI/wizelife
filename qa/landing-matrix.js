@@ -84,6 +84,10 @@ async function checkRequired(page, selectors) {
             deviceScaleFactor: 3, isMobile: width < 768, hasTouch: true, locale: 'he-IL',
           });
           const page = await ctx.newPage();
+          // Block analytics beacon — keeps test runs from triggering the prod
+          // logEvent Cloud Function (returns 403 on non-allowlisted origins).
+          await page.route('**/wize-track-beacon.js', r => r.abort());
+          await page.route('**/cloudfunctions.net/logEvent**', r => r.abort());
           const errs = [];
           page.on('pageerror', e => errs.push(String(e).slice(0, 120)));
           if (mode === 'standalone') {
