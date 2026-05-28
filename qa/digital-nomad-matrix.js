@@ -119,7 +119,7 @@ async function checkRequired(page, sels) {
         if (layout && layout.untranslated && layout.untranslated.length) probs.push('UNTRANSLATED(HE-leak): ' + layout.untranslated.map(u => `${u.key}="${u.txt}"`).join(', '));
         if (layout && (!layout.maxNum || layout.maxNum === '—')) probs.push('MAX-NUM empty (NOMAD_DATA load failed?)');
         if (layout && layout.zoneCount === 0) probs.push('AXIS EMPTY (zones not built)');
-        if (layout && layout.gridCells < 12) probs.push('GRID INCOMPLETE: ' + layout.gridCells + ' cells');
+        if (layout && layout.gridCells < 15) probs.push('GRID INCOMPLETE: ' + layout.gridCells + ' cells');
         if (missing && missing.length) probs.push('REQ ' + missing.join(','));
         const realErrs = errs.filter(e =>
           !/logEvent|finzilla-7f1f9\.cloudfunctions/.test(e) &&
