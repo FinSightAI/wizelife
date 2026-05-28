@@ -155,7 +155,7 @@ window.NOMAD_ADDITIONS = {
         pt: 'IRAS segue OCDE MTC. Home office isolado não cria EP; mas funções-núcleo + atividade no mercado SG podem aplicar IRC 17%. Risco baixo a médio.',
         es: 'IRAS sigue OCDE MTC. Home office aislado no crea EP; pero funciones-núcleo + actividad en mercado SG pueden aplicar IS 17%. Riesgo bajo a medio.',
       },
-      peSource: 'https://www.iras.gov.sg/taxes/corporate-income-tax/specific-topics/income-from-singapore',
+      peSource: 'https://www.iras.gov.sg/taxes/corporate-income-tax/income-deductions-for-companies/taxable-non-taxable-income',
       nomadVisa: {
         he: 'אין DNV ייעודי בסינגפור. הציר העיקרי לעובדי טכנולוגיה ועצמאים בכירים: Employment Pass (שכר ≥SGD 5,600/חודש, ~$4,100), או Tech.Pass לטאלנטים בכירים (~SGD 22,500/חודש). Overseas Networks & Expertise Pass (ONE Pass, 2023) למרוויחים גבוהים במיוחד. ויזת תייר 90 יום לא מתירה תעסוקה מקומית — אך עבודה מרחוק למעסיק זר נסבלת באופן כללי במהלך שהייה תיירותית קצרה.',
         en: 'No dedicated DNV in Singapore. Main routes for tech workers and senior freelancers: Employment Pass (salary ≥SGD 5,600/mo, ~$4,100), or Tech.Pass for top talent (~SGD 22,500/mo). Overseas Networks & Expertise Pass (ONE Pass, 2023) for ultra-high earners. The 90-day tourist entry does not permit local employment — but remote work for a foreign employer during short tourist stays is generally tolerated.',
@@ -217,7 +217,7 @@ window.NOMAD_ADDITIONS = {
         pt: 'Chegada e partida ambos contam. Base ano civil. IRAS usa registos ICA — sem teste de "centro de vida" se limiar não for atravessado.',
         es: 'Llegada y salida ambos cuentan. Base año natural. IRAS usa registros ICA — sin prueba de "centro de vida" si no se cruza el umbral.',
       },
-      dayRuleSource: 'https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/working-out-your-taxes/working-out-my-tax-residency',
+      dayRuleSource: 'https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/working-out-my-tax-residency',
     },
   },
 };
