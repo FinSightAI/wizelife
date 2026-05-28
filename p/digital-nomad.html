@@ -147,6 +147,87 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
 .modal-inner .modal-row strong{color:#a5b4fc}
 .modal-inner .modal-row .src{margin-top:4px;font:500 10.5px Inter,sans-serif;color:#64748b;display:block}
 .modal-inner .modal-row .src a{color:#a5b4fc;text-decoration:none}
+
+/* Preset scenarios row */
+.presets{max-width:760px;margin:0 auto 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:520px){.presets{grid-template-columns:1fr}}
+.preset{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;cursor:pointer;transition:border-color .12s,background .12s,transform .15s;text-align:start}
+.preset:hover{border-color:rgba(139,92,246,0.45);background:rgba(139,92,246,0.05);transform:translateY(-1px)}
+.preset .pname{font:800 13px Plus Jakarta Sans,Inter,sans-serif;color:#c4b5fd;margin-bottom:4px}
+.preset .pdesc{font:500 11.5px Inter,sans-serif;color:var(--muted);line-height:1.45}
+
+/* Source-of-truth chip near the big number */
+.src-chip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 10px;border-radius:99px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);font:600 10.5px Inter,sans-serif;color:#a5b4fc;text-decoration:none}
+.src-chip:hover{background:rgba(99,102,241,0.2)}
+
+/* "What is a day?" info tooltip */
+.day-info{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);font:700 11px Inter,sans-serif;cursor:pointer;margin-inline-start:5px;vertical-align:middle;line-height:1}
+.day-info:hover{background:rgba(99,102,241,0.28)}
+.day-tip{margin-top:6px;padding:9px 11px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:9px;font:500 11.5px Inter,sans-serif;color:#cbd5e1;line-height:1.5;display:none}
+.day-tip.on{display:block}
+.day-tip .src{display:block;margin-top:4px;font-size:10.5px;color:#64748b}
+.day-tip .src a{color:#a5b4fc;text-decoration:none}
+
+/* Salary-compare link chip (after zones) */
+.salary-chip{max-width:760px;margin:-8px auto 18px;text-align:center}
+.salary-chip a{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7;padding:7px 14px;border-radius:99px;font:700 12px Inter,sans-serif;text-decoration:none}
+.salary-chip a:hover{background:rgba(16,185,129,0.15)}
+
+/* PE mitigation cards inside .pe-warn */
+.mitigations{margin-top:12px;display:grid;gap:8px}
+.mitigation{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:10px 12px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:9px}
+.mitigation .num{font:800 12px 'JetBrains Mono',Menlo,monospace;color:#fcd34d}
+.mitigation .ttl{font:700 12.5px Inter,sans-serif;color:#eef2ff;margin-bottom:2px}
+.mitigation .body{font:500 11.5px Inter,sans-serif;color:#cbd5e1;line-height:1.5}
+
+/* Israel-side residency-break card */
+.il-card{max-width:760px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.il-card .head{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
+.il-card .head .ttl{font:800 14.5px Plus Jakarta Sans,Inter,sans-serif;color:#eef2ff}
+.il-card .head .sub{font:500 11.5px Inter,sans-serif;color:var(--muted);margin-top:3px;line-height:1.5}
+.il-card .chev{font-size:16px;color:#a5b4fc}
+.il-card .body{display:none;margin-top:14px}
+.il-card.on .body{display:block}
+.il-card.on .chev{transform:rotate(180deg)}
+.il-card .il-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.il-card .il-field label{display:block;font:600 11.5px Inter,sans-serif;color:#cbd5e1;margin-bottom:5px}
+.il-card .il-field input,.il-card .il-field select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:#eef2ff;font:600 14px Inter,sans-serif;outline:none}
+.il-card .il-go{margin-top:12px;width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:0;border-radius:10px;padding:11px;font:800 13px Inter,sans-serif;cursor:pointer}
+.il-card .il-result{margin-top:14px;display:none}
+.il-card .il-result.on{display:block}
+.il-card .il-result .head-r{font:800 16px Inter,sans-serif;margin-bottom:6px}
+.il-card .il-result .note{font:500 12px Inter,sans-serif;color:#cbd5e1;line-height:1.55}
+
+/* Multi-country split planner */
+.split-card{max-width:760px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.split-card .head{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
+.split-card .head .ttl{font:800 14.5px Plus Jakarta Sans,Inter,sans-serif;color:#eef2ff}
+.split-card .head .sub{font:500 11.5px Inter,sans-serif;color:var(--muted);margin-top:3px;line-height:1.5}
+.split-card .body{display:none;margin-top:14px}
+.split-card.on .body{display:block}
+.split-card.on .chev{transform:rotate(180deg)}
+.split-row{display:grid;grid-template-columns:1.4fr auto 1fr;gap:10px;align-items:center;padding:9px;background:rgba(255,255,255,0.025);border-radius:9px;margin-bottom:6px}
+.split-row select{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:7px;padding:7px 9px;color:#eef2ff;font:600 12.5px Inter,sans-serif}
+.split-row .d{font:800 14px 'JetBrains Mono',Menlo,monospace;color:#fcd34d;text-align:end;min-width:64px}
+.split-row .ok{font:700 12px Inter,sans-serif;text-align:center}
+.split-row .ok.g{color:#6ee7b7} .split-row .ok.a{color:#fcd34d} .split-row .ok.r{color:#fca5a5}
+.split-card input[type=range]{width:100%;accent-color:#8b5cf6}
+.split-total{margin-top:10px;padding:10px 12px;border-radius:9px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);font:700 12.5px Inter,sans-serif;color:#a5b4fc;display:flex;justify-content:space-between}
+.split-total.bad{color:#fca5a5;background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.3)}
+
+/* FAQ accordion */
+.faq-wrap{max-width:760px;margin:0 auto 18px}
+.faq-wrap h2{margin:0 0 10px;font:800 17px Plus Jakarta Sans,Inter,sans-serif;color:var(--text)}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:0;margin-bottom:6px;overflow:hidden}
+.faq-q{padding:13px 14px;font:700 13px Inter,sans-serif;color:#eef2ff;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;line-height:1.4}
+.faq-q .marker{font-size:14px;color:#a5b4fc;flex-shrink:0;transition:transform .2s}
+.faq-item.on .faq-q .marker{transform:rotate(45deg)}
+.faq-a{display:none;padding:0 14px 14px;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6;border-top:1px solid rgba(255,255,255,0.05)}
+.faq-item.on .faq-a{display:block}
+
+/* Verified-date staleness flag */
+.verified-flag{display:inline-block;margin:0 4px;padding:1px 7px;border-radius:99px;background:rgba(16,185,129,0.12);color:#6ee7b7;font:700 9.5px Inter,sans-serif;letter-spacing:.3px}
+.verified-flag.stale{background:rgba(245,158,11,0.12);color:#fcd34d}
 </style>
 <script src="/js/wize-attribution.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
@@ -173,6 +254,9 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
   <p data-i18n="sub">ישראלי שעובד מרחוק מחו״ל? לכל מדינה יש סף שונה — וסיכון נסתר שהמעסיק הישראלי שלך יחויב במס תאגידי שם (PE).</p>
 </div>
 
+<!-- Quick-pick scenarios — populate from NOMAD_SUPPLEMENTS.scenarios -->
+<div class="presets" id="presets"></div>
+
 <div class="card">
   <div class="row">
     <div class="field">
@@ -181,9 +265,10 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
       <div class="hint" data-i18n="hintCountry">בחר מדינה לבדיקה</div>
     </div>
     <div class="field">
-      <label data-i18n="lblDays">ימים מתוכננים בשנה</label>
+      <label data-i18n="lblDays">ימים מתוכננים בשנה<button type="button" class="day-info" id="dayInfoBtn" aria-label="What is a day?">ⓘ</button></label>
       <input type="number" id="days" placeholder="180" min="0" max="365" value="180" inputmode="numeric">
       <div class="hint" data-i18n="hintDays">סך הימים בשנת מס אחת</div>
+      <div class="day-tip" id="dayTip"></div>
     </div>
   </div>
   <label style="display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.25);border-radius:10px;cursor:pointer">
@@ -201,6 +286,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
   <div class="big"><span id="maxNum">—</span></div>
   <div class="unit" data-i18n="maxUnit">ימים במדינה זו בשנת מס</div>
   <div class="reason" id="maxReason"></div>
+  <a class="src-chip" id="srcChip" href="#" target="_blank" rel="noopener" style="display:none">📚 <span id="srcChipTxt">—</span></a>
 </div>
 
 <!-- Day-axis with 4 zones -->
@@ -210,11 +296,18 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
   <div class="zone-verdict" id="zonesVerdict"></div>
 </div>
 
+<!-- Salary-compare CTA chip (shows when a country is selected) -->
+<div class="salary-chip" id="salaryChip" style="display:none">
+  <a id="salaryChipLink" href="https://wizelife.ai/p/salary-compare.html" data-i18n="salaryChip">💰 כמה נטו תרוויח שם? → השווה משכורת ב-25 מדינות</a>
+</div>
+
 <!-- PE-risk warning (red, when employerIL + medium/high PE) -->
 <div class="pe-warn" id="peWarn">
   <h3>⚠️ <span data-i18n="peWarnT">סיכון PE למעסיק הישראלי שלך</span></h3>
   <p id="peWarnBody"></p>
   <div class="src"><span data-i18n="peWarnSrc">מקור:</span> <a id="peWarnSrcLink" href="#" target="_blank" rel="noopener">—</a></div>
+  <div style="margin-top:14px;font:800 12px Inter,sans-serif;color:#fcd34d" data-i18n="mitT">🛡️ איך מקטינים את הסיכון</div>
+  <div class="mitigations" id="mitigations"></div>
 </div>
 
 <!-- Country grid (overview of all 12) -->
@@ -222,6 +315,66 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
   <h2 data-i18n="gridT">📍 12 מדינות פופולריות לישראלים — מבט מהיר</h2>
   <p class="sub" data-i18n="gridSub">לחץ על מדינה לפירוט מקורות. עמודות: סף תושבות מס · סיכון PE · אמנת מס · טוטליזציה.</p>
   <div class="grid" id="grid"></div>
+</div>
+
+<!-- Multi-country split planner -->
+<div class="split-card" id="splitCard">
+  <div class="head" id="splitHead">
+    <div>
+      <div class="ttl" data-i18n="splitT">🗺️ מתחלקים בין כמה מדינות?</div>
+      <div class="sub" data-i18n="splitSub">חשב לכל מדינה בנפרד — ישראל תמיד נחשבת ראשונה (סף 183/30+425).</div>
+    </div>
+    <span class="chev">▾</span>
+  </div>
+  <div class="body" id="splitBody">
+    <div id="splitRows"></div>
+    <div class="split-total" id="splitTotal"><span data-i18n="splitTotal">סה"כ ימים:</span> <span><span id="splitSum">0</span>/365</span></div>
+  </div>
+</div>
+
+<!-- Israel-side residency break checker -->
+<div class="il-card" id="ilCard">
+  <div class="head" id="ilHead">
+    <div>
+      <div class="ttl" data-i18n="ilT">🇮🇱 הצד הישראלי — האם ניתקת תושבות?</div>
+      <div class="sub" data-i18n="ilSub">בלי לנתק תושבות בארץ, אתה ממשיך לחוב מס על הכנסה עולמית בישראל — גם אם אתה במדינה אחרת.</div>
+    </div>
+    <span class="chev">▾</span>
+  </div>
+  <div class="body">
+    <div class="il-grid">
+      <div class="il-field">
+        <label data-i18n="ilQDays">כמה ימים אתה פיזית בישראל (השנה)?</label>
+        <input type="number" id="ilDays" min="0" max="365" value="60">
+      </div>
+      <div class="il-field">
+        <label data-i18n="ilQFamily">איפה בן/בת זוג + ילדים?</label>
+        <select id="ilFamily">
+          <option value="il" data-i18n="ilOptIL">בישראל</option>
+          <option value="abroad" data-i18n="ilOptAbroad">בחו"ל איתי</option>
+          <option value="none" data-i18n="ilOptNone">אין / לא רלוונטי</option>
+        </select>
+      </div>
+      <div class="il-field">
+        <label data-i18n="ilQHome">בית קבע (בעלות / שכירות ארוכה)?</label>
+        <select id="ilHome">
+          <option value="il" data-i18n="ilHomeIL">רק בישראל</option>
+          <option value="both" data-i18n="ilHomeBoth">בשתי המדינות</option>
+          <option value="abroad" data-i18n="ilHomeAbroad">רק בחו"ל</option>
+        </select>
+      </div>
+      <div class="il-field">
+        <label data-i18n="ilQEmp">איפה המעסיק / מקור ההכנסה?</label>
+        <select id="ilEmp">
+          <option value="il" data-i18n="ilEmpIL">מעסיק ישראלי</option>
+          <option value="abroad" data-i18n="ilEmpAbroad">מעסיק זר</option>
+          <option value="self" data-i18n="ilEmpSelf">עצמאי / חברה שלי</option>
+        </select>
+      </div>
+    </div>
+    <button class="il-go" id="ilCheck" data-i18n="ilCheckBtn">בדוק סטטוס תושבות ישראלית ←</button>
+    <div class="il-result" id="ilResult"></div>
+  </div>
 </div>
 
 <!-- Share -->
@@ -233,6 +386,12 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
     <button onclick="shareTo('email')"><span class="icon">✉️</span><span data-i18n="shareEmail">Email</span></button>
     <button onclick="shareTo('copy')"><span class="icon">📋</span><span data-i18n="shareCopy">העתק</span></button>
   </div>
+</div>
+
+<!-- FAQ accordion -->
+<div class="faq-wrap" id="faqWrap" style="display:none">
+  <h2 data-i18n="faqT">❓ שאלות נפוצות</h2>
+  <div id="faqList"></div>
 </div>
 
 <!-- CTA -->
@@ -252,12 +411,13 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
 </div>
 
 <div class="foot">
-  <span data-i18n="footSource">מקור: PwC Worldwide Tax Summaries · OECD · רשות המסים בישראל · אמנות בילטרליות. נכון לשנת 2026.</span><br>
+  <span data-i18n="footSource">מקור: PwC Worldwide Tax Summaries · OECD · רשות המסים בישראל · אמנות בילטרליות.</span> <span class="verified-flag" id="verifiedFlag">verified 2026-05</span><br>
   <span data-i18n="footLegal">⚠️ כלי מידע כללי. דיני מס בינלאומיים מורכבים — אל תקח החלטת רילוקיישן בלי יועץ מס מורשה.</span><br>
   <a href="https://wizelife.ai">wizelife.ai</a> · <a href="https://wizelife.ai/privacy.html">Privacy</a> · <a href="https://wizelife.ai/terms.html">Terms</a>
 </div>
 
 <script src="/js/nomad-data.js"></script>
+<script src="/js/nomad-supplements.js"></script>
 <script src="/js/wize-share.js" defer></script>
 <script>
 // ── i18n ────────────────────────────────────────────────────────────────────
@@ -287,6 +447,22 @@ const TR = {
     footSource: 'מקור: PwC Worldwide Tax Summaries · OECD · רשות המסים בישראל · אמנות בילטרליות. נכון לשנת 2026.',
     footLegal: '⚠️ כלי מידע כללי. דיני מס בינלאומיים מורכבים — אל תקח החלטת רילוקיישן בלי יועץ מס מורשה.',
     modalTaxRes: 'סף תושבות מס', modalTreaty: 'אמנת מס עם ישראל', modalTotal: 'טוטליזציה לבל"מ', modalPE: 'סיכון PE למעסיק זר', modalVisa: 'ויזת נוודות דיגיטלית', modalSrc: 'מקור:',
+    salaryChip: '💰 כמה נטו תרוויח שם? → השווה משכורת ב-25 מדינות',
+    mitT: '🛡️ איך מקטינים את הסיכון',
+    splitT: '🗺️ מתחלקים בין כמה מדינות?',
+    splitSub: 'חשב לכל מדינה בנפרד — ישראל תמיד נחשבת ראשונה (סף 183/30+425).',
+    splitTotal: 'סה"כ ימים:',
+    ilT: '🇮🇱 הצד הישראלי — האם ניתקת תושבות?',
+    ilSub: 'בלי לנתק תושבות בארץ, אתה ממשיך לחוב מס על הכנסה עולמית בישראל — גם אם אתה במדינה אחרת.',
+    ilQDays: 'כמה ימים אתה פיזית בישראל (השנה)?',
+    ilQFamily: 'איפה בן/בת זוג + ילדים?',
+    ilOptIL: 'בישראל', ilOptAbroad: 'בחו"ל איתי', ilOptNone: 'אין / לא רלוונטי',
+    ilQHome: 'בית קבע (בעלות / שכירות ארוכה)?',
+    ilHomeIL: 'רק בישראל', ilHomeBoth: 'בשתי המדינות', ilHomeAbroad: 'רק בחו"ל',
+    ilQEmp: 'איפה המעסיק / מקור ההכנסה?',
+    ilEmpIL: 'מעסיק ישראלי', ilEmpAbroad: 'מעסיק זר', ilEmpSelf: 'עצמאי / חברה שלי',
+    ilCheckBtn: 'בדוק סטטוס תושבות ישראלית ←',
+    faqT: '❓ שאלות נפוצות',
     shareTextMine: 'בדקתי ב-WizeLife כמה ימים אפשר להישאר בכל מדינה בלי להפוך לתושב מס. שווה לראות:',
   },
   en: {
@@ -314,6 +490,22 @@ const TR = {
     footSource: 'Sources: PwC Worldwide Tax Summaries · OECD · Israel Tax Authority · bilateral treaties. As of 2026.',
     footLegal: '⚠️ General information tool. International tax law is complex — never make a relocation decision without a licensed tax advisor.',
     modalTaxRes: 'Tax residency threshold', modalTreaty: 'Tax treaty with Israel', modalTotal: 'Social security totalization', modalPE: 'PE risk to foreign employer', modalVisa: 'Digital nomad visa', modalSrc: 'Source:',
+    salaryChip: '💰 Want to see net pay there? → Compare salary across 25 countries',
+    mitT: '🛡️ How to reduce the risk',
+    splitT: '🗺️ Splitting across multiple countries?',
+    splitSub: 'Calculate each country separately — Israel always counts first (183 / 30+425 test).',
+    splitTotal: 'Total days:',
+    ilT: '🇮🇱 The Israel side — have you broken residency?',
+    ilSub: 'Without formally breaking Israeli residency, you continue to owe tax in Israel on worldwide income — even while abroad.',
+    ilQDays: 'How many days physically in Israel (this year)?',
+    ilQFamily: 'Where is immediate family (spouse + kids)?',
+    ilOptIL: 'In Israel', ilOptAbroad: 'Abroad with me', ilOptNone: 'None / N/A',
+    ilQHome: 'Permanent home (owned / long-term rented)?',
+    ilHomeIL: 'Israel only', ilHomeBoth: 'Both countries', ilHomeAbroad: 'Abroad only',
+    ilQEmp: 'Where is the employer / income source?',
+    ilEmpIL: 'Israeli employer', ilEmpAbroad: 'Foreign employer', ilEmpSelf: 'Self-employed / own company',
+    ilCheckBtn: 'Check Israeli residency status →',
+    faqT: '❓ Frequently asked',
     shareTextMine: 'I checked on WizeLife how many days you can stay per country without becoming a tax resident. Worth seeing:',
   },
   pt: {
@@ -341,6 +533,22 @@ const TR = {
     footSource: 'Fontes: PwC Worldwide Tax Summaries · OECD · Autoridade Fiscal de Israel · tratados bilaterais. Em vigor em 2026.',
     footLegal: '⚠️ Ferramenta de informação geral. O direito fiscal internacional é complexo — nunca tome uma decisão de relocalização sem consultor fiscal licenciado.',
     modalTaxRes: 'Limite de residência fiscal', modalTreaty: 'Tratado fiscal com Israel', modalTotal: 'Totalização de seg. social', modalPE: 'Risco PE para empregador estrangeiro', modalVisa: 'Visto de nómada digital', modalSrc: 'Fonte:',
+    salaryChip: '💰 Quanto ganha líquido lá? → Compare salário em 25 países',
+    mitT: '🛡️ Como reduzir o risco',
+    splitT: '🗺️ Dividir entre vários países?',
+    splitSub: 'Calcule cada país separadamente — Israel conta sempre primeiro (teste 183 / 30+425).',
+    splitTotal: 'Total de dias:',
+    ilT: '🇮🇱 O lado israelita — rompeu a residência?',
+    ilSub: 'Sem romper formalmente a residência israelita, continua a dever imposto sobre rendimento mundial em Israel — mesmo no estrangeiro.',
+    ilQDays: 'Quantos dias fisicamente em Israel (este ano)?',
+    ilQFamily: 'Onde está a família próxima (cônjuge + filhos)?',
+    ilOptIL: 'Em Israel', ilOptAbroad: 'No estrangeiro comigo', ilOptNone: 'Nenhuma / N/A',
+    ilQHome: 'Casa permanente (propriedade / aluguer longo)?',
+    ilHomeIL: 'Só em Israel', ilHomeBoth: 'Ambos os países', ilHomeAbroad: 'Só no estrangeiro',
+    ilQEmp: 'Onde está o empregador / fonte de rendimento?',
+    ilEmpIL: 'Empregador israelita', ilEmpAbroad: 'Empregador estrangeiro', ilEmpSelf: 'Conta própria / empresa minha',
+    ilCheckBtn: 'Verificar estatuto de residência israelita →',
+    faqT: '❓ Perguntas frequentes',
     shareTextMine: 'Verifiquei no WizeLife quantos dias se pode ficar em cada país sem se tornar residente fiscal. Vale a pena ver:',
   },
   es: {
@@ -368,6 +576,22 @@ const TR = {
     footSource: 'Fuentes: PwC Worldwide Tax Summaries · OECD · Autoridad Fiscal de Israel · tratados bilaterales. Vigente en 2026.',
     footLegal: '⚠️ Herramienta de información general. El derecho fiscal internacional es complejo — nunca tomes una decisión de mudanza sin asesor fiscal licenciado.',
     modalTaxRes: 'Umbral de residencia fiscal', modalTreaty: 'Tratado fiscal con Israel', modalTotal: 'Totalización seg. social', modalPE: 'Riesgo PE para empleador extranjero', modalVisa: 'Visado de nómada digital', modalSrc: 'Fuente:',
+    salaryChip: '💰 ¿Cuánto neto ganarás allí? → Compara salario en 25 países',
+    mitT: '🛡️ Cómo reducir el riesgo',
+    splitT: '🗺️ ¿Repartido entre varios países?',
+    splitSub: 'Calcula cada país por separado — Israel siempre cuenta primero (prueba 183 / 30+425).',
+    splitTotal: 'Total de días:',
+    ilT: '🇮🇱 El lado israelí — ¿has roto la residencia?',
+    ilSub: 'Sin romper formalmente la residencia israelí, sigues debiendo impuestos sobre renta mundial en Israel — incluso en el extranjero.',
+    ilQDays: '¿Cuántos días físicamente en Israel (este año)?',
+    ilQFamily: '¿Dónde está la familia cercana (cónyuge + hijos)?',
+    ilOptIL: 'En Israel', ilOptAbroad: 'En el extranjero conmigo', ilOptNone: 'Ninguno / N/A',
+    ilQHome: 'Vivienda permanente (en propiedad / alquiler largo)?',
+    ilHomeIL: 'Solo Israel', ilHomeBoth: 'Ambos países', ilHomeAbroad: 'Solo el extranjero',
+    ilQEmp: '¿Dónde está el empleador / fuente de ingresos?',
+    ilEmpIL: 'Empleador israelí', ilEmpAbroad: 'Empleador extranjero', ilEmpSelf: 'Autónomo / mi empresa',
+    ilCheckBtn: 'Comprobar estado de residencia israelí →',
+    faqT: '❓ Preguntas frecuentes',
     shareTextMine: 'Comprobé en WizeLife cuántos días puedes quedarte en cada país sin convertirte en residente fiscal. Vale la pena verlo:',
   },
 };
@@ -389,6 +613,9 @@ function applyLang(l) {
   document.querySelectorAll('#langSwitch button').forEach(b => b.classList.toggle('on', b.dataset.l === l));
   populateCountries();
   renderGrid();
+  renderPresets();
+  renderMitigations();
+  renderFAQ();
   recalc();
 }
 document.querySelectorAll('#langSwitch button').forEach(b => {
@@ -420,12 +647,20 @@ function maxSafeDays(d) {
   return peLimit === null ? tax : Math.min(tax, peLimit - 1);
 }
 
-function zoneFor(days, d) {
+// Tourist-visa-free day count from supplements (defaults to 90 if not loaded).
+// Schengen members all share 90/180; GB has 180; Georgia 365; Thailand 60.
+function touristDays(code) {
+  const c = (window.NOMAD_SUPPLEMENTS && window.NOMAD_SUPPLEMENTS.byCountry) ? window.NOMAD_SUPPLEMENTS.byCountry[code] : null;
+  return c && c.touristVisaDays ? c.touristVisaDays : 90;
+}
+
+function zoneFor(days, d, code) {
   const peLimit = PE_THRESH[d.peRisk];
   const tax = d.taxResidentDays;
+  const tourist = touristDays(code);
   if (days >= tax) return 'b';                       // tax resident triggered
   if (peLimit !== null && days >= peLimit) return 'r'; // PE highly likely
-  if (days >= 90) return 'a';                        // tourist-visa zone gone
+  if (days >= tourist) return 'a';                   // tourist-visa zone gone
   return 'g';                                        // safe
 }
 
@@ -466,7 +701,7 @@ function recalc() {
       );
 
   // 4-zone axis. Widths proportional to 365 days.
-  const z1End = 90;                                      // safe → amber boundary
+  const z1End = touristDays(code);                       // safe → amber boundary (per-country)
   const z2End = peLimit ? Math.min(peLimit, tax) : tax;  // amber → red boundary
   const z3End = tax;                                     // red → black boundary
   const w = n => (n / 365) * 100;
@@ -481,28 +716,29 @@ function recalc() {
   document.getElementById('axis').innerHTML = axisParts.join('');
 
   // Zone verdict text
-  const zone = zoneFor(days, d);
+  const zone = zoneFor(days, d, code);
+  const tourist = touristDays(code);
   let verdictText;
   if (zone === 'g') {
     verdictText = t4(
-      `🟢 <strong>אזור בטוח.</strong> נוכחות עד 90 ימים = רמת תייר. אין חשיפת מס אישית ואין סיכון PE למעסיק.`,
-      `🟢 <strong>Safe zone.</strong> Stay up to 90 days = tourist-level. No personal tax exposure and no PE risk to the employer.`,
-      `🟢 <strong>Zona segura.</strong> Estadia até 90 dias = nível turista. Sem exposição pessoal nem risco PE.`,
-      `🟢 <strong>Zona segura.</strong> Estancia hasta 90 días = nivel turista. Sin exposición personal ni riesgo PE.`
+      `🟢 <strong>אזור בטוח.</strong> נוכחות עד ${tourist} ימים = רמת תייר (ויזה חופשית לישראלים). אין חשיפת מס אישית ואין סיכון PE למעסיק.`,
+      `🟢 <strong>Safe zone.</strong> Stay up to ${tourist} days = tourist-level (visa-free for Israelis). No personal tax exposure and no PE risk to the employer.`,
+      `🟢 <strong>Zona segura.</strong> Estadia até ${tourist} dias = nível turista (visto livre para israelitas). Sem exposição pessoal nem risco PE.`,
+      `🟢 <strong>Zona segura.</strong> Estancia hasta ${tourist} días = nivel turista (visado libre para israelíes). Sin exposición personal ni riesgo PE.`
     );
   } else if (zone === 'a') {
     verdictText = peLimit
       ? t4(
-          `🟡 <strong>אזור צהוב.</strong> עברת 90 ימים — סיכון PE למעסיק הישראלי שלך מתחיל להופיע (${riskWord}). אישית עוד לא תושב מס.`,
-          `🟡 <strong>Amber zone.</strong> Past 90 days — PE risk to your Israeli employer starts to materialize (${d.peRisk}). Personally not yet a tax resident.`,
-          `🟡 <strong>Zona âmbar.</strong> Acima de 90 dias — risco PE começa a surgir (${riskWord}). Pessoalmente ainda não residente.`,
-          `🟡 <strong>Zona ámbar.</strong> Por encima de 90 días — riesgo PE comienza a emerger (${riskWord}). Personalmente aún no residente.`
+          `🟡 <strong>אזור צהוב.</strong> עברת ${tourist} ימים — סיכון PE למעסיק הישראלי שלך מתחיל להופיע (${riskWord}). אישית עוד לא תושב מס.`,
+          `🟡 <strong>Amber zone.</strong> Past ${tourist} days — PE risk to your Israeli employer starts to materialize (${d.peRisk}). Personally not yet a tax resident.`,
+          `🟡 <strong>Zona âmbar.</strong> Acima de ${tourist} dias — risco PE começa a surgir (${riskWord}). Pessoalmente ainda não residente.`,
+          `🟡 <strong>Zona ámbar.</strong> Por encima de ${tourist} días — riesgo PE comienza a emerger (${riskWord}). Personalmente aún no residente.`
         )
       : t4(
-          `🟡 <strong>אזור צהוב.</strong> עברת 90 ימים — עדיין לא תושב מס, אבל מתקרב לסף ${tax} ימים.`,
-          `🟡 <strong>Amber zone.</strong> Past 90 days — not yet a tax resident, approaching the ${tax}-day threshold.`,
-          `🟡 <strong>Zona âmbar.</strong> Acima de 90 dias — ainda não residente, mas próximo dos ${tax} dias.`,
-          `🟡 <strong>Zona ámbar.</strong> Por encima de 90 días — aún no residente, acercándose a los ${tax} días.`
+          `🟡 <strong>אזור צהוב.</strong> עברת ${tourist} ימים — עדיין לא תושב מס, אבל מתקרב לסף ${tax} ימים.`,
+          `🟡 <strong>Amber zone.</strong> Past ${tourist} days — not yet a tax resident, approaching the ${tax}-day threshold.`,
+          `🟡 <strong>Zona âmbar.</strong> Acima de ${tourist} dias — ainda não residente, mas próximo dos ${tax} dias.`,
+          `🟡 <strong>Zona ámbar.</strong> Por encima de ${tourist} días — aún no residente, acercándose a los ${tax} días.`
         );
   } else if (zone === 'r') {
     verdictText = t4(
@@ -523,9 +759,9 @@ function recalc() {
   v.className = 'zone-verdict ' + zone;
   v.innerHTML = verdictText;
 
-  // PE warning callout — show ONLY if employer-IL ticked AND risk material AND days ≥ 90
+  // PE warning callout — show ONLY if employer-IL ticked AND risk material AND past tourist days
   const peWarn = document.getElementById('peWarn');
-  if (employerIL && peLimit && days >= 90) {
+  if (employerIL && peLimit && days >= tourist) {
     peWarn.classList.add('on');
     document.getElementById('peWarnBody').innerHTML = L(d.peNote);
     const srcLink = document.getElementById('peWarnSrcLink');
@@ -614,6 +850,196 @@ function shareTo(channel) {
   else if (channel === 'email') WizeShare.email({ title, text, url });
   else if (channel === 'copy') WizeShare.copy({ title, text, url });
 }
+
+// ── Supplements (visa days, day-rules, mitigations, FAQ, scenarios) ────────
+function supp() { return window.NOMAD_SUPPLEMENTS || null; }
+function countrySupp(code) { const s = supp(); return s && s.byCountry ? s.byCountry[code] : null; }
+
+function renderPresets() {
+  const s = supp();
+  const host = document.getElementById('presets');
+  if (!host || !s || !s.scenarios) return;
+  host.innerHTML = s.scenarios.map((sc, i) => `<button class="preset" data-i="${i}"><div class="pname">${L(sc.name)}</div><div class="pdesc">${L(sc.desc)}</div></button>`).join('');
+  host.querySelectorAll('.preset').forEach(b => b.addEventListener('click', () => {
+    const sc = s.scenarios[parseInt(b.dataset.i, 10)];
+    if (!sc) return;
+    document.getElementById('country').value = sc.defaultCountry || 'PT';
+    document.getElementById('days').value = sc.defaultDays || 120;
+    recalc();
+    document.getElementById('maxSafe').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+}
+
+function renderMitigations() {
+  const s = supp();
+  const host = document.getElementById('mitigations');
+  if (!host || !s || !s.mitigations) return;
+  host.innerHTML = s.mitigations.map((m, i) => `<div class="mitigation"><div class="num">${i+1}.</div><div><div class="ttl">${L(m.title)}</div><div class="body">${L(m.body)}</div></div></div>`).join('');
+}
+
+function renderFAQ() {
+  const s = supp();
+  const wrap = document.getElementById('faqWrap');
+  const host = document.getElementById('faqList');
+  if (!wrap || !host || !s || !s.faq) return;
+  wrap.style.display = 'block';
+  host.innerHTML = s.faq.map(f => `<div class="faq-item"><div class="faq-q"><span>${L(f.q)}</span><span class="marker">+</span></div><div class="faq-a">${L(f.a)}</div></div>`).join('');
+  host.querySelectorAll('.faq-item').forEach(it => it.querySelector('.faq-q').addEventListener('click', () => it.classList.toggle('on')));
+}
+
+function updateDayTip() {
+  const code = document.getElementById('country').value;
+  const c = countrySupp(code);
+  const tipEl = document.getElementById('dayTip');
+  if (!tipEl) return;
+  const dayRule = c && c.dayRule ? L(c.dayRule) : t4(
+    'הכלל הכללי: כל יום שאתה פיזית במדינה (כולל יום הגעה) נחשב יום מס. בדוק את החוק המקומי המדויק.',
+    'General rule: any day you are physically in the country (including arrival) counts. Check local law for exact rules.',
+    'Regra geral: cada dia em que está fisicamente no país (incluindo chegada) conta. Verifique a lei local.',
+    'Regla general: cada día que estés físicamente en el país (incluida la llegada) cuenta. Verifica la ley local.'
+  );
+  const src = c && c.dayRuleSource ? `<span class="src">📚 <a href="${c.dayRuleSource}" target="_blank" rel="noopener">${c.dayRuleSource.replace(/^https?:\/\//, '').slice(0, 50)}…</a></span>` : '';
+  tipEl.innerHTML = dayRule + src;
+}
+
+function updateSourceChip() {
+  const code = document.getElementById('country').value;
+  const d = (window.NOMAD_DATA || {})[code];
+  const chip = document.getElementById('srcChip');
+  const txt = document.getElementById('srcChipTxt');
+  if (!d || !chip || !txt) { if (chip) chip.style.display = 'none'; return; }
+  const peLim = PE_THRESH[d.peRisk];
+  const tax = d.taxResidentDays;
+  const useTax = !peLim || peLim - 1 >= tax - 1;
+  const src = useTax ? d.taxResidentSource : d.peSource;
+  if (!src) { chip.style.display = 'none'; return; }
+  chip.href = src;
+  const dom = src.replace(/^https?:\/\//, '').split('/')[0];
+  txt.textContent = t4('מקור', 'Source', 'Fonte', 'Fuente') + ': ' + dom;
+  chip.style.display = 'inline-flex';
+}
+
+function updateSalaryChip() {
+  const code = document.getElementById('country').value;
+  const chip = document.getElementById('salaryChip');
+  const link = document.getElementById('salaryChipLink');
+  if (!chip || !link) return;
+  if (code) {
+    link.href = `https://wizelife.ai/p/salary-compare.html?country=${code}#deep`;
+    chip.style.display = 'block';
+  } else {
+    chip.style.display = 'none';
+  }
+}
+
+function updateStalenessFlag() {
+  const code = document.getElementById('country').value || 'PT';
+  const d = (window.NOMAD_DATA || {})[code];
+  const flag = document.getElementById('verifiedFlag');
+  if (!flag || !d || !d.verifiedDate) return;
+  const [yr, mo] = d.verifiedDate.split('-').map(Number);
+  const monthsAgo = (Date.now() - new Date(yr, mo - 1, 1).getTime()) / (1000 * 60 * 60 * 24 * 30.4);
+  const stale = monthsAgo > 6;
+  flag.className = 'verified-flag' + (stale ? ' stale' : '');
+  flag.textContent = stale
+    ? t4(`⚠️ אומת ${d.verifiedDate} (>6 ח׳)`, `⚠️ verified ${d.verifiedDate} (>6mo)`, `⚠️ verificado ${d.verifiedDate} (>6m)`, `⚠️ verificado ${d.verifiedDate} (>6m)`)
+    : t4(`✓ אומת ${d.verifiedDate}`, `✓ verified ${d.verifiedDate}`, `✓ verificado ${d.verifiedDate}`, `✓ verificado ${d.verifiedDate}`);
+}
+
+// Day-info tooltip toggle
+document.getElementById('dayInfoBtn').addEventListener('click', () => {
+  updateDayTip();
+  document.getElementById('dayTip').classList.toggle('on');
+});
+
+// IL-residency card toggle + check ─────────────────────────────────────────
+document.getElementById('ilHead').addEventListener('click', () => document.getElementById('ilCard').classList.toggle('on'));
+document.getElementById('ilCheck').addEventListener('click', () => {
+  const days = parseInt(document.getElementById('ilDays').value, 10) || 0;
+  const family = document.getElementById('ilFamily').value;
+  const home = document.getElementById('ilHome').value;
+  const employer = document.getElementById('ilEmp').value;
+  let score = 0;
+  if (days >= 183) score += 55;
+  else if (days >= 100) score += 30;
+  else if (days >= 60) score += 18;
+  else if (days >= 30) score += 8;
+  if (family === 'il') score += 30; else if (family === 'none') score += 5;
+  if (home === 'il') score += 12; else if (home === 'both') score += 6;
+  if (employer === 'il') score += 3;
+  let status, color, note;
+  if (score >= 60) {
+    status = t4('ככל הנראה תושב מס ישראלי', 'Likely Israeli tax resident', 'Provavelmente residente fiscal israelita', 'Probablemente residente fiscal israelí');
+    color = '#fca5a5';
+    note = t4(
+      'מרכז החיים שלך עדיין בישראל לפי המבחנים. תיחויב במס על הכנסה עולמית כאן + ביטוח לאומי. <strong>לניתוק:</strong> טופס 1348 לרשות המסים + הודעה לבל"מ + שיקול מס יציאה §100A (אם נכסים &gt;₪3M).',
+      'Your center of life is still Israel per the tests. You owe Israeli tax on worldwide income + Bituach Leumi. <strong>To break residency:</strong> file form 1348 with ITA + notify BL + consider exit tax §100A (if assets &gt;₪3M).',
+      'O seu centro de vida ainda é Israel. Deve imposto sobre rendimento mundial em Israel. <strong>Para romper:</strong> formulário 1348 + notificar BL + considerar imposto de saída §100A.',
+      'Tu centro de vida sigue siendo Israel. Debes impuesto sobre renta mundial. <strong>Para romper:</strong> formulario 1348 + notificar BL + considerar impuesto de salida §100A.'
+    );
+  } else if (score >= 35) {
+    status = t4('⚠️ אזור אפור — חייב חוות דעת מקצועית', '⚠️ Gray zone — needs a professional ruling', '⚠️ Zona cinzenta — requer parecer profissional', '⚠️ Zona gris — requiere dictamen profesional');
+    color = '#fbbf24';
+    note = t4(
+      'הסימנים מעורבים. רשות המסים בישראל עלולה לטעון שאתה עדיין תושב. ייעוץ עם רו"ח / יועץ מס בינלאומי הוא חובה.',
+      'Signals are mixed. The Israel Tax Authority may argue you are still resident. Consultation with an international tax CPA is mandatory.',
+      'Os sinais são mistos. A Autoridade Fiscal pode alegar que ainda é residente. Consulta com contabilista internacional é obrigatória.',
+      'Las señales son mixtas. La Autoridad Fiscal Israelí puede alegar que sigues siendo residente. Es obligatoria consulta con contable internacional.'
+    );
+  } else {
+    status = t4('ככל הנראה תושב חוץ (לא-תושב)', 'Likely non-resident', 'Provavelmente não residente', 'Probablemente no residente');
+    color = '#6ee7b7';
+    note = t4(
+      'מרכז החיים נראה מחוץ לישראל — אבל חובה לבצע ניתוק רשמי: טופס 1348 + הודעה לבל"מ. אחרת תמשיך לקבל חיובים ולא תקבל כיסוי בריאות בחזרה.',
+      'Center of life appears abroad — but you MUST formalize the break: file form 1348 + notify Bituach Leumi. Otherwise you remain on the rolls and lose return-health coverage.',
+      'O centro de vida parece estar no estrangeiro — mas é OBRIGATÓRIO formalizar: formulário 1348 + notificar BL.',
+      'El centro de vida parece estar en el extranjero — pero es OBLIGATORIO formalizar: formulario 1348 + notificar BL.'
+    );
+  }
+  const r = document.getElementById('ilResult');
+  r.classList.add('on');
+  r.innerHTML = `<div class="head-r" style="color:${color}">${status}</div><div class="note">${note}</div><div style="margin-top:8px;font:500 10.5px Inter,sans-serif;color:#64748b">${t4('ניקוד מרכז-חיים','Center-of-life score','Pontuação centro de vida','Puntuación centro de vida')}: ${score}/100 · ${t4('הערכה בלבד — לא ייעוץ.','Estimate only — not advice.','Apenas estimativa.','Solo estimación.')}</div>`;
+});
+
+// Multi-country split planner ───────────────────────────────────────────────
+let _splitRows = [{code:'IL', days:120}, {code:'PT', days:120}, {code:'', days:0}, {code:'', days:0}];
+const SPLIT_IL_THRESH = 183;
+document.getElementById('splitHead').addEventListener('click', () => {
+  const c = document.getElementById('splitCard');
+  c.classList.toggle('on');
+  if (c.classList.contains('on')) renderSplit();
+});
+function renderSplit() {
+  const host = document.getElementById('splitRows');
+  if (!host) return;
+  const data = window.NOMAD_DATA || {};
+  const codes = ['IL', ...Object.keys(data)];
+  const opts = sel => ['<option value="">—</option>'].concat(codes.map(c => {
+    const name = c === 'IL' ? t4('🇮🇱 ישראל','🇮🇱 Israel','🇮🇱 Israel','🇮🇱 Israel') : (data[c] ? `${data[c].flag} ${L(data[c].name)}` : c);
+    return `<option value="${c}" ${sel === c ? 'selected' : ''}>${name}</option>`;
+  })).join('');
+  host.innerHTML = _splitRows.map((r, i) => {
+    let okCls = 'g', okTxt = r.code ? '✓' : '';
+    if (r.code === 'IL' && r.days >= SPLIT_IL_THRESH) { okCls = 'r'; okTxt = '⛔ ' + t4('תושב IL','IL res.','res. IL','res. IL'); }
+    else if (r.code && r.code !== 'IL' && data[r.code]) {
+      const maxS = maxSafeDays(data[r.code]);
+      if (r.days > data[r.code].taxResidentDays) { okCls = 'r'; okTxt = '⛔'; }
+      else if (r.days > maxS) { okCls = 'a'; okTxt = '⚠️'; }
+    }
+    return `<div class="split-row"><select data-i="${i}" class="splitCountry">${opts(r.code)}</select><span class="ok ${okCls}">${okTxt}</span><div style="display:flex;align-items:center;gap:8px"><input type="range" min="0" max="365" value="${r.days}" data-i="${i}" class="splitRange"><span class="d">${r.days}d</span></div></div>`;
+  }).join('');
+  const sum = _splitRows.reduce((s, r) => s + (r.days || 0), 0);
+  const sumEl = document.getElementById('splitSum');
+  const totalEl = document.getElementById('splitTotal');
+  if (sumEl) sumEl.textContent = sum;
+  if (totalEl) totalEl.classList.toggle('bad', sum > 365);
+  host.querySelectorAll('.splitCountry').forEach(s => s.addEventListener('change', e => { _splitRows[+e.target.dataset.i].code = e.target.value; renderSplit(); }));
+  host.querySelectorAll('.splitRange').forEach(r => r.addEventListener('input', e => { _splitRows[+e.target.dataset.i].days = +e.target.value || 0; renderSplit(); }));
+}
+
+// Hook the country/days change into the new chips/staleness
+const _origRecalc = recalc;
+recalc = function() { _origRecalc(); updateSourceChip(); updateSalaryChip(); updateStalenessFlag(); };
 
 // ── Init ───────────────────────────────────────────────────────────────────
 function init() {
