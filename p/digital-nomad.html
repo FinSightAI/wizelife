@@ -15,7 +15,7 @@
 <link rel="canonical" href="https://wizelife.ai/p/digital-nomad.html">
 
 <meta property="og:title" content="💻 כמה ימים אפשר להישאר בלי להיחשב תושב מס?">
-<meta property="og:description" content="12 מדינות פופולריות לישראלים. סף תושבות + סיכון PE למעסיק + אמנת מס. חינם, בלי הרשמה.">
+<meta property="og:description" content="15 מדינות פופולריות לישראלים. סף תושבות + סיכון PE למעסיק + אמנת מס. חינם, בלי הרשמה.">
 <meta property="og:image" content="https://wizelife.ai/og-image.png">
 <meta property="og:url" content="https://wizelife.ai/p/digital-nomad.html">
 <meta property="og:type" content="website">
@@ -312,7 +312,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
 
 <!-- Country grid (overview of all 12) -->
 <div class="grid-wrap">
-  <h2 data-i18n="gridT">📍 12 מדינות פופולריות לישראלים — מבט מהיר</h2>
+  <h2 data-i18n="gridT">📍 15 מדינות פופולריות לישראלים — מבט מהיר</h2>
   <p class="sub" data-i18n="gridSub">לחץ על מדינה לפירוט מקורות. עמודות: סף תושבות מס · סיכון PE · אמנת מס · טוטליזציה.</p>
   <div class="grid" id="grid"></div>
 </div>
@@ -418,6 +418,19 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(13
 
 <script src="/js/nomad-data.js"></script>
 <script src="/js/nomad-supplements.js"></script>
+<script src="/js/nomad-additions.js"></script>
+<script>
+// Merge NOMAD_ADDITIONS (BR, ID, SG) into the main data structures so the page
+// can iterate one canonical NOMAD_DATA / NOMAD_SUPPLEMENTS.byCountry map.
+(function () {
+  const A = window.NOMAD_ADDITIONS;
+  if (!A) return;
+  if (A.data && window.NOMAD_DATA) Object.assign(window.NOMAD_DATA, A.data);
+  if (A.supplements && window.NOMAD_SUPPLEMENTS && window.NOMAD_SUPPLEMENTS.byCountry) {
+    Object.assign(window.NOMAD_SUPPLEMENTS.byCountry, A.supplements);
+  }
+})();
+</script>
 <script src="/js/wize-share.js" defer></script>
 <script>
 // ── i18n ────────────────────────────────────────────────────────────────────
@@ -435,7 +448,7 @@ const TR = {
     peWarnT: 'סיכון PE למעסיק הישראלי שלך',
     peWarnSrc: 'מקור:',
     riskLow: 'נמוך', riskMed: 'בינוני', riskHigh: 'גבוה',
-    gridT: '📍 12 מדינות פופולריות לישראלים — מבט מהיר',
+    gridT: '📍 15 מדינות פופולריות לישראלים — מבט מהיר',
     gridSub: 'לחץ על מדינה לפירוט מקורות. עמודות: סף תושבות מס · סיכון PE · אמנת מס · טוטליזציה.',
     legendDays: 'ימים', legendPE: 'PE', legendTreaty: 'אמנה', legendTotal: 'בל"מ',
     shareT: 'חברים שמתכננים נוודות? שלח להם 👇',
@@ -478,7 +491,7 @@ const TR = {
     peWarnT: 'PE risk to your Israeli employer',
     peWarnSrc: 'Source:',
     riskLow: 'Low', riskMed: 'Medium', riskHigh: 'High',
-    gridT: '📍 12 destinations popular with Israelis — at a glance',
+    gridT: '📍 15 destinations popular with Israelis — at a glance',
     gridSub: 'Click a country for source details. Columns: tax-residency threshold · PE risk · treaty · totalization.',
     legendDays: 'days', legendPE: 'PE', legendTreaty: 'treaty', legendTotal: 'social',
     shareT: 'Friends considering nomading? Send it 👇',
@@ -521,7 +534,7 @@ const TR = {
     peWarnT: 'Risco PE para o seu empregador israelita',
     peWarnSrc: 'Fonte:',
     riskLow: 'Baixo', riskMed: 'Médio', riskHigh: 'Alto',
-    gridT: '📍 12 destinos populares entre israelitas — vista rápida',
+    gridT: '📍 15 destinos populares entre israelitas — vista rápida',
     gridSub: 'Clique num país para detalhes das fontes. Colunas: limite de residência · risco PE · tratado · totalização.',
     legendDays: 'dias', legendPE: 'PE', legendTreaty: 'tratado', legendTotal: 'social',
     shareT: 'Amigos a planear nomadismo? Envie 👇',
@@ -564,7 +577,7 @@ const TR = {
     peWarnT: 'Riesgo PE para tu empleador israelí',
     peWarnSrc: 'Fuente:',
     riskLow: 'Bajo', riskMed: 'Medio', riskHigh: 'Alto',
-    gridT: '📍 12 destinos populares para israelíes — vista rápida',
+    gridT: '📍 15 destinos populares para israelíes — vista rápida',
     gridSub: 'Haz clic en un país para detalles de fuentes. Columnas: umbral de residencia · riesgo PE · tratado · totalización.',
     legendDays: 'días', legendPE: 'PE', legendTreaty: 'tratado', legendTotal: 'social',
     shareT: '¿Amigos planeando nomadismo? Envíaselo 👇',
