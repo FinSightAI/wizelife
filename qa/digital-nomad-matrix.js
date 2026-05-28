@@ -9,7 +9,7 @@ const { chromium, webkit } = require(path.join(__dirname, '..', 'node_modules', 
 
 const BASE = 'http://localhost:8765';
 const APP = { name: 'digital-nomad', path: '/p/digital-nomad.html',
-  requires: ['#country', '#days', '#employerIL', '#verdict', '#grid', '#shareWrap'] };
+  requires: ['#country', '#days', '#employerIL', '#maxSafe', '#zones', '#grid', '#shareWrap'] };
 
 const WIDTHS = [320, 360, 390, 414, 768];
 const ENGINES = [{ name: 'Chromium', launcher: chromium }, { name: 'WebKit', launcher: webkit }];
@@ -65,10 +65,13 @@ function evalCheck() {
     });
   }
 
-  // Sanity: confirm verdict pillars actually rendered (NOMAD_DATA loaded)
-  const pillars = document.querySelectorAll('.pillar').length;
-
-  return { vw, horizOverflow: scrollW > vw + 2, overflowPx: Math.max(0, scrollW - vw), clipped: uniq.slice(0, 6), untranslated: untranslated.slice(0, 6), pillars };
+  // Sanity: confirm verdict actually rendered (NOMAD_DATA loaded). The new
+  // single-number hero exposes `#maxNum`; the 4-zone axis exposes `.zone`
+  // children inside `#axis`. Both should populate from the data file.
+  const maxNum = (document.querySelector('#maxNum') || {}).textContent || '';
+  const zoneCount = document.querySelectorAll('#axis .zone').length;
+  const gridCells = document.querySelectorAll('.gcell').length;
+  return { vw, horizOverflow: scrollW > vw + 2, overflowPx: Math.max(0, scrollW - vw), clipped: uniq.slice(0, 6), untranslated: untranslated.slice(0, 6), maxNum: maxNum.trim(), zoneCount, gridCells };
 }
 
 async function checkRequired(page, sels) {
@@ -114,7 +117,9 @@ async function checkRequired(page, sels) {
         if (layout && layout.horizOverflow) probs.push('H-OVERFLOW +' + layout.overflowPx + 'px');
         if (layout && layout.clipped && layout.clipped.length) probs.push('CLIPPED: ' + layout.clipped.map(c => `${c.el}["${c.txt}"]→${c.clipped}`).join(' | '));
         if (layout && layout.untranslated && layout.untranslated.length) probs.push('UNTRANSLATED(HE-leak): ' + layout.untranslated.map(u => `${u.key}="${u.txt}"`).join(', '));
-        if (layout && layout.pillars === 0) probs.push('VERDICT EMPTY (NOMAD_DATA not loaded?)');
+        if (layout && (!layout.maxNum || layout.maxNum === '—')) probs.push('MAX-NUM empty (NOMAD_DATA load failed?)');
+        if (layout && layout.zoneCount === 0) probs.push('AXIS EMPTY (zones not built)');
+        if (layout && layout.gridCells < 12) probs.push('GRID INCOMPLETE: ' + layout.gridCells + ' cells');
         if (missing && missing.length) probs.push('REQ ' + missing.join(','));
         const realErrs = errs.filter(e =>
           !/logEvent|finzilla-7f1f9\.cloudfunctions/.test(e) &&
