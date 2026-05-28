@@ -3,11 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="alternate" hreflang="he" href="https://wizelife.ai/p/relocate-portugal.html?lang=he" />
-<link rel="alternate" hreflang="en" href="https://wizelife.ai/p/relocate-portugal.html?lang=en" />
-<link rel="alternate" hreflang="pt" href="https://wizelife.ai/p/relocate-portugal.html?lang=pt" />
-<link rel="alternate" hreflang="es" href="https://wizelife.ai/p/relocate-portugal.html?lang=es" />
-<link rel="alternate" hreflang="x-default" href="https://wizelife.ai/p/relocate-portugal.html" />
 <title>כמה תחסוך אם תעבור לפורטוגל? · WizeLife</title>
 <meta name="description" content="הזן הכנסה ברוטו → קבל ניתוח 10 שנים: כמה מס תשלם בישראל מול NHR בפורטוגל. נתוני 2025. בלי הרשמה.">
 <link rel="canonical" href="https://wizelife.ai/p/relocate-portugal.html">
@@ -101,26 +96,19 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
 </style>
 <script src="/js/wize-attribution.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"What is the NHR tax regime in Portugal?","acceptedAnswer":{"@type":"Answer","text":"NHR (Non-Habitual Resident) is a special Portuguese tax regime offering a flat 20% income tax rate on Portuguese-source income and potential exemptions on foreign income for 10 years. It is designed to attract skilled professionals and retirees relocating to Portugal."}},
-{"@type":"Question","name":"How much tax will I save by relocating from Israel to Portugal?","acceptedAnswer":{"@type":"Answer","text":"The savings depend on your income level and composition. Our 10-year analysis compares Israeli income tax, bituach leumi, and capital gains against Portuguese NHR rates — most high earners save 20–40% on total tax burden over the decade."}},
-{"@type":"Question","name":"Does Portugal tax foreign income under NHR?","acceptedAnswer":{"@type":"Answer","text":"Under the NHR regime, most foreign-source income (dividends, interest, capital gains from abroad, pensions) can be exempt from Portuguese tax or taxed at a reduced flat rate, depending on the income type and applicable tax treaty."}},
-{"@type":"Question","name":"What are the main costs of relocating to Portugal?","acceptedAnswer":{"@type":"Answer","text":"Key costs include IMT property transfer tax (up to 8%), legal and notary fees (~1–2%), and ongoing municipal property tax (IMI). Our calculator includes these costs in the 10-year break-even analysis."}},
-{"@type":"Question","name":"Is this relocation analysis tool free?","acceptedAnswer":{"@type":"Answer","text":"Yes, the Israel-to-Portugal relocation tax analysis is completely free with no signup required. Enter your income profile and get a full 10-year tax comparison instantly."}}
-]}
-</script>
 </head>
 <body>
 
 <div class="topbar">
   <a class="brand" href="https://wizelife.ai">
-    <img src="/img/wizelife-logo-v2.svg" alt="WizeLife" width="32" height="32">
+    <img src="/img/wizelife-logo-v2.svg" alt="WizeLife">
     <span>WizeLife</span>
   </a>
   <div class="lang" id="langSwitch">
     <button data-l="he" class="on">HE</button>
     <button data-l="en">EN</button>
+    <button data-l="pt">PT</button>
+    <button data-l="es">ES</button>
   </div>
 </div>
 
@@ -280,9 +268,81 @@ const TR = {
     footLegal: '⚠️ Information tool. NHR and Israeli exit-tax rules are complex — consult a licensed tax advisor.',
     shareTextMine: 'I checked on WizeLife how much I\'d save moving to Portugal (NHR). Worth seeing:',
   },
+  pt: {
+    badge: '✓ Dados fiscais verificados 2025',
+    title: 'Quanto poupa se se mudar<br>para Portugal?',
+    sub: 'O regime NHR permite 0% de imposto sobre rendimento estrangeiro durante 10 anos. Introduza o bruto, veja a poupança. Sem registo.',
+    lblGross: 'Rendimento mensal bruto (₪)',
+    hintGross: 'Rendimento bruto antes de imposto (salário + bónus + …)',
+    lblIncomeType: 'Tipo de rendimento',
+    typeForeignEmp: 'Trabalho remoto para empregador estrangeiro / freelance',
+    typeLocalEmp: 'Empregado por empregador português',
+    typeDiv: 'Dividendos / juros / rendas',
+    hintIncomeType: 'O tipo de rendimento afeta a taxa NHR',
+    savingsEye: 'Poupança cumulativa em 10 anos',
+    savingsSub: 'Vs continuar a pagar imposto em Israel',
+    ilTitle: 'Israel (10 anos)',
+    ilLbl: 'Total de IRS + segurança social pagos',
+    ptTitle: 'Portugal NHR (10 anos)',
+    ptLblForeign: '0% sobre rendimento estrangeiro — apenas seg. social',
+    ptLblLocal: '20% taxa fixa + Segurança Social portuguesa',
+    ptLblDiv: '0% NHR sobre dividendos estrangeiros',
+    annual: 'Anual:',
+    caveatsT: '⚠️ Avisos importantes antes de fazer as malas',
+    cav1: '<strong>NHR 2.0 (IFICI):</strong> o regime foi restringido em 2024 — nem todos os perfis se qualificam. Requer profissão "altamente qualificada" ou estatuto de empreendedor/investigador.',
+    cav2: '<strong>Imposto de saída israelita:</strong> ativos acima de ₪3M podem desencadear um imposto de saída único.',
+    cav3: '<strong>Residência:</strong> 183+ dias/ano em Portugal + romper a residência fiscal israelita (formulário 1348).',
+    cav4: '<strong>Segurança social:</strong> O NHR NÃO o isenta da Segurança Social portuguesa (~11%) nem do Bituach Leumi israelita.',
+    cav5: '<strong>Declaração de bens:</strong> ativos acima de $300K → exigências complexas de declaração FATCA/CRS.',
+    shareTitle: 'Amigos a considerar Portugal? Envie 👇',
+    shareSub: 'Partilhar via WhatsApp / Email / link',
+    shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaT: 'Quer a sua análise real e personalizada?',
+    ctaP: 'O WizeTax modela o seu cenário exato: imposto de saída baseado nos seus ativos, NHR 2.0 por profissão, timing ideal, fluxo de caixa de 10 anos, comparação com Estónia / Grécia / EAU. IA que conhece as regras de 26 países.',
+    ctaBtn: 'Registar grátis →',
+    footSource: 'Fontes: Autoridade Tributária portuguesa · Regime NHR (DL 249/2009 + alterações 2024) · PwC IL/PT · OECD.',
+    footLegal: '⚠️ Ferramenta informativa. As regras do NHR e do imposto de saída israelita são complexas — consulte um consultor fiscal licenciado.',
+    shareTextMine: 'Verifiquei no WizeLife quanto pouparia ao mudar-me para Portugal (NHR). Vale a pena ver:',
+  },
+  es: {
+    badge: '✓ Datos fiscales verificados 2025',
+    title: '¿Cuánto ahorrarías mudándote<br>a Portugal?',
+    sub: 'El régimen NHR permite 0% de impuesto sobre renta extranjera durante 10 años. Introduce el bruto, ve el ahorro. Sin registro.',
+    lblGross: 'Ingresos mensuales brutos (₪)',
+    hintGross: 'Ingresos brutos antes de impuestos (salario + bonificación + …)',
+    lblIncomeType: 'Tipo de ingresos',
+    typeForeignEmp: 'Trabajo remoto para empleador no portugués / freelance',
+    typeLocalEmp: 'Empleado por empleador portugués',
+    typeDiv: 'Dividendos / intereses / rentas',
+    hintIncomeType: 'El tipo de ingresos afecta la tasa NHR',
+    savingsEye: 'Ahorro acumulado en 10 años',
+    savingsSub: 'Vs seguir pagando impuestos en Israel',
+    ilTitle: 'Israel (10 años)',
+    ilLbl: 'Total de IRPF + seguridad social pagados',
+    ptTitle: 'Portugal NHR (10 años)',
+    ptLblForeign: '0% sobre renta extranjera — solo seg. social',
+    ptLblLocal: '20% tipo fijo + Seguridad Social portuguesa',
+    ptLblDiv: '0% NHR sobre dividendos extranjeros',
+    annual: 'Anual:',
+    caveatsT: '⚠️ Advertencias importantes antes de hacer las maletas',
+    cav1: '<strong>NHR 2.0 (IFICI):</strong> el régimen se endureció en 2024 — no todos los perfiles califican. Requiere profesión "altamente cualificada" o estatus de emprendedor/investigador.',
+    cav2: '<strong>Impuesto de salida israelí:</strong> activos superiores a ₪3M pueden activar un impuesto de salida único.',
+    cav3: '<strong>Residencia:</strong> 183+ días/año en Portugal + romper la residencia fiscal israelí (formulario 1348).',
+    cav4: '<strong>Seguridad social:</strong> El NHR NO te exime de la Segurança Social portuguesa (~11%) ni del Bituach Leumi israelí.',
+    cav5: '<strong>Declaración de bienes:</strong> activos superiores a $300K → requisitos complejos de declaración FATCA/CRS.',
+    shareTitle: '¿Amigos pensando en Portugal? Envíaselo 👇',
+    shareSub: 'Compartir vía WhatsApp / Email / enlace',
+    shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaT: '¿Quieres tu análisis real y personalizado?',
+    ctaP: 'WizeTax modela tu escenario exacto: impuesto de salida según tus activos, NHR 2.0 por profesión, timing óptimo, flujo de caja de 10 años, comparación con Estonia / Grecia / EAU. IA que conoce las reglas de 26 países.',
+    ctaBtn: 'Regístrate gratis →',
+    footSource: 'Fuentes: Autoridad Tributaria portuguesa · Régimen NHR (DL 249/2009 + modificaciones 2024) · PwC IL/PT · OECD.',
+    footLegal: '⚠️ Herramienta informativa. Las reglas del NHR y del impuesto de salida israelí son complejas — consulta a un asesor fiscal autorizado.',
+    shareTextMine: 'Comprobé en WizeLife cuánto ahorraría mudándome a Portugal (NHR). Vale la pena verlo:',
+  },
 };
 let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'he'; } catch { return 'he'; }})();
-if (!['he','en'].includes(_lang)) _lang = 'he';
+if (!['he','en','pt','es'].includes(_lang)) _lang = 'he';
 
 function applyLang(l) {
   _lang = l;
@@ -389,7 +449,10 @@ function buildShareText() {
   // to �). Use country names + a generic arrow.
   const IL = (_lang === 'he' ? 'ישראל' : 'Israel');
   const PT = (_lang === 'he' ? 'פורטוגל' : 'Portugal');
-  const savingsLabel = (_lang === 'he' ? 'חיסכון ב-10 שנים' : '10-year savings');
+  const savingsLabel = _lang === 'he' ? 'חיסכון ב-10 שנים'
+                     : _lang === 'pt' ? 'Poupança em 10 anos'
+                     : _lang === 'es' ? 'Ahorro en 10 años'
+                     : '10-year savings';
   return t.shareTextMine + '\n\n'
     + IL + ' → ' + PT + '  · ' + savingsLabel + ': ' + fmtUSD(r.savings) + '\n';
   // URL appended automatically by WizeShare helpers.
@@ -397,7 +460,10 @@ function buildShareText() {
 function shareTo(channel) {
   const text = buildShareText();
   const url  = 'https://wizelife.ai/p/relocate-portugal.html';
-  const title = (_lang === 'he' ? 'כמה תחסוך אם תעבור לפורטוגל?' : 'How much would you save moving to Portugal?');
+  const title = _lang === 'he' ? 'כמה תחסוך אם תעבור לפורטוגל?'
+              : _lang === 'pt' ? 'Quanto poupa se se mudar para Portugal?'
+              : _lang === 'es' ? '¿Cuánto ahorrarías mudándote a Portugal?'
+              : 'How much would you save moving to Portugal?';
   if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); return; }
   if (channel === 'whatsapp') WizeShare.whatsapp({ title, text, url });
   else if (channel === 'email') WizeShare.email({ title, text, url });
