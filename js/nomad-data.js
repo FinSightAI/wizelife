@@ -262,7 +262,7 @@ window.NOMAD_DATA = {
       pt: 'Cyprus DNV (2021) — ≥€3.500/mês líquido. Combina com Non-Dom (0% dividendos por 17 anos).',
       es: 'Cyprus DNV (2021) — ≥€3.500/mes neto. Combina con Non-Dom (0% dividendos por 17 años).',
     },
-    nomadVisaSource: 'https://www.gov.cy/dmrip/en/digital-nomad-visa/',
+    nomadVisaSource: 'https://www.gov.cy/mip-md/en/documents/digital-nomads-and-family-members/',
     verifiedDate: '2026-05',
   },
 
