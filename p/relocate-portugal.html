@@ -92,6 +92,16 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
 .cta p{margin:0 0 10px;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.5}
 .cta a{display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:9px 16px;border-radius:99px;font:800 12.5px Inter,sans-serif}
 
+
+/* Email capture */
+.email-gate{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(16,185,129,0.06));border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:16px;text-align:center}
+.eg-eye{font:700 12px Inter,sans-serif;color:#a5b4fc;margin-bottom:10px;letter-spacing:.3px}
+.eg-row{display:flex;gap:8px;max-width:400px;margin:0 auto}
+.eg-row input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;color:var(--text);font:500 14px Inter,sans-serif;outline:none}
+.eg-row input:focus{border-color:rgba(99,102,241,0.5)}
+.eg-row button{background:linear-gradient(135deg,#6366f1,#4f46e5);border:0;border-radius:10px;padding:10px 20px;color:#fff;font:700 13px Inter,sans-serif;cursor:pointer;white-space:nowrap}
+.eg-note{margin-top:8px;font:500 11px Inter,sans-serif;color:#6b7280}
+
 .foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.55}
 .foot a{color:#a5b4fc;text-decoration:none}
 </style>
@@ -145,6 +155,16 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
   <div class="sub" id="savingsSub" data-i18n="savingsSub">לעומת המשך תשלום מס בישראל</div>
 </div>
 
+
+<div class="email-gate" id="emailGate">
+  <div class="eg-eye" data-i18n="egEye">📩 קבל את הניתוח המלא + מדריך מס במייל</div>
+  <div class="eg-row">
+    <input type="email" id="egEmail" placeholder="your@email.com">
+    <button onclick="submitEmail()"><span data-i18n="egBtn">שלח</span></button>
+  </div>
+  <div class="eg-note" data-i18n="egNote">בלי ספאם. אפשר לבטל בכל עת.</div>
+</div>
+
 <div class="breakdown">
   <div class="b-card il">
     <h3>🇮🇱 <span data-i18n="ilTitle">ישראל (10 שנים)</span></h3>
@@ -196,6 +216,8 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
 <script src="/js/tax-data.js"></script>
 <script src="/js/wize-share.js" defer></script>
 <script>
+const COUNTRY_SLUG = 'portugal';
+
 const TR = {
   he: {
     badge: '✓ נתוני מס מאומתים 2026',
@@ -231,6 +253,10 @@ const TR = {
     ctaBtn: 'פתח חשבון חינם ←',
     footSource: 'מקור: רשות המסים פורטוגל · NHR Regime (DL 249/2009 + alterações 2024) · PwC IL/PT · OECD.',
     footLegal: '⚠️ כלי מידע. NHR וחוקי מס יציאה ישראליים מורכבים — חובה להתייעץ עם יועץ מס מורשה.',
+    egEye: '📩 קבל את הניתוח המלא + מדריך מס במייל',
+    egBtn: 'שלח',
+    egNote: 'בלי ספאם. אפשר לבטל בכל עת.',
+    egThanks: 'נשלח! תקבל בקרוב 📬',
     shareTextMine: 'בדקתי ב-WizeLife כמה אחסוך אם אעבור לפורטוגל (NHR). שווה לראות:',
   },
   en: {
@@ -267,6 +293,10 @@ const TR = {
     ctaBtn: 'Sign up free →',
     footSource: 'Sources: Portuguese tax authority · NHR Regime (DL 249/2009 + 2024 amendments) · PwC IL/PT · OECD.',
     footLegal: '⚠️ Information tool. NHR and Israeli exit-tax rules are complex — consult a licensed tax advisor.',
+    egEye: 'Get the full analysis + tax guide by email',
+    egBtn: 'Send',
+    egNote: 'No spam. Unsubscribe anytime.',
+    egThanks: 'Sent! Check your inbox 📬',
     shareTextMine: 'I checked on WizeLife how much I\'d save moving to Portugal (NHR). Worth seeing:',
   },
   pt: {
@@ -303,6 +333,10 @@ const TR = {
     ctaBtn: 'Registar grátis →',
     footSource: 'Fontes: Autoridade Tributária portuguesa · Regime NHR (DL 249/2009 + alterações 2024) · PwC IL/PT · OECD.',
     footLegal: '⚠️ Ferramenta informativa. As regras do NHR e do imposto de saída israelita são complexas — consulte um consultor fiscal licenciado.',
+    egEye: 'Receba a análise completa + guia fiscal por email',
+    egBtn: 'Enviar',
+    egNote: 'Sem spam. Cancelar a qualquer momento.',
+    egThanks: 'Enviado! Verifique a caixa 📬',
     shareTextMine: 'Verifiquei no WizeLife quanto pouparia ao mudar-me para Portugal (NHR). Vale a pena ver:',
   },
   es: {
@@ -339,6 +373,10 @@ const TR = {
     ctaBtn: 'Regístrate gratis →',
     footSource: 'Fuentes: Autoridad Tributaria portuguesa · Régimen NHR (DL 249/2009 + modificaciones 2024) · PwC IL/PT · OECD.',
     footLegal: '⚠️ Herramienta informativa. Las reglas del NHR y del impuesto de salida israelí son complejas — consulta a un asesor fiscal autorizado.',
+    egEye: 'Recibe el análisis completo + guía fiscal por email',
+    egBtn: 'Enviar',
+    egNote: 'Sin spam. Cancela cuando quieras.',
+    egThanks: '¡Enviado! Revisa tu correo 📬',
     shareTextMine: 'Comprobé en WizeLife cuánto ahorraría mudándome a Portugal (NHR). Vale la pena verlo:',
   },
 };
@@ -406,6 +444,26 @@ function fmtUSD(n) {
   if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
   if (n >= 1e3) return '$' + Math.round(n).toLocaleString();
   return '$' + Math.round(n);
+}
+
+function submitEmail() {
+  const em = (document.getElementById('egEmail').value || '').trim();
+  if (!em || !em.includes('@')) return;
+  const r = window.__last;
+  fetch('https://us-central1-finzilla-7f1f9.cloudfunctions.net/captureLeadEmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: em,
+      source: 'landing-' + COUNTRY_SLUG,
+      country: COUNTRY_SLUG,
+      lang: _lang,
+      savingsUSD: r ? r.savings : 0,
+    }),
+  }).catch(() => {});
+  document.getElementById('emailGate').innerHTML =
+    '<div style="color:#6ee7b7;font:700 13px Inter,sans-serif;padding:10px">✓ ' +
+    (TR[_lang].egThanks || 'נשלח!') + '</div>';
 }
 
 function recalc() {
