@@ -215,7 +215,7 @@ window.NOMAD_SUPPLEMENTS = {
       es: 'Cualquier presencia diaria cuenta; el riesgo principal es Wohnsitz.',
     },
   },
-  dayRuleSource: 'https://taxsummaries.pwc.com/quick-charts/individual-tax-residency-rules',
+  dayRuleSource: 'https://taxsummaries.pwc.com/',
 
   mitigations: [
     {
