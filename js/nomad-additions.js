@@ -116,7 +116,7 @@ window.NOMAD_ADDITIONS = {
         pt: 'Complicado para israelitas. E33G "Remote Worker KITAS" (2024) existe, mas sem relações diplomáticas, israelitas têm de pedir numa embaixada indonésia num país terceiro (Bangkok/Singapura). B211A requer patrocinador indonésio. NÃO assumir visto na chegada.',
         es: 'Complicado para israelíes. E33G "Remote Worker KITAS" (2024) existe, pero sin relaciones diplomáticas, los israelíes deben solicitar en una embajada indonesia en un país tercero (Bangkok/Singapur). B211A requiere patrocinador indonesio. NO asumir visado a la llegada.',
       },
-      nomadVisaSource: 'https://molina.imigrasi.go.id/',
+      nomadVisaSource: 'https://www.imigrasi.go.id/',
       verifiedDate: '2026-05',
     },
 
@@ -193,7 +193,7 @@ window.NOMAD_ADDITIONS = {
         pt: '⚠️ Crítico para israelitas: Indonésia não tem relações diplomáticas com Israel. Esquema de 30 dias sem visto e VoA NÃO disponíveis na prática para portadores de passaporte israelita. Rotas reais: (1) B1/B211A obtido antecipadamente via embaixada indonésia num país terceiro (Bangkok/Singapura/Abu Dhabi), ou (2) segundo passaporte. NÃO contar com VoA.',
         es: '⚠️ Crítico para israelíes: Indonesia no tiene relaciones diplomáticas con Israel. El esquema de 30 días sin visado y la VoA NO están disponibles en la práctica para titulares de pasaporte israelí. Rutas reales: (1) B1/B211A obtenida con antelación vía embajada indonesia en un tercer país (Bangkok/Singapur/Abu Dabi), o (2) segundo pasaporte. NO confiar en VoA.',
       },
-      touristVisaSource: 'https://molina.imigrasi.go.id/',
+      touristVisaSource: 'https://www.imigrasi.go.id/',
       dayRule: {
         he: 'יום ההגעה ויום העזיבה נספרים שניהם כיום מלא. ספירה לפי 12 חודשים נעים (לא שנה קלנדרית). DJP יכולה לקבוע תושבות גם בפחות מ-183 ימים אם הייתה "כוונה להישאר" (UU PPh §2 ayat 3) — חוזה שכירות, מצב משפחתי, נכסים מקומיים מהווים אינדיקציות.',
         en: 'Both arrival and departure days count as full days. Calculation is rolling 12 months (not calendar year). DJP can deem residency under 183 days if there was "intent to reside" (UU PPh §2 ayat 3) — long-term lease, family arrangements, local assets are all indicators.',
