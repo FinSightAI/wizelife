@@ -128,6 +128,28 @@ const get = (path) => new Promise((resolve) => {
     //    We can't hit the limit because each call already fails on auth before
     //    the rate-limit logic runs. Skipping for now.
 
+    // 8. captureLeadEmail — XSS guard: <> in email must return 400 (not 204/2xx).
+    //    Bug fixed 2026-05-30: raw email with angle brackets was passed through
+    //    without sanitisation. Now guarded with /[<>"'`]/ check before parsing.
+    {
+        const r = await post('/captureLeadEmail', { email: '<script>x</script>@evil.com' },
+                             { 'Origin': 'https://wizelife.ai' });
+        if (r.status === 400) pass('captureLeadEmail rejects XSS email payload (400).');
+        else fail(`captureLeadEmail XSS guard broken — returned ${r.status} for <script> email`,
+                  'In functions/index.js captureLeadEmail: add /[<>"\'`]/.test(b.email) guard before email parse',
+                  'claude');
+    }
+
+    // 9. captureLeadEmail — invalid email (no @) must return 400.
+    {
+        const r = await post('/captureLeadEmail', { email: 'notanemail' },
+                             { 'Origin': 'https://wizelife.ai' });
+        if (r.status === 400) pass('captureLeadEmail rejects email with no @ (400).');
+        else fail(`captureLeadEmail accepts invalid email (no @): status=${r.status}`,
+                  'Email validation check must run before any Firestore write',
+                  'claude');
+    }
+
     // Summary at top
     add('---');
     const failed = actions.filter(a => a.severity === 'fail');
