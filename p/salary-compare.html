@@ -915,6 +915,7 @@ function recalc() {
   // Cache last-rendered numbers for sharing
   window.__lastResults = { gross, rows };
 }
+window.addEventListener('wl-fx-updated', recalc);
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('family').addEventListener('change', recalc);
 document.getElementById('olimToggle').addEventListener('change', recalc);
