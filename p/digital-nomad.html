@@ -280,6 +280,20 @@ body{padding:0 14px 88px;background:radial-gradient(ellipse at top right,rgba(13
   .modal-inner h2{font-size:22px}
   .modal-inner .modal-row{font-size:13.5px}
 }
+
+/* Sticky floating CTA bar */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:10px 16px;background:linear-gradient(135deg,rgba(17,10,40,0.97),rgba(10,14,30,0.97));border-top:1px solid rgba(139,92,246,0.35);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.sticky-cta.show{transform:translateY(0)}
+.sticky-cta .sc-text{font:600 13px Inter,sans-serif;color:#eef2ff;flex:1;line-height:1.35}
+.sticky-cta .sc-text span{color:#c4b5fd}
+.sticky-cta a{display:inline-flex;align-items:center;background:linear-gradient(135deg,#8b5cf6,#f59e0b);color:#fff;text-decoration:none;padding:10px 18px;min-height:44px;border-radius:99px;font:800 12.5px Inter,sans-serif;white-space:nowrap;flex-shrink:0}
+.sticky-cta .sc-x{background:none;border:0;color:#6b7280;font-size:20px;cursor:pointer;padding:4px 8px;line-height:1;flex-shrink:0}
+/* IL section auth wall */
+.il-auth-wall{padding:16px;text-align:center;display:none}
+.il-auth-wall .ilaw-icon{font-size:28px;margin-bottom:8px}
+.il-auth-wall h4{margin:0 0 5px;font:800 14px Plus Jakarta Sans,Inter,sans-serif;color:#eef2ff}
+.il-auth-wall p{margin:0 0 12px;font:500 11.5px Inter,sans-serif;color:#9ca3af;line-height:1.45}
+.il-auth-wall a{display:inline-flex;align-items:center;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;padding:10px 20px;min-height:44px;border-radius:99px;font:800 13px Inter,sans-serif}
 </style>
 <script src="/js/wize-attribution.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
@@ -394,6 +408,13 @@ body{padding:0 14px 88px;background:radial-gradient(ellipse at top right,rgba(13
     <span class="chev">▾</span>
   </div>
   <div class="body">
+    <div class="il-auth-wall" id="ilAuthWall">
+      <div class="ilaw-icon">🔐</div>
+      <h4 id="ilAuthWallT">ניתוח תושבות אישי</h4>
+      <p id="ilAuthWallP">צור חשבון WizeLife חינמי כדי לבדוק את הסטטוס שלך ולקבל המלצה ספציפית לפרופיל שלך.</p>
+      <a id="ilAuthWallBtn" href="https://wizelife.ai/auth.html?next=%2Fp%2Fdigital-nomad.html">כניסה חינם ←</a>
+    </div>
+    <div id="ilBodyInner">
     <div class="il-grid">
       <div class="il-field">
         <label data-i18n="ilQDays">כמה ימים אתה פיזית בישראל (השנה)?</label>
@@ -426,6 +447,7 @@ body{padding:0 14px 88px;background:radial-gradient(ellipse at top right,rgba(13
     </div>
     <button class="il-go" id="ilCheck" data-i18n="ilCheckBtn">בדוק סטטוס תושבות ישראלית ←</button>
     <div class="il-result" id="ilResult"></div>
+    </div><!-- /ilBodyInner -->
   </div>
 </div>
 
@@ -1052,7 +1074,31 @@ document.getElementById('dayInfoBtn').addEventListener('click', () => {
 });
 
 // IL-residency card toggle + check ─────────────────────────────────────────
-document.getElementById('ilHead').addEventListener('click', () => document.getElementById('ilCard').classList.toggle('on'));
+document.getElementById('ilHead').addEventListener('click', function() {
+  var sso = {};
+  try { sso = JSON.parse(localStorage.getItem('wl_sso') || '{}'); } catch(e) {}
+  var isLoggedIn = !!(sso.uid || sso.email);
+  var card = document.getElementById('ilCard');
+  if (!isLoggedIn && !card.classList.contains('on')) {
+    // Show auth wall instead of the body
+    document.getElementById('ilAuthWall').style.display = 'block';
+    document.getElementById('ilBodyInner').style.display = 'none';
+    card.classList.add('on');
+    // Update auth wall text for current language
+    var ilWallTxts = {
+      he:{t:'ניתוח תושבות אישי',p:'צור חשבון WizeLife חינמי לבדיקת הסטטוס שלך.',b:'כניסה חינם ←'},
+      en:{t:'Personal residency analysis',p:'Create a free WizeLife account to check your residency status.',b:'Sign up free →'},
+      pt:{t:'Análise de residência pessoal',p:'Crie uma conta WizeLife grátis para verificar o seu estado.',b:'Registar grátis →'},
+      es:{t:'Análisis de residencia personal',p:'Crea una cuenta WizeLife gratis para comprobar tu estado.',b:'Registrarse gratis →'},
+    };
+    var wt = ilWallTxts[_lang] || ilWallTxts['en'];
+    document.getElementById('ilAuthWallT').textContent = wt.t;
+    document.getElementById('ilAuthWallP').textContent = wt.p;
+    document.getElementById('ilAuthWallBtn').textContent = wt.b;
+    return;
+  }
+  card.classList.toggle('on');
+});
 document.getElementById('ilCheck').addEventListener('click', () => {
   const days = parseInt(document.getElementById('ilDays').value, 10) || 0;
   const family = document.getElementById('ilFamily').value;
@@ -1138,7 +1184,36 @@ function renderSplit() {
 
 // Hook the country/days change into the new chips/staleness
 const _origRecalc = recalc;
-recalc = function() { _origRecalc(); updateSourceChip(); updateSalaryChip(); updateStalenessFlag(); };
+recalc = function() {
+  _origRecalc();
+  updateSourceChip();
+  updateSalaryChip();
+  updateStalenessFlag();
+  // Show sticky CTA bar when user has a result (first time only)
+  var sso = {};
+  try { sso = JSON.parse(localStorage.getItem('wl_sso') || '{}'); } catch(e) {}
+  var loggedIn = !!(sso.uid || sso.email);
+  var hasResult = document.getElementById('zones').classList.contains('on');
+  if (!loggedIn && hasResult && !sessionStorage.getItem('sc_dismissed')) {
+    var bar = document.getElementById('stickyCta');
+    if (bar) {
+      setTimeout(function() { bar.classList.add('show'); }, 800);
+      var stickyTxts = {
+        he: {t: '🎯 <span>WizeTax</span> — ניתוח אישי: ויזה, PE, אמנת מס', b: 'ניתוח חינם ←'},
+        en: {t: '🎯 <span>WizeTax</span> — personal analysis: visa, PE risk, tax treaty', b: 'Free analysis →'},
+        pt: {t: '🎯 <span>WizeTax</span> — análise pessoal: visto, PE, tratado', b: 'Análise grátis →'},
+        es: {t: '🎯 <span>WizeTax</span> — análisis personal: visado, PE, tratado', b: 'Análisis gratis →'},
+      };
+      var st = stickyTxts[_lang] || stickyTxts['en'];
+      document.getElementById('stickyCtaText').innerHTML = st.t;
+      document.getElementById('stickyCtaLink').textContent = st.b;
+    }
+  }
+};
+document.getElementById('stickyCtaClose').addEventListener('click', function() {
+  sessionStorage.setItem('sc_dismissed', '1');
+  document.getElementById('stickyCta').classList.remove('show');
+});
 
 // ── Init ───────────────────────────────────────────────────────────────────
 function init() {
@@ -1159,5 +1234,12 @@ init();
 
 <script defer="" src="/js/wize-bottom-nav.js"></script>
 <script defer="" src="/js/wize-hamburger.js"></script>
+<!-- Sticky CTA bar -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sc-text" id="stickyCtaText">🎯 <span>WizeTax</span> — ניתוח אישי לדיגיטל נומד: ויזה, PE, אמנת מס</div>
+  <a id="stickyCtaLink" href="https://wizelife.ai/auth.html?next=%2Fdashboard.html">ניתוח חינם ←</a>
+  <button class="sc-x" id="stickyCtaClose" aria-label="Close">×</button>
+</div>
+
 </body>
 </html>
