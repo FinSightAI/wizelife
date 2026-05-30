@@ -9,13 +9,13 @@
 <link rel="canonical" href="https://wizelife.ai/p/relocate-italy.html">
 
 <meta property="og:title" content="🇮🇹 כמה תחסוך אם תעבור לאיטליה?">
-<meta property="og:description" content="Flat Tax 7% לתושבים חדשים בעיירות קטנות. ניתוח 10 שנים ישראל מול איטליה. נתוני 2026.">
+<meta property="og:description" content="Flat Tax 7% לתושבים חדשים בעיירות קטנות. ניתוח 10 שנים ישראל מול איטליה. חינם.">
 <meta property="og:image" content="https://wizelife.ai/og-image.png">
 <meta property="og:url" content="https://wizelife.ai/p/relocate-italy.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="🇮🇹 כמה תחסוך אם תעבור לאיטליה?">
-<meta name="twitter:description" content="ניתוח 10 שנים — מס ישראל מול NHR. חינם, בלי הרשמה.">
+<meta name="twitter:description" content="Flat Tax 7% לתושבים חדשים בעיירות קטנות. ניתוח 10 שנים ישראל מול איטליה. חינם.">
 
 <link rel="icon" href="/img/wizelife-logo-v2.svg">
 <link rel="manifest" href="/manifest.json">
@@ -127,7 +127,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
   <div class="flag">🇮🇱 → 🇮🇹</div>
   <div class="badge" data-i18n="badge">✓ נתוני מס מאומתים 2026</div>
   <h1 data-i18n="title">כמה תחסוך אם תעבור<br>לפורטוגל?</h1>
-  <p data-i18n="sub">משטר ה-NHR מאפשר 0% מס על הכנסה זרה ל-10 שנים. הזן ברוטו, ראה את החיסכון. בלי הרשמה.</p>
+  <p data-i18n="sub">Flat Tax 7% לתושבים חדשים בעיירות קטנות. חשב חיסכון מול ישראל. בלי הרשמה.</p>
 </div>
 
 <div class="card">
@@ -144,7 +144,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
         <option value="local_employment" data-i18n="typeLocalEmp">IRPEF רגיל 23%+</option>
         <option value="dividends" data-i18n="typeDiv">רווחי הון / דיווידנדים (26%)</option>
       </select>
-      <div class="hint" data-i18n="hintIncomeType">סוג ההכנסה משפיע על שיעור ה-NHR</div>
+      <div class="hint" data-i18n="hintIncomeType">סוג ההכנסה משפיע על שיעור המס</div>
     </div>
   </div>
 </div>
@@ -173,7 +173,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
     <div class="yr"><span data-i18n="annual">שנתי:</span> <span id="ilAnnual">$0</span></div>
   </div>
   <div class="b-card co">
-    <h3>🇮🇹 <span data-i18n="coTitle">פורטוגל NHR (10 שנים)</span></h3>
+    <h3>🇮🇹 <span data-i18n="coTitle">איטליה Flat 7% (10 שנים)</span></h3>
     <div class="num" id="ptTotal">$0</div>
     <div class="lbl" id="ptLbl"><span data-i18n="coLblForeign">0% על הכנסה זרה — מס סוציאלי בלבד</span></div>
     <div class="yr"><span data-i18n="annual">שנתי:</span> <span id="ptAnnual">$0</span></div>
@@ -498,7 +498,7 @@ function recalc() {
 window.addEventListener('wl-fx-updated', recalc);
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('incomeType').addEventListener('change', recalc);
-// Initial render — now safe because CO_RATES + calcPT are declared above.
+// Initial render — now safe because CO_RATES + calcCO are declared above.
 applyLang(_lang);
 recalc();
 
