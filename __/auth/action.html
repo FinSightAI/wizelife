@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WizeLife — אימות</title>
+<meta name="robots" content="noindex">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#030508;color:#eef2ff;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:40px;max-width:420px;width:calc(100% - 32px);text-align:center}
+.logo{font-size:22px;font-weight:800;margin-bottom:28px}
+.logo span{background:linear-gradient(135deg,#818cf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:18px;font-weight:700;margin-bottom:12px;color:#eef2ff}
+p{font-size:14px;color:#94a3b8;line-height:1.6;margin-bottom:20px}
+.input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;font-size:15px;color:#eef2ff;outline:none;margin-bottom:12px}
+.input:focus{border-color:#6366f1}
+.btn{width:100%;background:linear-gradient(135deg,#6366f1,#4f46e5);border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;transition:.2s}
+.btn:hover{opacity:.9}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.msg{font-size:13px;padding:10px 14px;border-radius:8px;margin-bottom:14px;display:none}
+.msg.ok{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:#34d399}
+.msg.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="logo">Wize<span>Life</span></div>
+  <div class="msg" id="msg"></div>
+  <div id="content"><p style="color:#94a3b8">⏳ טוען...</p></div>
+</div>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, verifyPasswordResetCode, confirmPasswordReset, applyActionCode, checkActionCode } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+const app = initializeApp({
+  apiKey: "AIzaSyBmkxWXHHMoFHnCK8VibWZkEDnMDIJzWsI",
+  authDomain: "finzilla-7f1f9.firebaseapp.com",
+  projectId: "finzilla-7f1f9",
+});
+const auth = getAuth(app);
+
+const params = new URLSearchParams(location.search);
+const mode = params.get('mode');
+const oobCode = params.get('oobCode');
+const continueUrl = params.get('continueUrl') || 'https://wizelife.ai/dashboard.html';
+const content = document.getElementById('content');
+const msg = document.getElementById('msg');
+
+function showMsg(text, type) {
+  msg.textContent = text;
+  msg.className = 'msg ' + type;
+  msg.style.display = 'block';
+}
+
+function t(he, en) {
+  const lang = localStorage.getItem('wl_lang') || 'he';
+  return lang === 'he' ? he : en;
+}
+
+if (!mode || !oobCode) {
+  content.innerHTML = '<h2>' + t('שגיאה', 'Error') + '</h2><p>' + t('קישור לא תקין. אנא בקש קישור חדש.', 'Invalid link. Please request a new one.') + '</p><br><a href="/auth.html" style="color:#818cf8">' + t('חזרה להתחברות', 'Back to login') + '</a>';
+} else if (mode === 'resetPassword') {
+  verifyPasswordResetCode(auth, oobCode).then(email => {
+    content.innerHTML = '<h2>' + t('איפוס סיסמה', 'Reset Password') + '</h2><p>' + t('עבור: ', 'For: ') + '<strong style="color:#eef2ff">' + email + '</strong></p><input type="password" id="pw1" class="input" placeholder="' + t('סיסמה חדשה', 'New password') + '" minlength="8"><input type="password" id="pw2" class="input" placeholder="' + t('אשר סיסמה', 'Confirm password') + '"><button class="btn" id="resetBtn">' + t('עדכן סיסמה', 'Update Password') + '</button>';
+    document.getElementById('resetBtn').onclick = async () => {
+      const p1 = document.getElementById('pw1').value;
+      const p2 = document.getElementById('pw2').value;
+      if (p1.length < 8) { showMsg(t('הסיסמה חייבת להכיל לפחות 8 תווים', 'Password must be at least 8 characters'), 'err'); return; }
+      if (p1 !== p2) { showMsg(t('הסיסמאות לא תואמות', 'Passwords do not match'), 'err'); return; }
+      const btn = document.getElementById('resetBtn');
+      btn.disabled = true; btn.innerHTML = '<span class="spin"></span>' + t('מעדכן...', 'Updating...');
+      try {
+        await confirmPasswordReset(auth, oobCode, p1);
+        showMsg(t('✓ הסיסמה עודכנה! מועבר להתחברות...', '✓ Password updated! Redirecting...'), 'ok');
+        btn.style.display = 'none';
+        setTimeout(() => { location.href = '/auth.html'; }, 2000);
+      } catch(e) {
+        btn.disabled = false; btn.innerHTML = t('עדכן סיסמה', 'Update Password');
+        showMsg(t('שגיאה: ' + (e.code || e.message), 'Error: ' + (e.code || e.message)), 'err');
+      }
+    };
+  }).catch(() => {
+    content.innerHTML = '<h2>' + t('קישור פג תוקף', 'Link Expired') + '</h2><p>' + t('קישור האיפוס פג. אנא בקש קישור חדש.', 'This reset link has expired. Please request a new one.') + '</p><br><a href="/auth.html" style="color:#818cf8">' + t('חזרה', 'Back') + '</a>';
+  });
+} else if (mode === 'verifyEmail') {
+  applyActionCode(auth, oobCode).then(() => {
+    content.innerHTML = '<h2>✓ ' + t('האימייל אומת!', 'Email Verified!') + '</h2><p>' + t('תודה. עכשיו אפשר לגשת לכל הכלים.', 'Thank you. You can now access all tools.') + '</p><br><button class="btn" onclick="location.href=\'' + continueUrl + '\'">' + t('המשך', 'Continue') + '</button>';
+  }).catch(() => {
+    content.innerHTML = '<h2>' + t('קישור לא תקין', 'Invalid Link') + '</h2><p>' + t('ייתכן שהאימייל כבר אומת, או שהקישור פג. נסה להתחבר.', 'Email may already be verified, or link expired. Try signing in.') + '</p><br><a href="/auth.html" style="color:#818cf8">' + t('התחברות', 'Sign in') + '</a>';
+  });
+} else if (mode === 'signIn') {
+  // Email link sign-in — redirect to auth.html which handles signInWithEmailLink
+  location.href = '/auth.html' + location.search;
+} else {
+  content.innerHTML = '<h2>' + t('פעולה לא מוכרת', 'Unknown action') + '</h2><a href="/auth.html" style="color:#818cf8">' + t('חזרה', 'Back') + '</a>';
+}
+</script>
+</body>
+</html>
