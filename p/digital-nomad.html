@@ -128,10 +128,19 @@ body{padding:0 14px 88px;background:radial-gradient(ellipse at top right,rgba(13
 .share-btns button .icon{font-size:20px;line-height:1}
 
 /* CTA */
-.cta{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.25);border-radius:14px;padding:16px}
-.cta h4{margin:0 0 6px;font:800 14px Plus Jakarta Sans,Inter,sans-serif;color:#fcd34d}
-.cta p{margin:0 0 10px;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.5}
-.cta a{display:inline-flex;align-items:center;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 20px;min-height:44px;border-radius:99px;font:800 13px Inter,sans-serif}
+.cta-pro{max-width:760px;margin:28px auto;background:linear-gradient(135deg,rgba(139,92,246,0.13),rgba(245,158,11,0.10));border:1px solid rgba(139,92,246,0.3);border-radius:20px;padding:22px 24px;position:relative;overflow:hidden}
+.cta-pro::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(139,92,246,0.2),transparent 60%);pointer-events:none}
+.cta-pro-badge{display:inline-block;background:rgba(139,92,246,0.18);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd;padding:4px 12px;border-radius:99px;font:700 11px Inter,sans-serif;letter-spacing:.4px;margin-bottom:12px}
+.cta-pro h4{margin:0 0 8px;font:900 19px Plus Jakarta Sans,Inter,sans-serif;color:#eef2ff;line-height:1.3}
+.cta-pro p{margin:0 0 14px;font:500 13px Inter,sans-serif;color:#a5b4fc;line-height:1.55}
+.cta-feats{list-style:none;margin:0 0 18px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.cta-feats li{font:600 12px Inter,sans-serif;color:#cbd5e1;display:flex;align-items:flex-start;gap:6px;line-height:1.4}
+.cta-feats li::before{content:'✓';color:#a78bfa;font-weight:800;flex-shrink:0;margin-top:1px}
+.cta-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.cta-btn{display:inline-flex;align-items:center;background:linear-gradient(135deg,#8b5cf6,#f59e0b);color:#fff;text-decoration:none;padding:13px 26px;min-height:48px;border-radius:99px;font:800 14px Inter,sans-serif;box-shadow:0 4px 20px rgba(139,92,246,0.35);transition:transform .2s,box-shadow .2s;letter-spacing:.2px}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 7px 28px rgba(139,92,246,0.5)}
+.cta-trust{font:500 11.5px Inter,sans-serif;color:#6b7280}
+@media(max-width:520px){.cta-feats{grid-template-columns:1fr}.cta-trust{display:block;margin-top:8px}}
 
 /* Footer */
 .foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.55}
@@ -253,8 +262,9 @@ body{padding:0 14px 88px;background:radial-gradient(ellipse at top right,rgba(13
   .preset .pname{font-size:14.5px}
   .preset .pdesc{font-size:13px}
   .share-wrap p{font-size:14px}
-  .cta h4{font-size:15.5px}
-  .cta p{font-size:14px}
+  .cta-pro h4{font-size:22px}
+  .cta-feats li{font-size:13px}
+  .cta-trust{font-size:12.5px}
   .il-card .head .ttl,.split-card .head .ttl{font-size:16px}
   .il-card .head .sub,.split-card .head .sub{font-size:13px}
   .il-card .il-field label{font-size:13px}
@@ -437,10 +447,20 @@ body{padding:0 14px 88px;background:radial-gradient(ellipse at top right,rgba(13
 </div>
 
 <!-- CTA -->
-<div class="cta">
+<div class="cta-pro">
+  <div class="cta-pro-badge" data-i18n="ctaBadge">✦ ניתוח AI אישי — חינם</div>
   <h4 data-i18n="ctaT">רוצה ניתוח אישי לפי המצב שלך?</h4>
-  <p data-i18n="ctaP">WizeTax בודק את המקרה הספציפי שלך: מסלול ויזה, סיכון PE לפי חוזה ההעסקה, אמנת מס עם המדינה, תכנון מעבר הדרגתי. AI שמכיר את חוקי 26 מדינות + יועץ אנושי לבדיקה.</p>
-  <a id="ctaLink" href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" data-i18n="ctaBtn">פתח חשבון חינם ←</a>
+  <p data-i18n="ctaP">WizeTax בודק את המקרה הספציפי שלך — לא תשובה גנרית.</p>
+  <ul class="cta-feats">
+    <li data-i18n="ctaF1">מסלול ויזה לפי פרופיל</li>
+    <li data-i18n="ctaF2">סיכון PE לפי חוזה ההעסקה</li>
+    <li data-i18n="ctaF3">אמנת מס ישראל ↔ מדינת יעד</li>
+    <li data-i18n="ctaF4">תכנון מעבר הדרגתי</li>
+  </ul>
+  <div class="cta-actions">
+    <a id="ctaLink" class="cta-btn" href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" data-i18n="ctaBtn">קבל ניתוח אישי חינם ←</a>
+    <span class="cta-trust" data-i18n="ctaTrust">AI · 26 מדינות · יועץ אנושי לבדיקה</span>
+  </div>
 </div>
 
 <!-- Modal for per-country detail -->
@@ -496,9 +516,15 @@ const TR = {
     shareT: 'חברים שמתכננים נוודות? שלח להם 👇',
     shareSub: 'לפני שמזיזים מזוודה — שווה להבין מה הסיכון',
     shareEmail: 'Email', shareCopy: 'העתק',
+    ctaBadge: '✦ ניתוח AI אישי — חינם',
     ctaT: 'רוצה ניתוח אישי לפי המצב שלך?',
-    ctaP: 'WizeTax בודק את המקרה הספציפי שלך: מסלול ויזה, סיכון PE לפי חוזה ההעסקה, אמנת מס עם המדינה, תכנון מעבר הדרגתי. AI שמכיר את חוקי 26 מדינות + יועץ אנושי לבדיקה.',
-    ctaBtn: 'פתח חשבון חינם ←',
+    ctaP: 'WizeTax בודק את המקרה הספציפי שלך — לא תשובה גנרית.',
+    ctaF1: 'מסלול ויזה לפי פרופיל',
+    ctaF2: 'סיכון PE לפי חוזה ההעסקה',
+    ctaF3: 'אמנת מס ישראל ↔ מדינת יעד',
+    ctaF4: 'תכנון מעבר הדרגתי',
+    ctaBtn: 'קבל ניתוח אישי חינם ←',
+    ctaTrust: 'AI · 26 מדינות · יועץ אנושי לבדיקה',
     footSource: 'מקור: PwC Worldwide Tax Summaries · OECD · רשות המסים בישראל · אמנות בילטרליות. נכון לשנת 2026.',
     footLegal: '⚠️ כלי מידע כללי. דיני מס בינלאומיים מורכבים — אל תקח החלטת רילוקיישן בלי יועץ מס מורשה.',
     modalTaxRes: 'סף תושבות מס', modalTreaty: 'אמנת מס עם ישראל', modalTotal: 'טוטליזציה לבל"מ', modalPE: 'סיכון PE למעסיק זר', modalVisa: 'ויזת נוודות דיגיטלית', modalSrc: 'מקור:',
@@ -539,9 +565,15 @@ const TR = {
     shareT: 'Friends considering nomading? Send it 👇',
     shareSub: 'Before packing — worth understanding the risk',
     shareEmail: 'Email', shareCopy: 'Copy',
+    ctaBadge: '✦ Personal AI analysis — free',
     ctaT: 'Want a personalized analysis?',
-    ctaP: 'WizeTax models YOUR specific case: visa route, PE risk by employment contract, tax treaty with the country, phased relocation plan. AI knowing 26 countries\' rules + a human advisor for review.',
-    ctaBtn: 'Sign up free →',
+    ctaP: 'WizeTax models YOUR specific case — not a generic answer.',
+    ctaF1: 'Visa route for your profile',
+    ctaF2: 'PE risk by your employment contract',
+    ctaF3: 'Israel ↔ destination tax treaty',
+    ctaF4: 'Phased relocation plan',
+    ctaBtn: 'Get free personal analysis →',
+    ctaTrust: 'AI · 26 countries · human advisor review',
     footSource: 'Sources: PwC Worldwide Tax Summaries · OECD · Israel Tax Authority · bilateral treaties. As of 2026.',
     footLegal: '⚠️ General information tool. International tax law is complex — never make a relocation decision without a licensed tax advisor.',
     modalTaxRes: 'Tax residency threshold', modalTreaty: 'Tax treaty with Israel', modalTotal: 'Social security totalization', modalPE: 'PE risk to foreign employer', modalVisa: 'Digital nomad visa', modalSrc: 'Source:',
@@ -582,9 +614,15 @@ const TR = {
     shareT: 'Amigos a planear nomadismo? Envie 👇',
     shareSub: 'Antes de fazer as malas — vale a pena entender o risco',
     shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaBadge: '✦ Análise AI pessoal — grátis',
     ctaT: 'Quer uma análise personalizada?',
-    ctaP: 'O WizeTax modela o seu caso específico: rota de visto, risco PE conforme o contrato, tratado fiscal com o país, plano de mudança gradual. IA que conhece 26 países + consultor humano para revisão.',
-    ctaBtn: 'Registar grátis →',
+    ctaP: 'O WizeTax modela o seu caso específico — não uma resposta genérica.',
+    ctaF1: 'Rota de visto para o seu perfil',
+    ctaF2: 'Risco PE conforme o contrato',
+    ctaF3: 'Tratado Israel ↔ destino',
+    ctaF4: 'Plano de mudança gradual',
+    ctaBtn: 'Obter análise pessoal grátis →',
+    ctaTrust: 'IA · 26 países · consultor humano',
     footSource: 'Fontes: PwC Worldwide Tax Summaries · OECD · Autoridade Fiscal de Israel · tratados bilaterais. Em vigor em 2026.',
     footLegal: '⚠️ Ferramenta de informação geral. O direito fiscal internacional é complexo — nunca tome uma decisão de relocalização sem consultor fiscal licenciado.',
     modalTaxRes: 'Limite de residência fiscal', modalTreaty: 'Tratado fiscal com Israel', modalTotal: 'Totalização de seg. social', modalPE: 'Risco PE para empregador estrangeiro', modalVisa: 'Visto de nómada digital', modalSrc: 'Fonte:',
@@ -625,9 +663,15 @@ const TR = {
     shareT: '¿Amigos planeando nomadismo? Envíaselo 👇',
     shareSub: 'Antes de hacer las maletas — vale la pena entender el riesgo',
     shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaBadge: '✦ Análisis AI personal — gratis',
     ctaT: '¿Quieres un análisis personalizado?',
-    ctaP: 'WizeTax modela tu caso específico: ruta de visado, riesgo PE según contrato, tratado fiscal con el país, plan de mudanza por fases. IA que conoce 26 países + asesor humano para revisión.',
-    ctaBtn: 'Registrarse gratis →',
+    ctaP: 'WizeTax modela tu caso específico — no una respuesta genérica.',
+    ctaF1: 'Ruta de visado según perfil',
+    ctaF2: 'Riesgo PE según contrato',
+    ctaF3: 'Tratado Israel ↔ destino',
+    ctaF4: 'Plan de traslado por fases',
+    ctaBtn: 'Obtener análisis personal gratis →',
+    ctaTrust: 'IA · 26 países · asesor humano',
     footSource: 'Fuentes: PwC Worldwide Tax Summaries · OECD · Autoridad Fiscal de Israel · tratados bilaterales. Vigente en 2026.',
     footLegal: '⚠️ Herramienta de información general. El derecho fiscal internacional es complejo — nunca tomes una decisión de mudanza sin asesor fiscal licenciado.',
     modalTaxRes: 'Umbral de residencia fiscal', modalTreaty: 'Tratado fiscal con Israel', modalTotal: 'Totalización seg. social', modalPE: 'Riesgo PE para empleador extranjero', modalVisa: 'Visado de nómada digital', modalSrc: 'Fuente:',
