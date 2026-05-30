@@ -354,7 +354,7 @@ window.NOMAD_DATA = {
       pt: '"Remotely from Georgia" (2020) — 1 ano. Pode registar como Small Business (1% até 500K GEL).',
       es: '"Remotely from Georgia" (2020) — 1 año. Puede registrarse como Small Business (1% hasta 500K GEL).',
     },
-    nomadVisaSource: 'https://stopcov.ge/en/Page/RemotelyFromGeorgia',
+    nomadVisaSource: 'https://georgiatourism.com/remotely-from-georgia/',
     verifiedDate: '2026-05',
   },
 
