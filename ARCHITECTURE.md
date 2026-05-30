@@ -1,6 +1,6 @@
 # WizeLife — Architecture & Specification
 
-> Last updated: 2026-05-22
+> Last updated: 2026-05-30
 > Owner: WizeLife / FinSightAI
 > Domain: `wizelife.ai`
 
@@ -45,7 +45,7 @@ authenticates through a unified SSO bridge.
 | Concern | Where it's managed |
 |---|---|
 | Auth + DB | Firebase project `finzilla-7f1f9` (Auth + Firestore) |
-| Cloud Functions | `finzilla-7f1f9` — paypalWebhook, logEvent beacon — repo `finance dashboard/functions` |
+| Cloud Functions | `finzilla-7f1f9` — `paypalWebhook`, `sendWelcomeEmail`, `dripEmailScheduler`, `captureLeadEmail`, `logEvent`, `issueCustomToken` — repo `finance dashboard/functions/index.js` |
 | Cloud Run | project `finzilla-7f1f9`, region `us-central1` — `wizetax-backend` + `wizehealth` (both `min-instances=1`); redeploy via each app's `cloudrun-deploy.sh` |
 | Secrets | GCP Secret Manager (`finzilla-7f1f9`): GEMINI_API_KEY, TAVILY_API_KEY, SESSION_SECRET, PAYPAL_* … (grant `secretAccessor` to the compute SA for new secrets) |
 | DNS | Cloudflare zone `wizelife.ai` — orange proxy everywhere EXCEPT `health` (gray, required for the Cloud Run domain-mapping cert) |
@@ -156,10 +156,55 @@ Highest tier wins (yolo > pro > free).
 | Pro | $4.99/mo | 20/day, full features | — |
 | YOLO | $9.99/mo | 40/day, all tools, priority | `WIZELIFE2026`, `BETA-ACCESS`, `FRIEND-PRO` |
 
-- `PAYWALL_ACTIVE = false` in `finance dashboard/js/plan.js` until Stripe is configured
+- `PAYWALL_ACTIVE = true` in `finance dashboard/js/plan.js` — **paywall is LIVE** (activated 2026-05-30)
 - Stripe Customer Portal button hidden until billing is live
 - Access codes redeem via paywall modal → set plan in Firestore + localStorage
 - Referral system: friend signs up via `?ref=<code>` → upgrades to PRO/YOLO → referrer earns 30 days of matching tier
+
+---
+
+## 6a. Lead capture funnel (landing pages)
+
+### 6a.1 Relocation calculator pages
+8 country-specific standalone pages at `wizelife.ai/p/relocate-<country>.html`:
+
+| Page | Country | CSS accent |
+|---|---|---|
+| `/p/relocate-portugal.html` | Portugal (NHR) | indigo |
+| `/p/relocate-uae.html` | UAE | amber |
+| `/p/relocate-cyprus.html` | Cyprus | teal |
+| `/p/relocate-italy.html` | Italy | green |
+| `/p/relocate-greece.html` | Greece (7-year window) | blue |
+| `/p/relocate-brazil.html` | Brazil | lime |
+| `/p/relocate-bali.html` | Bali | orange |
+| `/p/relocate-thailand.html` | Thailand | purple |
+
+Each page:
+- Free calculator (IL income → country tax comparison) — no gate
+- Shows savings number to user first
+- Inline email capture widget appears **after** user sees savings → no friction
+- `submitEmail()` POSTs to `captureLeadEmail` Firebase Function
+- Supports 4 languages (he/en/pt/es) via `TR` object + `applyLang()`
+- Share buttons (WhatsApp/Email/Copy) — `buildShareText()` uses `TR[_lang].coTitle`
+
+### 6a.2 `captureLeadEmail` Cloud Function
+- **Endpoint:** `POST https://us-central1-finzilla-7f1f9.cloudfunctions.net/captureLeadEmail`
+- **CORS:** only `https://wizelife.ai` + `https://finsightai.github.io`
+- **Body:** `{ email, source, lang, savingsUSD, country }`
+- **Actions:** (1) save to Firestore `leads` collection with `drip1/2/3_sent:false` + `capturedAt` timestamp, (2) add to Resend audience `d266041d-86c8-4d43-8da9-cd2a10a4ad23`, (3) send immediate personalized email (savings in subject)
+- **Rate limit:** 5 submissions per email per minute
+- **Security:** rejects `<>"'\`` in email before parsing
+
+### 6a.3 `dripEmailScheduler` Cloud Function (updated)
+- **Trigger:** PubSub every 6 hours
+- **Processes TWO collections:**
+  - `users` (full signups) — uses `createdAt` timestamp
+  - `leads` (calculator email captures) — uses `capturedAt` timestamp
+- **Drip windows:**
+  - Day-1 (20–36h): WizeTax advisor CTA + beta pricing urgency
+  - Day-3 (60–90h): Country spotlight — Portugal / Cyprus / UAE
+  - Day-7 (160–175h): Final urgency, hard sell, price lock CTA
+- All 4 languages (he/en/pt/es), marks `drip1/2/3_sent: true` after send
 
 ---
 
