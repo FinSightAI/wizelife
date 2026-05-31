@@ -79,8 +79,15 @@
          below and overlap content. Anchored at inline-START (left in LTR /
          right in RTL) per user convention (FB/Twitter/Material). Drawer slides
          in from the same edge so the visual relationship is consistent. */
-      + '  #wize-ham-btn{position:fixed;top:calc(1px + env(safe-area-inset-top));left:8px;right:auto;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
+      + '  #wize-ham-btn{position:fixed;top:calc(1px + env(safe-area-inset-top));left:8px;right:auto;z-index:100002;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;isolation:isolate;}'
       + '  html[dir="rtl"] #wize-ham-btn{left:auto;right:8px;}'
+      /* Prevent the WizeBar <img> and its parent <a> from intercepting taps
+         in the hamburger hit-zone. The button is z-index 100002 which is above
+         the bar's z-index 99999, but backdrop-filter stacking contexts and some
+         mobile browsers let the bar's child elements steal pointer events. */
+      + '  .wl-bar-react img{pointer-events:none;}'
+      + '  .wl-bar-react > a{max-width:calc(100% - 50px);overflow:hidden;}'
+      + '  html[dir="rtl"] .wl-bar-react > a{margin-inline-end:50px;}'
       /* Hide the inline lang-pill cluster + WizeLife floating theme button on
          mobile — lang+theme live in the drawer instead, so the top bar shows
          brand on inline-START and burger on inline-END only. */
@@ -132,10 +139,12 @@
     if (cur === 'portal' && document.getElementById('hamburger')) return;
 
     /* Avoid a DOUBLE hamburger: if the host app already renders its own
-       mobile menu toggle (WizeTax .wt-hamburger, WizeMoney .mobile-menu-toggle /
-       .mobile-header-toggle), don't add the shared one too. Cross-app switching
-       on those apps stays available via the shared bottom-nav. */
-    if (document.querySelector('.mobile-menu-toggle, .mobile-header-toggle, .wt-hamburger')) return;
+       mobile menu toggle (WizeTax .wt-hamburger, WizeMoney .mobile-header-toggle),
+       don't add the shared one too. Cross-app switching on those apps stays
+       available via the shared bottom-nav.
+       NOTE: .mobile-menu-toggle is a permanently-hidden legacy button; do NOT
+       guard on it here or the shared hamburger will never inject on WizeMoney. */
+    if (document.querySelector('.mobile-header-toggle, .wt-hamburger')) return;
 
     injectStyle();
     var lang = getLang();

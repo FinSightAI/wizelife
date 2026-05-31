@@ -286,14 +286,15 @@
       'display:flex','align-items:center','justify-content:center',
       'background:rgba(5,8,20,0.55)','backdrop-filter:blur(8px)','-webkit-backdrop-filter:blur(8px)',
       'font-family:Inter,-apple-system,system-ui,sans-serif',
-      'padding:20px','box-sizing:border-box',
+      'padding:16px','box-sizing:border-box',
+      'max-width:100vw','overflow-x:hidden',
       'animation:wbo-fade .25s ease',
       'direction:' + (rtl ? 'rtl' : 'ltr')
     ].join(';');
 
     var card = document.createElement('div');
     card.style.cssText = [
-      'position:relative','width:100%','max-width:420px',
+      'position:relative','width:100%','max-width:min(420px,calc(100vw - 32px))',
       'background:linear-gradient(180deg,#0f1426 0%,#080b16 100%)',
       'border:1px solid rgba(255,255,255,0.10)','border-radius:24px',
       'padding:36px 32px 28px','box-sizing:border-box',
@@ -303,7 +304,7 @@
       // Cap to the viewport and scroll inside on short screens, so the close /
       // next buttons are NEVER clipped off-screen on mobile (the body has
       // overflow:hidden, so an unreachable button = a frozen, unescapable page).
-      'max-height:calc(100vh - 40px)', 'max-height:calc(100dvh - 40px)',
+      'max-height:calc(100vh - 32px)', 'max-height:calc(100dvh - 32px)',
       'overflow-y:auto', 'overflow-x:hidden'
     ].join(';');
 
@@ -343,7 +344,7 @@
 
     /* Top: progress + close */
     var top = document.createElement('div');
-    top.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;';
+    top.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;position:sticky;top:0;z-index:2;';
     var dots = document.createElement('div');
     dots.style.cssText = 'display:flex;gap:6px;';
     slides.forEach(function (_, i) {
