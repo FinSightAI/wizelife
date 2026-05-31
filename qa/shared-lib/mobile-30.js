@@ -29,7 +29,7 @@ async function dismiss(p) {
 
 async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }) {
   hamSelector = hamSelector || '#wize-ham-btn, .wh-app-ham, .mobile-menu-toggle, [id*=ham]';
-  drawerSelector = drawerSelector || 'aside, #wize-ham-drawer, [class*=drawer], [class*=sidebar]';
+  drawerSelector = drawerSelector || 'aside, #wize-ham-drawer, #mobileNav, .mobile-nav, [class*=drawer], [class*=sidebar]';
   const b = await chromium.launch();
   const results = [];
   const add = (n, label, status, detail = '') => results.push({ n, label, status, detail });
