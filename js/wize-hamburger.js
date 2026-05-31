@@ -144,7 +144,7 @@
        available via the shared bottom-nav.
        NOTE: .mobile-menu-toggle is a permanently-hidden legacy button; do NOT
        guard on it here or the shared hamburger will never inject on WizeMoney. */
-    if (document.querySelector('.mobile-header-toggle, .wt-hamburger')) return;
+    if (document.querySelector('.mobile-header-toggle, .wt-hamburger, .mobile-header')) return;
     var _mmt = document.querySelector('.mobile-menu-toggle');
     if (_mmt && getComputedStyle(_mmt).display !== 'none') return;
 
@@ -378,9 +378,36 @@
     window.WizeHamburger = { open: open, close: closeFn };
   }
 
+  /* Race-proof guard: if the host app injects its own hamburger/header AFTER
+     our build() already ran, remove the shared elements we injected.
+     Selectors: .mobile-header-toggle / .mobile-header (WizeMoney),
+                .wt-hamburger (WizeTax), .wl-deal-ham (WizeDeal),
+                .wl-tr-ham (WizeTravel), .wh-app-ham (WizeHealth — keep shared).
+     WizeHealth uses .wh-app-ham only for its own internal nav, not a full
+     hamburger replacement, so we do NOT include it here. */
+  function removeIfHostHamburgerAppears() {
+    if (document.querySelector('.mobile-header-toggle, .mobile-header, .wt-hamburger, .wl-deal-ham, .wl-tr-ham')) {
+      ['wize-ham-btn', 'wize-ham-overlay', 'wize-ham-drawer'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.parentNode.removeChild(el);
+      });
+      /* Also remove the style block to avoid dead CSS lingering. */
+      var st = document.getElementById('wize-ham-style');
+      if (st) st.parentNode.removeChild(st);
+      /* Reset the loaded flag so a re-init would re-evaluate cleanly. */
+      window.__wizeHamburgerLoaded = false;
+    }
+  }
+
   /* Defer slightly so app-rendered hamburgers (React .wt-hamburger) exist
-     before the duplicate-guard in build() runs. */
-  function start(){ setTimeout(build, 500); }
+     before the duplicate-guard in build() runs. Also schedule a race-proof
+     cleanup at 300ms and 1000ms after build runs, in case the host app
+     injects its own hamburger AFTER our build() already fired. */
+  function start(){
+    setTimeout(build, 500);
+    setTimeout(removeIfHostHamburgerAppears, 800);   /* 500+300 */
+    setTimeout(removeIfHostHamburgerAppears, 1500);  /* 500+1000 */
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
