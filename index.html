@@ -677,7 +677,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </button>
 </div>
 </nav>
-<div class="mobile-nav" id="mobileNav">
+<aside class="mobile-nav" id="mobileNav" aria-label="Mobile menu" aria-hidden="true">
 <a data-i18n="__6" href="#products" onclick="toggleMenu()">Products</a>
 <a data-i18n="__7" href="#pricing" onclick="toggleMenu()">Pricing</a>
 <a href="#faq" onclick="toggleMenu()">FAQ</a>
@@ -692,7 +692,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <button class="lang-pill" data-lang="pt" onclick="setWlLang('pt');toggleMenu()" title="Português">PT</button>
 <button class="lang-pill" data-lang="he" onclick="setWlLang('he');toggleMenu()" title="Hebrew">HE</button>
 </div>
-</div>
+</aside>
 <!-- HERO -->
 <main role="main">
 <section class="hero">
@@ -1292,7 +1292,9 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 // ── NAV ──
 function toggleMenu(){
  document.getElementById('hamburger').classList.toggle('open');
- document.getElementById('mobileNav').classList.toggle('open');
+ var nav = document.getElementById('mobileNav');
+ var isOpen = nav.classList.toggle('open');
+ nav.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
 }
 window.addEventListener('scroll',()=>{
  document.getElementById('nav').classList.toggle('scrolled', window.scrollY>30);
