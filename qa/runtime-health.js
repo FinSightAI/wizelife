@@ -110,9 +110,14 @@ const head = (url) => new Promise((resolve) => {
         const refs = await page.evaluate(() => {
             const urls = new Set();
             document.querySelectorAll('script[src]').forEach(e => urls.add(e.src));
-            document.querySelectorAll('link[href][rel]').forEach(e => urls.add(e.href));
+            document.querySelectorAll('link[href][rel]').forEach(e => {
+                const rel = (e.getAttribute('rel') || '').toLowerCase();
+                if (rel === 'preconnect' || rel === 'dns-prefetch') return; // href is a bare origin, not a fetchable asset
+                urls.add(e.href);
+            });
             document.querySelectorAll('img[src]').forEach(e => urls.add(e.src));
-            return Array.from(urls).filter(u => /^https?:\/\//.test(u));
+            // Skip bare-origin URLs (pathname "/"): preconnect hints / SDK origins are not assets.
+            return Array.from(urls).filter(u => { try { return /^https?:\/\//.test(u) && new URL(u).pathname !== '/'; } catch (e) { return false; } });
         });
         let assetsOK = 0, assetsBad = 0;
         for (const r of refs) {
