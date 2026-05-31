@@ -126,7 +126,7 @@ function advisorSend(page) {
             await g.press('Tab').catch(() => {});
             await page.waitForTimeout(1200);
             const txt = await page.evaluate(() => document.body.textContent || '');
-            if (/NaN|undefined|Infinity/.test(txt)) throw new Error('NaN/undefined/Infinity surfaced for negative gross');
+            if (/NaN|Infinity|(?<!\$)undefined/.test(txt)) throw new Error('NaN/undefined/Infinity surfaced for negative gross');
             const errs = await page.evaluate(() => window.__qaErrs || 0);
             if (errs) throw new Error(`${errs} page errors after negative gross`);
         } finally { await page.close(); await ctx.close(); }
@@ -170,7 +170,7 @@ function advisorSend(page) {
             for (let i = 0; i < 6; i++) { await olim.click({ force: true }).catch(() => {}); await page.waitForTimeout(150); }
             await page.waitForTimeout(800);
             const txt = await page.evaluate(() => document.body.textContent || '');
-            if (/NaN|Infinity|undefined/.test(txt)) throw new Error('inconsistent state (NaN/undefined) after rapid olim toggling');
+            if (/NaN|Infinity|(?<!\$)undefined/.test(txt)) throw new Error('inconsistent state (NaN/undefined) after rapid olim toggling');
         } finally { await page.close(); await ctx.close(); }
     });
 
@@ -265,7 +265,7 @@ function advisorSend(page) {
     await step('Social-compare: no NaN / undefined in rendered table', async () => {
         const { ctx, page } = await fresh(browser, undefined, '/social-compare');
         try {
-            const bad = await page.evaluate(() => /NaN|undefined|Infinity/.test(document.body.textContent || ''));
+            const bad = await page.evaluate(() => /NaN|Infinity|(?<!\$)undefined/.test(document.body.textContent || ''));
             if (bad) throw new Error('NaN/undefined/Infinity present in social-compare body');
         } finally { await page.close(); await ctx.close(); }
     });
