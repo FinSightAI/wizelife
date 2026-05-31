@@ -21,14 +21,14 @@ async function newCtx(b, w, lang) {
 
 async function dismiss(p) {
   try { await p.evaluate(() => { document.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = true; c.dispatchEvent(new Event('change', { bubbles: true })); }); }); } catch (e) {}
-  for (const sel of ['button:has-text("המשך לאפליקציה")', 'button:has-text("Continue")', '.mbtn-p', 'button:has-text("המשך")']) {
+  for (const sel of ['button:has-text("המשך לאפליקציה")', 'button:has-text("Continue")', '.mbtn-p', 'button:has-text("המשך")', 'button:has-text("הבנתי")', 'button:has-text("I understand")', 'button:has-text("Entendi")', 'button:has-text("Entiendo")']) {
     const el = await p.$(sel).catch(() => null); if (el) { await el.click({ force: true }).catch(() => {}); await p.waitForTimeout(200); }
   }
-  await p.evaluate(() => { document.querySelectorAll('.overlay,[id*=onboard],[id*=quickstart]').forEach(o => { o.style.display = 'none'; o.classList && o.classList.add('hidden'); }); }).catch(() => {});
+  await p.evaluate(() => { document.querySelectorAll('.overlay,[id*=onboard],[id*=quickstart],[id*=disclaimer],[id*=wl-gate],.wl-disclaimer-modal').forEach(o => { o.style.display = 'none'; o.classList && o.classList.add('hidden'); }); }).catch(() => {});
 }
 
 async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }) {
-  hamSelector = hamSelector || '#wize-ham-btn, .wh-app-ham, .mobile-menu-toggle, [id*=ham]';
+  hamSelector = hamSelector || '#wize-ham-btn, .wh-app-ham, .mobile-header-toggle, button.mobile-menu-toggle, button[id*=ham], button[class*=ham]';
   drawerSelector = drawerSelector || 'aside, #wize-ham-drawer, #mobileNav, .mobile-nav, [class*=drawer], [class*=sidebar]';
   const b = await chromium.launch();
   const results = [];
@@ -178,10 +178,16 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
       add(16, 'no first-heading clip', clip == null ? 'SKIP' : (clip ? 'FAIL' : 'PASS'));
 
       // 17 first input/textarea/button visible
+      await p.waitForSelector('input:not([type=hidden]), textarea, button', { timeout: 5000 }).catch(() => {});
       const firstInput = await p.evaluate(() => {
-        const el = document.querySelector('input:not([type=hidden]), textarea, button'); if (!el) return null;
-        const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && r.top < window.innerHeight;
+        const els = [...document.querySelectorAll('input:not([type=hidden]), textarea, button')];
+        if (!els.length) return null;
+        return els.some(el => {
+          const cs = getComputedStyle(el);
+          if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity === 0) return false;
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && r.height > 0 && r.top < window.innerHeight && r.bottom > 0 && r.left < window.innerWidth && r.right > 0;
+        });
       });
       add(17, 'first input/btn visible', firstInput == null ? 'SKIP' : firstInput ? 'PASS' : 'FAIL');
 
