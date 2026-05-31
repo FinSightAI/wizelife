@@ -80,6 +80,7 @@ a{color:inherit;text-decoration:none}
 .main-content{flex:1;overflow-y:auto;padding:28px 32px 60px;background:#060810}
 
 /* Auth wall */
+#authLoading{display:flex;align-items:center;justify-content:center;gap:12px;padding:60px 20px;color:#6b7280;font-size:14px}
 #authWall{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:16px;text-align:center;padding:40px}
 #authWall h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#eef2ff}
 #authWall p{color:#6b7280;font-size:14px;max-width:380px}
@@ -240,6 +241,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <!-- Main -->
   <div class="main-content">
 
+    <div id="authLoading"><div class="spinner"></div><span>Loading...</span></div>
     <div id="authWall">
       <div style="font-size:48px;margin-bottom:8px">🌍</div>
       <h2>Sign-in required</h2>
@@ -285,7 +287,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <h2>Select countries to compare <button class="select-all-btn" onclick="toggleAll()">Select all</button></h2>
         <div class="countries-grid" id="countriesGrid"></div>
         <div class="data-badge">
-          <span>✓ Verified 2025 data</span>
+          <span>✓ Verified 2026 data</span>
           Sources: PwC Worldwide Tax Summaries · OECD · KPMG · official tax authorities
         </div>
       </div>
@@ -364,6 +366,7 @@ function getSelected() {
 
 // Auth
 wlAuth.onAuthStateChanged(async user => {
+  document.getElementById('authLoading').style.display = 'none';
   if (user) { const el=document.getElementById("sbUserName"); if(el) el.textContent=user.displayName||user.email||"משתמש"; }
   if (!user) { document.getElementById('authWall').style.display = 'flex'; return; }
   document.getElementById('mainContent').style.display = 'block';

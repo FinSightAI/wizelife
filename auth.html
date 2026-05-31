@@ -43,6 +43,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WizeLife">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="alternate" hreflang="he" href="https://wizelife.ai/auth.html?lang=he" />
+<link rel="alternate" hreflang="en" href="https://wizelife.ai/auth.html?lang=en" />
+<link rel="alternate" hreflang="pt" href="https://wizelife.ai/auth.html?lang=pt" />
+<link rel="alternate" hreflang="es" href="https://wizelife.ai/auth.html?lang=es" />
+<link rel="alternate" hreflang="x-default" href="https://wizelife.ai/auth.html" />
 <title>Sign In — Wize Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://wizehealth-3ol2retcla-uc.a.run.app" crossorigin>
@@ -337,7 +342,12 @@ window._wlLazy = {
  document.getElementById("loginError").textContent = "";
  setLoading("loginBtn", true);
  try {
- await wlAuth.signInWithEmailAndPassword(email, pass);
+ const cred = await wlAuth.signInWithEmailAndPassword(email, pass);
+ if (!cred.user.emailVerified) {
+ setLoading("loginBtn", false);
+ _showVerifyScreen(email);
+ return;
+ }
  try { await window.WizeTrack?.login({ method: 'email' }); } catch {}
  await _afterAuthRedirect();
  } catch (e) {
@@ -389,11 +399,48 @@ window._wlLazy = {
  localStorage.setItem("wl_nickname", name);
  try { await applyReferralOnSignup(cred.user.uid); } catch {}
  try { await window.WizeTrack?.signup({ method: 'email' }); } catch {}
- await _afterAuthRedirect();
+ // Send verification email before redirecting
+ try {
+ await cred.user.sendEmailVerification({
+ url: 'https://wizelife.ai/auth.html',
+ handleCodeInApp: false,
+ });
+ } catch (verErr) { console.warn('verification email failed', verErr); }
+ _showVerifyScreen(email);
  } catch (e) {
  document.getElementById("signupError").textContent = friendlyError(e.code);
  setLoading("signupBtn", false);
  }
+ }
+
+ function _showVerifyScreen(email) {
+ const lang = localStorage.getItem('wl_lang') || 'he';
+ const T = {
+ he: { title: '✉️ בדוק את המייל שלך', body: `שלחנו לינק אימות אל <strong>${email}</strong>.<br>לחץ על הלינק כדי לאמת את החשבון ולגשת לכלים.`, resend: 'שלח שוב', done: 'אימתתי — התחבר', note: 'לא קיבלת? בדוק ספאם / Promotions.' },
+ en: { title: '✉️ Check your email', body: `We sent a verification link to <strong>${email}</strong>.<br>Click it to verify your account and access the tools.`, resend: 'Resend email', done: 'I verified — Sign in', note: "Didn't get it? Check spam / Promotions." },
+ pt: { title: '✉️ Verifique seu e-mail', body: `Enviamos um link de verificação para <strong>${email}</strong>.<br>Clique nele para verificar sua conta.`, resend: 'Reenviar', done: 'Verifiquei — Entrar', note: 'Não recebeu? Verifique spam / Promoções.' },
+ es: { title: '✉️ Revisa tu email', body: `Enviamos un enlace de verificación a <strong>${email}</strong>.<br>Haz clic para verificar tu cuenta.`, resend: 'Reenviar', done: 'Verifiqué — Iniciar sesión', note: '¿No lo recibiste? Revisa spam / Promociones.' },
+ };
+ const t = T[lang] || T.en;
+ document.querySelector('.auth-card').innerHTML = `
+ <div style="text-align:center;padding:32px 24px">
+ <div style="font-size:48px;margin-bottom:16px">✉️</div>
+ <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--text)">${t.title.replace('✉️ ','')}</h2>
+ <p style="color:var(--text-muted);line-height:1.7;margin-bottom:24px;font-size:.95rem">${t.body}</p>
+ <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:20px">${t.note}</p>
+ <button onclick="_resendVerification('${email}')" style="width:100%;padding:12px;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:10px;cursor:pointer;font-size:.9rem;margin-bottom:10px">${t.resend}</button>
+ <button onclick="location.reload()" style="width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700">${t.done}</button>
+ </div>`;
+ }
+
+ async function _resendVerification(email) {
+ try {
+ const user = wlAuth.currentUser;
+ if (user) {
+ await user.sendEmailVerification({ url: 'https://wizelife.ai/auth.html', handleCodeInApp: false });
+ alert('✅ Sent!');
+ }
+ } catch(e) { alert('Error: ' + e.message); }
  }
 
  async function _finishGoogleAuth(cred) {
