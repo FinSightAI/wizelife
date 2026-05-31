@@ -157,6 +157,16 @@ jobs:
         continue-on-error: true
         run: node qa/jsonld-check.js
 
+      - name: Tier 19 — AI safety harness (adversarial prompts)
+        id: aisafety
+        continue-on-error: true
+        run: node qa/ai-safety-check.js
+
+      - name: Tier 20 — Cloud-backup round-trip integrity
+        id: cloudbackup
+        continue-on-error: true
+        run: node qa/cloud-backup-roundtrip-check.js
+
       - name: Aggregate core fail counts
         id: core-fails
         run: |
@@ -188,6 +198,8 @@ jobs:
             shared-script-drift-report.md
             calc-fuzz-report.md
             jsonld-report.md
+            ai-safety-report.md
+            cloud-backup-roundtrip-report.md
             /tmp/core-fails-total
           retention-days: 30
           if-no-files-found: warn
