@@ -1,19 +1,19 @@
-# 🚨 Extended action items — 2026-05-16
+# 🚨 Extended action items — 2026-05-30
 
 ✅ **9 extended checks passed.**
 ---
 _<details><summary>Full detail</summary>_
 
-# Extended checks — 2026-05-16T16:07:26.458Z
+# Extended checks — 2026-05-30T17:44:21.274Z
 
 ## Tier 13f — SW cache integrity
 
-- ✅ https://wizelife.ai/sw.js: all 21 shell assets reachable
-- ✅ https://money.wizelife.ai/sw.js: all 70 shell assets reachable
+- ✅ https://wizelife.ai/sw.js: all 23 shell assets reachable
+- ✅ https://money.wizelife.ai/sw.js: all 71 shell assets reachable
 
 ## Tier 13h — Email DNS records (wizelife.ai)
 
-- ✅ SPF found: `v=spf1 include:_spf.google.com include:amazonses.com ~all`
+- ✅ SPF found: `v=spf1 include:_spf.google.com include:amazonses.com include:_spf.firebasemail.com ~all`
 - ✅ DMARC found: `v=DMARC1; p=quarantine; rua=mailto:security@wizelife.ai`
 - ✅ DKIM (resend._domainkey) found
 

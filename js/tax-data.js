@@ -794,6 +794,58 @@ const TAX_META = {
   ],
 };
 
+
+// ── Live FX rates (Frankfurter/ECB, 24 h cache) ──────────────────────────────
+// Fetches 1 USD = X CURRENCY rates, converts to 1 LOCAL = X USD and patches
+// TAX_DATA.*.usdRate in-place. Falls back to hardcoded values on any error.
+// Dispatches 'wl-fx-updated' so pages can call recalc().
+(function () {
+  if (typeof window === 'undefined') return;
+  var CACHE_KEY = 'wl_fx_v1';
+  var TTL = 24 * 60 * 60 * 1000;
+
+  function applyRates(rates) {
+    Object.values(TAX_DATA).forEach(function (c) {
+      if (c.currency === 'USD') return;
+      var r = rates[c.currency];
+      if (r && r > 0) c.usdRate = Math.round((1 / r) * 100000) / 100000;
+    });
+    try {
+      var el = document.getElementById('wl-fx-label');
+      if (el) {
+        var ilsRate = TAX_DATA.IL ? TAX_DATA.IL.usdRate : 0.27;
+        el.textContent = '₪1 = $' + ilsRate.toFixed(4);
+      }
+    } catch (e) {}
+    window.dispatchEvent(new CustomEvent('wl-fx-updated'));
+  }
+
+  function loadFx() {
+    try {
+      var cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && cached.ts && (Date.now() - cached.ts) < TTL && cached.rates) {
+        applyRates(cached.rates);
+        return;
+      }
+    } catch (e) {}
+
+    var currencies = Object.values(TAX_DATA)
+      .map(function (c) { return c.currency; })
+      .filter(function (c) { return c !== 'USD'; });
+    currencies = currencies.filter(function (c, i) { return currencies.indexOf(c) === i; });
+
+    fetch('https://api.frankfurter.app/latest?from=USD&to=' + currencies.join(','))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data || !data.rates) return;
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), rates: data.rates })); } catch (e) {}
+        applyRates(data.rates);
+      })
+      .catch(function () {});
+  }
+
+  loadFx();
+})();
 // Node export — for unit tests in qa/tax-data-tests.js. No-op in browser.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { TAX_DATA, calcNet, TAX_META, REGIMES };

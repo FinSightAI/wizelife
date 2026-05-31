@@ -1,21 +1,22 @@
-# 🚨 WizeMoney-Deep action items — 2026-05-16
+# 🚨 WizeMoney-Deep action items — 2026-05-31
 
-**2 failure(s), 4 warning(s), 13 pass.**
+**1 failure(s), 6 warning(s), 14 pass.**
 
 ## For Claude to fix:
-- ❌ Language switch HE → EN actually updates UI — UI text identical after EN click
-- ❌ No Hebrew leaks in EN mode (excl. brand names) — 4 Hebrew strings still rendered (sample: "👁 תצוגה מקדימה", "📊 סיכום פיננסי", "📧 מייל", "↑ שתף")
+- ❌ No Hebrew leaks in EN mode (excl. brand names) — 1 Hebrew strings still rendered (sample: "🔒 אחסון מקומי")
 
 ## For you to investigate:
 - ⚠️ Add-transaction button not found on landing — may be behind onboarding
 - ⚠️ Add-goal button not found — may be on a different page
+- ⚠️ skipped — no test creds set
+- ⚠️ skipped — no test creds
 - ⚠️ Bottom-nav has only 0 items (expected ≥3) — verify mobile nav loaded
 - ⚠️ SW update banner did not appear when forced — wlShowUpdateBanner may be missing from this page
 
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeMoney-Deep QA — 2026-05-16
+# WizeMoney-Deep QA — 2026-05-31
 
 - ✅ Landing renders + ≥3 sidebar links
 - ✅ Service Worker registers + manifest valid
@@ -24,10 +25,12 @@ _<details><summary>Full detail</summary>_
 - ✅ "Add transaction" modal opens
 - ⚠️ Add-goal button not found — may be on a different page
 - ✅ "Add savings goal" reachable
-- ❌ Language switch HE → EN actually updates UI — UI text identical after EN click
-- ❌ No Hebrew leaks in EN mode (excl. brand names) — 4 Hebrew strings still rendered (sample: "👁 תצוגה מקדימה", "📊 סיכום פיננסי", "📧 מייל", "↑ שתף")
+- ✅ Language switch HE → EN actually updates UI
+- ❌ No Hebrew leaks in EN mode (excl. brand names) — 1 Hebrew strings still rendered (sample: "🔒 אחסון מקומי")
 - ✅ Net-worth widget renders some value
+- ⚠️ skipped — no test creds set
 - ✅ Stocks page — free user sees paywall, Pro sees content
+- ⚠️ skipped — no test creds
 - ✅ AI chat input present + send-able (Pro acct)
 - ✅ Export CSV button present
 - ✅ Family dashboard — link or feature exists

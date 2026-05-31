@@ -474,8 +474,11 @@
     chip.setAttribute('aria-label', chipAria);
     chip.setAttribute('title', chipAria);
     chip.innerHTML = 'ℹ️';
+    var isMobile = typeof window !== 'undefined' && window.innerWidth <= 820;
     chip.style.cssText = [
-      'position:fixed','top:46px','inset-inline-end:12px','z-index:99996',
+      'position:fixed',
+      isMobile ? 'bottom:calc(56px + 14px + env(safe-area-inset-bottom))' : 'top:46px',
+      isMobile ? 'right:14px' : 'inset-inline-end:12px','z-index:99996',
       'width:24px','height:24px','border-radius:50%','border:1px solid rgba(245,158,11,0.55)',
       'background:rgba(254,243,199,0.92)','color:#78350f',
       'font:600 12px Inter,-apple-system,sans-serif','cursor:pointer',
@@ -489,13 +492,20 @@
       if (document.getElementById('wl-pro-disclaimer')) return;
       var bar = document.createElement('div');
       bar.id = 'wl-pro-disclaimer';
+      var barMob = typeof window !== 'undefined' && window.innerWidth <= 820;
       bar.style.cssText = [
-        'position:fixed','top:36px','left:0','right:0','z-index:99996',
+        'position:fixed',
+        barMob ? 'bottom:calc(56px + env(safe-area-inset-bottom))' : 'top:36px',
+        barMob ? '' : '',
+        'left:0','right:0','z-index:99996',
         'background:linear-gradient(90deg,rgba(254,243,199,0.97),rgba(253,230,138,0.97))',
-        'color:#78350f','font:600 11px Inter,-apple-system,sans-serif',
-        'padding:6px 36px 6px 14px','text-align:center','line-height:1.45',
-        'border-bottom:1px solid rgba(245,158,11,0.35)','backdrop-filter:blur(8px)',
-      ].join(';');
+        'color:#78350f',
+        barMob ? 'font:500 10px Inter,-apple-system,sans-serif' : 'font:600 11px Inter,-apple-system,sans-serif',
+        barMob ? 'padding:5px 32px 5px 10px' : 'padding:6px 36px 6px 14px',
+        'text-align:center','line-height:1.4',
+        barMob ? 'border-top:1px solid rgba(245,158,11,0.35)' : 'border-bottom:1px solid rgba(245,158,11,0.35)',
+        'backdrop-filter:blur(8px)',
+      ].filter(Boolean).join(';');
       bar.innerHTML = tr +
         '<button aria-label="dismiss" style="position:absolute;top:50%;inset-inline-end:8px;transform:translateY(-50%);background:transparent;border:0;color:#78350f;font-size:14px;cursor:pointer;padding:2px 6px;line-height:1;font-family:inherit;opacity:.7;" onclick="(function(b){try{localStorage.setItem(\'' + dismKey + '\',String(Date.now()));}catch(e){}b.remove();})(this.parentNode)">✕</button>';
       document.body.appendChild(bar);

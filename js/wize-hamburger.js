@@ -64,10 +64,10 @@
   }
 
   var T = {
-    he: { menu:'תפריט', apps:'אפליקציות', lang:'שפה', theme:'ערכת נושא', dark:'כהה', light:'בהיר', account:'חשבון', back:'חזרה ל-WizeLife', signin:'כניסה', signout:'יציאה', feedback:'משוב / דיווח באג', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    en: { menu:'Menu', apps:'Apps', lang:'Language', theme:'Theme', dark:'Dark', light:'Light', account:'Account', back:'Back to WizeLife', signin:'Sign in', signout:'Sign out', feedback:'Feedback / Report a bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    pt: { menu:'Menu', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Escuro', light:'Claro', account:'Conta', back:'Voltar para WizeLife', signin:'Entrar', signout:'Sair', feedback:'Feedback / Reportar bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' },
-    es: { menu:'Menú', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Oscuro', light:'Claro', account:'Cuenta', back:'Volver a WizeLife', signin:'Iniciar', signout:'Salir', feedback:'Feedback / Reportar bug', plan_free:'FREE', plan_pro:'PRO', plan_yolo:'YOLO' }
+    he: { menu:'תפריט', apps:'אפליקציות', lang:'שפה', theme:'ערכת נושא', dark:'כהה', light:'בהיר', account:'חשבון', back:'חזרה ל-WizeLife', signin:'כניסה', signout:'יציאה', feedback:'משוב / דיווח באג', plan_free:'FREE · שדרג ←', plan_pro:'PRO', plan_yolo:'YOLO' },
+    en: { menu:'Menu', apps:'Apps', lang:'Language', theme:'Theme', dark:'Dark', light:'Light', account:'Account', back:'Back to WizeLife', signin:'Sign in', signout:'Sign out', feedback:'Feedback / Report a bug', plan_free:'FREE · Upgrade →', plan_pro:'PRO', plan_yolo:'YOLO' },
+    pt: { menu:'Menu', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Escuro', light:'Claro', account:'Conta', back:'Voltar para WizeLife', signin:'Entrar', signout:'Sair', feedback:'Feedback / Reportar bug', plan_free:'GRÁTIS · Upgrade →', plan_pro:'PRO', plan_yolo:'YOLO' },
+    es: { menu:'Menú', apps:'Apps', lang:'Idioma', theme:'Tema', dark:'Oscuro', light:'Claro', account:'Cuenta', back:'Volver a WizeLife', signin:'Iniciar', signout:'Salir', feedback:'Feedback / Reportar bug', plan_free:'GRATIS · Upgrade →', plan_pro:'PRO', plan_yolo:'YOLO' }
   };
 
   function injectStyle() {
@@ -76,10 +76,11 @@
       + '#wize-ham-btn{display:none;}'
       + '@media (max-width: 820px){'
       /* Sit INSIDE the 36px WizeBar (z-index 99999) so it doesn't float
-         below and overlap content. Anchored at inline-END (right in LTR /
-         left in RTL) so it never overlaps the brand logo on the inline-START. */
-      + '  #wize-ham-btn{position:fixed;top:calc(1px + env(safe-area-inset-top));right:8px;left:auto;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
-      + '  html[dir="rtl"] #wize-ham-btn{right:auto;left:8px;}'
+         below and overlap content. Anchored at inline-START (left in LTR /
+         right in RTL) per user convention (FB/Twitter/Material). Drawer slides
+         in from the same edge so the visual relationship is consistent. */
+      + '  #wize-ham-btn{position:fixed;top:calc(1px + env(safe-area-inset-top));left:8px;right:auto;z-index:100001;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#eef2ff;font-size:18px;line-height:1;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}'
+      + '  html[dir="rtl"] #wize-ham-btn{left:auto;right:8px;}'
       /* Hide the inline lang-pill cluster + WizeLife floating theme button on
          mobile — lang+theme live in the drawer instead, so the top bar shows
          brand on inline-START and burger on inline-END only. */
@@ -193,7 +194,17 @@
       nameDiv.textContent = nick;
       var planDiv = document.createElement('div');
       planDiv.className = 'wh-plan';
-      planDiv.textContent = planLbl;
+      if (planRaw === 'free') {
+        var upgradeA = document.createElement('a');
+        upgradeA.href = 'https://wizelife.ai/#pricing';
+        upgradeA.target = '_blank';
+        upgradeA.rel = 'noopener noreferrer';
+        upgradeA.textContent = planLbl;
+        upgradeA.style.cssText = 'color:inherit;text-decoration:underline;cursor:pointer;';
+        planDiv.appendChild(upgradeA);
+      } else {
+        planDiv.textContent = planLbl;
+      }
       infoDiv.appendChild(nameDiv);
       infoDiv.appendChild(planDiv);
       acct.appendChild(avDiv);

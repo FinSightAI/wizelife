@@ -1,4 +1,4 @@
-# 🚨 Keyboard-Nav action items — 2026-05-16
+# 🚨 Keyboard-Nav action items — 2026-05-22
 
 **0 failure(s), 1 warning(s), 7 pass.**
 
@@ -8,7 +8,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# Keyboard-Nav QA — 2026-05-16
+# Keyboard-Nav QA — 2026-05-22
 
 - ✅ https://wizelife.ai/auth.html — Tab reaches ≥3 interactive elements without trap
 - ✅ https://wizelife.ai/feedback.html — Tab reaches ≥3 interactive elements without trap

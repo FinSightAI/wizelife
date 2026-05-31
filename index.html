@@ -30,13 +30,12 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <!-- Security headers (GH Pages doesn't allow HTTP headers, so meta-equivalent) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://lh3.googleusercontent.com data:; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://ofirofir-wizetravel.hf.space https://*.ingest.sentry.io https://*.ingest.us.sentry.io; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://lh3.googleusercontent.com data:; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://ofirofir-wizetravel.hf.space https://*.ingest.sentry.io https://*.ingest.us.sentry.io; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <!-- Permissions-Policy via meta — locks down sensors by default on the landing page.
      Sub-apps that need geo/camera (WizeTravel for "use my location", payment in checkout)
      set their own headers per-route. Safe additive header on a marketing page. -->
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()">
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), magnetometer=(), gyroscope=(), accelerometer=()">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), magnetometer=(), accelerometer=(), gyroscope=()">
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <title>AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate Tools | WizeLife</title>
@@ -49,6 +48,10 @@
 <meta content="https://wizelife.ai/og-image.png" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="he_IL" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:locale:alternate" content="es_ES" />
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate" name="twitter:title"/>
 <meta content="5 free AI tools in one place. 4 languages. Free to start." name="twitter:description"/>
@@ -69,17 +72,21 @@
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="WizeLife" name="apple-mobile-web-app-title"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
+<!-- Lighthouse warns at >4 preconnect hints. Kept the highest-value ones only:
+     fonts.googleapis (above), fonts.gstatic (below), www.gstatic (Firebase SDK).
+     Downgraded cloud-functions origin to dns-prefetch (cheap, same-page benefit). -->
+<link href="https://www.gstatic.com" rel="preconnect" crossorigin/>
+<link href="https://us-central1-finzilla-7f1f9.cloudfunctions.net" rel="dns-prefetch"/>
+<link rel="preload" href="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" as="script" crossorigin/>
 <!-- Pre-warm the Render-hosted backends so they're awake by the time a user
  taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
  The actual wake-up GET is fired below in a JS block. -->
-<link crossorigin="" href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="preconnect"/>
 <link href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
-<link crossorigin="" href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="preconnect"/>
 <link href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
-<link crossorigin="" href="https://ofirofir-wizetravel.hf.space" rel="preconnect"/>
 <link href="https://ofirofir-wizetravel.hf.space" rel="dns-prefetch"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -438,7 +445,7 @@ section{padding:120px 24px;position:relative;z-index:1}
 .faq-q{width:100%;background:none;border:none;color:var(--text);padding:20px 24px;text-align:left;font-size:.98rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Plus Jakarta Sans',sans-serif}
 .faq-chev{color:var(--muted);transition:transform .25s;flex-shrink:0;font-size:1rem}
 .faq-item.open .faq-chev{transform:rotate(180deg);color:var(--accent2)}
-.faq-a{max-height:0;overflow:hidden;padding:0 24px;color:var(--muted2);font-size:.9rem;line-height:1.75;transition:max-height .3s ease,padding .3s ease}
+.faq-a{max-height:0;overflow:hidden;padding:0 24px;color:var(--muted2);font-size:.9rem;line-height:1.75;transition:max-height .3s ease}
 .faq-item.open .faq-a{max-height:300px;padding:0 24px 20px}
 
 /* ── CTA ── */
@@ -481,7 +488,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  .nav-links,.nav-signin,.nav-cta,#langBtn,#navPlanBadge{display:none !important}
  /* Hamburger floats to inline-start corner (LTR=left, RTL=right) so the logo
     sits cleanly in the center-ish without being squeezed. */
- .hamburger{display:flex;position:fixed !important;top:max(14px,calc(env(safe-area-inset-top) + 14px));inset-inline-end:8px;z-index:250}
+ .hamburger{display:flex;position:fixed !important;top:max(14px,calc(env(safe-area-inset-top) + 14px));inset-inline-start:8px;z-index:250}
  .nav-right{gap:0}
  section{padding:60px 18px}
  .hero{padding:90px 18px 48px;min-height:auto}
@@ -529,6 +536,9 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  .lang-pill,button.lang-pill,[data-lang],[data-wl-lang],[data-sl-lang]{min-width:40px !important;min-height:40px !important;padding:8px 10px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important}
  .hamburger{min-width:40px;min-height:40px}
  button:not(.btn-primary):not(.btn-secondary):not(.tool-tab):not(.wbn-btn):not(.bnav-btn):not(.lang-pill){min-height:40px;min-width:40px}
+ /* Small tap targets — Portal specific */
+ .data-trust-link{min-height:40px;min-width:40px;display:inline-flex;align-items:center;justify-content:center;padding:8px}
+ .footer-col a{min-height:40px;padding:10px 0;display:inline-flex;align-items:center}
 }
 @media(max-width:380px){
  /* iPhone SE / mini */
@@ -586,16 +596,19 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Is WizeLife really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/mo) for more answers and unlocked features, or go YOLO ($9.99/mo) for unlimited AI across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."}},
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[
+{"@type":"Question","name":"Is WizeLife really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/month) for more answers and unlocked features, or go YOLO ($9.99/month) for unlimited AI across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."}},
 {"@type":"Question","name":"Do I need a separate account for each tool?","acceptedAnswer":{"@type":"Answer","text":"No — one WizeLife account works across all 5 tools. Sign in once, use everything."}},
-{"@type":"Question","name":"How is WizeTax different from a regular tax calculator?","acceptedAnswer":{"@type":"Answer","text":"WizeTax uses AI trained on tax law across 26 countries, with real exit-tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable advice."}},
+{"@type":"Question","name":"How is WizeTax different from a regular tax calculator?","acceptedAnswer":{"@type":"Answer","text":"WizeTax uses AI trained on tax law across 20+ countries, with exit-tax scenarios, relocation comparisons, and an AI advisor that explains the rules. It's not just numbers — it gives you actionable context."}},
 {"@type":"Question","name":"Can WizeTravel actually save me money?","acceptedAnswer":{"@type":"Answer","text":"Yes. WizeTravel finds hidden-city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."}},
-{"@type":"Question","name":"What markets does WizeDeal cover?","acceptedAnswer":{"@type":"Answer","text":"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental-yield benchmarks."}},
+{"@type":"Question","name":"What markets does WizeDeal cover?","acceptedAnswer":{"@type":"Answer","text":"20+ markets including Brazil, Israel, the US, UAE, Portugal, Spain, Germany, and more. Each market has AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage norms, and rental-yield benchmarks."}},
 {"@type":"Question","name":"Is my data secure?","acceptedAnswer":{"@type":"Answer","text":"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."}},
-{"@type":"Question","name":"Can I cancel anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."}}
+{"@type":"Question","name":"Can I cancel anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes. No contracts, no cancellation fees. Cancel from your account at any time and you'll keep Pro access until the end of your billing period."}}
 ]}
 </script>
+<!-- Note: Google's Rich Results spec allows only ONE FAQPage per URL. Since
+     our canonical is the English base URL, we ship only the English FAQ for
+     rich snippets. Other languages still have FAQ visible to users on-page. -->
 <style>
 [data-theme="light"] { --bg:#f8fafc; --surf:#ffffff; --surf2:#f1f5f9; --text:#1e293b; --muted:#64748b; --muted2:#475569; --border:rgba(0,0,0,.08); --border2:rgba(0,0,0,.14); }
 [data-theme="light"] body { background: #f8fafc !important; color: #1e293b; }
@@ -656,9 +669,9 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <button class="lang-pill" data-lang="pt" onclick="setWlLang('pt')" title="Português">PT</button>
 <button class="lang-pill" data-lang="he" onclick="setWlLang('he')" title="Hebrew">HE</button>
 </div>
-<span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);"></span>
-<a class="nav-signin" data-i18n="__4" href="auth.html" id="nav-signin">Sign in</a>
-<a class="nav-cta" data-i18n="__5" href="auth.html" id="nav-cta">Get Started</a>
+<span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);cursor:pointer;transition:background .2s,color .2s;"></span>
+<a class="nav-signin" data-i18n="__4" href="auth.html" id="nav-signin" rel="nofollow" aria-label="Sign in (top navigation)">Sign in</a>
+<a class="nav-cta" data-i18n="__5" href="auth.html" id="nav-cta" rel="nofollow" aria-label="Get started free (top navigation)">Get Started</a>
 <button aria-label="Menu" class="hamburger" id="hamburger" onclick="toggleMenu()">
 <span></span><span></span><span></span>
 </button>
@@ -669,8 +682,8 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <a data-i18n="__7" href="#pricing" onclick="toggleMenu()">Pricing</a>
 <a href="#faq" onclick="toggleMenu()">FAQ</a>
 <a data-i18n="__8" href="about.html" onclick="toggleMenu()">About</a>
-<a data-i18n="__9" href="auth.html" id="mobile-signin" style="color:var(--text);font-weight:600;">Sign in</a>
-<a href="auth.html" style="color:var(--accent2);font-weight:700;">Get Started Free →</a>
+<a data-i18n="__9" href="auth.html" id="mobile-signin" style="color:var(--text);font-weight:600;" rel="nofollow" aria-label="Sign in (mobile menu)">Sign in</a>
+<a href="auth.html" style="color:var(--accent2);font-weight:700;" rel="nofollow" aria-label="Get started free (mobile menu)">Get Started Free →</a>
 <!-- PWA install — hidden until the browser fires beforeinstallprompt -->
 <a id="pwa-install-link" href="#" style="display:none;color:var(--text);font-weight:600;" data-en="📱 Install app" data-he="📱 התקן אפליקציה" data-pt="📱 Instalar app" data-es="📱 Instalar app" onclick="event.preventDefault();window.__wlPwaInstall&amp;&amp;window.__wlPwaInstall();toggleMenu();">📱 Install app</a>
 <div style="display:flex;gap:6px;justify-content:center;padding-top:14px;border-top:1px solid var(--border);margin-top:6px;">
@@ -681,6 +694,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </div>
 </div>
 <!-- HERO -->
+<main role="main">
 <section class="hero">
 <div class="hero-aurora">
 <div class="aurora-1"></div><div class="aurora-2"></div><div class="aurora-3"></div>
@@ -706,7 +720,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  </style>
 <p class="hero-sub">Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.</p>
 <div class="hero-btns">
-<a class="btn-primary" href="auth.html">Start free →</a>
+<a class="btn-primary" href="auth.html" rel="nofollow">Start free →</a>
 <a class="btn-secondary" href="#products">Explore the suite ↓</a>
 <button type="button" class="btn-secondary" id="wlShareBtn" aria-label="Share" data-i18n="share" onclick="WizeShare&amp;&amp;WizeShare.share({title:'WizeLife',text:'WizeLife — Live Smarter. Every Day.',url:'https://wizelife.ai'})">↗ Share</button>
 </div>
@@ -750,7 +764,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <strong data-i18n="qd_yolo_title">Full WizeAI advisor</strong>
 <span data-i18n="qd_yolo_sub">Knows your real data from all 5 apps — personalized, specific answers with your numbers.</span>
 </div>
-<a href="auth.html?next=%2Fdashboard.html%23upgrade" data-i18n="qd_yolo_btn">Get YOLO →</a>
+<a href="auth.html?next=%2Fdashboard.html%23upgrade" data-i18n="qd_yolo_btn" rel="nofollow">Get YOLO →</a>
 </div>
 </div>
 </div>
@@ -775,7 +789,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_money">Personal finance · Investments · Pension</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://finsightai.github.io/finsight/" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://finsightai.github.io/finsight/" rel="noopener noreferrer" target="_blank" aria-label="Open WizeMoney tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_money">Complete personal finance dashboard. Track accounts, investments, pension, goals and stocks in one place — with a bilingual AI advisor that actually understands Israeli pension schemes, foreign stocks, and local tax implications.</p>
 <div class="panel-bullets">
@@ -819,7 +833,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_travel">Flight AI · Hidden-city · Virtual interlining</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://travel.wizelife.ai" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://travel.wizelife.ai" rel="noopener noreferrer" target="_blank" aria-label="Open WizeTravel tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_travel">AI flight price monitor. Finds hidden city tickets, positioning routes and virtual interlining across low-cost carriers — the routes that Google Flights and Kayak completely miss.</p>
 <div class="panel-bullets">
@@ -881,7 +895,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_tax">Relocation · Exit tax · 26 countries</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://mastermove.vercel.app/advisor" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://mastermove.vercel.app/advisor" rel="noopener noreferrer" target="_blank" aria-label="Open WizeTax tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_tax">Global tax advisor for relocation and exit planning. Compare 26 countries by effective tax rate, model exit-tax scenarios, and generate a ready-to-send relocation letter that accounts for treaties and residency rules.</p>
 <div class="panel-bullets">
@@ -933,7 +947,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_health">Cardiology · Microbiome · Nutrition</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://health.wizelife.ai/" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://health.wizelife.ai/" rel="noopener noreferrer" target="_blank" aria-label="Open WizeHealth tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_health">Personal AI health advisor specialized in cardiology, microbiome, nutrition and endocrinology. Upload blood work, review vitals, and get context-aware guidance —.</p>
 <div class="panel-bullets">
@@ -997,7 +1011,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="panel-tag" data-i18n="panel_tag_deal">Real estate AI · Brazil · Israel · USA</div>
 </div>
 </div>
-<a class="panel-cta" data-i18n="panel_cta" href="https://check-deal.vercel.app/" rel="noopener" target="_blank">Open tool ↗</a>
+<a class="panel-cta" data-i18n="panel_cta" href="https://check-deal.vercel.app/" rel="noopener noreferrer" target="_blank" aria-label="Open WizeDeal tool">Open tool ↗</a>
 </div>
 <p class="panel-desc" data-i18n="panel_desc_deal">Paste any listing URL and get a full investment report: ROI, rental yield, tax impact (ITBI, Mas Rechisha, transfer taxes), neighborhood comps and a clear deal-score grade — in under 30 seconds.</p>
 <div class="panel-bullets">
@@ -1045,28 +1059,28 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="calc-lname" data-i18n="__37"><span class="icon" style="background:rgba(16,185,129,.15);color:#34d399"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><path d="M3 17l5-5 4 4 8-8"></path><path d="M14 8h6v6"></path></svg></span> Monthly investments</div>
 <div class="calc-lval" id="v-invest">$2,500</div>
 </div>
-<input class="calc-slider" id="s-invest" max="10000" min="0" step="100" type="range" value="2500"/>
+<input class="calc-slider" aria-label="Monthly investment amount" id="s-invest" max="10000" min="0" step="100" type="range" value="2500"/>
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
 <div class="calc-lname" data-i18n="__38"><span class="icon" style="background:rgba(59,130,246,.15);color:#93c5fd"><svg fill="currentColor" height="14" viewbox="0 0 24 24" width="14"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></span> Flights per year</div>
 <div class="calc-lval" id="v-flights">6</div>
 </div>
-<input class="calc-slider" id="s-flights" max="24" min="0" step="1" type="range" value="6"/>
+<input class="calc-slider" aria-label="Flights per year" id="s-flights" max="24" min="0" step="1" type="range" value="6"/>
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
 <div class="calc-lname" data-i18n="__39"><span class="icon" style="background:rgba(245,158,11,.15);color:#fcd34d"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><rect height="18" rx="2" width="16" x="4" y="3"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span> Annual income (taxable)</div>
 <div class="calc-lval" id="v-income">$120,000</div>
 </div>
-<input class="calc-slider" id="s-income" max="500000" min="30000" step="5000" type="range" value="120000"/>
+<input class="calc-slider" aria-label="Annual income" id="s-income" max="500000" min="30000" step="5000" type="range" value="120000"/>
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
 <div class="calc-lname" data-i18n="__40"><span class="icon" style="background:rgba(139,92,246,.15);color:#c4b5fd"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><path d="M3 12L12 3l9 9"></path><path d="M5 10v10h14V10"></path></svg></span> Property value researched</div>
 <div class="calc-lval" id="v-prop">$350,000</div>
 </div>
-<input class="calc-slider" id="s-prop" max="2000000" min="0" step="25000" type="range" value="350000"/>
+<input class="calc-slider" aria-label="Property value" id="s-prop" max="2000000" min="0" step="25000" type="range" value="350000"/>
 </div>
 </div>
 <div class="calc-result">
@@ -1102,7 +1116,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="compare-row"><div data-i18n="_26_">Exit-tax scenarios across 26 countries</div><div class="compare-cell hl"><span class="yes">✓</span></div><div class="compare-cell"><span class="no">—</span></div><div class="compare-cell"><span class="no">—</span></div></div>
 <div class="compare-row"><div data-i18n="_itbi_">Local real-estate tax rules (ITBI, Mas Rechisha)</div><div class="compare-cell hl"><span class="yes">✓</span></div><div class="compare-cell"><span class="no">—</span></div><div class="compare-cell" data-i18n="__52">Partial</div></div>
 <div class="compare-row"><div data-i18n="__53">Bilingual (Hebrew + English)</div><div class="compare-cell hl"><span class="yes">✓</span></div><div class="compare-cell" data-i18n="__54">Partial</div><div class="compare-cell"><span class="no">—</span></div></div>
-<div class="compare-row"><div data-i18n="__55">Price (all-inclusive)</div><div class="compare-cell hl">$9.99/mo</div><div class="compare-cell">$20/mo</div><div class="compare-cell">$15–40/mo each</div></div>
+<div class="compare-row"><div data-i18n="__55">Price (all-inclusive)</div><div class="compare-cell hl">$9.99&nbsp;/&nbsp;month</div><div class="compare-cell">$20&nbsp;/&nbsp;month</div><div class="compare-cell">$15–40&nbsp;/&nbsp;month each</div></div>
 </div>
 </div>
 </section>
@@ -1169,7 +1183,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="pricing-grid">
 <div class="price-card reveal">
 <div class="plan-tier" data-i18n="__63">Free</div>
-<div class="plan-price">$0 <sub>/mo</sub></div>
+<div class="plan-price">$0 <sub>per&nbsp;month</sub></div>
 <p class="plan-desc" data-i18n="__64">Try any tool, no card needed.</p>
 <ul class="plan-features">
 <li><span class="check">✓</span> 3–5 AI answers/day per tool</li>
@@ -1178,12 +1192,12 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <li data-i18n="__66"><span class="check">✓</span> Flight price tracking</li>
 <li data-i18n="__67"><span class="check">✓</span> Real-estate basic analysis</li>
 </ul>
-<a class="plan-btn" data-i18n="__68" href="auth.html">Get started free</a>
+<a class="plan-btn" data-i18n="__68" href="auth.html" rel="nofollow">Get started free</a>
 </div>
 <div class="price-card featured reveal reveal-d1">
 <div class="pill pop" data-i18n="__69"><svg fill="currentColor" height="12" style="margin-right:4px" viewbox="0 0 24 24" width="12"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg> Most Popular</div>
 <div class="plan-tier" style="color:var(--accent2);">Pro</div>
-<div class="plan-price" style="background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$4.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">/mo</sub></div>
+<div class="plan-price" style="background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$4.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">per&nbsp;month</sub></div>
 <p class="plan-desc" data-i18n="_5_">All 5 tools, fully unlocked.</p>
 <ul class="plan-features">
 <li data-i18n="20_ai_"><span class="check">✓</span> 20 AI answers/day per tool</li>
@@ -1193,12 +1207,12 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <li data-i18n="__71"><span class="check">✓</span> Unlimited transactions & goals</li>
 <li data-i18n="__72"><span class="check">✓</span> Priority processing</li>
 </ul>
-<a class="plan-btn primary" data-i18n="_pro" href="auth.html">Upgrade to Pro</a>
+<a class="plan-btn primary" data-i18n="_pro" href="auth.html" rel="nofollow">Upgrade to Pro</a>
 </div>
 <div class="price-card yolo reveal reveal-d2">
 <div class="pill yo" data-i18n="_power"><svg fill="currentColor" height="12" style="margin-right:4px" viewbox="0 0 24 24" width="12"><path d="M13 2L3 14h7l-1 8 10-12h-7z"></path></svg> Power User</div>
 <div class="plan-tier" style="color:#f59e0b;">YOLO</div>
-<div class="plan-price" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$9.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">/mo</sub></div>
+<div class="plan-price" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$9.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">per&nbsp;month</sub></div>
 <p class="plan-desc" data-i18n="__73">For people who go deep. Every day.</p>
 <ul class="plan-features">
 <li><span class="check">✓</span> <strong style="color:#c7d2fe;font-weight:600">WizeAI</strong> — unified advisor across all 5 tools</li>
@@ -1209,7 +1223,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <li><span class="check">✓</span> Priority support — real response within 24 hours</li>
 <li><span class="check">✓</span> Everything in Pro ✓</li>
 </ul>
-<a class="plan-btn yolo-btn" data-i18n="_yolo" href="auth.html">Go YOLO <svg fill="currentColor" height="14" style="vertical-align:-2px;margin-left:4px" viewbox="0 0 24 24" width="14"><path d="M13 2L3 14h7l-1 8 10-12h-7z"></path></svg></a>
+<a class="plan-btn yolo-btn" data-i18n="_yolo" href="auth.html" rel="nofollow">Go YOLO <svg fill="currentColor" height="14" style="vertical-align:-2px;margin-left:4px" viewbox="0 0 24 24" width="14"><path d="M13 2L3 14h7l-1 8 10-12h-7z"></path></svg></a>
 </div>
 </div>
 </div>
@@ -1230,10 +1244,11 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <h2 class="reveal" data-i18n="__78">Ready to live smarter?</h2>
 <p class="reveal" data-i18n="join_thousands_makin">Join thousands making better decisions with AI. Free forever, upgrade when you want.</p>
 <div class="hero-btns reveal" style="justify-content:center;">
-<a class="btn-primary" href="auth.html" style="font-size:1.05rem;padding:18px 36px;">Create free account →</a>
+<a class="btn-primary" href="auth.html" style="font-size:1.05rem;padding:18px 36px;" rel="nofollow">Create free account →</a>
 <a class="btn-secondary" data-i18n="__79" href="#products" style="font-size:1.05rem;padding:18px 36px;">Explore tools</a>
 </div>
 </section>
+</main>
 <!-- FOOTER -->
 <footer>
 <div class="footer-inner">
@@ -1244,22 +1259,22 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </div>
 <div class="footer-links">
 <div class="footer-col">
-<h4 data-i18n="__80">Products</h4>
-<a href="https://finsightai.github.io/finsight/" target="_blank">WizeMoney</a>
-<a href="https://travel.wizelife.ai" target="_blank">WizeTravel</a>
-<a href="https://mastermove.vercel.app/advisor" target="_blank">WizeTax</a>
-<a href="https://health.wizelife.ai/" target="_blank">WizeHealth</a>
-<a href="https://check-deal.vercel.app/" target="_blank">WizeDeal</a>
+<h3 data-i18n="__80">Products</h3>
+<a href="https://finsightai.github.io/finsight/" target="_blank" rel="noopener noreferrer">WizeMoney</a>
+<a href="https://travel.wizelife.ai" target="_blank" rel="noopener noreferrer">WizeTravel</a>
+<a href="https://mastermove.vercel.app/advisor" target="_blank" rel="noopener noreferrer">WizeTax</a>
+<a href="https://health.wizelife.ai/" target="_blank" rel="noopener noreferrer">WizeHealth</a>
+<a href="https://check-deal.vercel.app/" target="_blank" rel="noopener noreferrer">WizeDeal</a>
 </div>
 <div class="footer-col">
-<h4 data-i18n="__81">Account</h4>
-<a data-i18n="__82" href="auth.html">Sign in</a>
-<a data-i18n="__83" href="auth.html">Sign up free</a>
+<h3 data-i18n="__81">Account</h3>
+<a data-i18n="__82" href="auth.html" rel="nofollow" aria-label="Sign in (footer)">Sign in</a>
+<a data-i18n="__83" href="auth.html" rel="nofollow" aria-label="Sign up free (footer)">Sign up free</a>
 <a data-i18n="__84" href="#pricing">Pricing</a>
 <a href="#faq">FAQ</a>
 </div>
 <div class="footer-col">
-<h4 data-i18n="__85">Info</h4>
+<h3 data-i18n="__85">Info</h3>
 <a data-i18n="__86" href="about.html">About</a>
 <a data-i18n="__87" href="mailto:hi@wizelife.ai">Contact</a>
 <a data-i18n="__88" href="privacy.html">Privacy Policy</a>
@@ -1629,7 +1644,7 @@ const WIZE_TR = {
  faqEye:'FAQ', faqTitle:'Perguntas frequentes.', faqSub:'Tudo que você precisa saber antes de começar.',
  ctaEye:'Comece hoje', ctaTitle:'Pronto para viver de forma mais inteligente?', ctaDesc:'Junte-se a milhares que tomam melhores decisões com IA. Grátis para sempre, faça upgrade quando quiser.',
  ctaBtn:'Criar conta gratuita →', ctaBtn2:'Explorar ferramentas',
- footerDesc:'Cinco ferramentas de IA para cada decisão importante da sua vida. Feito com amor, em todo o mundo.',
+ footerDesc:'Cinco ferramentas de IA para cada decisão importante da sua vida. Feito com amor, em todo lugar.',
  footerProducts:'Produtos', footerAccount:'Conta', footerInfo:'Informações',
  footerSignin:'Entrar', footerSignup:'Cadastrar grátis', footerPricing:'Preços',
  footerContact:'Contato', footerPrivacy:'Política de Privacidade', footerTerms:'Termos de Serviço',
@@ -1667,7 +1682,7 @@ const WIZE_TR = {
  faqEye:'FAQ', faqTitle:'Preguntas frecuentes.', faqSub:'Todo lo que necesitas saber antes de comenzar.',
  ctaEye:'Empieza hoy', ctaTitle:'¿Listo para vivir con más inteligencia?', ctaDesc:'Únete a miles que toman mejores decisiones con IA. Gratis para siempre, actualiza cuando quieras.',
  ctaBtn:'Crear cuenta gratuita →', ctaBtn2:'Explorar herramientas',
- footerDesc:'Cinco herramientas de IA para cada decisión importante de tu vida. Hecho con amor, en todo el mundo.',
+ footerDesc:'Cinco herramientas de IA para cada decisión importante de tu vida. Hecho con amor, en todas partes.',
  footerProducts:'Productos', footerAccount:'Cuenta', footerInfo:'Información',
  footerSignin:'Iniciar sesión', footerSignup:'Registrarse gratis', footerPricing:'Precios',
  footerContact:'Contacto', footerPrivacy:'Política de Privacidad', footerTerms:'Términos de Servicio',
@@ -1705,7 +1720,7 @@ const WIZE_TR = {
  faqEye:'שאלות נפוצות', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
  ctaEye:'התחל היום', ctaTitle:'מוכן לחיות יותר חכם?', ctaDesc:'הצטרף לאלפים שמקבלים החלטות טובות יותר עם AI. חינם לתמיד, שדרג מתי שרוצה.',
  ctaBtn:'צור חשבון חינמי ←', ctaBtn2:'גלה את הכלים',
- footerDesc:'חמישה כלי AI לכל החלטה חשובה בחיים. נבנה עם אהבה, מכל העולם.',
+ footerDesc:'חמישה כלי AI לכל החלטה חשובה בחיים. נבנה עם אהבה, מכל מקום.',
  footerProducts:'מוצרים', footerAccount:'חשבון', footerInfo:'מידע',
  footerSignin:'כניסה', footerSignup:'הרשמה חינמית', footerPricing:'מחירים',
  footerContact:'צור קשר', footerPrivacy:'מדיניות פרטיות', footerTerms:'תנאי שירות',
@@ -1921,14 +1936,17 @@ function toggleLang(){
 // Apply on load (respects saved preference)
 applyLandingLang();
 </script>
-<!-- Firebase auth state — update nav if user is already logged in -->
-<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
-<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
-<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
-<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js" integrity="sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v" crossorigin="anonymous"></script>
-<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
+<!-- Firebase auth state — update nav if user is already logged in.
+     All deferred so the SDK doesn't block render. Defer scripts execute in
+     document order BEFORE DOMContentLoaded, so the inline auth handler below
+     (now wrapped in DCL listener) can rely on wlAuth being defined. -->
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js" integrity="sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v" crossorigin="anonymous"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
 <script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
-<script src="js/wizelife-auth.js"></script>
+<script defer src="js/wizelife-auth.js"></script>
 <script>
 // PWA install — capture the deferred prompt so the mobile menu can offer
 // a manual "Install app" entry only when the browser says it's installable.
@@ -1959,30 +1977,27 @@ applyLandingLang();
 })();
 </script>
 <script>
-wlAuth.onAuthStateChanged(function(user) {
- const signinBtn = document.getElementById('nav-signin');
- const ctaBtn = document.getElementById('nav-cta');
- if (!signinBtn || !ctaBtn) return;
- if (user) {
- window._wlLoggedIn = true;
- const name = user.displayName || user.email.split('@')[0];
- signinBtn.textContent = name;
- signinBtn.href = 'dashboard.html';
- ctaBtn.textContent = 'Dashboard →';
- ctaBtn.href = 'dashboard.html';
- // Hero CTA: keep marketing text ('Start for free') even for logged-in users —
- // just redirect to dashboard so the button still functions. The text is the
- // PRIMARY message of the page; switching it to 'Dashboard' weakens the pitch.
- document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => {
- a.href = 'dashboard.html';
- });
- // A logged-in user has no reason to hit the login page: send every remaining
- // plain auth.html link straight to the dashboard (keep ?next= links — auth.html
- // forwards those to their sub-app target itself).
- document.querySelectorAll('a[href="auth.html"]').forEach(a => { a.href = 'dashboard.html'; });
- } else {
- window._wlLoggedIn = false;
- }
+// Wrap in DOMContentLoaded — Firebase SDK is now deferred (loads after parse,
+// before DCL). By DCL, wlAuth is guaranteed defined.
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof wlAuth === 'undefined') return;  // belt-and-suspenders
+  wlAuth.onAuthStateChanged(function(user) {
+    const signinBtn = document.getElementById('nav-signin');
+    const ctaBtn = document.getElementById('nav-cta');
+    if (!signinBtn || !ctaBtn) return;
+    if (user) {
+      window._wlLoggedIn = true;
+      const name = user.displayName || user.email.split('@')[0];
+      signinBtn.textContent = name;
+      signinBtn.href = 'dashboard.html';
+      ctaBtn.textContent = 'Dashboard →';
+      ctaBtn.href = 'dashboard.html';
+      document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => { a.href = 'dashboard.html'; });
+      document.querySelectorAll('a[href="auth.html"]').forEach(a => { a.href = 'dashboard.html'; });
+    } else {
+      window._wlLoggedIn = false;
+    }
+  });
 });
 </script>
 <script>
@@ -2019,7 +2034,15 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  if (!el) return;
  var plan = localStorage.getItem('wl_plan');
  if (!plan || plan === 'free') {
- el.style.display = 'none';
+ var wlLang2=(localStorage.getItem('wl_lang')||'en').toLowerCase();
+ var upgLbls2={he:'חינם · שדרג ←',en:'FREE · Upgrade →',pt:'GRÁTIS · Upgrade →',es:'GRATIS · Upgrade →'};
+ el.innerHTML='<a href="#pricing" style="color:inherit;text-decoration:none;">'+(upgLbls2[wlLang2]||upgLbls2['en'])+'</a>';
+ el.style.display = 'inline';
+ el.style.background = 'rgba(99,102,241,0.15)';
+ el.style.color = '#a5b4fc';
+ el.style.borderColor = 'rgba(99,102,241,0.25)';
+ el.onmouseenter=function(){this.style.background='linear-gradient(135deg,#6366f1,#a78bfa)';this.style.color='#fff';};
+ el.onmouseleave=function(){this.style.background='rgba(99,102,241,0.15)';this.style.color='#a5b4fc';};
  return;
  }
  var labels = { yolo: '⚡ YOLO', pro: '✦ PRO', pro_trial: '✦ PRO' };
@@ -2062,13 +2085,11 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
-<script>
-window.WL_TR = {"he":{"_":"מוצרים","__2":"תמחור","__3":"אודות","__4":"כניסה","__5":"התחל","__6":"מוצרים","__7":"תמחור","__8":"אודות","__9":"כניסה","__10":"קבל כל","__11":"החלטה חכמה","_ai_":"עם AI.","__12":"בזמן אמת מהסוויטה","_ai__2":"כלי AI בסוויטה אחת","__13":"להתחלה","_wizetax":"מדינות ב-WizeTax","__14":"שווקי נדל\"ן","__15":"הסוויטה","__16":"חשבון אחד.","every_":"Every החלטה חכמה.","__17":"מעקב תיק בזמן אמת בכל הברוקרים","__18":"ניתוח פנסיה וקרן השתלמות","__19":"תוכניות חיסכון מבוססות מטרה","_ai__3":"צ'אט AI עברית + אנגלית","_1_200_":"התראות מחיר בזמן אמת ב-1,200+ חברות","_hidden_city":"זיהוי כרטיסי hidden-city","_positioning":"הצעות טיסות positioning","34_ai_":"34 כלי AI מומחים לתיירות","3_":"3 מסלולים נמצאו","__20":"בסיס","26_":"26 מדינות, חוקי מס בזמן אמת","__21":"מודלי תרחישי מס יציאה","_ai":"יוצר מכתבי הגירה ב-AI","__22":"מעקב אמנות ותושבות","__23":"הטוב ביותר","_0_":"$0 מס יציאה","_0_12k_":"$0 / $12K עמלות","ai_":"AI ממליץ:","__24":"פירוש בדיקות דם","ai__2":"AI מאומן בקרדיולוגיה","__25":"תכנון מיקרוביום ותזונה","__26":"אינטגרציה עם ביש לבישים","__27":"דופק במנוחה","_ldl":"כולסטרול LDL","__28":"גיוון מיקרוביום מעיים","__29":"שינה עמוקה","_roi_":"מחשבון ROI ותזרים מזומנים מלא","__30":"חוקי מס ועמלות העברה מקומיים","__31":"ניתוח השוואת שכונה","__32":"תשואה ברוטו","roi_1_":"ROI נטו (שנה 1)","__33":"מול השוואות","_ai__4":"סיכום AI:","_8_":"תומחר ב-8% מתחת לממוצע השכונה; ITBI מוערך R$ 55K; החזר השקעה ב-8.2 שנים במסלול השכירות הנוכחי.","__34":"נסה עכשיו","_wizeai_":"דבר עם WizeAI.","__35":"בזמן אמת, כאן.","_roi":"מחשבון ROI","_wizelife_":"כמה תחסוך לך WizeLife?","__36":"התאם את הפרופיל שלך וצפה בחיסכון השנתי מתעדכן בזמן אמת.","__37":"השקעות חודשיות","__38":"טיסות בשנה","__39":"הכנסה שנתית (חייבת במס)","__40":"ערך נכס שנחקר","__41":"חיסכון שנתי מוערך","__42":"אופטימיזציית תיק","__43":"חיסכון בטיסות","__44":"אופטימיזציית מס","__45":"יתרון בעסקת נדל\"ן","_wizelife":"למה WizeLife","__46":"סוויטה אחת מול כל השאר.","__47":"חמישה תחומים, התחברות אחת, מנוי אחד. השווה לחלופות.","__48":"פיצ'ר","__49":"צ'אטבוטים גנריים","__50":"אפליקציות חד-תחום","ai__3":"AI מתמחה תחום","_hidden_city_virtual":"טיסות hidden-city + virtual-interline","__51":"חלקי","_26_":"תרחישי מס יציאה ב-26 מדינות","_itbi_":"חוקי מס נדל\"ן מקומיים (ITBI, מס רכישה)","__52":"חלקי","__53":"דו-לשוני (עברית + אנגלית)","__54":"חלקי","__55":"מחיר (הכל כלול)","__56":"מה אומרים","__57":"משתמשים אמיתיים. חיסכון אמיתי.","_wizelife__2":"משוב ממשתמשים ב-WizeLife בשלוש יבשות.","__58":"מהנדס, עוברים לפורטוגל","__59":"טסים תכופים","__60":"תמחור","__61":"תמחור פשוט וכן.","__62":"התחל בחינם. שדרג כשצריך. ללא כרטיס אשראי.","__63":"חינם","__64":"נסה כל כלי, ללא כרטיס.","__65":"דשבורד בסיסי ומטרות","_50_":"עד 50 עסקאות","__66":"מעקב מחירי טיסות","__67":"ניתוח נדל\"ן בסיסי","__68":"התחל בחינם","__69":"הכי פופולרי","_5_":"כל 5 הכלים, ללא הגבלות.","20_ai_":"20 תשובות AI ביום לכל כלי","ai_story_":"AI Story, צ'אט ודוחות","_csv_pdf":"יצוא CSV ו-PDF","__70":"מניות, אופטימיזציית מס, פנסיה","__71":"עסקאות ומטרות ללא הגבלה","__72":"עיבוד עדיפות","_pro":"שדרג ל-Pro","_power":"משתמש Power","__73":"לאנשים שצוללים עמוק. כל יום.","__74":"גישה ראשונה לכל פיצ'ר חדש לפני כולם","_yolo":"קח YOLO","__75":"שאלות נפוצות.","__76":"כל מה שצריך לדעת לפני שמתחילים.","__77":"התחל היום","__78":"מוכן לחיות חכם יותר?","join_thousands_makin":"Join thousands making better decisions עם AI. Free forever, upgrade when you want.","__79":"חקור את הכלים","5_ai_":"5 כלי AI לכל החלטה חשובה בחייך. נבנה באהבה, בכל מקום.","__80":"מוצרים","__81":"חשבון","__82":"כניסה","__83":"הרשמה חינם","__84":"תמחור","__85":"מידע","__86":"אודות","__87":"צור קשר","__88":"מדיניות פרטיות","__89":"תנאי שירות","qd_eyebrow":"דמו מהיר · 5 שאלות לדוגמה","qd_sub":"חמש תשובות לדוגמה. לתשובות מותאמות לכסף, לטיסות ולמיסים שלך — קח YOLO ליועץ המלא.","qd_online":"מקוון · דמו","qd_intro":"היי! הקש על אחת מ-5 השאלות למטה — אראה לך איזו תשובה WizeAI יודע לתת. ליעוץ אישי על הנתונים שלך, קח YOLO ליועץ המלא.","qd_yolo_title":"יועץ WizeAI המלא","qd_yolo_sub":"מכיר את הנתונים האמיתיים שלך מכל 5 האפליקציות — תשובות אישיות ומדויקות עם המספרים שלך.","qd_yolo_btn":"קח YOLO ←","panel_cta":"פתח כלי ↗","panel_tag_money":"פיננסים אישיים · השקעות · פנסיה","panel_desc_money":"דשבורד פיננסי אישי מלא. עקוב אחר חשבונות, השקעות, פנסיה, מטרות ומניות במקום אחד — עם יועץ AI דו-לשוני שמבין באמת תוכניות פנסיה ישראליות, מניות זרות ומיסוי מקומי.","panel_tag_travel":"AI לטיסות · Hidden-city · Virtual interlining","panel_desc_travel":"מוניטור מחירי טיסות מבוסס AI. מוצא כרטיסי hidden-city, מסלולי positioning ו-virtual interlining בין חברות low-cost — המסלולים שגוגל פלייטס וקאיאק פשוט מפספסים.","panel_tag_tax":"הגירה · מס יציאה · 26 מדינות","panel_desc_tax":"יועץ מס גלובלי להגירה ותכנון מס יציאה. השווה 26 מדינות לפי שיעור מס אפקטיבי, בנה תרחישי מס יציאה, וצור מכתב הגירה מוכן-לשליחה שלוקח בחשבון אמנות ותנאי תושבות.","panel_tag_health":"קרדיולוגיה · מיקרוביום · תזונה","panel_desc_health":"יועץ בריאות AI אישי המתמחה בקרדיולוגיה, מיקרוביום, תזונה ואנדוקרינולוגיה. העלה תוצאות בדיקות דם, בדוק ערכי מעקב וקבל הנחיות מותאמות הקשר.","panel_tag_deal":"AI נדל\"ן · ברזיל · ישראל · ארה\"ב","panel_desc_deal":"הדבק כל URL של נכס וקבל דוח השקעה מלא: ROI, תשואת שכירות, השפעת מס (ITBI, מס רכישה, מסי העברה), השוואות שכונה וציון deal-score ברור — תוך פחות מ-30 שניות.","trust_panel_eye":"פרטיות ואמון","trust_panel_title":"המידע שלך. הכללים שלך.","trust_do_1":"אנחנו לעולם לא מוכרים את המידע שלך. אף פעם.","trust_do_2":"אנחנו מסירים את שמך, אימייל, טלפון ומספר תעודת זהות לפני שכל AI רואה את שאלתך.","trust_do_3":"המידע הרגיש שלך נשאר בדפדפן שלך כברירת מחדל — הוא מסתנכרן לענן רק אם תבחר בכך.","trust_do_4":"ייצא הכל, או מחק את חשבונך, בלחיצה אחת.","trust_do_5":"כל משתמש יכול לגשת רק לנתונים שלו בלבד — מאכף בשרתים שלנו, לא רק באפליקציה.","trust_do_6":"ה-Gemini AI בתשלום של גוגל אינו משתמש בשאלותיך לאימון המודלים שלו.","trust_panel_link":"לעמוד האבטחה המלא ←"},"en":{"_":"Products","__2":"Pricing","__3":"About","__4":"Sign in","__5":"Get Started","__6":"Products","__7":"Pricing","__8":"About","__9":"Sign in","__10":"Make every","__11":"smart decision","_ai_":"with AI.","__12":"Live from the suite","_ai__2":"AI tools in one suite","__13":"To get started","_wizetax":"Countries in WizeTax","__14":"Real-estate markets","__15":"The suite","__16":"One account.","every_":"Every smart decision.","__17":"Live portfolio tracking across brokers","__18":"Pension & Keren Hishtalmut analysis","__19":"Goal-based savings plans","_ai__3":"Hebrew + English AI chat","_1_200_":"Live price alerts across 1,200+ carriers","_hidden_city":"Hidden-city ticket detection","_positioning":"Positioning-flight suggestions","34_ai_":"34 travel-specialist AI tools","3_":"3 routes found","__20":"baseline","26_":"26 countries, live tax rules","__21":"Exit-tax scenario modeling","_ai":"AI relocation letter generator","__22":"Treaty & residency tracker","__23":"BEST","_0_":"$0 exit tax","_0_12k_":"$0 / $12K fees","ai_":"AI recommends:","__24":"Blood-panel interpretation","ai__2":"Cardiology-trained AI","__25":"Microbiome & nutrition planning","__26":"Wearable data integration","__27":"Resting heart rate","_ldl":"LDL cholesterol","__28":"Gut microbiome diversity","__29":"Deep sleep","_roi_":"Full ROI & cash-flow calculator","__30":"Local tax & transfer-fee rules","__31":"Neighborhood comp analysis","__32":"Gross yield","roi_1_":"Net ROI (yr 1)","__33":"Vs comps","_ai__4":"AI summary:","_8_":"priced 8% below neighborhood comps; ITBI estimate R$ 55K; payback in 8.2 years at current rent trajectory.","__34":"Try it now","_wizeai_":"Talk to WizeAI.","__35":"Live, right here.","_roi":"ROI calculator","_wizelife_":"How much will WizeLife save you?","__36":"Adjust your profile and watch your annual savings update in real time.","__37":"Monthly investments","__38":"Flights per year","__39":"Annual income (taxable)","__40":"Property value researched","__41":"Estimated annual savings","__42":"Portfolio optimization","__43":"Flight savings","__44":"Tax optimization","__45":"Real-estate deal edge","_wizelife":"Why WizeLife","__46":"One suite vs. everything else.","__47":"Five domains, one login, one subscription. Compare the alternatives.","__48":"Feature","__49":"Generic chatbots","__50":"Single-domain apps","ai__3":"Domain-specialized AI","_hidden_city_virtual":"Hidden-city & virtual-interline flights","__51":"Partial","_26_":"Exit-tax scenarios across 26 countries","_itbi_":"Local real-estate tax rules (ITBI, Mas Rechisha)","__52":"Partial","__53":"Bilingual (Hebrew + English)","__54":"Partial","__55":"Price (all-inclusive)","__56":"What people say","__57":"Real users. Real savings.","_wizelife__2":"Feedback from people using WizeLife across three continents.","__58":"Engineer, relocating to Portugal","__59":"Frequent flyer","__60":"Pricing","__61":"Simple, honest pricing.","__62":"Start free. Upgrade when you need more. No credit card required.","__63":"Free","__64":"Try any tool, no card needed.","__65":"Basic dashboard & goals","_50_":"Up to 50 transactions","__66":"Flight price tracking","__67":"Real-estate basic analysis","__68":"Get started free","__69":"Most Popular","_5_":"All 5 tools, fully unlocked.","20_ai_":"20 AI answers/day per tool","ai_story_":"AI Story, Chat & Reports","_csv_pdf":"CSV & PDF export","__70":"Stocks, tax optimizer, pension","__71":"Unlimited transactions & goals","__72":"Priority processing","_pro":"Upgrade to Pro","_power":"Power User","__73":"For people who go deep. Every day.","__74":"First access to every new feature before anyone else","_yolo":"Go YOLO","__75":"Common questions.","__76":"Everything you need to know before getting started.","__77":"Start today","__78":"Ready to live smarter?","join_thousands_makin":"Join thousands making better decisions with AI. Free forever, upgrade when you want.","__79":"Explore tools","5_ai_":"Five AI tools for every important decision in your life. Built with love, everywhere.","__80":"Products","__81":"Account","__82":"Sign in","__83":"Sign up free","__84":"Pricing","__85":"Info","__86":"About","__87":"Contact","__88":"Privacy Policy","__89":"Terms of Service","qd_eyebrow":"Quick demo · 5 sample questions","qd_sub":"Five sample answers. For answers tailored to YOUR money, flights & tax — unlock the full advisor with YOLO.","qd_online":"Online · sample demo","qd_intro":"Hi! Tap one of the 5 sample questions below — I'll show you the kind of answer WizeAI can give. For real, personalized advice on your data, get the full advisor with YOLO.","qd_yolo_title":"Full WizeAI advisor","qd_yolo_sub":"Knows your real data from all 5 apps — personalized, specific answers with your numbers.","qd_yolo_btn":"Get YOLO →","panel_cta":"Open tool ↗","panel_tag_money":"Personal finance · Investments · Pension","panel_desc_money":"Complete personal finance dashboard. Track accounts, investments, pension, goals and stocks in one place — with a bilingual AI advisor that actually understands Israeli pension schemes, foreign stocks, and local tax implications.","panel_tag_travel":"Flight AI · Hidden-city · Virtual interlining","panel_desc_travel":"AI flight price monitor. Finds hidden city tickets, positioning routes and virtual interlining across low-cost carriers — the routes that Google Flights and Kayak completely miss.","panel_tag_tax":"Relocation · Exit tax · 26 countries","panel_desc_tax":"Global tax advisor for relocation and exit planning. Compare 26 countries by effective tax rate, model exit-tax scenarios, and generate a ready-to-send relocation letter that accounts for treaties and residency rules.","panel_tag_health":"Cardiology · Microbiome · Nutrition","panel_desc_health":"Personal AI health advisor specialized in cardiology, microbiome, nutrition and endocrinology. Upload blood work, review vitals, and get context-aware guidance —.","panel_tag_deal":"Real estate AI · Brazil · Israel · USA","panel_desc_deal":"Paste any listing URL and get a full investment report: ROI, rental yield, tax impact (ITBI, Mas Rechisha, transfer taxes), neighborhood comps and a clear deal-score grade — in under 30 seconds.","trust_panel_eye":"Privacy & Trust","trust_panel_title":"Your data. Your rules.","trust_do_1":"We never sell your data. Ever.","trust_do_2":"We strip your name, email, phone & ID numbers before any AI ever sees your question.","trust_do_3":"Your sensitive data stays in your browser by default — it only syncs to our cloud if you opt in.","trust_do_4":"Export everything, or delete your account, in one click.","trust_do_5":"Each user can only ever access their own data — enforced on our servers, not just in the app.","trust_do_6":"Google's paid Gemini AI does not use your questions to train its models.","trust_panel_link":"Read our full security page →"},"pt":{"_":"Produtos","__2":"Preços","__3":"Sobre","__4":"Entrar","__5":"Começar","__6":"Produtos","__7":"Preços","__8":"Sobre","__9":"Entrar","__10":"Tome cada","__11":"decisão inteligente","_ai_":"com IA.","__12":"Ao vivo da suíte","_ai__2":"Ferramentas IA em uma suíte","__13":"Para começar","_wizetax":"Países no WizeTax","__14":"Mercados imobiliários","__15":"A suíte","__16":"Uma conta.","every_":"Cada decisão inteligente.","__17":"Acompanhamento de portfólio em tempo real","__18":"Análise de pensão e Keren Hishtalmut","__19":"Planos de poupança baseados em metas","_ai__3":"Chat IA Hebraico + Inglês","_1_200_":"Alertas de preço em 1.200+ companhias","_hidden_city":"Detecção de bilhetes hidden-city","_positioning":"Sugestões de voos positioning","34_ai_":"34 ferramentas IA de viagem","3_":"3 rotas encontradas","__20":"base","26_":"26 países, regras fiscais ao vivo","__21":"Modelagem de cenários de imposto de saída","_ai":"Gerador de carta de mudança com IA","__22":"Rastreador de tratados e residência","__23":"MELHOR","_0_":"$0 exit tax","_0_12k_":"$0 / $12K fees","ai_":"IA recomenda:","__24":"Interpretação de exames de sangue","ai__2":"IA treinada em cardiologia","__25":"Microbioma e planejamento nutricional","__26":"Integração de wearables","__27":"Frequência cardíaca em repouso","_ldl":"Colesterol LDL","__28":"Diversidade do microbioma intestinal","__29":"Sono profundo","_roi_":"Calculadora completa de ROI e fluxo de caixa","__30":"Regras locais de impostos e transferência","__31":"Análise comparativa de bairro","__32":"Rendimento bruto","roi_1_":"ROI líquido (ano 1)","__33":"Vs comps","_ai__4":"Resumo IA:","_8_":"priced 8% below neighborhood comps; ITBI estimate R$ 55K; payback in 8.2 years at current rent trajectory.","__34":"Experimente agora","_wizeai_":"Fale com o WizeAI.","__35":"Ao vivo, aqui mesmo.","_roi":"Calculadora de ROI","_wizelife_":"Quanto o WizeLife vai te economizar?","__36":"Adjust your profile and watch your annual savings update in real time.","__37":"Investimentos mensais","__38":"Voos por ano","__39":"Renda anual (tributável)","__40":"Valor do imóvel pesquisado","__41":"Economia anual estimada","__42":"Otimização de portfólio","__43":"Economia em voos","__44":"Otimização fiscal","__45":"Vantagem em negócios imobiliários","_wizelife":"Por que WizeLife","__46":"Uma suíte vs. tudo o mais.","__47":"Five domains, one login, one subscription. Compare the alternatives.","__48":"Recurso","__49":"Chatbots genéricos","__50":"Apps de domínio único","ai__3":"IA especializada em domínio","_hidden_city_virtual":"Voos hidden-city e virtual-interline","__51":"Parcial","_26_":"Cenários de imposto de saída em 26 países","_itbi_":"Local real-estate tax rules (ITBI, Mas Rechisha)","__52":"Parcial","__53":"Bilíngue (Hebraico + Inglês)","__54":"Parcial","__55":"Preço (tudo incluído)","__56":"O que dizem","__57":"Usuários reais. Economia real.","_wizelife__2":"Feedback from people using WizeLife across three continents.","__58":"Engenheiro, mudando para Portugal","__59":"Viajante frequente","__60":"Preços","__61":"Preços simples e honestos.","__62":"Start free. Upgrade when you need more. No credit card required.","__63":"Grátis","__64":"Experimente qualquer ferramenta, sem cartão.","__65":"Painel básico e metas","_50_":"Até 50 transações","__66":"Rastreamento de preços de voos","__67":"Análise imobiliária básica","__68":"Começar grátis","__69":"Mais Popular","_5_":"Todas as 5 ferramentas, desbloqueadas.","20_ai_":"20 respostas IA/dia por ferramenta","ai_story_":"IA Story, Chat e Relatórios","_csv_pdf":"Exportação CSV e PDF","__70":"Ações, otimizador fiscal, pensão","__71":"Transações e metas ilimitadas","__72":"Processamento prioritário","_pro":"Atualizar para Pro","_power":"Usuário Power","__73":"Para quem vai a fundo. Todos os dias.","__74":"Acesso antecipado a todo novo recurso","_yolo":"Vai YOLO","__75":"Perguntas comuns.","__76":"Tudo o que você precisa saber antes de começar.","__77":"Começar hoje","__78":"Pronto para viver mais inteligente?","join_thousands_makin":"Junte-se a milhares tomando melhores decisões com IA. Grátis para sempre, atualize quando quiser.","__79":"Explorar ferramentas","5_ai_":"Cinco ferramentas IA para cada decisão importante da sua vida. Feito com amor, em todo lugar.","__80":"Produtos","__81":"Conta","__82":"Entrar","__83":"Cadastre-se grátis","__84":"Preços","__85":"Info","__86":"Sobre","__87":"Contato","__88":"Política de Privacidade","__89":"Termos de Serviço","qd_eyebrow":"Demo rápida · 5 perguntas de exemplo","qd_sub":"Cinco respostas de exemplo. Para respostas adaptadas ao SEU dinheiro, voos e impostos — desbloqueie o consultor completo com YOLO.","qd_online":"Online · demo","qd_intro":"Olá! Toque em uma das 5 perguntas abaixo — vou mostrar o tipo de resposta que o WizeAI dá. Para conselhos personalizados nos seus dados, pegue o consultor completo com YOLO.","qd_yolo_title":"Consultor WizeAI completo","qd_yolo_sub":"Conhece seus dados reais de todos os 5 apps — respostas específicas e personalizadas com seus números.","qd_yolo_btn":"Pegue YOLO →","panel_cta":"Abrir ferramenta ↗","panel_tag_money":"Finanças pessoais · Investimentos · Pensão","panel_desc_money":"Painel financeiro pessoal completo. Acompanhe contas, investimentos, pensão, metas e ações em um só lugar — com um consultor IA bilingúe que realmente entende fundos de pensão israelenses, ações estrangeiras e tributação local.","panel_tag_travel":"IA para voos · Hidden-city · Virtual interlining","panel_desc_travel":"Monitor de preços de voos por IA. Encontra bilhetes hidden-city, rotas de positioning e virtual interlining entre companhias low-cost — as rotas que o Google Flights e o Kayak completamente ignoram.","panel_tag_tax":"Relocação · Imposto de saída · 26 países","panel_desc_tax":"Consultor fiscal global para relocação e planejamento de imposto de saída. Compare 26 países pela alíquota efetiva, modele cenários de imposto de saída e gere uma carta de mudança pronta para envio que considera tratados e regras de residência.","panel_tag_health":"Cardiologia · Microbioma · Nutrição","panel_desc_health":"Consultor de saúde IA pessoal especializado em cardiologia, microbioma, nutrição e endocrinologia. Envie exames de sangue, revise sinais vitais e receba orientações contextualizadas.","panel_tag_deal":"IA imobiliária · Brasil · Israel · EUA","panel_desc_deal":"Cole qualquer URL de imóvel e receba um relatório completo de investimento: ROI, rendimento de aluguel, impacto fiscal (ITBI, Mas Rechisha, impostos de transferência), comparações de bairro e uma nota deal-score clara — em menos de 30 segundos.","trust_panel_eye":"Privacidade & Confiança","trust_panel_title":"Seus dados. Suas regras.","trust_do_1":"Nunca vendemos seus dados. Jamais.","trust_do_2":"Removemos seu nome, e-mail, telefone e CPF antes que qualquer IA veja sua pergunta.","trust_do_3":"Seus dados sensíveis ficam no seu navegador por padrão — só sincronizamos com a nuvem se você optar.","trust_do_4":"Exporte tudo, ou exclua sua conta, em um clique.","trust_do_5":"Cada usuário só pode acessar seus próprios dados — aplicado em nossos servidores, não apenas no app.","trust_do_6":"O Gemini AI pago do Google não usa suas perguntas para treinar seus modelos.","trust_panel_link":"Leia nossa página de segurança completa →"},"es":{"_":"Productos","__2":"Precios","__3":"Acerca","__4":"Iniciar","__5":"Empezar","__6":"Productos","__7":"Precios","__8":"Acerca","__9":"Iniciar","__10":"Toma cada","__11":"decisión inteligente","_ai_":"con IA.","__12":"En vivo desde la suite","_ai__2":"Herramientas IA en una suite","__13":"Para empezar","_wizetax":"Países en WizeTax","__14":"Mercados inmobiliarios","__15":"La suite","__16":"Una cuenta.","every_":"Cada decisión inteligente.","__17":"Seguimiento de portafolio en vivo","__18":"Análisis de pensión y Keren Hishtalmut","__19":"Planes de ahorro basados en metas","_ai__3":"Chat IA Hebreo + Inglés","_1_200_":"Alertas de precio en 1,200+ aerolíneas","_hidden_city":"Detección de billetes hidden-city","_positioning":"Sugerencias de vuelos positioning","34_ai_":"34 herramientas IA de viaje","3_":"3 rutas encontradas","__20":"base","26_":"26 países, reglas fiscales en vivo","__21":"Modelado de escenarios de impuesto de salida","_ai":"Generador de carta de mudanza con IA","__22":"Rastreador de tratados y residencia","__23":"MEJOR","_0_":"$0 exit tax","_0_12k_":"$0 / $12K fees","ai_":"IA recomienda:","__24":"Interpretación de análisis de sangre","ai__2":"IA entrenada en cardiología","__25":"Microbioma y planificación nutricional","__26":"Integración de wearables","__27":"Frecuencia cardíaca en reposo","_ldl":"Colesterol LDL","__28":"Diversidad del microbioma intestinal","__29":"Sueño profundo","_roi_":"Calculadora completa de ROI y flujo de caja","__30":"Reglas locales de impuestos y transferencia","__31":"Análisis comparativo de barrio","__32":"Rendimiento bruto","roi_1_":"ROI neto (año 1)","__33":"Vs comps","_ai__4":"Resumen IA:","_8_":"priced 8% below neighborhood comps; ITBI estimate R$ 55K; payback in 8.2 years at current rent trajectory.","__34":"Pruébalo ahora","_wizeai_":"Habla con WizeAI.","__35":"En vivo, aquí mismo.","_roi":"Calculadora de ROI","_wizelife_":"¿Cuánto te ahorrará WizeLife?","__36":"Adjust your profile and watch your annual savings update in real time.","__37":"Inversiones mensuales","__38":"Vuelos por año","__39":"Ingresos anuales (gravables)","__40":"Valor de propiedad investigado","__41":"Ahorro anual estimado","__42":"Optimización de portafolio","__43":"Ahorro en vuelos","__44":"Optimización fiscal","__45":"Ventaja en operaciones inmobiliarias","_wizelife":"Por qué WizeLife","__46":"Una suite vs. todo lo demás.","__47":"Five domains, one login, one subscription. Compare the alternatives.","__48":"Característica","__49":"Chatbots genéricos","__50":"Apps de dominio único","ai__3":"IA especializada en dominio","_hidden_city_virtual":"Vuelos hidden-city y virtual-interline","__51":"Parcial","_26_":"Escenarios de impuesto de salida en 26 países","_itbi_":"Local real-estate tax rules (ITBI, Mas Rechisha)","__52":"Parcial","__53":"Bilingüe (Hebreo + Inglés)","__54":"Parcial","__55":"Precio (todo incluido)","__56":"Lo que dicen","__57":"Usuarios reales. Ahorro real.","_wizelife__2":"Feedback from people using WizeLife across three continents.","__58":"Ingeniero, mudándose a Portugal","__59":"Viajero frecuente","__60":"Precios","__61":"Precios simples y honestos.","__62":"Start free. Upgrade when you need more. No credit card required.","__63":"Gratis","__64":"Prueba cualquier herramienta, sin tarjeta.","__65":"Panel básico y metas","_50_":"Hasta 50 transacciones","__66":"Seguimiento de precios de vuelos","__67":"Análisis inmobiliario básico","__68":"Empezar gratis","__69":"Más Popular","_5_":"Las 5 herramientas, desbloqueadas.","20_ai_":"20 respuestas IA/día por herramienta","ai_story_":"IA Story, Chat e Informes","_csv_pdf":"Exportación CSV y PDF","__70":"Acciones, optimizador fiscal, pensión","__71":"Transacciones y metas ilimitadas","__72":"Procesamiento prioritario","_pro":"Actualizar a Pro","_power":"Usuario Power","__73":"Para quien profundiza. Cada día.","__74":"Acceso anticipado a cada nueva función","_yolo":"Ir YOLO","__75":"Preguntas comunes.","__76":"Todo lo que necesitas saber antes de empezar.","__77":"Empezar hoy","__78":"¿Listo para vivir más inteligente?","join_thousands_makin":"Únete a miles tomando mejores decisiones con IA. Gratis para siempre, actualiza cuando quieras.","__79":"Explorar herramientas","5_ai_":"Cinco herramientas IA para cada decisión importante de tu vida. Hecho con amor, en todas partes.","__80":"Productos","__81":"Cuenta","__82":"Iniciar","__83":"Regístrate gratis","__84":"Precios","__85":"Info","__86":"Acerca","__87":"Contacto","__88":"Política de Privacidad","__89":"Términos de Servicio","qd_eyebrow":"Demo rápida · 5 preguntas de ejemplo","qd_sub":"Cinco respuestas de ejemplo. Para respuestas adaptadas a TU dinero, vuelos e impuestos — desbloquea el asesor completo con YOLO.","qd_online":"En línea · demo","qd_intro":"¡Hola! Toca una de las 5 preguntas de abajo — te mostraré el tipo de respuesta que da WizeAI. Para consejos personalizados sobre tus datos, obtén el asesor completo con YOLO.","qd_yolo_title":"Asesor WizeAI completo","qd_yolo_sub":"Conoce tus datos reales de las 5 apps — respuestas específicas y personalizadas con tus números.","qd_yolo_btn":"Obtén YOLO →","panel_cta":"Abrir herramienta ↗","panel_tag_money":"Finanzas personales · Inversiones · Pensión","panel_desc_money":"Panel financiero personal completo. Registra cuentas, inversiones, pensión, metas y acciones en un solo lugar — con un asesor IA bilingüe que entiende de verdad los fondos de pensión israelíes, acciones extranjeras e implicaciones fiscales locales.","panel_tag_travel":"IA de vuelos · Hidden-city · Virtual interlining","panel_desc_travel":"Monitor de precios de vuelos por IA. Encuentra billetes hidden-city, rutas de positioning y virtual interlining entre aerolíneas low-cost — las rutas que Google Flights y Kayak pasan completamente por alto.","panel_tag_tax":"Relocalización · Impuesto de salida · 26 países","panel_desc_tax":"Asesor fiscal global para relocalización y planificación del impuesto de salida. Compara 26 países por tasa efectiva, modela escenarios de impuesto de salida y genera una carta de mudanza lista para enviar que considera tratados y reglas de residencia.","panel_tag_health":"Cardiología · Microbioma · Nutrición","panel_desc_health":"Asesor de salud IA personal especializado en cardiología, microbioma, nutrición y endocrinología. Sube análisis de sangre, revisa constantes vitales y recibe orientación contextualizada.","panel_tag_deal":"IA inmobiliaria · Brasil · Israel · EE.UU.","panel_desc_deal":"Pega cualquier URL de inmueble y obtén un informe de inversión completo: ROI, rentabilidad por alquiler, impacto fiscal (ITBI, Mas Rechisha, impuestos de transferencia), comparativas del barrio y una nota deal-score clara — en menos de 30 segundos.","trust_panel_eye":"Privacidad & Confianza","trust_panel_title":"Tus datos. Tus reglas.","trust_do_1":"Nunca vendemos tus datos. Jamás.","trust_do_2":"Eliminamos tu nombre, email, teléfono y DNI antes de que cualquier IA vea tu pregunta.","trust_do_3":"Tus datos sensibles permanecen en tu navegador por defecto — solo se sincronizan con la nube si lo eliges.","trust_do_4":"Exporta todo, o elimina tu cuenta, en un clic.","trust_do_5":"Cada usuario solo puede acceder a sus propios datos — aplicado en nuestros servidores, no solo en la app.","trust_do_6":"El Gemini AI de pago de Google no utiliza tus preguntas para entrenar sus modelos.","trust_panel_link":"Lee nuestra página de seguridad completa →"}};
-</script>
+<script src="/js/wl-landing-i18n.js?v=1" defer></script>
 <script src="/js/wl-common-i18n.js?v=2" defer></script>
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
 <!-- Funnel: log the landing-page visit (top of funnel). -->
-<script src="/js/wize-track-beacon.js"></script>
+<script src="/js/wize-track-beacon.js" defer></script>
 <script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
 </body>
 </html>

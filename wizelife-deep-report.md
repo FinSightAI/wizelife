@@ -1,32 +1,23 @@
-# 🚨 WizeLife-Deep action items — 2026-05-16
+# 🚨 WizeLife-Deep action items — 2026-05-31
 
-**3 failure(s), 0 warning(s), 11 pass.**
+**0 failure(s), 1 warning(s), 10 pass.**
 
-## For Claude to fix:
-- ❌ Landing / loads + CTA visible — locator.waitFor: Timeout 8000ms exceeded.
-Call log:
-[2m  - waiting for locator('a[href*="auth"], button:has-text("Sign up"), button:has-text("הרשמה"), a:has-text("Get Started"), a:has-text("התחל")').first() to be visibl
-- ❌ Forgot password link triggers modal/page — Forgot-password link missing
-- ❌ Dashboard — all 5 app cards reachable — missing app cards: tax.wizelife.ai
+## For you to investigate:
+- ⚠️ login flows skipped — no QA_EMAIL_PRO + QA_PASSWORD_PRO env vars — set them via .env.qa.local
 
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeLife-Deep QA — 2026-05-16
+# WizeLife-Deep QA — 2026-05-31
 
-- ❌ Landing / loads + CTA visible — locator.waitFor: Timeout 8000ms exceeded.
-Call log:
-[2m  - waiting for locator('a[href*="auth"], button:has-text("Sign up"), button:has-text("הרשמה"), a:has-text("Get Started"), a:has-text("התחל")').first() to be visibl
+- ✅ Landing / loads + CTA visible
 - ✅ auth.html — Sign In + Sign Up tabs both reachable
 - ✅ Signup form has password strength rule (≥8, mixed case, digit, special)
-- ❌ Forgot password link triggers modal/page — Forgot-password link missing
+- ✅ Forgot password link triggers modal/page
 - ✅ about.html loads + 4-lang switcher works
 - ✅ Security, terms, privacy pages all load + have ToC/sections
 - ✅ feedback.html — form present + submit-able
-- ✅ Login flow → dashboard.html
-- ❌ Dashboard — all 5 app cards reachable — missing app cards: tax.wizelife.ai
-- ✅ Dashboard — SSO tokens injected into app card hrefs
-- ✅ Sign-out button exits to landing/auth
+- ⚠️ login flows skipped — no QA_EMAIL_PRO + QA_PASSWORD_PRO env vars — set them via .env.qa.local
 - ✅ iPhone (390×844) landing: no overflow
 - ✅ No Hebrew leak in EN mode (landing)
 - ✅ No "← All Tools" back-arrow anywhere on portal

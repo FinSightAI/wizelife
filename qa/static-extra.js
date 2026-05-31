@@ -126,11 +126,94 @@ async function tier13m() {
     add('');
 }
 
+// ─── Tier 13n — Relocation pages: country-specific strings + no Portugal bleed ─
+async function tier13n() {
+    add('');
+    add('## Tier 13n — Relocation pages string regression');
+    add('');
+
+    const PAGES = [
+        { slug: 'uae',      banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+        { slug: 'cyprus',   banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+        { slug: 'italy',    banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+        { slug: 'greece',   banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+        { slug: 'brazil',   banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+        { slug: 'bali',     banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+        { slug: 'thailand', banned: ['פורטוגל', "'Portugal'", '"Portugal"'] },
+    ];
+
+    for (const { slug, banned } of PAGES) {
+        const url = `https://wizelife.ai/p/relocate-${slug}.html`;
+        const r = await fetchURL(url);
+        if (r.status !== 200) {
+            warn(`/p/relocate-${slug}.html returned ${r.status}`,
+                 'Check GitHub Pages deployment for wizelife repo',
+                 'admin');
+            continue;
+        }
+        // Extract just the JS block (after <script>) to avoid URL refs in href/src
+        const scriptMatch = r.body.match(/<script[^>]*>([\s\S]*?)<\/script>/g) || [];
+        const jsOnly = scriptMatch.join('\n');
+        let ok = true;
+        for (const b of banned) {
+            // Allow in comments, href URLs, and ctaP comparison text
+            // We look for the string inside buildShareText / shareTo functions specifically
+            const shareIdx = jsOnly.indexOf('function buildShareText');
+            const shareBlock = shareIdx >= 0 ? jsOnly.slice(shareIdx, shareIdx + 600) : '';
+            const shareToIdx = jsOnly.indexOf('function shareTo');
+            const shareToBlock = shareToIdx >= 0 ? jsOnly.slice(shareToIdx, shareToIdx + 400) : '';
+            if (shareBlock.includes(b) || shareToBlock.includes(b)) {
+                fail(`/p/relocate-${slug}.html: buildShareText/shareTo contains hardcoded "${b}"`,
+                     'Replace PT constant with (TR[_lang]||TR.en).coTitle.replace(/\\s*\\([^)]*\\)/,\'\').trim()',
+                     'claude');
+                ok = false;
+            }
+        }
+        if (ok) pass(`/p/relocate-${slug}.html: no hardcoded Portugal strings in share functions.`);
+
+        // Check COUNTRY_SLUG is set correctly (not 'portugal')
+        if (jsOnly.includes(`COUNTRY_SLUG = 'portugal'`) && slug !== 'portugal') {
+            fail(`/p/relocate-${slug}.html: COUNTRY_SLUG is still 'portugal'`,
+                 'Set COUNTRY_SLUG to the correct country slug in the page JS',
+                 'claude');
+        }
+    }
+
+    // captureLeadEmail endpoint smoke-probe
+    // Probe with allowed Origin — XSS payload → must return 400
+    const xssProbe = await new Promise((resolve) => {
+        const https = require('https');
+        const body = JSON.stringify({ email: '<xss>@test.com' });
+        const opts = {
+            hostname: 'us-central1-finzilla-7f1f9.cloudfunctions.net',
+            path: '/captureLeadEmail',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(body),
+                'Origin': 'https://wizelife.ai',
+            },
+            timeout: 15000,
+        };
+        const req = https.request(opts, (r) => { resolve(r.statusCode); });
+        req.on('error', () => resolve(0));
+        req.on('timeout', () => { req.destroy(); resolve(0); });
+        req.write(body);
+        req.end();
+    });
+    if (xssProbe === 400) pass('captureLeadEmail: XSS email rejected with 400.');
+    else fail(`captureLeadEmail: XSS email not rejected — got ${xssProbe} (expected 400)`,
+              'Add /[<>"\'`]/.test(b.email) guard in captureLeadEmail before email parse',
+              'claude');
+}
+
+
 (async () => {
     add(`# Static-extra checks — ${new Date().toISOString()}`);
     add('');
     await tier13l();
     await tier13m();
+    await tier13n();
 
     const failed = actions.filter(a => a.severity === 'fail');
     const warned = actions.filter(a => a.severity === 'warn');

@@ -1,11 +1,15 @@
-# 🚨 WizeTravel-FlowsV3 action items — 2026-05-16
+# 🚨 WizeTravel-FlowsV3 action items — 2026-05-22
 
-**0 failure(s), 8 warning(s), 12 pass.**
+**1 failure(s), 6 warning(s), 11 pass.**
+
+## For Claude to fix:
+- ❌ Pet travel info OR allergens info — page.goto: net::ERR_NETWORK_IO_SUSPENDED at https://travel.wizelife.ai/?_t=1779483881029
+Call log:
+[2m  - navigating to "https://travel.wizelife.ai/?_t=1779483881029", waiting until "load"[22m
+
 
 ## For you to investigate:
 - ⚠️ No best-time-to-book feature
-- ⚠️ No currency converter feature
-- ⚠️ No pet-travel info — niche feature
 - ⚠️ No weather feature mentioned
 - ⚠️ No baggage policy feature
 - ⚠️ No layover/stopover smart info
@@ -15,16 +19,17 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTravel-FlowsV3 QA — 2026-05-16
+# WizeTravel-FlowsV3 QA — 2026-05-22
 
 - ✅ Skiplagging / hidden-city warning visible (legal context)
 - ⚠️ No best-time-to-book feature
 - ✅ Best time to book / cheapest months copy
 - ✅ Visa requirements per country mentioned
-- ⚠️ No currency converter feature
 - ✅ Currency converter / FX rates feature
-- ⚠️ No pet-travel info — niche feature
-- ✅ Pet travel info OR allergens info
+- ❌ Pet travel info OR allergens info — page.goto: net::ERR_NETWORK_IO_SUSPENDED at https://travel.wizelife.ai/?_t=1779483881029
+Call log:
+[2m  - navigating to "https://travel.wizelife.ai/?_t=1779483881029", waiting until "load"[22m
+
 - ⚠️ No weather feature mentioned
 - ✅ Weather forecast per destination mentioned
 - ⚠️ No baggage policy feature

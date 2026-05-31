@@ -47,7 +47,7 @@
     es: { msg: 'Nueva versión disponible', btn: 'Actualizar' },
   };
 
-  function showBanner() {
+  function showBanner(newVersion) {
     if (document.getElementById(BANNER_ID)) return;
     var lang = getLang();
     var tr = TR[lang] || TR.he;
@@ -56,7 +56,7 @@
     bar.setAttribute('role', 'alert');
     bar.style.cssText = [
       'position:fixed', 'top:0', 'left:0', 'right:0',
-      'z-index:2147483645',
+      'z-index:100000',
       'background:linear-gradient(90deg,#6366f1,#8b5cf6)',
       'color:#fff', 'padding:8px 14px',
       'font:600 12px Inter,-apple-system,sans-serif',
@@ -79,19 +79,36 @@
     document.body.appendChild(bar);
 
     document.getElementById('wize-update-btn').addEventListener('click', function () {
-      // Force a hard reload: bypass HTTP cache + SW
+      // 1. Tell the waiting SW to skip waiting and become active immediately.
+      //    Without this the new SW stays in "waiting" state across reloads
+      //    and the banner keeps reappearing.
+      // 2. Store the new version in localStorage so the check after reload
+      //    sees we've acknowledged it (belt-and-suspenders for the 2.5s delay).
+      var acknowledged = false;
       try {
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        if ('serviceWorker' in navigator) {
           navigator.serviceWorker.getRegistrations().then(function (regs) {
-            regs.forEach(function (r) { r.update(); });
+            regs.forEach(function (r) {
+              if (r.waiting) {
+                r.waiting.postMessage({ type: 'SKIP_WAITING' });
+                acknowledged = true;
+              }
+            });
           });
         }
       } catch (e) {}
-      // Add a cache-busting param to force HTML re-fetch on iOS Safari (which
-      // otherwise serves the cached HTML).
-      var u = new URL(window.location.href);
-      u.searchParams.set('_v', Date.now().toString(36));
-      window.location.replace(u.toString());
+      // Persist the SERVER version (not LOCAL) so a post-reload check doesn't
+      // immediately re-show the banner. Bug fix 2026-05-26: was saving LOCAL
+      // (old version) which made the comparison `acked === j.version` always
+      // false, so the banner reappeared after every reload.
+      try { localStorage.setItem('wize_acked_version', newVersion || LOCAL); } catch (e) {}
+      // Delay reload slightly so postMessage has time to process, then force
+      // a hard reload that bypasses HTTP cache + SW cache.
+      setTimeout(function () {
+        var u = new URL(window.location.href);
+        u.searchParams.set('_v', Date.now().toString(36));
+        window.location.replace(u.toString());
+      }, 300);
     });
     document.getElementById('wize-update-dismiss').addEventListener('click', function () {
       bar.remove();
@@ -105,7 +122,14 @@
     fetch(ENDPOINT + '?t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
-        if (j && j.version && j.version !== LOCAL) showBanner();
+        if (j && j.version && j.version !== LOCAL) {
+          // Skip banner if user already clicked Refresh for this exact version
+          try {
+            var acked = localStorage.getItem('wize_acked_version');
+            if (acked === j.version) return;
+          } catch (e) {}
+          showBanner(j.version);
+        }
       })
       .catch(function () {})
       .then(function () { _checking = false; });

@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), usb=(), serial=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>כמה תחסוך אם תעבור לפורטוגל? · WizeLife</title>
 <meta name="description" content="הזן הכנסה ברוטו → קבל ניתוח 10 שנים: כמה מס תשלם בישראל מול NHR בפורטוגל. נתוני 2025. בלי הרשמה.">
@@ -91,6 +92,16 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
 .cta p{margin:0 0 10px;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.5}
 .cta a{display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:9px 16px;border-radius:99px;font:800 12.5px Inter,sans-serif}
 
+
+/* Email capture */
+.email-gate{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(16,185,129,0.06));border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:16px;text-align:center}
+.eg-eye{font:700 12px Inter,sans-serif;color:#a5b4fc;margin-bottom:10px;letter-spacing:.3px}
+.eg-row{display:flex;gap:8px;max-width:400px;margin:0 auto}
+.eg-row input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;color:var(--text);font:500 14px Inter,sans-serif;outline:none}
+.eg-row input:focus{border-color:rgba(99,102,241,0.5)}
+.eg-row button{background:linear-gradient(135deg,#6366f1,#4f46e5);border:0;border-radius:10px;padding:10px 20px;color:#fff;font:700 13px Inter,sans-serif;cursor:pointer;white-space:nowrap}
+.eg-note{margin-top:8px;font:500 11px Inter,sans-serif;color:#6b7280}
+
 .foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.55}
 .foot a{color:#a5b4fc;text-decoration:none}
 </style>
@@ -107,12 +118,14 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
   <div class="lang" id="langSwitch">
     <button data-l="he" class="on">HE</button>
     <button data-l="en">EN</button>
+    <button data-l="pt">PT</button>
+    <button data-l="es">ES</button>
   </div>
 </div>
 
 <div class="hero">
   <div class="flag">🇮🇱 → 🇵🇹</div>
-  <div class="badge" data-i18n="badge">✓ נתוני מס מאומתים 2025</div>
+  <div class="badge" data-i18n="badge">✓ נתוני מס מאומתים 2026</div>
   <h1 data-i18n="title">כמה תחסוך אם תעבור<br>לפורטוגל?</h1>
   <p data-i18n="sub">משטר ה-NHR מאפשר 0% מס על הכנסה זרה ל-10 שנים. הזן ברוטו, ראה את החיסכון. בלי הרשמה.</p>
 </div>
@@ -142,6 +155,16 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
   <div class="sub" id="savingsSub" data-i18n="savingsSub">לעומת המשך תשלום מס בישראל</div>
 </div>
 
+
+<div class="email-gate" id="emailGate">
+  <div class="eg-eye" data-i18n="egEye">📩 קבל את הניתוח המלא + מדריך מס במייל</div>
+  <div class="eg-row">
+    <input type="email" id="egEmail" placeholder="your@email.com">
+    <button onclick="submitEmail()"><span data-i18n="egBtn">שלח</span></button>
+  </div>
+  <div class="eg-note" data-i18n="egNote">בלי ספאם. אפשר לבטל בכל עת.</div>
+</div>
+
 <div class="breakdown">
   <div class="b-card il">
     <h3>🇮🇱 <span data-i18n="ilTitle">ישראל (10 שנים)</span></h3>
@@ -160,7 +183,7 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
 <div class="caveats">
   <h4 data-i18n="caveatsT">⚠️ אזהרות חשובות לפני שמזיזים מזוודה</h4>
   <ul>
-    <li data-i18n="cav1"><strong>NHR 2.0 (IFICI):</strong> ההטבה הוגבלה ב-2024 — לא כל הפרופילים זכאים. דורש מקצוע "מועיל" או יזם/חוקר.</li>
+    <li data-i18n="cav1"><strong>NHR 2.0 (IFICI):</strong> הזכאות מוגבלת — לא כל הפרופילים עומדים בתנאים. נדרש מקצוע "מועיל", יזם או חוקר.</li>
     <li data-i18n="cav2"><strong>מס יציאה מישראל:</strong> אם יש לך נכסים מעל ₪3M, ייתכן מס יציאה חד-פעמי.</li>
     <li data-i18n="cav3"><strong>תושבות:</strong> 183+ ימים/שנה בפורטוגל + ניתוק תושבות ישראלית (טופס 1348).</li>
     <li data-i18n="cav4"><strong>ביטוח לאומי:</strong> NHR לא פוטר מ-Segurança Social פורטוגלית (~11%) או מתשלום למוסד לביטוח לאומי בישראל.</li>
@@ -193,9 +216,11 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top right,rgba(0,
 <script src="/js/tax-data.js"></script>
 <script src="/js/wize-share.js" defer></script>
 <script>
+const COUNTRY_SLUG = 'portugal';
+
 const TR = {
   he: {
-    badge: '✓ נתוני מס מאומתים 2025',
+    badge: '✓ נתוני מס מאומתים 2026',
     title: 'כמה תחסוך אם תעבור<br>לפורטוגל?',
     sub: 'משטר ה-NHR מאפשר 0% מס על הכנסה זרה ל-10 שנים. הזן ברוטו, ראה את החיסכון. בלי הרשמה.',
     lblGross: 'הכנסה חודשית ברוטו (₪)',
@@ -215,7 +240,7 @@ const TR = {
     ptLblDiv: '0% NHR על דיווידנדים זרים',
     annual: 'שנתי:',
     caveatsT: '⚠️ אזהרות חשובות לפני שמזיזים מזוודה',
-    cav1: '<strong>NHR 2.0 (IFICI):</strong> ההטבה הוגבלה ב-2024 — לא כל הפרופילים זכאים. דורש מקצוע "מועיל" או יזם/חוקר.',
+    cav1: '<strong>NHR 2.0 (IFICI):</strong> הזכאות מוגבלת — לא כל הפרופילים עומדים בתנאים. נדרש מקצוע "מועיל", יזם או חוקר.',
     cav2: '<strong>מס יציאה מישראל:</strong> אם יש לך נכסים מעל ₪3M, ייתכן מס יציאה חד-פעמי.',
     cav3: '<strong>תושבות:</strong> 183+ ימים/שנה בפורטוגל + ניתוק תושבות ישראלית (טופס 1348).',
     cav4: '<strong>ביטוח לאומי:</strong> NHR לא פוטר מ-Segurança Social פורטוגלית (~11%) או מתשלום למוסד לביטוח לאומי בישראל.',
@@ -228,6 +253,10 @@ const TR = {
     ctaBtn: 'פתח חשבון חינם ←',
     footSource: 'מקור: רשות המסים פורטוגל · NHR Regime (DL 249/2009 + alterações 2024) · PwC IL/PT · OECD.',
     footLegal: '⚠️ כלי מידע. NHR וחוקי מס יציאה ישראליים מורכבים — חובה להתייעץ עם יועץ מס מורשה.',
+    egEye: '📩 קבל את הניתוח המלא + מדריך מס במייל',
+    egBtn: 'שלח',
+    egNote: 'בלי ספאם. אפשר לבטל בכל עת.',
+    egThanks: 'נשלח! תקבל בקרוב 📬',
     shareTextMine: 'בדקתי ב-WizeLife כמה אחסוך אם אעבור לפורטוגל (NHR). שווה לראות:',
   },
   en: {
@@ -264,11 +293,95 @@ const TR = {
     ctaBtn: 'Sign up free →',
     footSource: 'Sources: Portuguese tax authority · NHR Regime (DL 249/2009 + 2024 amendments) · PwC IL/PT · OECD.',
     footLegal: '⚠️ Information tool. NHR and Israeli exit-tax rules are complex — consult a licensed tax advisor.',
+    egEye: 'Get the full analysis + tax guide by email',
+    egBtn: 'Send',
+    egNote: 'No spam. Unsubscribe anytime.',
+    egThanks: 'Sent! Check your inbox 📬',
     shareTextMine: 'I checked on WizeLife how much I\'d save moving to Portugal (NHR). Worth seeing:',
+  },
+  pt: {
+    badge: '✓ Dados fiscais verificados 2026',
+    title: 'Quanto poupa se se mudar<br>para Portugal?',
+    sub: 'O regime NHR permite 0% de imposto sobre rendimento estrangeiro durante 10 anos. Introduza o bruto, veja a poupança. Sem registo.',
+    lblGross: 'Rendimento mensal bruto (₪)',
+    hintGross: 'Rendimento bruto antes de imposto (salário + bónus + …)',
+    lblIncomeType: 'Tipo de rendimento',
+    typeForeignEmp: 'Trabalho remoto para empregador estrangeiro / freelance',
+    typeLocalEmp: 'Empregado por empregador português',
+    typeDiv: 'Dividendos / juros / rendas',
+    hintIncomeType: 'O tipo de rendimento afeta a taxa NHR',
+    savingsEye: 'Poupança cumulativa em 10 anos',
+    savingsSub: 'Vs continuar a pagar imposto em Israel',
+    ilTitle: 'Israel (10 anos)',
+    ilLbl: 'Total de IRS + segurança social pagos',
+    ptTitle: 'Portugal NHR (10 anos)',
+    ptLblForeign: '0% sobre rendimento estrangeiro — apenas seg. social',
+    ptLblLocal: '20% taxa fixa + Segurança Social portuguesa',
+    ptLblDiv: '0% NHR sobre dividendos estrangeiros',
+    annual: 'Anual:',
+    caveatsT: '⚠️ Avisos importantes antes de fazer as malas',
+    cav1: '<strong>NHR 2.0 (IFICI):</strong> o regime foi atualmente restrito — nem todos os perfis se qualificam. Requer profissão "altamente qualificada" ou estatuto de empreendedor/investigador.',
+    cav2: '<strong>Imposto de saída israelita:</strong> ativos acima de ₪3M podem desencadear um imposto de saída único.',
+    cav3: '<strong>Residência:</strong> 183+ dias/ano em Portugal + romper a residência fiscal israelita (formulário 1348).',
+    cav4: '<strong>Segurança social:</strong> O NHR NÃO o isenta da Segurança Social portuguesa (~11%) nem do Bituach Leumi israelita.',
+    cav5: '<strong>Declaração de bens:</strong> ativos acima de $300K → exigências complexas de declaração FATCA/CRS.',
+    shareTitle: 'Amigos a considerar Portugal? Envie 👇',
+    shareSub: 'Partilhar via WhatsApp / Email / link',
+    shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaT: 'Quer a sua análise real e personalizada?',
+    ctaP: 'O WizeTax modela o seu cenário exato: imposto de saída baseado nos seus ativos, NHR 2.0 por profissão, timing ideal, fluxo de caixa de 10 anos, comparação com Estónia / Grécia / EAU. IA que conhece as regras de 26 países.',
+    ctaBtn: 'Registar grátis →',
+    footSource: 'Fontes: Autoridade Tributária portuguesa · Regime NHR (DL 249/2009 + alterações 2024) · PwC IL/PT · OECD.',
+    footLegal: '⚠️ Ferramenta informativa. As regras do NHR e do imposto de saída israelita são complexas — consulte um consultor fiscal licenciado.',
+    egEye: 'Receba a análise completa + guia fiscal por email',
+    egBtn: 'Enviar',
+    egNote: 'Sem spam. Cancelar a qualquer momento.',
+    egThanks: 'Enviado! Verifique a caixa 📬',
+    shareTextMine: 'Verifiquei no WizeLife quanto pouparia ao mudar-me para Portugal (NHR). Vale a pena ver:',
+  },
+  es: {
+    badge: '✓ Datos fiscales verificados 2026',
+    title: '¿Cuánto ahorrarías mudándote<br>a Portugal?',
+    sub: 'El régimen NHR permite 0% de impuesto sobre renta extranjera durante 10 años. Introduce el bruto, ve el ahorro. Sin registro.',
+    lblGross: 'Ingresos mensuales brutos (₪)',
+    hintGross: 'Ingresos brutos antes de impuestos (salario + bonificación + …)',
+    lblIncomeType: 'Tipo de ingresos',
+    typeForeignEmp: 'Trabajo remoto para empleador no portugués / freelance',
+    typeLocalEmp: 'Empleado por empleador portugués',
+    typeDiv: 'Dividendos / intereses / rentas',
+    hintIncomeType: 'El tipo de ingresos afecta la tasa NHR',
+    savingsEye: 'Ahorro acumulado en 10 años',
+    savingsSub: 'Vs seguir pagando impuestos en Israel',
+    ilTitle: 'Israel (10 años)',
+    ilLbl: 'Total de IRPF + seguridad social pagados',
+    ptTitle: 'Portugal NHR (10 años)',
+    ptLblForeign: '0% sobre renta extranjera — solo seg. social',
+    ptLblLocal: '20% tipo fijo + Seguridad Social portuguesa',
+    ptLblDiv: '0% NHR sobre dividendos extranjeros',
+    annual: 'Anual:',
+    caveatsT: '⚠️ Advertencias importantes antes de hacer las maletas',
+    cav1: '<strong>NHR 2.0 (IFICI):</strong> el régimen se endureció en 2024 — no todos los perfiles califican. Requiere profesión "altamente cualificada" o estatus de emprendedor/investigador.',
+    cav2: '<strong>Impuesto de salida israelí:</strong> activos superiores a ₪3M pueden activar un impuesto de salida único.',
+    cav3: '<strong>Residencia:</strong> 183+ días/año en Portugal + romper la residencia fiscal israelí (formulario 1348).',
+    cav4: '<strong>Seguridad social:</strong> El NHR NO te exime de la Segurança Social portuguesa (~11%) ni del Bituach Leumi israelí.',
+    cav5: '<strong>Declaración de bienes:</strong> activos superiores a $300K → requisitos complejos de declaración FATCA/CRS.',
+    shareTitle: '¿Amigos pensando en Portugal? Envíaselo 👇',
+    shareSub: 'Compartir vía WhatsApp / Email / enlace',
+    shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaT: '¿Quieres tu análisis real y personalizado?',
+    ctaP: 'WizeTax modela tu escenario exacto: impuesto de salida según tus activos, NHR 2.0 por profesión, timing óptimo, flujo de caja de 10 años, comparación con Estonia / Grecia / EAU. IA que conoce las reglas de 26 países.',
+    ctaBtn: 'Regístrate gratis →',
+    footSource: 'Fuentes: Autoridad Tributaria portuguesa · Régimen NHR (DL 249/2009 + modificaciones 2024) · PwC IL/PT · OECD.',
+    footLegal: '⚠️ Herramienta informativa. Las reglas del NHR y del impuesto de salida israelí son complejas — consulta a un asesor fiscal autorizado.',
+    egEye: 'Recibe el análisis completo + guía fiscal por email',
+    egBtn: 'Enviar',
+    egNote: 'Sin spam. Cancela cuando quieras.',
+    egThanks: '¡Enviado! Revisa tu correo 📬',
+    shareTextMine: 'Comprobé en WizeLife cuánto ahorraría mudándome a Portugal (NHR). Vale la pena verlo:',
   },
 };
 let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'he'; } catch { return 'he'; }})();
-if (!['he','en'].includes(_lang)) _lang = 'he';
+if (!['he','en','pt','es'].includes(_lang)) _lang = 'he';
 
 function applyLang(l) {
   _lang = l;
@@ -303,7 +416,7 @@ const PT_RATES = {
 };
 
 function calcPT(grossILS, type) {
-  const grossUSD = grossILS * 0.27;       // ILS → USD
+  const grossUSD = grossILS * ((window.TAX_DATA && TAX_DATA.IL) ? TAX_DATA.IL.usdRate : 0.27);
   const grossAnnualUSD = grossUSD * 12;
   const r = PT_RATES[type] || PT_RATES.foreign_employment;
   const taxAnnual = grossAnnualUSD * r.incomeTax;
@@ -319,7 +432,7 @@ function calcIL(grossILS) {
   const r = calcNet('IL', grossILS, 'single', 0);
   if (!r) return { annualUSD: 0, monthlyUSD: 0 };
   // Israeli "tax paid" per month = gross - net (in USD, approximated)
-  const grossUSD = grossILS * 0.27;
+  const grossUSD = grossILS * ((window.TAX_DATA && TAX_DATA.IL) ? TAX_DATA.IL.usdRate : 0.27);
   const paidUSD = grossUSD - r.netUSD;
   return {
     annualUSD: Math.round(paidUSD * 12),
@@ -331,6 +444,26 @@ function fmtUSD(n) {
   if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
   if (n >= 1e3) return '$' + Math.round(n).toLocaleString();
   return '$' + Math.round(n);
+}
+
+function submitEmail() {
+  const em = (document.getElementById('egEmail').value || '').trim();
+  if (!em || !em.includes('@')) return;
+  const r = window.__last;
+  fetch('https://us-central1-finzilla-7f1f9.cloudfunctions.net/captureLeadEmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: em,
+      source: 'landing-' + COUNTRY_SLUG,
+      country: COUNTRY_SLUG,
+      lang: _lang,
+      savingsUSD: r ? r.savings : 0,
+    }),
+  }).catch(() => {});
+  document.getElementById('emailGate').innerHTML =
+    '<div style="color:#6ee7b7;font:700 13px Inter,sans-serif;padding:10px">✓ ' +
+    (TR[_lang].egThanks || 'נשלח!') + '</div>';
 }
 
 function recalc() {
@@ -360,6 +493,9 @@ function recalc() {
 
   window.__last = { gross, type, savings, il, pt };
 }
+
+// Re-render when live FX rates arrive from tax-data.js loadFx()
+window.addEventListener('wl-fx-updated', recalc);
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('incomeType').addEventListener('change', recalc);
 // Initial render — now safe because PT_RATES + calcPT are declared above.
@@ -375,7 +511,10 @@ function buildShareText() {
   // to �). Use country names + a generic arrow.
   const IL = (_lang === 'he' ? 'ישראל' : 'Israel');
   const PT = (_lang === 'he' ? 'פורטוגל' : 'Portugal');
-  const savingsLabel = (_lang === 'he' ? 'חיסכון ב-10 שנים' : '10-year savings');
+  const savingsLabel = _lang === 'he' ? 'חיסכון ב-10 שנים'
+                     : _lang === 'pt' ? 'Poupança em 10 anos'
+                     : _lang === 'es' ? 'Ahorro en 10 años'
+                     : '10-year savings';
   return t.shareTextMine + '\n\n'
     + IL + ' → ' + PT + '  · ' + savingsLabel + ': ' + fmtUSD(r.savings) + '\n';
   // URL appended automatically by WizeShare helpers.
@@ -383,7 +522,10 @@ function buildShareText() {
 function shareTo(channel) {
   const text = buildShareText();
   const url  = 'https://wizelife.ai/p/relocate-portugal.html';
-  const title = (_lang === 'he' ? 'כמה תחסוך אם תעבור לפורטוגל?' : 'How much would you save moving to Portugal?');
+  const title = _lang === 'he' ? 'כמה תחסוך אם תעבור לפורטוגל?'
+              : _lang === 'pt' ? 'Quanto poupa se se mudar para Portugal?'
+              : _lang === 'es' ? '¿Cuánto ahorrarías mudándote a Portugal?'
+              : 'How much would you save moving to Portugal?';
   if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); return; }
   if (channel === 'whatsapp') WizeShare.whatsapp({ title, text, url });
   else if (channel === 'email') WizeShare.email({ title, text, url });

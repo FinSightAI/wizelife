@@ -1,21 +1,17 @@
-# 🚨 Mobile-Viewport action items — 2026-05-16
+# 🚨 Mobile-Viewport action items — 2026-05-22
 
 **1 failure(s), 0 warning(s), 23 pass.**
 
 ## For Claude to fix:
-- ❌ https://wizelife.ai/ — no horizontal overflow at 390w — page load failed: page.goto: Timeout 45000ms exceeded.
-Call log:
-[2m  - navigating to "https://wi
+- ❌ https://wizelife.ai/ — tappable hit targets ≥ 32px — page.evaluate: Execution context was destroyed, most likely because of a navigation
 
 ---
 _<details><summary>Full detail</summary>_
 
-# Mobile-Viewport QA — 2026-05-16
+# Mobile-Viewport QA — 2026-05-22
 
-- ❌ https://wizelife.ai/ — no horizontal overflow at 390w — page load failed: page.goto: Timeout 45000ms exceeded.
-Call log:
-[2m  - navigating to "https://wi
-- ✅ https://wizelife.ai/ — tappable hit targets ≥ 32px
+- ✅ https://wizelife.ai/ — no horizontal overflow at 390w
+- ❌ https://wizelife.ai/ — tappable hit targets ≥ 32px — page.evaluate: Execution context was destroyed, most likely because of a navigation
 - ✅ https://wizelife.ai/auth.html — no horizontal overflow at 390w
 - ✅ https://wizelife.ai/auth.html — tappable hit targets ≥ 32px
 - ✅ https://wizelife.ai/about.html — no horizontal overflow at 390w
@@ -36,7 +32,7 @@ Call log:
 - ✅ https://deal.wizelife.ai/ — tappable hit targets ≥ 32px
 - ✅ https://travel.wizelife.ai/ — no horizontal overflow at 390w
 - ✅ https://travel.wizelife.ai/ — tappable hit targets ≥ 32px
-- ✅ https://vitara.onrender.com/ — no horizontal overflow at 390w
-- ✅ https://vitara.onrender.com/ — tappable hit targets ≥ 32px
+- ✅ https://health.wizelife.ai/ — no horizontal overflow at 390w
+- ✅ https://health.wizelife.ai/ — tappable hit targets ≥ 32px
 
 </details>

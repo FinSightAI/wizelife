@@ -1,4 +1,4 @@
-# 🚨 WizeMoney-FlowsV6 action items — 2026-05-20
+# 🚨 WizeMoney-FlowsV6 action items — 2026-05-31
 
 **0 failure(s), 7 warning(s), 30 pass.**
 
@@ -14,7 +14,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeMoney-FlowsV6 QA — 2026-05-20
+# WizeMoney-FlowsV6 QA — 2026-05-31
 
 - ✅ 1/OCR: profile page exposes ImageImport module + scanPayslip() entry point
 - ✅ 2/OCR: pdf.js (pdfjsLib) loads on profile page and worker is configured

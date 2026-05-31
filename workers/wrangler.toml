@@ -1,0 +1,11 @@
+name = "stock-proxy"
+main = "stock-proxy.js"
+compatibility_date = "2025-05-01"
+workers_dev = true
+
+routes = [
+  { pattern = "stocks.wizelife.ai", custom_domain = true }
+]
+
+[observability]
+enabled = true

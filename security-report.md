@@ -1,10 +1,10 @@
-# 🚨 Action items — 2026-05-16
+# 🚨 Action items — 2026-05-30
 
 ✅ **19 checks passed — no action needed.**
 ---
 _<details><summary>Full report (passes + checks)</summary>_
 
-# Security report — 2026-05-16T16:07:26.455Z
+# Security report — 2026-05-30T17:44:21.271Z
 
 ## Tier 13a — JS parse-check (catches silent SyntaxErrors)
 

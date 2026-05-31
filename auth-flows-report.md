@@ -1,42 +1,29 @@
-# 🚨 Auth-Flows action items — 2026-05-16
+# 🚨 Auth-Flows action items — 2026-05-31
 
-**4 failure(s), 0 warning(s), 3 pass.**
+**1 failure(s), 0 warning(s), 6 pass.**
 
 ## For Claude to fix:
-- ❌ signup with valid credentials → dashboard — page.goto: Timeout 30000ms exceeded.
-Call log:
-[2m  - navigating to "https://wizelife.ai/auth.html?_t=1778947990523", waiting until "load"[22m
-
-- ❌ signup with same email again → "already registered" error — expected "already registered" error, got none or wrong text
-- ❌ login with the just-created account → dashboard — page.waitForURL: Timeout 30000ms exceeded.
-=========================== logs ===========================
-waiting for navigation until "load"
-============================================================
 - ❌ sign out from dashboard → back to auth — page.waitForURL: Timeout 30000ms exceeded.
 =========================== logs ===========================
 waiting for navigation until "load"
-============================================================
+  navigated to "https://wizelife.ai/auth.html?_t=1780201154540"
+================
 
 ---
 _<details><summary>Full detail</summary>_
 
-# Auth-Flows QA — 2026-05-16
+# Auth-Flows QA — 2026-05-31
 
-- ❌ signup with valid credentials → dashboard — page.goto: Timeout 30000ms exceeded.
-Call log:
-[2m  - navigating to "https://wizelife.ai/auth.html?_t=1778947990523", waiting until "load"[22m
-
-- ❌ signup with same email again → "already registered" error — expected "already registered" error, got none or wrong text
+- ✅ signup with valid credentials → dashboard
+- ✅ signup with same email again → "already registered" error
 - ✅ signup with weak password → validation error
-- ❌ login with the just-created account → dashboard — page.waitForURL: Timeout 30000ms exceeded.
-=========================== logs ===========================
-waiting for navigation until "load"
-============================================================
+- ✅ login with the just-created account → dashboard
 - ✅ login with wrong password → error shown
 - ✅ forgot password — modal/page opens
 - ❌ sign out from dashboard → back to auth — page.waitForURL: Timeout 30000ms exceeded.
 =========================== logs ===========================
 waiting for navigation until "load"
-============================================================
+  navigated to "https://wizelife.ai/auth.html?_t=1780201154540"
+================
 
 </details>

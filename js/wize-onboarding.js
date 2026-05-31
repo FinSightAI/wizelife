@@ -463,6 +463,12 @@
       var seen;
       try { seen = localStorage.getItem(key); } catch (e) { seen = '1'; /* private mode → don't nag */ }
       if (seen) return;
+      /* Session gate: fire at most once per browser session even if localStorage is unset */
+      var sessKey = key + '_sess';
+      try {
+        if (sessionStorage.getItem(sessKey)) return;
+        sessionStorage.setItem(sessKey, '1');
+      } catch (e) {}
     }
     /* Wait a tick so the rest of the page has painted */
     setTimeout(function () { buildModal(appId); }, 600);

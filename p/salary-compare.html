@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), usb=(), serial=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>כמה משכורת נטו תקבל ב-20 מדינות? · השוואה מיידית · WizeLife</title>
 <meta name="description" content="הזן משכורת ברוטו → קבל נטו ב-20 מדינות. ישראל, ארה״ב, פורטוגל, אסטוניה, איחוד האמירויות ועוד. נתוני 2025 מאומתים מ-PwC/OECD.">
@@ -176,6 +177,8 @@ body{padding:0 14px 60px;background:radial-gradient(ellipse at top,rgba(99,102,2
   <div class="lang" id="langSwitch">
     <button data-l="he" class="on">HE</button>
     <button data-l="en">EN</button>
+    <button data-l="pt">PT</button>
+    <button data-l="es">ES</button>
   </div>
 </div>
 
@@ -519,6 +522,16 @@ const TR = {
     deepLost: 'מאבד בעקבות מעבר',
     deepKeep: 'שומר',
     deepCTASignup: '💾 שמור את הניתוח שלי + השוואה ל-26 מדינות נוספות → פתח חשבון חינם',
+    resT: 'בדיקת תושבות מס — נווד דיגיטלי',
+    resSub: 'גר בחו״ל? עובד מרחוק? בדוק אם אתה עדיין תושב מס ישראלי — והשלכות על מס/ביטוח לאומי/בריאות.',
+    resQDays: 'כמה ימים בשנה אתה פיזית בישראל?',
+    resQFamily: 'איפה המשפחה הקרובה (בן/בת זוג + ילדים)?',
+    resIL: 'בישראל', resAbroad: 'בחו״ל איתי', resNone: 'אין / לא רלוונטי',
+    resQHome: 'בית קבע (בעלות/שכירות ארוכה)?',
+    resHomeIL: 'רק בישראל', resHomeBoth: 'בשתי המדינות', resHomeAbroad: 'רק בחו״ל',
+    resQEmployer: 'איפה המעסיק / מקור ההכנסה?',
+    resEmpIL: 'מעסיק ישראלי', resEmpAbroad: 'מעסיק זר', resEmpSelf: 'עצמאי / חברה שלי',
+    resCheckBtn: 'בדוק סטטוס תושבות ←',
   },
   en: {
     badge: '✓ Verified PwC / OECD 2025 tax data',
@@ -588,10 +601,179 @@ const TR = {
     deepLost: 'Lose by moving',
     deepKeep: 'Keep',
     deepCTASignup: '💾 Save my analysis + compare to 26 more countries → Open free account',
+    resT: 'Tax residency check — digital nomad',
+    resSub: 'Living abroad? Working remotely? Check whether you\'re still an Israeli tax resident — and the impact on tax / Bituach Leumi / health.',
+    resQDays: 'How many days per year are you physically in Israel?',
+    resQFamily: 'Where is your immediate family (spouse + kids)?',
+    resIL: 'In Israel', resAbroad: 'Abroad with me', resNone: 'None / N/A',
+    resQHome: 'Permanent home (owned/long-term rented)?',
+    resHomeIL: 'Israel only', resHomeBoth: 'Both countries', resHomeAbroad: 'Abroad only',
+    resQEmployer: 'Where is your employer / income source?',
+    resEmpIL: 'Israeli employer', resEmpAbroad: 'Foreign employer', resEmpSelf: 'Self-employed / own company',
+    resCheckBtn: 'Check residency status →',
+  },
+  pt: {
+    badge: '✓ Dados fiscais verificados PwC / OECD 2025',
+    title: 'Quanto leva para casa<br>em 20 países?',
+    sub: 'Introduza o salário bruto e veja instantaneamente o líquido em Israel, Portugal, Estónia, EAU, EUA e mais 15. Sem registo.',
+    lblGross: 'Salário mensal bruto (₪)',
+    hintGross: 'Mensal, antes de impostos',
+    lblFamily: 'Estado civil',
+    famSingle: 'Solteiro/a', famMarried: 'Casado/a', famMarriedW: 'Casado/a + cônjuge a trabalhar',
+    olimToggle: '⭐ Sou imigrante recente / residente retornado sénior',
+    olimToggleHint: 'Aplicar regimes especiais: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · Sénior retornado IL · mais',
+    selectorT: 'Países a comparar',
+    selectorHint: 'Toque numa bandeira para adicionar/remover. Israel está sempre selecionado.',
+    selectAll: 'Todos',
+    selectDefault: 'Predefinição',
+    selectClear: 'Limpar',
+    calculating: 'A calcular…',
+    shareTitle: 'Os seus amigos estão curiosos. Envie 👇',
+    shareSub: 'Partilhar via WhatsApp / Email / link',
+    shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaPortugalP: 'O regime <strong>NHR (Residente Não Habitual)</strong> permite 0% de imposto sobre rendimento estrangeiro durante 10 anos. Registe-se no WizeTax para um modelo personalizado de fluxo de caixa de 10 anos + imposto de saída de Israel.',
+    ctaPortugalBtn: 'Obter análise completa →',
+    ctaMoreT: 'Quer uma análise profunda baseada no SEU perfil?',
+    ctaMoreP: 'O WizeLife constrói o quadro completo: IRS + pensão + segurança social + considerações de visto por destino. IA que conhece os seus dados em 5 apps.',
+    ctaMoreBtn: 'Registar grátis →',
+    footSource: 'Fontes: PwC Worldwide Tax Summaries · OECD · KPMG · autoridades fiscais locais (taxes.gov.il + btl.gov.il para Israel). Escalões 2026 — inclui ampliação dos escalões israelitas (20% e 31%) por חוק ההסדרים em vigor jan 2026. Última verificação: jan 2026.',
+    footLegal: 'Apenas para fins informativos. A IA pode cometer erros. Verifique com um contabilista licenciado.',
+    monthlyNet: 'Líquido mensal',
+    effective: 'Taxa de imposto',
+    colShort: 'CV',
+    realPP: 'Real',
+    vsIL: 'mais que Israel',
+    vsILneg: 'menos que Israel',
+    shareTextMine: 'Verifiquei no WizeLife — salário líquido em 20 países. Vale a pena ver:',
+    deepT: '⚠️ Isto é apenas rendimento bruto — não a imagem real',
+    gap1: 'Pensão (12,5% empregador em Israel, 0% Portugal, 0% EAU)',
+    gap2: 'Keren Hishtalmut (único em Israel — 7,5% empregador, isento de imposto)',
+    gap3: 'Bituach Leumi vs Segurança Social vs FICA',
+    gap4: 'Saúde (gratuita em IL/PT, $300-1.500/mês nos EUA)',
+    gap5: 'Dias de férias / licença parental / custo de vida',
+    openDeep: 'Obter a análise real baseada nos SEUS dados →',
+    modalT: 'Comparação real, com os seus números',
+    modalSub: '5 campos (30 segundos) ou carregue o seu recibo de vencimento. Sem registo necessário para a análise.',
+    tabManual: '⌨ Digitar 5 números',
+    tabUpload: '📄 Carregar recibo',
+    dGross: 'Bruto mensal (₪)',
+    dPensionEmp: 'Pensão — Empregado %',
+    dPensionEmpHint: 'Padrão 6% — obrigatório para todos os empregados israelitas',
+    dPensionEr: 'Pensão — Empregador %',
+    dPensionErHint: 'Padrão 6,5% — obrigatório',
+    dKeren: 'Keren Hishtalmut (Fundo de Formação)',
+    dKerenFull: 'Sim (2,5% + 7,5%)',
+    dKerenNone: 'Não',
+    dKerenHint: 'Único em Israel — veículo de poupança isento de imposto',
+    dChildren: 'Filhos',
+    runDeep: 'Comparar profundamente → top 5 países',
+    privacyT: 'A sua privacidade — garantida',
+    priv1: '<strong>O seu recibo nunca sai do seu dispositivo.</strong> Todo o OCR corre no seu navegador (Tesseract.js).',
+    priv2: 'Nenhum servidor vê o recibo. Apenas 4 números extraídos entram no cálculo.',
+    priv3: 'Nada é guardado — nem no Firestore, nem no localStorage, nem em logs.',
+    dropTitle: 'Clique ou arraste o seu recibo aqui',
+    dropHint: 'PDF / JPG / PNG · recibo israelita, hebraico ou inglês',
+    deepResT: '📊 A sua análise real — top 5 países',
+    deepNetReal: 'Líquido real',
+    deepPension: 'Pensão: ',
+    deepStudy: 'Fundo de formação: ',
+    deepLost: 'Perde ao mudar',
+    deepKeep: 'Mantém',
+    deepCTASignup: '💾 Guardar a minha análise + comparar com mais 26 países → Abrir conta grátis',
+    resT: 'Verificação de residência fiscal — nómada digital',
+    resSub: 'A viver no estrangeiro? Trabalha remotamente? Verifique se ainda é residente fiscal israelita — e o impacto sobre imposto / Bituach Leumi / saúde.',
+    resQDays: 'Quantos dias por ano está fisicamente em Israel?',
+    resQFamily: 'Onde está a sua família próxima (cônjuge + filhos)?',
+    resIL: 'Em Israel', resAbroad: 'No estrangeiro comigo', resNone: 'Nenhum / N/A',
+    resQHome: 'Casa permanente (propriedade/aluguer longo)?',
+    resHomeIL: 'Só Israel', resHomeBoth: 'Ambos os países', resHomeAbroad: 'Só estrangeiro',
+    resQEmployer: 'Onde está o empregador / fonte de rendimento?',
+    resEmpIL: 'Empregador israelita', resEmpAbroad: 'Empregador estrangeiro', resEmpSelf: 'Conta própria / empresa minha',
+    resCheckBtn: 'Verificar estatuto de residência →',
+  },
+  es: {
+    badge: '✓ Datos fiscales verificados PwC / OECD 2025',
+    title: '¿Cuánto te llevas a casa<br>en 20 países?',
+    sub: 'Introduce el salario bruto y ve al instante el neto en Israel, Portugal, Estonia, EAU, EE.UU. y 15 más. Sin registro.',
+    lblGross: 'Salario mensual bruto (₪)',
+    hintGross: 'Mensual, antes de impuestos',
+    lblFamily: 'Estado civil',
+    famSingle: 'Soltero/a', famMarried: 'Casado/a', famMarriedW: 'Casado/a + cónyuge trabajando',
+    olimToggle: '⭐ Soy inmigrante reciente / residente retornado sénior',
+    olimToggleHint: 'Aplicar regímenes especiales: NHR (PT) · Non-Dom (CY) · Impatriati (IT) · Beckham (ES) · Sénior retornado IL · más',
+    selectorT: 'Países a comparar',
+    selectorHint: 'Toca una bandera para añadir/quitar. Israel siempre seleccionado.',
+    selectAll: 'Todos',
+    selectDefault: 'Predeterminado',
+    selectClear: 'Limpiar',
+    calculating: 'Calculando…',
+    shareTitle: 'Tus amigos tienen curiosidad. Envíaselo 👇',
+    shareSub: 'Compartir vía WhatsApp / Email / enlace',
+    shareEmail: 'Email', shareCopy: 'Copiar',
+    ctaPortugalP: 'El régimen <strong>NHR (Residente No Habitual)</strong> permite 0% de impuesto sobre renta extranjera durante 10 años. Regístrate en WizeTax para un modelo personalizado de flujo de caja de 10 años + impuesto de salida de Israel.',
+    ctaPortugalBtn: 'Obtener análisis completo →',
+    ctaMoreT: '¿Quieres un análisis profundo según TU perfil?',
+    ctaMoreP: 'WizeLife construye la imagen completa: IRPF + pensión + seguridad social + consideraciones de visado por destino. IA que conoce tus datos en 5 apps.',
+    ctaMoreBtn: 'Registrarse gratis →',
+    footSource: 'Fuentes: PwC Worldwide Tax Summaries · OECD · KPMG · autoridades fiscales locales (taxes.gov.il + btl.gov.il para Israel). Tramos 2026 — incluye ampliación de tramos israelíes (20% y 31%) por חוק ההסדרים vigente en ene 2026. Última verificación: ene 2026.',
+    footLegal: 'Solo con fines informativos. La IA puede cometer errores. Verifica con un contable licenciado.',
+    monthlyNet: 'Neto mensual',
+    effective: 'Tasa de impuesto',
+    colShort: 'CV',
+    realPP: 'Real',
+    vsIL: 'más que Israel',
+    vsILneg: 'menos que Israel',
+    shareTextMine: 'Comprobé en WizeLife — salario neto en 20 países. Vale la pena verlo:',
+    deepT: '⚠️ Esto es solo el bruto — no la imagen real',
+    gap1: 'Pensión (12,5% empleador en Israel, 0% Portugal, 0% EAU)',
+    gap2: 'Keren Hishtalmut (único en Israel — 7,5% empleador, exento)',
+    gap3: 'Bituach Leumi vs Seguridad Social vs FICA',
+    gap4: 'Salud (gratuita en IL/PT, $300-1.500/mes en EE.UU.)',
+    gap5: 'Días de vacaciones / permiso parental / coste de vida',
+    openDeep: 'Obtener el análisis real según TUS datos →',
+    modalT: 'Comparación real, con tus números',
+    modalSub: '5 campos (30 segundos) o sube tu nómina. Sin registro para el análisis.',
+    tabManual: '⌨ Escribir 5 números',
+    tabUpload: '📄 Subir nómina',
+    dGross: 'Bruto mensual (₪)',
+    dPensionEmp: 'Pensión — Empleado %',
+    dPensionEmpHint: 'Por defecto 6% — obligatorio para todos los empleados israelíes',
+    dPensionEr: 'Pensión — Empleador %',
+    dPensionErHint: 'Por defecto 6,5% — obligatorio',
+    dKeren: 'Keren Hishtalmut (Fondo de Estudio)',
+    dKerenFull: 'Sí (2,5% + 7,5%)',
+    dKerenNone: 'No',
+    dKerenHint: 'Único en Israel — ahorro exento de impuestos',
+    dChildren: 'Hijos',
+    runDeep: 'Comparar a fondo → top 5 países',
+    privacyT: 'Tu privacidad — garantizada',
+    priv1: '<strong>Tu nómina nunca sale de tu dispositivo.</strong> Todo el OCR corre en tu navegador (Tesseract.js).',
+    priv2: 'Ningún servidor ve la nómina. Solo 4 números extraídos entran en el cálculo.',
+    priv3: 'Nada se guarda — ni en Firestore, ni en localStorage, ni en logs.',
+    dropTitle: 'Haz clic o arrastra tu nómina aquí',
+    dropHint: 'PDF / JPG / PNG · nómina israelí, hebreo o inglés',
+    deepResT: '📊 Tu análisis real — top 5 países',
+    deepNetReal: 'Neto real',
+    deepPension: 'Pensión: ',
+    deepStudy: 'Fondo de estudio: ',
+    deepLost: 'Pierdes al mudarte',
+    deepKeep: 'Mantienes',
+    deepCTASignup: '💾 Guardar mi análisis + comparar con 26 países más → Abrir cuenta gratis',
+    resT: 'Comprobación de residencia fiscal — nómada digital',
+    resSub: '¿Vives en el extranjero? ¿Trabajas en remoto? Comprueba si sigues siendo residente fiscal israelí — y el impacto en impuesto / Bituach Leumi / salud.',
+    resQDays: '¿Cuántos días al año estás físicamente en Israel?',
+    resQFamily: '¿Dónde está tu familia cercana (cónyuge + hijos)?',
+    resIL: 'En Israel', resAbroad: 'En el extranjero conmigo', resNone: 'Ninguno / N/A',
+    resQHome: 'Vivienda permanente (en propiedad/alquiler largo)?',
+    resHomeIL: 'Solo Israel', resHomeBoth: 'Ambos países', resHomeAbroad: 'Solo el extranjero',
+    resQEmployer: '¿Dónde está el empleador / fuente de ingresos?',
+    resEmpIL: 'Empleador israelí', resEmpAbroad: 'Empleador extranjero', resEmpSelf: 'Autónomo / mi propia empresa',
+    resCheckBtn: 'Comprobar estado de residencia →',
   },
 };
 let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'he'; } catch { return 'he'; }})();
-if (!['he','en'].includes(_lang)) _lang = 'he';
+if (!['he','en','pt','es'].includes(_lang)) _lang = 'he';
+const t4 = (he, en, pt, es) => _lang === 'he' ? he : _lang === 'pt' ? (pt || en) : _lang === 'es' ? (es || en) : en;
 
 function applyLang(l) {
   _lang = l;
@@ -733,6 +915,7 @@ function recalc() {
   // Cache last-rendered numbers for sharing
   window.__lastResults = { gross, rows };
 }
+window.addEventListener('wl-fx-updated', recalc);
 document.getElementById('gross').addEventListener('input', () => { clearTimeout(window.__t); window.__t = setTimeout(recalc, 250); });
 document.getElementById('family').addEventListener('change', recalc);
 document.getElementById('olimToggle').addEventListener('change', recalc);
@@ -769,7 +952,10 @@ function buildShareText() {
 function shareTo(channel) {
   const text = buildShareText();
   const url  = 'https://wizelife.ai/p/salary-compare.html';
-  const title = (_lang === 'he' ? 'השוואת משכורת ב-20 מדינות' : 'Net salary in 20 countries');
+  const title = _lang === 'he' ? 'השוואת משכורת ב-20 מדינות'
+              : _lang === 'pt' ? 'Salário líquido em 20 países'
+              : _lang === 'es' ? 'Salario neto en 20 países'
+              : 'Net salary in 20 countries';
   if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); return; }
   if (channel === 'whatsapp') WizeShare.whatsapp({ title, text, url });
   else if (channel === 'email') WizeShare.email({ title, text, url });
@@ -1046,58 +1232,140 @@ function buildLineItemTable(grossILS, rows) {
   if (typeof COUNTRY_EXTRAS === 'undefined') return ''; // graceful fallback
   const T = TR[_lang];
   // Localized labels for the 9 rows
-  const ROWS = (_lang === 'he') ? [
-    { k: 'tax',      label: 'מס הכנסה', cat: 'tax' },
-    { k: 'social',   label: 'ביטוח לאומי / Social Security', cat: 'tax' },
-    { k: 'health',   label: 'מס בריאות', cat: 'tax' },
-    { k: 'pensEmp',  label: 'פנסיה — ניכוי מעובד', cat: 'pension' },
-    { k: 'pensEr',   label: 'פנסיה — תוספת מעסיק (לא יורד משכר)', cat: 'pension' },
-    { k: 'pensFc',   label: 'צפי פנסיה (% מהשכר הסופי)', cat: 'pension' },
-    { k: 'keren',    label: 'קרן השתלמות (או מקבילה)', cat: 'pension' },
-    { k: 'supp',     label: 'חיסכון משלים / מוצרים נוספים', cat: 'pension' },
-    { k: 'system',   label: 'מערכת בריאות', cat: 'health' },
-    { k: 'health$',  label: 'בריאות מהכיס', cat: 'health' },
-    { k: 'quality',  label: 'איכות בריאות (Numbeo 0-100)', cat: 'health' },
-    { k: 'capgains', label: 'מס רווחי הון / דיבידנד', cat: 'tax' },
-    { k: 'retage',   label: 'גיל פרישה', cat: 'life' },
-    { k: 'vacation', label: 'ימי חופשה (מינימום חוקי)', cat: 'life' },
-    { k: 'maternity',label: 'חופשת לידה בתשלום', cat: 'life' },
-    { k: 'dnv',      label: '💻 ויזת נוודות דיגיטלית', cat: 'life' },
-    { k: 'olim',     label: '⭐ הטבת מס לעולים חדשים', cat: 'olim' },
-    { k: 'totalDed', label: '💰 סך ניכויים חודשיים (ללא תוספת מעסיק)', cat: 'total' },
-  ] : [
-    { k: 'tax',      label: 'Income tax', cat: 'tax' },
-    { k: 'social',   label: 'Bituach Leumi / Social Security', cat: 'tax' },
-    { k: 'health',   label: 'Health tax', cat: 'tax' },
-    { k: 'pensEmp',  label: 'Pension — employee deduction', cat: 'pension' },
-    { k: 'pensEr',   label: 'Pension — employer add-on (not from salary)', cat: 'pension' },
-    { k: 'pensFc',   label: 'Pension forecast (% of final salary)', cat: 'pension' },
-    { k: 'keren',    label: 'Keren Hishtalmut (or equivalent)', cat: 'pension' },
-    { k: 'supp',     label: 'Supplementary savings / other products', cat: 'pension' },
-    { k: 'system',   label: 'Healthcare system', cat: 'health' },
-    { k: 'health$',  label: 'Out-of-pocket health', cat: 'health' },
-    { k: 'quality',  label: 'Healthcare quality (Numbeo 0-100)', cat: 'health' },
-    { k: 'capgains', label: 'Capital gains / dividend tax', cat: 'tax' },
-    { k: 'retage',   label: 'Retirement age', cat: 'life' },
-    { k: 'vacation', label: 'Vacation days (statutory min)', cat: 'life' },
-    { k: 'maternity',label: 'Paid maternity leave', cat: 'life' },
-    { k: 'dnv',      label: '💻 Digital nomad visa', cat: 'life' },
-    { k: 'olim',     label: '⭐ New-immigrant tax break', cat: 'olim' },
-    { k: 'totalDed', label: '💰 Total monthly deductions (excl. employer add-on)', cat: 'total' },
+  const ROW_LABELS = {
+    he: {
+      tax: 'מס הכנסה',
+      social: 'ביטוח לאומי / Social Security',
+      health: 'מס בריאות',
+      pensEmp: 'פנסיה — ניכוי מעובד',
+      pensEr: 'פנסיה — תוספת מעסיק (לא יורד משכר)',
+      pensFc: 'צפי פנסיה (% מהשכר הסופי)',
+      keren: 'קרן השתלמות (או מקבילה)',
+      supp: 'חיסכון משלים / מוצרים נוספים',
+      system: 'מערכת בריאות',
+      'health$': 'בריאות מהכיס',
+      quality: 'איכות בריאות (Numbeo 0-100)',
+      capgains: 'מס רווחי הון / דיבידנד',
+      retage: 'גיל פרישה',
+      vacation: 'ימי חופשה (מינימום חוקי)',
+      maternity: 'חופשת לידה בתשלום',
+      dnv: '💻 ויזת נוודות דיגיטלית',
+      olim: '⭐ הטבת מס לעולים חדשים',
+      totalDed: '💰 סך ניכויים חודשיים (ללא תוספת מעסיק)',
+    },
+    en: {
+      tax: 'Income tax',
+      social: 'Bituach Leumi / Social Security',
+      health: 'Health tax',
+      pensEmp: 'Pension — employee deduction',
+      pensEr: 'Pension — employer add-on (not from salary)',
+      pensFc: 'Pension forecast (% of final salary)',
+      keren: 'Keren Hishtalmut (or equivalent)',
+      supp: 'Supplementary savings / other products',
+      system: 'Healthcare system',
+      'health$': 'Out-of-pocket health',
+      quality: 'Healthcare quality (Numbeo 0-100)',
+      capgains: 'Capital gains / dividend tax',
+      retage: 'Retirement age',
+      vacation: 'Vacation days (statutory min)',
+      maternity: 'Paid maternity leave',
+      dnv: '💻 Digital nomad visa',
+      olim: '⭐ New-immigrant tax break',
+      totalDed: '💰 Total monthly deductions (excl. employer add-on)',
+    },
+    pt: {
+      tax: 'IRS / Imposto de renda',
+      social: 'Seg. Social / Bituach Leumi',
+      health: 'Imposto de saúde',
+      pensEmp: 'Pensão — desconto do empregado',
+      pensEr: 'Pensão — contribuição do empregador (não sai do salário)',
+      pensFc: 'Previsão de pensão (% do último salário)',
+      keren: 'Keren Hishtalmut (ou equivalente)',
+      supp: 'Poupança suplementar / outros produtos',
+      system: 'Sistema de saúde',
+      'health$': 'Saúde do bolso',
+      quality: 'Qualidade da saúde (Numbeo 0-100)',
+      capgains: 'Imposto sobre mais-valias / dividendos',
+      retage: 'Idade de reforma',
+      vacation: 'Dias de férias (mínimo legal)',
+      maternity: 'Licença de maternidade paga',
+      dnv: '💻 Visto de nómada digital',
+      olim: '⭐ Benefício fiscal para imigrantes',
+      totalDed: '💰 Total de descontos mensais (excl. parte do empregador)',
+    },
+    es: {
+      tax: 'IRPF / Impuesto sobre la renta',
+      social: 'Seg. Social / Bituach Leumi',
+      health: 'Impuesto sanitario',
+      pensEmp: 'Pensión — descuento del empleado',
+      pensEr: 'Pensión — aportación del empleador (no sale del salario)',
+      pensFc: 'Previsión de pensión (% del salario final)',
+      keren: 'Keren Hishtalmut (o equivalente)',
+      supp: 'Ahorro complementario / otros productos',
+      system: 'Sistema sanitario',
+      'health$': 'Salud del bolsillo',
+      quality: 'Calidad sanitaria (Numbeo 0-100)',
+      capgains: 'Impuesto plusvalías / dividendos',
+      retage: 'Edad de jubilación',
+      vacation: 'Días de vacaciones (mínimo legal)',
+      maternity: 'Permiso de maternidad pagado',
+      dnv: '💻 Visado de nómada digital',
+      olim: '⭐ Beneficio fiscal para inmigrantes',
+      totalDed: '💰 Total deducciones mensuales (excl. parte empleador)',
+    },
+  };
+  const _rowLabels = ROW_LABELS[_lang] || ROW_LABELS.en;
+  const ROWS = [
+    { k: 'tax',      label: _rowLabels.tax,       cat: 'tax' },
+    { k: 'social',   label: _rowLabels.social,    cat: 'tax' },
+    { k: 'health',   label: _rowLabels.health,    cat: 'tax' },
+    { k: 'pensEmp',  label: _rowLabels.pensEmp,   cat: 'pension' },
+    { k: 'pensEr',   label: _rowLabels.pensEr,    cat: 'pension' },
+    { k: 'pensFc',   label: _rowLabels.pensFc,    cat: 'pension' },
+    { k: 'keren',    label: _rowLabels.keren,     cat: 'pension' },
+    { k: 'supp',     label: _rowLabels.supp,      cat: 'pension' },
+    { k: 'system',   label: _rowLabels.system,    cat: 'health' },
+    { k: 'health$',  label: _rowLabels['health$'],cat: 'health' },
+    { k: 'quality',  label: _rowLabels.quality,   cat: 'health' },
+    { k: 'capgains', label: _rowLabels.capgains,  cat: 'tax' },
+    { k: 'retage',   label: _rowLabels.retage,    cat: 'life' },
+    { k: 'vacation', label: _rowLabels.vacation,  cat: 'life' },
+    { k: 'maternity',label: _rowLabels.maternity, cat: 'life' },
+    { k: 'dnv',      label: _rowLabels.dnv,       cat: 'life' },
+    { k: 'olim',     label: _rowLabels.olim,      cat: 'olim' },
+    { k: 'totalDed', label: _rowLabels.totalDed,  cat: 'total' },
   ];
   const SYS_LABEL = (s) => {
-    const M = (_lang === 'he') ? {
-      public_free: 'ציבורית חינם', public_subsidized: 'ציבורית מסובסדת',
-      mandatory_private: 'פרטית חובה', optional_private: 'פרטית אופציונלית', mixed: 'מעורבת',
-    } : {
-      public_free: 'Public (free)', public_subsidized: 'Public (subsidized)',
-      mandatory_private: 'Private (mandatory)', optional_private: 'Private (optional)', mixed: 'Mixed',
+    const ALL = {
+      he: {
+        public_free: 'ציבורית חינם', public_subsidized: 'ציבורית מסובסדת',
+        mandatory_private: 'פרטית חובה', optional_private: 'פרטית אופציונלית', mixed: 'מעורבת',
+      },
+      en: {
+        public_free: 'Public (free)', public_subsidized: 'Public (subsidized)',
+        mandatory_private: 'Private (mandatory)', optional_private: 'Private (optional)', mixed: 'Mixed',
+      },
+      pt: {
+        public_free: 'Pública (gratuita)', public_subsidized: 'Pública (subsidiada)',
+        mandatory_private: 'Privada (obrigatória)', optional_private: 'Privada (opcional)', mixed: 'Mista',
+      },
+      es: {
+        public_free: 'Pública (gratuita)', public_subsidized: 'Pública (subvencionada)',
+        mandatory_private: 'Privada (obligatoria)', optional_private: 'Privada (opcional)', mixed: 'Mixta',
+      },
     };
+    const M = ALL[_lang] || ALL.en;
     return M[s] || '—';
   };
-  const KEREN = (k) => (_lang === 'he')
-    ? ({ yes: '✓ קיים', partial: '~ דומה חלקית', no: '✗ לא קיים' }[k] || '—')
-    : ({ yes: '✓ Yes', partial: '~ Partial', no: '✗ No' }[k] || '—');
+  const KEREN = (k) => {
+    const ALL = {
+      he: { yes: '✓ קיים', partial: '~ דומה חלקית', no: '✗ לא קיים' },
+      en: { yes: '✓ Yes', partial: '~ Partial', no: '✗ No' },
+      pt: { yes: '✓ Sim', partial: '~ Parcial', no: '✗ Não' },
+      es: { yes: '✓ Sí', partial: '~ Parcial', no: '✗ No' },
+    };
+    return (ALL[_lang] || ALL.en)[k] || '—';
+  };
 
   // Build columns: IL first, then top 4 destinations from rows (excluding IL).
   const cols = [rows.find(r => r.code === 'IL')]
@@ -1118,7 +1386,7 @@ function buildLineItemTable(grossILS, rows) {
   // most countries' social-security ceilings are NOT yet binding. We skip
   // ceiling enforcement here for clarity; the main /salary-compare table
   // already applies ceilings via calcNet for the headline net figure.
-  const monthLbl = _lang === 'he' ? '/חודש' : '/mo';
+  const monthLbl = t4('/חודש', '/mo', '/mês', '/mes');
   const grossUsdMonthly = grossILS * 0.27;  // ILS → USD (global rate)
   const fmtUsd = (usd) => '$' + Math.round(usd).toLocaleString();
   function amountWithPct(usd, pct, suffix) {
@@ -1178,7 +1446,7 @@ function buildLineItemTable(grossILS, rows) {
     const pct = _effPctOfGross(code, 'health');
     if (pct == null || pct === 0) {
       const flat = d.health_tier2 ?? d.health ?? 0;
-      if (!flat) return '<div style="font-size:11px;color:#64748b">' + (_lang === 'he' ? 'בתוך SS' : 'bundled') + '</div>';
+      if (!flat) return '<div style="font-size:11px;color:#64748b">' + t4('בתוך SS', 'bundled', 'incluído na SS', 'incluido en SS') + '</div>';
       return amountWithPct(grossUsdMonthly * (flat / 100), flat);
     }
     const pctNum = +(pct * 100).toFixed(2);
@@ -1188,12 +1456,14 @@ function buildLineItemTable(grossILS, rows) {
     const ext = COUNTRY_EXTRAS[code] || {};
     const pct = who === 'emp' ? ext.pensionEmpPct : ext.pensionErPct;
     if (pct == null) return '—';
-    const whoLbl = _lang === 'he' ? (who === 'emp' ? 'עובד' : 'מעסיק') : (who === 'emp' ? 'employee' : 'employer');
+    const whoLbl = who === 'emp'
+      ? t4('עובד', 'employee', 'empregado', 'empleado')
+      : t4('מעסיק', 'employer', 'empregador', 'empleador');
     return amountWithPct(grossUsdMonthly * (pct / 100), pct, '(' + whoLbl + ')');
   }
 
   // Header row of country names (with flag)
-  const head = '<tr><th style="text-align:start;padding:8px 10px;color:#9ca3af;font-weight:600;font-size:11.5px">' + (_lang === 'he' ? 'רכיב' : 'Item') + '</th>'
+  const head = '<tr><th style="text-align:start;padding:8px 10px;color:#9ca3af;font-weight:600;font-size:11.5px">' + t4('רכיב', 'Item', 'Item', 'Concepto') + '</th>'
     + cols.map(c => {
         if (!c) return '<th>—</th>';
         // calcDeep rows don't carry .flag — pull from TAX_DATA. Guard every
@@ -1259,11 +1529,11 @@ function buildLineItemTable(grossILS, rows) {
         case 'pensFc': {
                           if (ext.pensionPctFinalSalary == null) { val = '—'; break; }
                           const pctText = ext.pensionPctFinalSalary === 0
-                              ? (_lang === 'he' ? '✗ אין פנסיה ציבורית' : '✗ No public pension')
+                              ? t4('✗ אין פנסיה ציבורית', '✗ No public pension', '✗ Sem pensão pública', '✗ Sin pensión pública')
                               : '~' + ext.pensionPctFinalSalary + '%';
                           const asOf = ext.pensionForecastAsOf ? ` <span style="font-size:9.5px;color:#64748b">(${ext.pensionForecastAsOf})</span>` : '';
                           const verifyLink = ext.pensionAuthorityUrl
-                              ? ` <a href="${ext.pensionAuthorityUrl}" target="_blank" rel="noopener" style="color:#a5b4fc;text-decoration:none;font-size:9.5px" title="${_lang === 'he' ? 'אמת ברשות הפנסיה הלאומית' : 'Verify with national pension authority'}">↗</a>`
+                              ? ` <a href="${ext.pensionAuthorityUrl}" target="_blank" rel="noopener" style="color:#a5b4fc;text-decoration:none;font-size:9.5px" title="${t4('אמת ברשות הפנסיה הלאומית', 'Verify with national pension authority', 'Verificar com a autoridade de pensões', 'Verificar con la autoridad de pensiones')}">↗</a>`
                               : '';
                           val = pctText + asOf + verifyLink;
                           break;
@@ -1289,16 +1559,16 @@ function buildLineItemTable(grossILS, rows) {
           val = cg ? `<div style="font-size:11px;color:#cbd5e1;line-height:1.4">${cg}</div>` : '—';
           break;
         }
-        case 'retage':   val = ext.retirementAge ? ext.retirementAge : (_lang === 'he' ? 'אין רשמי' : 'none'); break;
+        case 'retage':   val = ext.retirementAge ? ext.retirementAge : t4('אין רשמי', 'none', 'nenhuma oficial', 'ninguna oficial'); break;
         case 'vacation': val = ext.vacationDays != null
                            ? (ext.vacationDays === 0
-                               ? (_lang === 'he' ? '0 (אין חובה!)' : '0 (none!)')
-                               : ext.vacationDays + (_lang === 'he' ? ' ימים' : ' days'))
+                               ? t4('0 (אין חובה!)', '0 (none!)', '0 (nenhum!)', '0 (¡ninguno!)')
+                               : ext.vacationDays + t4(' ימים', ' days', ' dias', ' días'))
                            : '—'; break;
         case 'maternity':val = ext.maternityWeeks != null
                            ? (ext.maternityWeeks === 0
-                               ? (_lang === 'he' ? '0 בתשלום (חוק)' : '0 paid (statutory)')
-                               : ext.maternityWeeks + (_lang === 'he' ? ' שבועות' : ' weeks'))
+                               ? t4('0 בתשלום (חוק)', '0 paid (statutory)', '0 pagos (lei)', '0 pagados (ley)')
+                               : ext.maternityWeeks + t4(' שבועות', ' weeks', ' semanas', ' semanas'))
                            : '—'; break;
         case 'dnv': {
           const dnv = ext.digitalNomad ? (ext.digitalNomad[_lang] || ext.digitalNomad.en) : null;
@@ -1311,7 +1581,7 @@ function buildLineItemTable(grossILS, rows) {
           const regimeKey = (typeof REGIME_BY_COUNTRY !== 'undefined') ? REGIME_BY_COUNTRY[c.code] : null;
           const r = (typeof REGIMES !== 'undefined' && regimeKey) ? REGIMES[regimeKey] : null;
           if (!r) {
-            val = `<div style="font-size:11px;color:#64748b">${_lang === 'he' ? '— אין' : '— none'}</div>`;
+            val = `<div style="font-size:11px;color:#64748b">${t4('— אין', '— none', '— nenhum', '— ninguno')}</div>`;
             break;
           }
           const lbl = (r.label && (r.label[_lang] || r.label.en)) || '';
@@ -1319,11 +1589,11 @@ function buildLineItemTable(grossILS, rows) {
           const yrs = r.durationYrs ? r.durationYrs : '?';
           // What kind of benefit?
           let benefit = '';
-          if (r.type === 'flat-rate') benefit = (_lang === 'he' ? 'מס שטוח ' : 'flat ') + r.flatRate + '%';
-          else if (r.type === 'exemption-pct') benefit = (_lang === 'he' ? 'פטור ' : '') + r.exemptionPct + '% ' + (_lang === 'he' ? 'מההכנסה' : 'exempt');
-          else if (r.type === 'foreign-exempt') benefit = (_lang === 'he' ? 'פטור מהכנסה זרה' : 'foreign income exempt');
-          else if (r.type === 'min-tax') benefit = (_lang === 'he' ? 'מס מינימום' : 'min tax');
-          val = `<div style="font-weight:700;font-size:11.5px;color:#fbbf24">${benefit}</div><div style="font-size:10px;color:#9ca3af;margin-top:2px">${yrs} ${_lang === 'he' ? 'שנים' : 'years'}</div>`;
+          if (r.type === 'flat-rate') benefit = t4('מס שטוח ', 'flat ', 'taxa fixa ', 'tipo fijo ') + r.flatRate + '%';
+          else if (r.type === 'exemption-pct') benefit = t4('פטור ', '', 'isento ', 'exento ') + r.exemptionPct + '% ' + t4('מההכנסה', 'exempt', 'do rendimento', 'de la renta');
+          else if (r.type === 'foreign-exempt') benefit = t4('פטור מהכנסה זרה', 'foreign income exempt', 'isento de rendimento estrangeiro', 'exento de renta extranjera');
+          else if (r.type === 'min-tax') benefit = t4('מס מינימום', 'min tax', 'imposto mínimo', 'imp. mínimo');
+          val = `<div style="font-weight:700;font-size:11.5px;color:#fbbf24">${benefit}</div><div style="font-size:10px;color:#9ca3af;margin-top:2px">${yrs} ${t4('שנים', 'years', 'anos', 'años')}</div>`;
           break;
         }
         case 'totalDed': {
@@ -1337,7 +1607,7 @@ function buildLineItemTable(grossILS, rows) {
             : 0;
           const delta = c.code === 'IL' || !ilTotal ? null : (total - ilTotal);
           const deltaTxt = delta == null ? ''
-            : `<div style="font-size:10px;margin-top:2px;color:${delta > 0 ? '#fca5a5' : '#6ee7b7'}">${delta > 0 ? '+' : ''}$${Math.round(delta).toLocaleString()}${monthLbl} ${_lang === 'he' ? (delta > 0 ? 'יותר מ-IL' : 'פחות מ-IL') : (delta > 0 ? 'vs IL' : 'vs IL')}</div>`;
+            : `<div style="font-size:10px;margin-top:2px;color:${delta > 0 ? '#fca5a5' : '#6ee7b7'}">${delta > 0 ? '+' : ''}$${Math.round(delta).toLocaleString()}${monthLbl} ${delta > 0 ? t4('יותר מ-IL', 'vs IL', 'vs IL', 'vs IL') : t4('פחות מ-IL', 'vs IL', 'vs IL', 'vs IL')}</div>`;
           val = `<div style="font-weight:800;font-size:14px;color:#fbbf24">$${Math.round(total).toLocaleString()}${monthLbl}</div>${deltaTxt}`;
           break;
         }
@@ -1363,13 +1633,15 @@ function buildLineItemTable(grossILS, rows) {
     + '</div>';
 
   return '<div style="margin-top:24px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.05));border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:16px;overflow-x:auto">'
-    + '<h4 style="margin:0 0 6px;color:#eef2ff;font:800 15px Inter,sans-serif">' + (_lang === 'he' ? '📊 השוואה רכיב-מול-רכיב — מה קיים בכל מדינה' : '📊 Line-item comparison — what exists where') + '</h4>'
-    + '<p style="margin:0 0 12px;color:#9ca3af;font:500 12px Inter,sans-serif">' + (_lang === 'he' ? 'ישראל מול 4 היעדים המובילים לפי כוח קנייה. עברית: ערכים שמופיעים בתלוש שלך + מקבילות בחו״ל.' : 'Israel vs your top 4 destinations. Real payslip line-items + what each country has.') + '</p>'
+    + '<h4 style="margin:0 0 6px;color:#eef2ff;font:800 15px Inter,sans-serif">' + t4('📊 השוואה רכיב-מול-רכיב — מה קיים בכל מדינה', '📊 Line-item comparison — what exists where', '📊 Comparação item-a-item — o que existe onde', '📊 Comparación elemento por elemento — qué existe dónde') + '</h4>'
+    + '<p style="margin:0 0 12px;color:#9ca3af;font:500 12px Inter,sans-serif">' + t4('ישראל מול 4 היעדים המובילים לפי כוח קנייה. עברית: ערכים שמופיעים בתלוש שלך + מקבילות בחו״ל.', 'Israel vs your top 4 destinations. Real payslip line-items + what each country has.', 'Israel vs os seus 4 principais destinos. Itens do recibo + o que cada país tem.', 'Israel vs tus 4 principales destinos. Conceptos de la nómina + qué tiene cada país.') + '</p>'
     + '<table style="width:100%;border-collapse:collapse;min-width:520px"><thead>' + head + '</thead><tbody>' + body + '</tbody></table>'
     + notes
-    + '<div style="margin-top:10px;font:500 11px Inter,sans-serif;color:#64748b">' + (_lang === 'he'
-        ? 'מקור: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. צפי פנסיה משוער — אמת מול רשות הפנסיה במדינת היעד לפני החלטה.'
-        : 'Sources: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. Pension forecast is approximate — verify with national pension authority before relocating.') + '</div>'
+    + '<div style="margin-top:10px;font:500 11px Inter,sans-serif;color:#64748b">' + t4(
+        'מקור: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. צפי פנסיה משוער — אמת מול רשות הפנסיה במדינת היעד לפני החלטה.',
+        'Sources: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. Pension forecast is approximate — verify with national pension authority before relocating.',
+        'Fontes: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. Previsão de pensão é aproximada — verifique com a autoridade nacional de pensões antes de mudar.',
+        'Fuentes: PwC 2026 · OECD Pensions at a Glance 2024 · Numbeo Health Care Index 2025. La previsión de pensión es aproximada — verifique con la autoridad nacional de pensiones antes de mudarse.') + '</div>'
     + '</div>';
 }
 
@@ -1408,9 +1680,13 @@ function renderDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
     + (isPaid
         ? buildLineItemTable(grossILS, rows)
         : ('<div style="margin-top:24px;background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.35);border-radius:14px;padding:18px;text-align:center">'
-            + '<div style="font:700 14px Inter,sans-serif;color:#fbbf24;margin-bottom:6px">🔓 ' + (_lang === 'he' ? 'משתמשי Pro / YOLO רואים כאן את ההשוואה המלאה' : 'Pro/YOLO users see the full breakdown here') + '</div>'
-            + '<div style="font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6;margin-bottom:12px">' + (_lang === 'he' ? '10 שורות: מס הכנסה · ביטוח לאומי · מס בריאות · פנסיה (עובד+מעסיק) · צפי פנסיה · קרן השתלמות (יחיד בישראל!) · מערכת בריאות · עלות מהכיס · מדד איכות · קישור לרשות הפנסיה הלאומית.' : '10 rows: Income tax · Social Security · Health tax · Pension (employee+employer) · Pension forecast · Keren Hishtalmut (Israel-only!) · Healthcare system · Out-of-pocket · Quality index · Link to national pension authority.') + '</div>'
-            + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 26px;border-radius:99px;font:800 13px Inter,sans-serif">' + (_lang === 'he' ? 'שדרג ל-Pro / YOLO →' : 'Upgrade to Pro / YOLO →') + '</a>'
+            + '<div style="font:700 14px Inter,sans-serif;color:#fbbf24;margin-bottom:6px">🔓 ' + t4('משתמשי Pro / YOLO רואים כאן את ההשוואה המלאה', 'Pro/YOLO users see the full breakdown here', 'Utilizadores Pro / YOLO veem aqui a comparação completa', 'Usuarios Pro / YOLO ven aquí la comparación completa') + '</div>'
+            + '<div style="font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6;margin-bottom:12px">' + t4(
+                '10 שורות: מס הכנסה · ביטוח לאומי · מס בריאות · פנסיה (עובד+מעסיק) · צפי פנסיה · קרן השתלמות (יחיד בישראל!) · מערכת בריאות · עלות מהכיס · מדד איכות · קישור לרשות הפנסיה הלאומית.',
+                '10 rows: Income tax · Social Security · Health tax · Pension (employee+employer) · Pension forecast · Keren Hishtalmut (Israel-only!) · Healthcare system · Out-of-pocket · Quality index · Link to national pension authority.',
+                '10 linhas: IRS · Segurança Social · Imposto de saúde · Pensão (empregado+empregador) · Previsão de pensão · Keren Hishtalmut (só em Israel!) · Sistema de saúde · Despesa do bolso · Índice de qualidade · Ligação à autoridade nacional de pensões.',
+                '10 filas: IRPF · Seguridad Social · Imp. salud · Pensión (empleado+empleador) · Previsión de pensión · Keren Hishtalmut (¡solo en Israel!) · Sistema sanitario · Gasto del bolsillo · Índice de calidad · Enlace a la autoridad nacional de pensiones.') + '</div>'
+            + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 26px;border-radius:99px;font:800 13px Inter,sans-serif">' + t4('שדרג ל-Pro / YOLO →', 'Upgrade to Pro / YOLO →', 'Atualizar para Pro / YOLO →', 'Actualizar a Pro / YOLO →') + '</a>'
           + '</div>'))
     + '<div style="margin-top:14px;text-align:center">'
     + '<a href="https://wizelife.ai/auth.html?next=https%3A%2F%2Fwizelife.ai%2Fp%2Fsalary-compare.html%23deep" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#a855f7);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif">'

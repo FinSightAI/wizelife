@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){try{
+ // Unified language: URL ?lang (cross-app handoff) → saved wl_lang → browser → English.
+ var _V=['he','en','pt','es'];
+ var _u=new URLSearchParams(location.search).get('lang');
+ if(_u&&_V.indexOf(_u)>=0){localStorage.setItem('wl_lang',_u);}
+ else if(!localStorage.getItem('wl_lang')){var _bl=(navigator.language||'en').slice(0,2).toLowerCase();localStorage.setItem('wl_lang',(['he','pt','es'].indexOf(_bl)>=0)?_bl:'en');}
+ var t=localStorage.getItem('wl_theme');
+ var isLight=t==='light';
+ document.documentElement.setAttribute('data-theme',isLight?'light':'dark');
+ document.documentElement.classList.add(isLight?'light':'dark');
+ document.documentElement.classList.remove(isLight?'dark':'light');
+ if(document.body){document.body.classList.add(isLight?'light':'dark');document.body.classList.remove(isLight?'dark':'light');}
+ document.addEventListener('DOMContentLoaded',function(){
+ document.body.classList.add(isLight?'light':'dark');
+ document.body.classList.remove(isLight?'dark':'light');
+ });
+ // Apply saved language direction before paint to prevent RTL flash for non-Hebrew users.
+ var v = (localStorage.getItem('wl_lang') || 'he').slice(0,2);
+ if(['he','en','pt','es'].indexOf(v)>=0){
+ document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
+ document.documentElement.lang = v;
+ }
+}catch(e){}})();
+</script>
+
+<meta charset="UTF-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- Clickjacking protection via CSP frame-ancestors (equivalent to X-Frame-Options DENY) -->
+<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon.ico?v=2026-05-14" sizes="any">
+<link rel="icon" href="/favicon.svg?v=2026-05-14" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=2026-05-14">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2026-05-14">
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png?v=2026-05-14">
+<link rel="apple-touch-icon" sizes="256x256" href="/icon-256.png?v=2026-05-14">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6366f1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WizeLife">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sign In — Wize Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://wizehealth-3ol2retcla-uc.a.run.app" crossorigin>
+<link rel="dns-prefetch" href="https://wizehealth-3ol2retcla-uc.a.run.app">
+<link rel="preconnect" href="https://wizetax-backend-3ol2retcla-uc.a.run.app" crossorigin>
+<link rel="dns-prefetch" href="https://wizetax-backend-3ol2retcla-uc.a.run.app">
+<link rel="preconnect" href="https://ofirofir-wizetravel.hf.space" crossorigin>
+<link rel="dns-prefetch" href="https://ofirofir-wizetravel.hf.space">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ :root {
+ --bg: #050810; --bg2: #0d1117; --bg3: #161b27;
+ --border: rgba(255,255,255,0.08); --text: #f0f4ff; --muted: #8892a4;
+ --accent: #6366f1; --accent2: #8b5cf6;
+ }
+ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+ .card {
+ background: var(--bg2); border: 1px solid var(--border); border-radius: 24px;
+ padding: 48px 40px; width: 100%; max-width: 420px;
+ box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+ }
+
+ .logo { text-align: center; margin-bottom: 32px; }
+ .logo a { text-decoration: none; font-size: 1.5rem; font-weight: 800; color: var(--text); }
+ .logo a span { color: var(--accent); }
+ .logo p { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+
+ .tabs { display: flex; background: var(--bg3); border-radius: 12px; padding: 4px; margin-bottom: 28px; }
+ .tab { flex: 1; text-align: center; padding: 10px; border-radius: 9px; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--muted); transition: all 0.2s; }
+ .tab.active { background: var(--bg2); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+ .form-group { margin-bottom: 16px; }
+ label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+ input {
+ width: 100%; padding: 12px 14px; background: var(--bg3);
+ border: 1px solid var(--border); border-radius: 10px;
+ color: var(--text); font-size: 0.95rem; font-family: inherit;
+ transition: border-color 0.2s;
+ }
+ input:focus { outline: none; border-color: var(--accent); }
+ input::placeholder { color: var(--muted); }
+
+ .btn-primary {
+ width: 100%; padding: 14px; margin-top: 8px;
+ background: linear-gradient(135deg, var(--accent), var(--accent2));
+ color: #fff; font-size: 1rem; font-weight: 700;
+ border: none; border-radius: 12px; cursor: pointer;
+ transition: opacity 0.2s;
+ }
+ .btn-primary:hover { opacity: 0.88; }
+ .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+ .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--muted); font-size: 0.8rem; }
+ .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ .btn-google {
+ width: 100%; padding: 13px; background: var(--bg3);
+ border: 1px solid var(--border); border-radius: 12px;
+ color: var(--text); font-size: 0.95rem; font-weight: 600;
+ cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+ transition: background 0.2s;
+ }
+ .btn-google:hover { background: var(--border); }
+ .btn-google img { width: 20px; height: 20px; }
+
+ .error { color: #f87171; font-size: 0.83rem; margin-top: 10px; text-align: center; min-height: 20px; }
+ .back { text-align: center; margin-top: 24px; }
+ .back a { color: var(--muted); font-size: 0.85rem; text-decoration: none; }
+ .back a:hover { color: var(--text); }
+
+ .pw-wrap { position: relative; }
+ .pw-wrap input { padding-right: 42px; }
+ .pw-toggle {
+ position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+ background: none; border: none; cursor: pointer; color: var(--muted);
+ font-size: 1rem; line-height: 1; padding: 4px;
+ transition: color 0.15s;
+ }
+ .pw-toggle:hover { color: var(--text); }
+
+ .forgot { text-align: right; margin-top: 6px; }
+ .forgot a { color: var(--muted); font-size: 0.8rem; text-decoration: none; }
+ .forgot a:hover { color: var(--accent); }
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Organization",
+ "name": "WizeLife",
+ "url": "https://wizelife.ai",
+ "logo": {
+ "@type": "ImageObject",
+ "url": "https://wizelife.ai/icon-512.png",
+ "width": 512,
+ "height": 512
+ },
+ "description": "AI-powered life suite — Money, Tax, Travel, Health, Real Estate. Five tools in one place.",
+ "sameAs": [
+ "https://finsightai.github.io/wizelife/"
+ ]
+}
+</script>
+<style>
+[data-theme="light"] { --bg:#f8fafc; --surf:#ffffff; --surf2:#f1f5f9; --text:#1e293b; --muted:#64748b; --muted2:#475569; --border:rgba(0,0,0,.08); --border2:rgba(0,0,0,.14); }
+[data-theme="light"] body { background: #f8fafc !important; color: #1e293b; }
+[data-theme="light"] nav { background: rgba(255,255,255,.85) !important; }
+[data-theme="light"] nav.scrolled { background: rgba(255,255,255,.95) !important; }
+[data-theme="light"] .nav-links a, [data-theme="light"] .nav-signin { color: #475569; }
+[data-theme="light"] .hero-feed, [data-theme="light"] .feed-chip { background: rgba(0,0,0,.03); color: #475569; border-color: rgba(0,0,0,.08); }
+[data-theme="light"] .trust-bar { background: #ffffff; }
+[data-theme="light"] section { background: transparent; }
+[data-theme="light"] .price-card, [data-theme="light"] .testi-card, [data-theme="light"] .feature-card,
+[data-theme="light"] .panel, [data-theme="light"] .tool-tab { background: #ffffff; border-color: rgba(0,0,0,.08); color: #1e293b; }
+[data-theme="light"] .tool-tab-name, [data-theme="light"] .panel-title, [data-theme="light"] .testi-quote, [data-theme="light"] .testi-name { color: #1e293b; }
+[data-theme="light"] .tool-tab-desc, [data-theme="light"] .testi-role, [data-theme="light"] .feed-label, [data-theme="light"] .hero-sub { color: #475569; }
+[data-theme="light"] .price-card.featured { background: linear-gradient(135deg, rgba(99,102,241,.05), rgba(167,139,250,.05)); }
+[data-theme="light"] .faq-item, [data-theme="light"] .faq-question { background: #ffffff; border-color: rgba(0,0,0,.08); color: #1e293b; }
+[data-theme="light"] footer { background: #f1f5f9; color: #475569; border-top: 1px solid rgba(0,0,0,.08); }
+[data-theme="light"] footer a, [data-theme="light"] footer h4 { color: #1e293b; }
+
+/* Theme toggle button */
+.wl-theme-btn-landing {
+ position: fixed; bottom: 18px; left: 18px; z-index: 9999;
+ width: 38px; height: 38px; border-radius: 50%;
+ background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);
+ border: 1px solid rgba(255,255,255,0.12);
+ color: #cbd5e1; font-size: 15px; cursor: pointer;
+ display: flex; align-items: center; justify-content: center;
+ box-shadow: 0 4px 16px rgba(0,0,0,0.25); transition: all .18s ease;
+}
+.wl-theme-btn-landing:hover { transform: translateY(-2px) scale(1.05); }
+[data-theme="light"] .wl-theme-btn-landing {
+ background: rgba(255,255,255,0.95); border-color: rgba(0,0,0,0.1);
+ color: #475569; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+</style>
+<style id="wl-logo-icon-style">
+.wl-logo-icon{display:inline-block;width:28px;height:28px;flex-shrink:0;background:url('/assets/wizelife-icon.png?v=2026-05-14') center/contain no-repeat;animation:wlLogoHue 8s ease infinite;vertical-align:middle;margin-inline-end:8px}
+@keyframes wlLogoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
+</style>
+<meta name="wl-sentry-dsn" content="">
+<meta name="wl-sentry-app" content="wizelife">
+<script src="/js/wize-sentry.js" defer></script>
+<script src="/js/wize-attribution.js" defer></script>
+</head>
+<body>
+<style>
+ /* Mobile (≤520px): swap inline 4-pill row for compact native select */
+ @media (max-width: 520px) {
+ #wl_lang_pills { display: none !important; }
+ #wl_lang_select { display: inline-block !important; }
+ }
+</style>
+<div id="wl_lang_pills" style="position:absolute;top:18px;right:18px;display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:3px;z-index:100">
+ <button class="auth-lang-pill" data-lang="he" onclick="setAuthLang('he')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="Hebrew">HE</button>
+ <button class="auth-lang-pill" data-lang="en" onclick="setAuthLang('en')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="English">EN</button>
+ <button class="auth-lang-pill" data-lang="pt" onclick="setAuthLang('pt')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="Português">PT</button>
+ <button class="auth-lang-pill" data-lang="es" onclick="setAuthLang('es')" style="background:none;border:none;color:#7b88ad;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.4px" title="Español">ES</button>
+</div>
+<select id="wl_lang_select" onchange="setAuthLang(this.value)" aria-label="Language" style="display:none;position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);color:#eef2ff;border-radius:8px;padding:6px 10px;font:700 12px Inter,sans-serif;cursor:pointer;z-index:100">
+ <option value="he">🇮🇱 HE</option>
+ <option value="en">🇺🇸 EN</option>
+ <option value="pt">🇧🇷 PT</option>
+ <option value="es">🇪🇸 ES</option>
+</select>
+
+<div class="card">
+ <div class="logo"><span class="wl-logo-icon" aria-hidden="true"></span><a href="index.html">Wize<span>Life</span></a>
+ <p>Your AI-powered life suite</p>
+ </div>
+
+ <div class="tabs">
+ <div class="tab active" id="tabLogin" onclick="switchTab('login')">Sign In</div>
+ <div class="tab" id="tabSignup" onclick="switchTab('signup')">Create Account</div>
+ </div>
+
+ <!-- Login Form -->
+ <div id="loginForm">
+ <div class="form-group">
+ <label>Email</label>
+ <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+ </div>
+ <div class="form-group">
+ <label>Password</label>
+ <div class="pw-wrap">
+ <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" style="padding-inline-end:38px;">
+ <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
+ </div>
+ </div>
+ <div class="forgot"><a href="#" onclick="forgotPassword(); return false;">Forgot password?</a></div>
+ <button class="btn-primary" id="loginBtn" onclick="emailLogin()">Sign In</button>
+ <div class="error" id="loginError"></div>
+ </div>
+
+ <!-- Signup Form -->
+ <div id="signupForm" style="display:none;">
+ <div class="form-group">
+ <label>Full Name</label>
+ <input type="text" id="signupName" data-i18n-placeholder="signup_nick_placeholder" placeholder="Nickname" autocomplete="nickname" required minlength="2" maxlength="40">
+ </div>
+ <div class="form-group">
+ <label>Email</label>
+ <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+ </div>
+ <div class="form-group">
+ <label>Password</label>
+ <div class="pw-wrap">
+ <input type="password" id="signupPassword" placeholder="8+ chars, A-Z, a-z, 0-9, special" autocomplete="new-password" style="padding-inline-end:38px;">
+ <button type="button" class="pw-toggle" onclick="togglePw('signupPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
+ </div>
+ </div>
+ <button class="btn-primary" id="signupBtn" onclick="emailSignup()">Create Account</button>
+ <div class="error" id="signupError"></div>
+ </div>
+
+ <div class="divider">or</div>
+
+ <button class="btn-google" onclick="googleLogin()">
+ <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+ Continue with Google
+ </button>
+
+ <div class="back"><a href="index.html">← Back to WizeLife</a></div>
+</div>
+
+<!-- Firebase -->
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
+<!-- Firebase App Check (reCAPTCHA v3) — must load BEFORE wizelife-auth.js.
+     firebase-functions-compat.js intentionally OMITTED from auth.html:
+     - the only functions caller (login alert in wizelife-auth.js) gracefully
+       skips when `firebase.functions` is undefined; the alert will fire on
+       dashboard.html instead.
+     - validateCode is called from dashboard.html, not here.
+     Saves ~30 KB on first paint. -->
+<script  src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
+<script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
+<!-- Lazy-loader helper for Firebase modules we don't need at first paint. -->
+<script>
+window._wlLazy = {
+  _loaded: {},
+  load: function (src, integrity) {
+    if (this._loaded[src]) return this._loaded[src];
+    return this._loaded[src] = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      if (integrity) { s.integrity = integrity; s.crossOrigin = 'anonymous'; }
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  },
+  functions: function () {
+    var self = this;
+    return this.load(
+      'https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js',
+      'sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v'
+    ).then(function () { return firebase.functions(); });
+  }
+};
+</script>
+<script src="js/wizelife-auth.js"></script>
+<script src="js/wize-track.js"></script>
+<script>
+ redirectIfLoggedIn("dashboard.html");
+
+ function switchTab(tab) {
+ document.getElementById("loginForm").style.display = tab === "login" ? "" : "none";
+ document.getElementById("signupForm").style.display = tab === "signup" ? "" : "none";
+ document.getElementById("tabLogin").classList.toggle("active", tab === "login");
+ document.getElementById("tabSignup").classList.toggle("active", tab === "signup");
+ }
+
+ function setLoading(btnId, loading) {
+ document.getElementById(btnId).disabled = loading;
+ document.getElementById(btnId).textContent = loading ? "Please wait…" : (btnId === "loginBtn" ? "Sign In" : "Create Account");
+ }
+
+ function togglePw(id, btn) {
+ const el = document.getElementById(id);
+ if (!el) return;
+ if (el.type === 'password') { el.type = 'text'; btn.textContent = '🙈'; }
+ else { el.type = 'password'; btn.textContent = '👁'; }
+ }
+
+ async function emailLogin() {
+ const email = document.getElementById("loginEmail").value.trim();
+ const pass = document.getElementById("loginPassword").value.trim();
+ document.getElementById("loginError").textContent = "";
+ setLoading("loginBtn", true);
+ try {
+ await wlAuth.signInWithEmailAndPassword(email, pass);
+ try { await window.WizeTrack?.login({ method: 'email' }); } catch {}
+ await _afterAuthRedirect();
+ } catch (e) {
+ document.getElementById("loginError").textContent = friendlyError(e.code);
+ setLoading("loginBtn", false);
+ }
+ }
+
+ function validatePassword(pass) {
+ if (pass.length < 8) return "Password must be at least 8 characters.";
+ if (!/[A-Z]/.test(pass)) return "Password must contain at least one uppercase letter (A-Z).";
+ if (!/[a-z]/.test(pass)) return "Password must contain at least one lowercase letter (a-z).";
+ if (!/[0-9]/.test(pass)) return "Password must contain at least one digit (0-9).";
+ if (!/[^A-Za-z0-9]/.test(pass)) return "Password must contain at least one special character (!@#$% etc.).";
+ return null;
+ }
+
+ async function emailSignup() {
+ const name = document.getElementById("signupName").value.trim();
+ const email = document.getElementById("signupEmail").value.trim();
+ const pass = document.getElementById("signupPassword").value.trim();
+ document.getElementById("signupError").textContent = "";
+
+ if (!name || name.length < 2) {
+ document.getElementById("signupError").textContent = "Please enter a nickname (at least 2 characters).";
+ document.getElementById("signupName").focus();
+ return;
+ }
+ if (name.includes('@')) {
+ document.getElementById("signupError").textContent = "Nickname can't be an email — pick a name you want to be called.";
+ document.getElementById("signupName").focus();
+ return;
+ }
+ const passError = validatePassword(pass);
+ if (passError) {
+ document.getElementById("signupError").textContent = passError;
+ return;
+ }
+
+ setLoading("signupBtn", true);
+ try {
+ const cred = await wlAuth.createUserWithEmailAndPassword(email, pass);
+ await cred.user.updateProfile({ displayName: name });
+ await wlDb.collection("users").doc(cred.user.uid).set({
+ plan: "free",
+ nickname: name,
+ createdAt: firebase.firestore.FieldValue.serverTimestamp()
+ }, { merge: true });
+ localStorage.setItem("wl_nickname", name);
+ try { await applyReferralOnSignup(cred.user.uid); } catch {}
+ try { await window.WizeTrack?.signup({ method: 'email' }); } catch {}
+ await _afterAuthRedirect();
+ } catch (e) {
+ document.getElementById("signupError").textContent = friendlyError(e.code);
+ setLoading("signupBtn", false);
+ }
+ }
+
+ async function _finishGoogleAuth(cred) {
+ const ref = wlDb.collection("users").doc(cred.user.uid);
+ const doc = await ref.get();
+ const nick = cred.user.displayName || cred.user.email.split("@")[0];
+ if (!doc.exists) {
+ await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+ try { await applyReferralOnSignup(cred.user.uid); } catch {}
+ try { await window.WizeTrack?.signup({ method: 'google' }); } catch {}
+ } else {
+ const d = doc.data();
+ if (!d.nickname) await ref.update({ nickname: nick });
+ try { await window.WizeTrack?.login({ method: 'google' }); } catch {}
+ }
+ localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
+ await _afterAuthRedirect();
+ }
+
+ // Cross-app SSO: if ?next=<url> is present and points to a trusted sub-app,
+ // get the user's Firebase ID token + nick + plan and redirect there with
+ // them appended to the URL fragment. Otherwise fall through to dashboard.
+ async function _afterAuthRedirect() {
+ // Production allow-list. NOTE: localhost was intentionally removed (2026-05-16) —
+ // it created an open-redirect path where a local malicious server could steal
+ // tokens via wizelife.ai/auth.html?next=http://localhost:9999/...
+ // For local dev, run auth.html under a localhost host yourself.
+ const SAFE_HOSTS = [
+ 'finsightai.github.io', 'check-deal.vercel.app', 'mastermove.vercel.app',
+ 'wizetravel.hf.space', 'ofirofir-wizetravel.hf.space', 'wizehealth-3ol2retcla-uc.a.run.app',
+ 'wizelife.ai'
+ ];
+ try {
+ const next = new URLSearchParams(window.location.search).get('next');
+ if (next) {
+ const u = new URL(next, window.location.origin);
+ const safe = SAFE_HOSTS.some(h => u.hostname === h || u.hostname.endsWith('.' + h));
+ if (safe && wlAuth.currentUser) {
+ const token = await wlAuth.currentUser.getIdToken();
+ const nick = localStorage.getItem('wl_nickname') || wlAuth.currentUser.displayName || '';
+ let plan = 'free';
+ try {
+ const d = await wlDb.collection('users').doc(wlAuth.currentUser.uid).get();
+ if (d.exists && d.data().plan) plan = d.data().plan;
+ } catch {}
+ const params = 'wl_token=' + encodeURIComponent(token) + '&wl_nick=' + encodeURIComponent(nick) + '&wl_plan=' + encodeURIComponent(plan);
+ const sep = next.indexOf('#') === -1 ? '#' : '&';
+ window.location.href = next + sep + params;
+ return;
+ }
+ }
+ } catch (e) { /* fall through */ }
+ window.location.href = 'dashboard.html';
+ }
+
+ // Detect mobile / Safari / iOS — popups are blocked or unreliable there.
+ // Use redirect on those, popup on desktop where it's smoother.
+ function _shouldUseRedirect() {
+ const ua = navigator.userAgent || "";
+ const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+ const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|EdgiOS/.test(ua);
+ return isMobile || isSafari;
+ }
+
+ async function googleLogin() {
+ try {
+ if (_shouldUseRedirect()) {
+ // Redirect flow — page reloads to Google, comes back via getRedirectResult below
+ await wlAuth.signInWithRedirect(googleProvider);
+ return;
+ }
+ const cred = await wlAuth.signInWithPopup(googleProvider);
+ await _finishGoogleAuth(cred);
+ } catch (e) {
+ console.error("Google login failed:", e);
+ // Always include the raw error code so we can diagnose unknown failures
+ const code = e.code || "unknown";
+ const reason = (
+ code === "auth/popup-blocked" ? "הדפדפן חסם את החלון" :
+ code === "auth/popup-closed-by-user" ? "ביטלת את ההתחברות" :
+ code === "auth/unauthorized-domain" ? "הדומיין הזה לא מורשה ב-Firebase" :
+ code === "auth/operation-not-allowed" ? "Google sign-in לא מופעל ב-Firebase Console" :
+ code === "auth/network-request-failed" ? "תקלת רשת. בדוק חיבור אינטרנט" :
+ code === "auth/cancelled-popup-request" ? "Popup קודם בוטל. רענן ונסה שוב" :
+ code === "auth/internal-error" ? "שגיאה פנימית של Firebase" :
+ code === "auth/account-exists-with-different-credential" ? "כבר נרשמת עם email/password באימייל הזה" :
+ (e.message || "שגיאה לא ידועה")
+ );
+ // Always show the code at the end — copy-paste this when reporting
+ const fullMsg = `${reason}\n\nקוד שגיאה: ${code}\n\nצלם והעבר ל-hi@wizelife.ai אם זה ממשיך`;
+ // Auto-fallback: on popup-blocked, try redirect
+ if (code === "auth/popup-blocked") {
+ try { await wlAuth.signInWithRedirect(googleProvider); return; } catch {}
+ }
+ alert(fullMsg);
+ }
+ }
+
+ // Handle the redirect return from Google (mobile / Safari path)
+ wlAuth.getRedirectResult().then(async (result) => {
+ if (result && result.user) {
+ try { await _finishGoogleAuth(result); } catch (e) { console.error(e); }
+ }
+ }).catch((e) => {
+ if (e && e.code && e.code !== "auth/null-user") {
+ console.error("Google redirect result error:", e);
+ alert("Google sign-in failed: " + e.code);
+ }
+ });
+
+ function friendlyError(code) {
+ const map = {
+ // Anti-enumeration: collapse "user-not-found" + "wrong-password" into the
+ // same generic message so attackers can't distinguish a real email from a
+ // fake one by reading the response. (QA: security-deep-flows.js)
+ "auth/user-not-found": "Wrong email or password — check for caps-lock or trailing spaces.",
+ "auth/wrong-password": "Wrong email or password — check for caps-lock or trailing spaces.",
+ "auth/invalid-credential": "Wrong email or password — check for caps-lock or trailing spaces.",
+ "auth/invalid-login-credentials":"Wrong email or password — check for caps-lock or trailing spaces.",
+ "auth/invalid-email": "Invalid email address.",
+ "auth/email-already-in-use": "This email is already registered. Try signing in.",
+ "auth/weak-password": "Password must be at least 8 characters with uppercase and special character.",
+ "auth/too-many-requests": "Too many attempts. Try again in a few minutes — or use \"Forgot password\".",
+ "auth/popup-closed-by-user": "Sign-in cancelled.",
+ "auth/network-request-failed": "Network problem — check your connection.",
+ "auth/user-disabled": "This account is disabled. Contact support.",
+ "auth/operation-not-allowed": "Email/password sign-in is disabled.",
+ "auth/expired-action-code": "This reset link expired. Click \"Forgot password\" to get a new one.",
+ "auth/invalid-action-code": "This reset link is invalid or already used. Request a new one.",
+ };
+ return map[code] || ("Something went wrong (" + (code || "unknown") + "). Please try again.");
+ }
+
+ function togglePw(inputId, btn) {
+ const input = document.getElementById(inputId);
+ const show = input.type === "password";
+ input.type = show ? "text" : "password";
+ btn.textContent = show ? "🙈" : "👁";
+ }
+
+ async function forgotPassword() {
+ const email = document.getElementById("loginEmail").value.trim();
+ if (!email) {
+ document.getElementById("loginError").textContent = "Enter your email above first.";
+ document.getElementById("loginEmail").focus();
+ return;
+ }
+ // Anti-enumeration: ALWAYS show the same success message, regardless of
+ // whether the email is actually registered. Firebase will throw
+ // auth/user-not-found for unregistered emails — we swallow that specific
+ // error (and only that one) so attackers can't distinguish.
+ // QA: security-deep-flows.js flagged this as account enumeration risk.
+ try {
+ await wlAuth.sendPasswordResetEmail(email);
+ } catch (e) {
+ if (e && (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-email')) {
+ // Silently swallow — do NOT reveal that the email is unregistered/invalid.
+ // The user gets the same success message; the attacker gains nothing.
+ } else {
+ // Surface real errors (network/quota) without leaking existence.
+ document.getElementById("loginError").style.color = "";
+ document.getElementById("loginError").textContent = friendlyError(e.code) || "Something went wrong — try again.";
+ return;
+ }
+ }
+ document.getElementById("loginError").style.color = "#34d399";
+ document.getElementById("loginError").textContent = "If an account exists for that email, a reset link was sent — check your inbox.";
+ }
+
+ // Allow Enter key
+ document.addEventListener("keydown", e => {
+ if (e.key !== "Enter") return;
+ const loginVisible = document.getElementById("loginForm").style.display !== "none";
+ if (loginVisible) emailLogin(); else emailSignup();
+ });
+</script>
+<script>
+// Smart SW registration with auto-update banner — see js/sw-register.js
+const _swScript = document.createElement('script');
+_swScript.src = 'js/sw-register.js';
+document.head.appendChild(_swScript);
+</script>
+
+<script>
+const AUTH_TR = {
+ he: { signIn: 'כניסה', signUp: 'יצירת חשבון', email: 'אימייל', password: 'סיסמה', fullName: 'שם מלא', forgot: 'שכחת סיסמה?', subtitle: 'הסוויטה לחיים מבוססת AI', signInBtn: 'כניסה', signUpBtn: 'הרשמה' },
+ en: { signIn: 'Sign In', signUp: 'Create Account', email: 'Email', password: 'Password', fullName: 'Full Name', forgot: 'Forgot password?', subtitle: 'Your AI-powered life suite', signInBtn: 'Sign In', signUpBtn: 'Create Account' },
+ pt: { signIn: 'Entrar', signUp: 'Criar Conta', email: 'Email', password: 'Senha', fullName: 'Nome Completo', forgot: 'Esqueceu a senha?', subtitle: 'Sua suíte de vida com IA', signInBtn: 'Entrar', signUpBtn: 'Criar Conta' },
+ es: { signIn: 'Iniciar Sesión', signUp: 'Crear Cuenta', email: 'Email', password: 'Contraseña', fullName: 'Nombre Completo', forgot: '¿Olvidaste la contraseña?', subtitle: 'Tu suite de vida con IA', signInBtn: 'Iniciar Sesión', signUpBtn: 'Crear Cuenta' },
+};
+function setAuthLang(v) {
+ if (!['en','pt','es','he'].includes(v)) return;
+ localStorage.setItem('wl_lang', v);
+ const t = AUTH_TR[v];
+ document.documentElement.dir = (v === 'he') ? 'rtl' : 'ltr';
+ document.documentElement.lang = v;
+ document.querySelectorAll('.auth-lang-pill').forEach(b => {
+ const active = b.getAttribute('data-lang') === v;
+ b.style.background = active ? 'rgba(99,102,241,0.18)' : 'none';
+ b.style.color = active ? '#a5b4fc' : '#7b88ad';
+ });
+ var sel = document.getElementById('wl_lang_select');
+ if (sel && sel.value !== v) sel.value = v;
+ const tabL = document.getElementById('tabLogin');
+ const tabS = document.getElementById('tabSignup');
+ if (tabL) tabL.textContent = t.signIn;
+ if (tabS) tabS.textContent = t.signUp;
+ document.querySelectorAll('label').forEach(l => {
+ const txt = l.textContent.trim();
+ if (/email/i.test(txt)) l.textContent = t.email;
+ else if (/password|סיסמה|senha|contraseña/i.test(txt)) l.textContent = t.password;
+ else if (/full name|שם מלא|nome|nombre/i.test(txt)) l.textContent = t.fullName;
+ });
+ const loginBtn = document.getElementById('loginBtn');
+ const signupBtn = document.getElementById('signupBtn');
+ if (loginBtn) loginBtn.textContent = t.signInBtn;
+ if (signupBtn) signupBtn.textContent = t.signUpBtn;
+ const subtitle = document.querySelector('.logo p');
+ if (subtitle) subtitle.textContent = t.subtitle;
+ document.querySelectorAll('.forgot a').forEach(a => a.textContent = t.forgot);
+}
+(function() {
+ const saved = localStorage.getItem('wl_lang') || 'en';
+ if (document.readyState === 'loading') {
+ document.addEventListener('DOMContentLoaded', function() { setAuthLang(saved); });
+ } else { setAuthLang(saved); }
+})();
+</script>
+<script>
+/* Pre-warm Render-hosted backends from auth.html too. The user is about to
+ sign in and head to the dashboard / a tool — start the wake-up now so the
+ 30–60s Render cold-start finishes before they tap a card. */
+(function prewarmBackends(){
+ function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+ var TARGETS = ['https://wizehealth-3ol2retcla-uc.a.run.app/', 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health', 'https://ofirofir-wizetravel.hf.space/'];
+ // Fire immediately on auth page load + every 30 s. By the time user
+ // signs in and reaches dashboard, every backend is hot.
+ TARGETS.forEach(ping);
+ setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
+})();
+</script>
+<script src="/js/wl-common-i18n.js?v=2" defer></script>
+<script src="/js/wl-text-i18n.js?v=1" defer></script>
+</body>
+</html>

@@ -1,10 +1,6 @@
-# 🚨 WizeTax-Deep action items — 2026-05-16
+# 🚨 WizeTax-Deep action items — 2026-05-31
 
-**2 failure(s), 3 warning(s), 11 pass.**
-
-## For Claude to fix:
-- ❌ Lang switch HE → EN updates UI — UI text + dir identical after EN click
-- ❌ Routes /reports + /profile reachable (not 404) — broken: /reports → err
+**0 failure(s), 3 warning(s), 13 pass.**
 
 ## For you to investigate:
 - ⚠️ Send button not found — cannot test chat
@@ -14,7 +10,7 @@
 ---
 _<details><summary>Full detail</summary>_
 
-# WizeTax-Deep QA — 2026-05-16
+# WizeTax-Deep QA — 2026-05-31
 
 - ✅ Advisor page loads + textarea present
 - ✅ No CSP violations on first load
@@ -26,9 +22,9 @@ _<details><summary>Full detail</summary>_
 - ✅ Income simulator — find a number input + currency
 - ✅ Payslip upload — file input present
 - ✅ Language pills HE/EN/PT/ES render
-- ❌ Lang switch HE → EN updates UI — UI text + dir identical after EN click
+- ✅ Lang switch HE → EN updates UI
 - ✅ No Hebrew leak in EN mode
-- ❌ Routes /reports + /profile reachable (not 404) — broken: /reports → err
+- ✅ Routes /reports + /profile reachable (not 404)
 - ✅ CSP allows wizelife.ai scripts (no blocked external)
 - ✅ iPhone (390×844): advisor textarea reachable + no overflow
 - ✅ OECD 2025 label visible (not stale 2024)

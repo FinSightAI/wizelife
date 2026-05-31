@@ -113,7 +113,7 @@ function showGate(html) { $('gate').style.display = 'block'; $('gateMsg').innerH
 
 auth.onAuthStateChanged((user) => {
   if (!user) {
-    showGate('Please <a href="auth.html" style="color:#a5b4fc">sign in</a> with an admin account, then return here.');
+    showGate('Please <a href="auth.html" style="color:#a5b4fc" rel="nofollow">sign in</a> with an admin account, then return here.');
     return;
   }
   // If the allow-list is set and you're not on it, deny early (rules also enforce).

@@ -11,9 +11,14 @@ jobs:
     steps:
       - name: Hit production URL
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://wizelife.ai/)
-          echo "HTTP $STATUS"
-          if [ "$STATUS" != "200" ]; then
-            echo "::warning::WizeLife returned $STATUS"
+          # Cloudflare orange-proxy returns 403 to datacenter IPs (GitHub Actions).
+          # 403 still means the site is responding, so we accept it as "alive".
+          # Only fail on 5xx / timeout / DNS errors.
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+            -H "User-Agent: Mozilla/5.0 (compatible; WizeLife-Uptime/1.0; +https://wizelife.ai)" \
+            -L https://wizelife.ai/)
+          echo "WizeLife HTTP $STATUS"
+          if [ "$STATUS" = "000" ] || [ "$STATUS" -ge 500 ]; then
+            echo "::error::WizeLife returned $STATUS — possible outage"
             exit 1
           fi

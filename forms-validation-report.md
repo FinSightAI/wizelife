@@ -1,12 +1,6 @@
-# 🚨 Forms-Validation action items — 2026-05-16
+# 🚨 Forms-Validation action items — 2026-05-22
 
-**1 failure(s), 5 warning(s), 9 pass.**
-
-## For Claude to fix:
-- ❌ WizeLife auth: enumerate forms — page.goto: Timeout 45000ms exceeded.
-Call log:
-[2m  - navigating to "https://wizelife.ai/auth.html", waiting until "load"[22m
-
+**0 failure(s), 5 warning(s), 10 pass.**
 
 ## For you to investigate:
 - ⚠️ WizeLife auth: no form — skipped
@@ -18,12 +12,9 @@ Call log:
 ---
 _<details><summary>Full detail</summary>_
 
-# Forms-Validation QA — 2026-05-16
+# Forms-Validation QA — 2026-05-22
 
-- ❌ WizeLife auth: enumerate forms — page.goto: Timeout 45000ms exceeded.
-Call log:
-[2m  - navigating to "https://wizelife.ai/auth.html", waiting until "load"[22m
-
+- ✅ WizeLife auth: enumerate forms
 - ⚠️ WizeLife auth: no form — skipped
 - ✅ WizeLife auth: empty submit shows some feedback
 - ✅ WizeLife feedback: enumerate forms

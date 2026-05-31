@@ -1,10 +1,18 @@
-# 🚨 I18n-Leak action items — 2026-05-17
+# 🚨 I18n-Leak action items — 2026-05-22
 
-✅ **51 checks passed — I18n-Leak clean.**
+**5 failure(s), 0 warning(s), 46 pass.**
+
+## For Claude to fix:
+- ❌ https://wizelife.ai/dashboard.html [PT] — no Hebrew leaks — page load failed: page.evaluate: Execution context was destroyed, most likely because of a navigation
+- ❌ https://wizelife.ai/dashboard.html [ES] — no Hebrew leaks — page load failed: page.evaluate: Execution context was destroyed, most likely because of a navigation
+- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 2 Hebrew strings leaked (first 3: "נתוני iGemel-Net עודכנו למאי 2026", "נתוני TheMarker עודכנו למאי 2026")
+- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 2 Hebrew strings leaked (first 3: "נתוני iGemel-Net עודכנו למאי 2026", "נתוני TheMarker עודכנו למאי 2026")
+- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 2 Hebrew strings leaked (first 3: "נתוני iGemel-Net עודכנו למאי 2026", "נתוני TheMarker עודכנו למאי 2026")
+
 ---
 _<details><summary>Full detail</summary>_
 
-# I18n-Leak QA — 2026-05-17
+# I18n-Leak QA — 2026-05-22
 
 - ✅ https://wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/ [PT] — no Hebrew leaks
@@ -16,8 +24,8 @@ _<details><summary>Full detail</summary>_
 - ✅ https://wizelife.ai/about.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/about.html [ES] — no Hebrew leaks
 - ✅ https://wizelife.ai/dashboard.html [EN] — no Hebrew leaks
-- ✅ https://wizelife.ai/dashboard.html [PT] — no Hebrew leaks
-- ✅ https://wizelife.ai/dashboard.html [ES] — no Hebrew leaks
+- ❌ https://wizelife.ai/dashboard.html [PT] — no Hebrew leaks — page load failed: page.evaluate: Execution context was destroyed, most likely because of a navigation
+- ❌ https://wizelife.ai/dashboard.html [ES] — no Hebrew leaks — page load failed: page.evaluate: Execution context was destroyed, most likely because of a navigation
 - ✅ https://wizelife.ai/security.html [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/security.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/security.html [ES] — no Hebrew leaks
@@ -42,9 +50,9 @@ _<details><summary>Full detail</summary>_
 - ✅ https://wizelife.ai/health.html [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [ES] — no Hebrew leaks
-- ✅ https://money.wizelife.ai/ [EN] — no Hebrew leaks
-- ✅ https://money.wizelife.ai/ [PT] — no Hebrew leaks
-- ✅ https://money.wizelife.ai/ [ES] — no Hebrew leaks
+- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 2 Hebrew strings leaked (first 3: "נתוני iGemel-Net עודכנו למאי 2026", "נתוני TheMarker עודכנו למאי 2026")
+- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 2 Hebrew strings leaked (first 3: "נתוני iGemel-Net עודכנו למאי 2026", "נתוני TheMarker עודכנו למאי 2026")
+- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 2 Hebrew strings leaked (first 3: "נתוני iGemel-Net עודכנו למאי 2026", "נתוני TheMarker עודכנו למאי 2026")
 - ✅ https://tax.wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://tax.wizelife.ai/ [PT] — no Hebrew leaks
 - ✅ https://tax.wizelife.ai/ [ES] — no Hebrew leaks
@@ -54,8 +62,8 @@ _<details><summary>Full detail</summary>_
 - ✅ https://travel.wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://travel.wizelife.ai/ [PT] — no Hebrew leaks
 - ✅ https://travel.wizelife.ai/ [ES] — no Hebrew leaks
-- ✅ https://vitara.onrender.com/ [EN] — no Hebrew leaks
-- ✅ https://vitara.onrender.com/ [PT] — no Hebrew leaks
-- ✅ https://vitara.onrender.com/ [ES] — no Hebrew leaks
+- ✅ https://health.wizelife.ai/ [EN] — no Hebrew leaks
+- ✅ https://health.wizelife.ai/ [PT] — no Hebrew leaks
+- ✅ https://health.wizelife.ai/ [ES] — no Hebrew leaks
 
 </details>
