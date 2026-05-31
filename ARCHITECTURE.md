@@ -478,7 +478,7 @@ Deploy via: `firebase deploy --only firestore:rules --project finzilla-7f1f9`
 | Stack | Next.js 15, React 18, Tailwind, lucide-react |
 | SW cache | `checkdeal-v2` (in `public/sw.js`) |
 | Backend | Vercel API routes in `src/app/api/ai/*` |
-| AI provider | Gemini 2.5-flash-lite (5 routes: market-data, rental-estimate, chat, parse-listing, insights) |
+| AI provider | Gemini 2.5-flash-lite (5 routes: market-data, rental-estimate, chat, parse-listing, insights). `parse-listing` is **multimodal** — accepts pasted text OR an uploaded PDF/image (sent as Gemini `inlineData`) OR a PPTX (server-side text extraction via jszip) — see §19.12 |
 | API routes | `/api/ai/chat`, `/api/ai/insights`, `/api/ai/market-data`, `/api/ai/parse-listing`, `/api/ai/rental-estimate`, `/api/rental/*` |
 | Languages | he / en / pt / es |
 | Auto-update banner | ✓ Inline in `layout.tsx` |
@@ -820,6 +820,33 @@ Cloudflare RUM show real user metrics (not synthetic Slow 4G).
 | Cache-Control headers (immutable static) | ✅ Tax/Travel/Deal | `next.config.ts` / `vercel.json` |
 | rel="nofollow" on auth links | ✅ Portal (18 links) | `index.html` and friends |
 | robots.txt + sitemap.xml | ✅ all 6 apps | served from root |
+
+---
+
+### 19.12 WizeDeal file upload — analyze a deal from a document (2026-05-31)
+
+Users can upload a listing **PDF, presentation (PPTX/PPT), or image** on the
+WizeDeal landing ("Paste a listing" card) instead of pasting text. The AI
+extracts the property fields and seeds the same draft → wizard flow.
+
+**Where**: `Check Deal/src/app/page.tsx` (upload UI + `handleFileAnalyze`,
+shared `seedFromExtracted` helper) and `Check Deal/src/app/api/ai/parse-listing/route.ts`.
+
+**How it works** (single endpoint, body now accepts `{ url?, text?, file? }`):
+- `file: { mimeType, data (base64), name }`.
+- **PDF + images** (`application/pdf`, `image/png|jpeg|webp`): passed straight to
+  Gemini as a multimodal part — `model.generateContent([EXTRACTION_PROMPT, { inlineData: { mimeType, data } }])`.
+  Gemini reads the document/image natively; no client-side OCR.
+- **PPTX/PPT**: extracted **server-side** with `jszip` (read `ppt/slides/slide*.xml`,
+  pull `<a:t>` text runs), then fed into the existing text path. New dependency: `jszip`.
+- Size cap ~10MB (client guard + server `data.length > 14_000_000` → 400).
+- Auth + `sec-fetch-site` + rate-limit run FIRST, unchanged; binary file data is
+  NOT passed through `stripIdentity` (only the text path scrubs PII).
+- Returns the same `{ success, source: 'file', data }` shape → same downstream seeding.
+
+**Why Gemini-native over OCR**: WizeDeal already uses Gemini; multimodal input is
+free, more accurate than Tesseract, and needs no extra client bundle (contrast
+WizeTax payslip OCR which uses pdf.js + Tesseract client-side).
 
 ---
 
