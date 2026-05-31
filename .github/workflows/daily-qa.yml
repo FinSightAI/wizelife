@@ -167,6 +167,11 @@ jobs:
         continue-on-error: true
         run: node qa/cloud-backup-roundtrip-check.js
 
+      - name: Tier 21 — AI health (POSITIVE: AI returns correct results)
+        id: aihealth
+        continue-on-error: true
+        run: node qa/ai-health-check.js
+
       - name: Aggregate core fail counts
         id: core-fails
         run: |
@@ -200,6 +205,7 @@ jobs:
             jsonld-report.md
             ai-safety-report.md
             cloud-backup-roundtrip-report.md
+            ai-health-report.md
             /tmp/core-fails-total
           retention-days: 30
           if-no-files-found: warn
