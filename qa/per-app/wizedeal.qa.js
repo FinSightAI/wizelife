@@ -35,11 +35,12 @@ const BASE = 'https://deal.wizelife.ai';
         const page = await ctx.newPage();
         try {
             await page.goto(BASE + '/', { timeout: 45000 });
+            // Target the ENABLED "New Deal"/"Add Deal" CTA — not the paste-card
+            // "Analyze listing" button (disabled until its textarea has text).
             const btn = page.locator([
-                'button:has-text("Analyze")',
-                'button:has-text("New Deal")',
-                'button:has-text("Add Deal")',
+                'button:not([disabled]):has-text("New Deal")',
                 'a:has-text("New Deal")',
+                'button:not([disabled]):has-text("Add Deal")',
             ].join(', ')).first();
             await btn.waitFor({ state: 'visible', timeout: 10000 });
             await btn.click();
@@ -54,18 +55,20 @@ const BASE = 'https://deal.wizelife.ai';
         const page = await ctx.newPage();
         try {
             await page.goto(BASE + '/', { timeout: 45000 });
-            const btn = page.locator('button:has-text("Analyze"), button:has-text("New Deal")').first();
-            await btn.click();
-            const textMode = page.locator('button:has-text("Text"), button:has-text("Paste")').first();
-            if (await textMode.count()) await textMode.click();
+            // Use the landing "Paste a listing" card directly: filling the textarea
+            // ENABLES the "Analyze listing" button, then click it (the real paste flow).
             const ta = page.locator('textarea').first();
             await ta.waitFor({ timeout: 20000 });
             await ta.fill('2BR apartment, 70sqm, Lisbon. Price 450000 EUR. Built 1920.');
-            await page.locator('button:has-text("Extract"), button:has-text("Analyze")').last().click();
-            await page.waitForFunction(() =>
-                /lisbon|450|70/i.test(document.body.innerText),
-                { timeout: 45000 }
-            );
+            // Click the paste-card "Analyze listing" CTA specifically (NOT "Analyze a New Deal").
+            const analyzeListing = page.locator('button:has-text("Analyze listing")').first();
+            await analyzeListing.waitFor({ state: 'visible', timeout: 10000 });
+            await analyzeListing.click();
+            // Extracted data seeds the wizard FORM INPUTS (innerText does not include input values).
+            await page.waitForFunction(() => {
+                const vals = [...document.querySelectorAll('input,textarea')].map(e => (e.value || '').toLowerCase()).join(' ');
+                return /lisbon|450000|450,000/.test(vals) || /lisbon/i.test(document.body.innerText);
+            }, { timeout: 55000 });
         } finally {
             await page.close(); await ctx.close();
         }
