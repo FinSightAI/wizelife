@@ -145,6 +145,8 @@
        NOTE: .mobile-menu-toggle is a permanently-hidden legacy button; do NOT
        guard on it here or the shared hamburger will never inject on WizeMoney. */
     if (document.querySelector('.mobile-header-toggle, .wt-hamburger')) return;
+    var _mmt = document.querySelector('.mobile-menu-toggle');
+    if (_mmt && getComputedStyle(_mmt).display !== 'none') return;
 
     injectStyle();
     var lang = getLang();
