@@ -76,8 +76,12 @@ async function launchBrowser(opts = {}) {
 async function newPage(browser, url, viewport = { width: 390, height: 844 }) {
   const ctx = await browser.newContext({ viewport });
   const page = await ctx.newPage();
-  await page.goto(url, { waitUntil: 'networkidle', timeout: 20000 });
-  await page.waitForTimeout(2500);
+  // NOTE: do NOT use waitUntil:'networkidle' — apps hold persistent Firebase
+  // websocket/long-poll connections so the network never goes idle and goto()
+  // times out before any assertion runs (mass false-positives). Wait for the
+  // DOM, then give JS an explicit window to hydrate.
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForTimeout(3000);
   return { page, ctx };
 }
 
