@@ -187,7 +187,13 @@ jobs:
           api_fails=$(cat /tmp/api-fails 2>/dev/null || echo 0)
           extended_fails=$(cat /tmp/extended-fails 2>/dev/null || echo 0)
           static_extra_fails=$(cat /tmp/static-extra-fails 2>/dev/null || echo 0)
-          total=$((comp_fails + sec_fails + runtime_fails + handler_fails + api_fails + extended_fails + static_extra_fails))
+          # Positive/health tiers (15-22): a failed step counts toward the ALERT so a
+          # silent outage (e.g. dead AI → ai-health fail, broken core flow → mobile-integration fail) emails us.
+          new_fails=0
+          for o in "${{ steps.aihealth.outcome }}" "${{ steps.mobileinteg.outcome }}" "${{ steps.drift.outcome }}" "${{ steps.jsonld.outcome }}" "${{ steps.calcfuzz.outcome }}"; do
+            [ "$o" = "failure" ] && new_fails=$((new_fails+1))
+          done
+          total=$((comp_fails + sec_fails + runtime_fails + handler_fails + api_fails + extended_fails + static_extra_fails + new_fails))
           echo "fails=$total" >> $GITHUB_OUTPUT
           echo "$total" > /tmp/core-fails-total
 
@@ -353,6 +359,16 @@ jobs:
             cat e2e-reports/integration-report.md 2>/dev/null || echo '_integration missing_'
             echo ""
             cat core-reports/static-extra-report.md 2>/dev/null || echo '_static-extra missing_'
+            echo ""
+            cat core-reports/ai-health-report.md 2>/dev/null || echo '_ai-health missing_'
+            echo ""
+            cat core-reports/mobile-integration-report.md 2>/dev/null || echo '_mobile-integration missing_'
+            echo ""
+            cat core-reports/web-vitals-report.md 2>/dev/null || echo '_web-vitals missing_'
+            echo ""
+            cat core-reports/calc-fuzz-report.md 2>/dev/null || echo '_calc-fuzz missing_'
+            echo ""
+            cat core-reports/shared-script-drift-report.md 2>/dev/null || echo '_drift missing_'
             echo ""
             cat e2e-reports/browser-extra-report.md 2>/dev/null || echo '_browser-extra missing_'
           } > combined-report.md
