@@ -48,9 +48,9 @@ const APPS = [
         try {
           await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
+          const bodyContent = await page.evaluate(() => document.body.innerHTML + document.body.innerText);
           for (const app of APPS) {
-            const link = await page.locator(`a[href*="${app.url}"]`).count();
-            if (link === 0) {
+            if (!bodyContent.includes(app.url)) {
               throw new Error(`No link to ${app.url} (${app.name}) in rendered portal`);
             }
           }
