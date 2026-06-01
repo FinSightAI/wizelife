@@ -7,3 +7,4 @@
 # QA-generated reports (regenerated each run)
 /*-report.md
 reports/
+qa/*-report.md
