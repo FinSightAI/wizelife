@@ -35,8 +35,9 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         try {
           await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
-          const sellLink = page.locator('a[href*="/sell"], a[href*="sell"]').first();
-          if ((await sellLink.count()) === 0) throw new Error('No Sell link found in rendered page');
+          // Use text-search instead of CSS selector (avoids quote escaping in has-text)
+          const hasSell = await page.evaluate(() => !![...document.querySelectorAll('a,button,li,span')].find(e=>e.textContent.trim()==='Sell'||e.textContent.trim()==='Sell a Property'));
+          if (!hasSell) throw new Error('No Sell link found in rendered page');
         } finally {
           await page.close(); await ctx.close(); await browser.close();
         }
