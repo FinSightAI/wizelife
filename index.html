@@ -77,7 +77,7 @@
      Downgraded cloud-functions origin to dns-prefetch (cheap, same-page benefit). -->
 <link href="https://www.gstatic.com" rel="preconnect" crossorigin/>
 <link href="https://us-central1-finzilla-7f1f9.cloudfunctions.net" rel="dns-prefetch"/>
-<link rel="preload" href="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" as="script" crossorigin/>
+<!-- firebase-app preload removed: Firebase is now loaded after first paint (see deferred loader) -->
 <!-- Pre-warm the Render-hosted backends so they're awake by the time a user
  taps a tool card. preconnect = TLS+TCP handshake; prefetch = DNS only.
  The actual wake-up GET is fired below in a JS block. -->
@@ -1942,13 +1942,47 @@ applyLandingLang();
      All deferred so the SDK doesn't block render. Defer scripts execute in
      document order BEFORE DOMContentLoaded, so the inline auth handler below
      (now wrapped in DCL listener) can rely on wlAuth being defined. -->
-<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
-<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
-<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" integrity="sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3" crossorigin="anonymous"></script>
-<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js" integrity="sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v" crossorigin="anonymous"></script>
-<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js" integrity="sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj" crossorigin="anonymous"></script>
 <script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
-<script defer src="js/wizelife-auth.js"></script>
+<!-- Firebase + auth are loaded AFTER first paint (requestIdleCallback) so the
+     ~1MB SDK never blocks FCP/LCP on the landing. Scripts are injected in the
+     SAME order (app -> auth -> firestore -> functions -> app-check -> wizelife-auth)
+     with async=false so execution order + SRI are preserved; the auth UI handler
+     runs once wizelife-auth.js is ready. Progressive enhancement: login state /
+     plan badge appears a moment after the page paints. -->
+<script>
+(function () {
+  var BASE = 'https://www.gstatic.com/firebasejs/9.22.0/';
+  var FB = [
+    ['firebase-app-compat.js',        'sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH'],
+    ['firebase-auth-compat.js',       'sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6'],
+    ['firebase-firestore-compat.js',  'sha384-7TetnPNdXXu6qURzIEXWCwpXedGGBJSXIR5Cv0gOWTB34UD5TxPHx33PhjA6wFQ3'],
+    ['firebase-functions-compat.js',  'sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v'],
+    ['firebase-app-check-compat.js',  'sha384-iF93NE9DFYjJ/GJcb4h18LKfvMn3Ppl4GSSFZ8RFvwc7OtGGQSHQXbHEdO8Rknhj']
+  ];
+  function inject(src, integrity) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src; s.async = false;
+      if (integrity) { s.integrity = integrity; s.crossOrigin = 'anonymous'; }
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  function loadFirebase() {
+    var chain = Promise.resolve();
+    FB.forEach(function (m) { chain = chain.then(function () { return inject(BASE + m[0], m[1]); }); });
+    chain.then(function () { return inject('js/wizelife-auth.js'); })
+         .then(function () { if (typeof window._wlInitAuthUI === 'function') window._wlInitAuthUI(); })
+         .catch(function (e) { try { console.warn('Deferred Firebase load failed', e); } catch (_) {} });
+  }
+  function start() {
+    if ('requestIdleCallback' in window) requestIdleCallback(loadFirebase, { timeout: 3000 });
+    else setTimeout(loadFirebase, 1200);
+  }
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start);
+})();
+</script>
 <script>
 // PWA install — capture the deferred prompt so the mobile menu can offer
 // a manual "Install app" entry only when the browser says it's installable.
@@ -1979,9 +2013,9 @@ applyLandingLang();
 })();
 </script>
 <script>
-// Wrap in DOMContentLoaded — Firebase SDK is now deferred (loads after parse,
-// before DCL). By DCL, wlAuth is guaranteed defined.
-document.addEventListener('DOMContentLoaded', function () {
+// Auth UI updater — invoked by the deferred Firebase loader once wlAuth is ready
+// (Firebase now loads after first paint, so this no longer runs on DCL).
+window._wlInitAuthUI = function () {
   if (typeof wlAuth === 'undefined') return;  // belt-and-suspenders
   wlAuth.onAuthStateChanged(function(user) {
     const signinBtn = document.getElementById('nav-signin');
@@ -2000,7 +2034,7 @@ document.addEventListener('DOMContentLoaded', function () {
       window._wlLoggedIn = false;
     }
   });
-});
+};
 </script>
 <script>
 // Smart SW registration with auto-update banner — see js/sw-register.js

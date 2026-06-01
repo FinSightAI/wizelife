@@ -1,4 +1,4 @@
-const CACHE = 'wizelife-v195';
+const CACHE = 'wizelife-v196';
 const SHELL = [
   // Core flow
   '/index.html',
