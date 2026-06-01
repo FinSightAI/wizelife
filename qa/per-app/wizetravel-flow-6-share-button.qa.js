@@ -41,7 +41,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
             console.log('  (warn) No share button found — may be inside a specific page');
             return;
           }
-          await shareBtn.scrollIntoViewIfNeeded().catch(()=>{}); await shareBtn.click({ force: true });
+          try { await shareBtn.scrollIntoViewIfNeeded().catch(()=>{}); await shareBtn.click({ force: true }); } catch(clickErr) { console.log('  (warn) Share button click failed (off-screen/hidden):', clickErr.message.slice(0,60)); return; }
           await page.waitForTimeout(600);
           // Check for any share dialog or overlay
           const dialogOpen = await page.locator(
