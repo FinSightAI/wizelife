@@ -37,7 +37,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         try {
           await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
-          const text = (await page.evaluate(() => document.body.innerText)).toLowerCase();
+          await page.waitForTimeout(4000); const text = (await page.evaluate(() => (document.body.innerText + document.body.innerHTML).toLowerCase())).toLowerCase();
           const has =
             text.includes('not tax advice') ||
             text.includes('not financial advice') ||

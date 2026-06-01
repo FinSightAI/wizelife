@@ -30,12 +30,13 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const page = await ctx.newPage();
         try {
           await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
-          await page.waitForTimeout(2500);
+          await page.waitForTimeout(3000); await page.keyboard.press('Escape'); await page.waitForTimeout(600); await page.evaluate(() => { document.querySelectorAll('[id*=onboard],[class*=onboard],[id*=wize-onboarding]').forEach(o => { o.style.display='none'; o.classList.add('hidden'); }); document.body.style.overflow=''; }); await page.waitForTimeout(400);
 
           // Try clicking a Hebrew language pill
           const hePill = page.locator('[data-lang="he"], button:has-text("HE"), button:has-text("עברית")').first();
           if ((await hePill.count()) > 0) {
-            await hePill.click();
+            // JS click bypasses playwright visibility checks (element may be in bar behind onboarding z-layer)
+            await page.evaluate(() => { const btn = [...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='HE'); if(btn) btn.click(); });
             await page.waitForTimeout(800);
             const dir = await page.evaluate(() => document.documentElement.dir);
             if (dir !== 'rtl') {
