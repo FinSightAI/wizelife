@@ -46,7 +46,7 @@ const APPS = [
         const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
           for (const app of APPS) {
             const link = await page.locator(`a[href*="${app.url}"]`).count();

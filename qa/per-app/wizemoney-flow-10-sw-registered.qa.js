@@ -27,14 +27,17 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
       },
     },
     {
-      name: 'Landing HTML references serviceWorker registration',
+      name: 'serviceWorker registration present in app JS (not necessarily inline HTML)',
       fn: async () => {
         const r = await fetchOk(BASE);
+        // SW is registered from external js/app.js, not inline in index.html.
+        // Inline check is valid only if present; otherwise verify the JS file.
+        if (findInHtml(r.body, 'serviceWorker') || findInHtml(r.body, 'sw.js')) return;
+        const js = await fetchOk(new URL('js/app.js', BASE).href);
         const has =
-          findInHtml(r.body, 'serviceWorker') ||
-          findInHtml(r.body, 'sw.js') ||
-          findInHtml(r.body, 'service-worker');
-        if (!has) throw new Error('No serviceWorker registration found in landing HTML');
+          findInHtml(js.body, 'serviceWorker.register') ||
+          findInHtml(js.body, 'navigator.serviceWorker');
+        if (!has) throw new Error('No serviceWorker registration found in landing HTML or js/app.js');
       },
     },
     {
@@ -50,7 +53,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(4000); // SW registration is async
           const swState = await page.evaluate(async () => {
             if (!navigator.serviceWorker) return 'not-supported';

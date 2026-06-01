@@ -32,7 +32,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
           const pillCount = await page.locator('[data-lang], .lang-pill, [class*="lang-btn"]').count();
           if (pillCount < 4) {

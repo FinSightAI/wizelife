@@ -23,10 +23,12 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
       },
     },
     {
-      name: '"YOLO" tier mentioned in HTML',
+      name: '"Plus" tier mentioned in HTML',
       fn: async () => {
+        // WizeMoney tiers are Free / Plus / Pro — there is no "YOLO" tier
+        // (that's a WizeDeal concept). Assert the real middle tier instead.
         const r = await fetchOk(BASE);
-        if (!findInHtml(r.body, 'yolo')) throw new Error('"YOLO" not found in HTML');
+        if (!findInHtml(r.body, 'plus')) throw new Error('"Plus" not found in HTML');
       },
     },
     {
@@ -53,7 +55,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           const cards = await page.locator('[class*="plan"], [class*="tier"], [class*="pricing-card"]').count();
           if (cards < 3) {

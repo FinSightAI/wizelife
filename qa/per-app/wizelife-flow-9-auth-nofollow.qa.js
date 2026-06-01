@@ -45,7 +45,7 @@ const { runSuite, fetchOk } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           const authLinks = await page.locator('a[href*="auth"]').all();
           for (const link of authLinks) {

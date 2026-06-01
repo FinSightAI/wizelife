@@ -58,7 +58,7 @@ const { fetchOk, findInHtml, runSuite } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(URL, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           // At least one visible button or link that looks like a CTA
           const cta = page.locator('a[href], button').first();

@@ -43,7 +43,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const jsErrors = [];
         page.on('pageerror', e => jsErrors.push(e.message));
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           const fatal = jsErrors.filter(e => !e.toLowerCase().includes('firebase'));
           if (fatal.length > 0) throw new Error('JS errors on /saved: ' + fatal.slice(0, 2).join('; '));

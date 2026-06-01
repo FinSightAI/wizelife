@@ -33,7 +33,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           const nav = page.locator('[class*="bottom-nav"], [id*="bottom-nav"], [class*="bottom-bar"]').first();
           if ((await nav.count()) === 0) throw new Error('Bottom nav element not found');

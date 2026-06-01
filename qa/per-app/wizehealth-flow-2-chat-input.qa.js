@@ -33,7 +33,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
           const chatInput = page.locator(
             'input[type="text"], textarea, [class*="chat-input"], [id*="chat-input"], [placeholder*="message" i], [placeholder*="ask" i]'

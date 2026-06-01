@@ -40,7 +40,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(FEEDBACK_URL, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(FEEDBACK_URL, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           const form = await page.locator('form, textarea, input[type="text"]').count();
           if (form === 0) throw new Error('No form element on /feedback.html');

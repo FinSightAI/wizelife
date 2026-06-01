@@ -38,7 +38,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(TX_PAGE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(TX_PAGE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(2500);
           const exportBtn = await page.locator(
             '[class*="export"], [id*="export"], button:has-text("Export"), button:has-text("CSV"), a[download]'

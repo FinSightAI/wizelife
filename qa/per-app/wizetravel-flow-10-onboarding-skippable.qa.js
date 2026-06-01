@@ -34,9 +34,9 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'networkidle', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.evaluate(() => localStorage.clear());
-          await page.reload({ waitUntil: 'networkidle', timeout: 20000 });
+          await page.reload({ waitUntil: 'domcontentloaded', timeout: 20000 });
           await page.waitForTimeout(3000);
 
           const skipBtn = page.locator(
