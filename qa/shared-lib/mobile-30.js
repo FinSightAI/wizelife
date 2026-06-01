@@ -24,7 +24,7 @@ async function dismiss(p) {
   for (const sel of ['button:has-text("המשך לאפליקציה")', 'button:has-text("Continue")', '.mbtn-p', 'button:has-text("המשך")', 'button:has-text("הבנתי")', 'button:has-text("I understand")', 'button:has-text("Entendi")', 'button:has-text("Entiendo")']) {
     const el = await p.$(sel).catch(() => null); if (el) { await el.click({ force: true }).catch(() => {}); await p.waitForTimeout(200); }
   }
-  await p.evaluate(() => { document.querySelectorAll('.overlay,[id*=onboard],[id*=quickstart],[id*=disclaimer],[id*=wl-gate],.wl-disclaimer-modal').forEach(o => { o.style.display = 'none'; o.classList && o.classList.add('hidden'); }); }).catch(() => {});
+  await p.evaluate(() => { document.querySelectorAll('.overlay,[id*=onboard],[id*=quickstart],[id*=disclaimer],[id*=wl-gate],.wl-disclaimer-modal').forEach(o => { o.style.display = 'none'; o.classList && o.classList.add('hidden'); }); /* restore scroll: onboarding/modals set body overflow:hidden; hiding them must not leave the page scroll-locked */ document.body.style.overflow = ''; document.documentElement.style.overflow = ''; }).catch(() => {});
 }
 
 async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }) {
@@ -130,9 +130,14 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
 
       // 11 drawer closes via Esc OR overlay click
       const escClosed = await p.evaluate(async () => {
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         await new Promise(r => setTimeout(r, 400));
-        const a = document.querySelector('aside, #wize-ham-drawer');
+        // Prefer the actual hamburger drawer (#wize-ham-drawer); a generic
+        // `aside` can match an always-present desktop sidebar and give a false
+        // "still open". Drawer is closed when it lacks .open or is off-screen.
+        const d = document.getElementById('wize-ham-drawer');
+        if (d) return !d.classList.contains('open') || d.getBoundingClientRect().right <= 0;
+        const a = document.querySelector('aside');
         return !a || a.getBoundingClientRect().width < 10 || getComputedStyle(a).display === 'none' || a.getBoundingClientRect().right <= 0;
       });
       add(11, 'drawer closes via Esc', escClosed ? 'PASS' : 'FAIL');
@@ -164,9 +169,15 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
 
       // 15 first-screen WOW: meaningful content above the fold (>200 visible chars)
       const wow = await p.evaluate(() => {
-        const visible = [...document.querySelectorAll('h1, h2, p, .hero, [class*=hero]')].filter(el => { const r = el.getBoundingClientRect(); return r.top < window.innerHeight && r.bottom > 0 && r.width > 80 && getComputedStyle(el).display !== 'none'; });
-        const txt = visible.map(el => el.innerText || '').join(' ').replace(/\s+/g, ' ').trim();
-        return txt.length;
+        // Count meaningful above-fold text. Landing pages use h1/h2/p/.hero;
+        // app-shell dashboards put their content in stat/summary cards instead,
+        // so include those too — otherwise a perfectly populated dashboard reads
+        // as "empty". Dedupe to avoid double-counting nested elements.
+        const sel = 'h1, h2, h3, p, .hero, [class*=hero], .summary-card, [class*="summary"], [class*=card], [class*=stat], .value, .metric, .nav-link';
+        const visible = [...document.querySelectorAll(sel)].filter(el => { const r = el.getBoundingClientRect(); return r.top < window.innerHeight && r.bottom > 0 && r.width > 40 && getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden'; });
+        const seen = new Set(); let txt = '';
+        visible.forEach(el => { const t = (el.innerText || '').replace(/\s+/g, ' ').trim(); if (t && !seen.has(t)) { seen.add(t); txt += t + ' '; } });
+        return txt.trim().length;
       });
       add(15, 'first-screen has meaningful content', wow > 200 ? 'PASS' : 'FAIL', `${wow} chars visible`);
 
@@ -192,7 +203,18 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
       add(17, 'first input/btn visible', firstInput == null ? 'SKIP' : firstInput ? 'PASS' : 'FAIL');
 
       // 18 main scroll doesn't trap finger (body scrollable)
-      const bodyScroll = await p.evaluate(() => { const cs = getComputedStyle(document.body); return cs.overflow !== 'hidden' || document.body.scrollHeight <= window.innerHeight + 10; });
+      const bodyScroll = await p.evaluate(() => {
+        // A page is NOT scroll-locked if the body scrolls, OR the content fits,
+        // OR — for app-shell layouts (body overflow:hidden by design) — the
+        // documentElement or an inner content container is itself scrollable.
+        const fits = document.body.scrollHeight <= window.innerHeight + 10;
+        const bodyOpen = getComputedStyle(document.body).overflow !== 'hidden';
+        const de = document.documentElement;
+        const docScrolls = de.scrollHeight > window.innerHeight + 10 && /(auto|scroll|visible)/.test(getComputedStyle(de).overflowY);
+        const inner = document.querySelector('.main-content, main, #app, .app-content, .content');
+        const innerScrolls = !!inner && inner.scrollHeight > inner.clientHeight + 10 && /(auto|scroll)/.test(getComputedStyle(inner).overflowY);
+        return bodyOpen || fits || docScrolls || innerScrolls;
+      });
       add(18, 'body scrollable (no scroll lock)', bodyScroll ? 'PASS' : 'FAIL');
 
       // 19 viewport meta present (proper mobile rendering)
@@ -208,7 +230,7 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
         const inner = m.querySelector('.modal') || m;
         const cs = getComputedStyle(inner);
         const scrollable = /(auto|scroll)/.test(cs.overflowY) || inner.scrollHeight <= inner.clientHeight + 4;
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         await new Promise(r => setTimeout(r, 400));
         const stillOpen = !!document.querySelector('.overlay:not(.hidden), .modal:not(.hidden), [role=dialog]:not([aria-hidden=true])');
         return { scrollable, escClosed: !stillOpen };
