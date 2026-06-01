@@ -24,7 +24,7 @@ async function dismiss(p) {
   for (const sel of ['button:has-text("המשך לאפליקציה")', 'button:has-text("Continue")', '.mbtn-p', 'button:has-text("המשך")', 'button:has-text("הבנתי")', 'button:has-text("I understand")', 'button:has-text("Entendi")', 'button:has-text("Entiendo")']) {
     const el = await p.$(sel).catch(() => null); if (el) { await el.click({ force: true }).catch(() => {}); await p.waitForTimeout(200); }
   }
-  await p.evaluate(() => { document.querySelectorAll('.overlay,[id*=onboard],[id*=quickstart],[id*=disclaimer],[id*=wl-gate],.wl-disclaimer-modal').forEach(o => { o.style.display = 'none'; o.classList && o.classList.add('hidden'); }); /* restore scroll: onboarding/modals set body overflow:hidden; hiding them must not leave the page scroll-locked */ document.body.style.overflow = ''; document.documentElement.style.overflow = ''; }).catch(() => {});
+  await p.evaluate(() => { document.querySelectorAll('.overlay,[id*=onboard],[id*=quickstart],[id*=disclaimer],[id*=wl-gate],.wl-disclaimer-modal').forEach(o => { o.style.display = 'none'; o.classList && o.classList.add('hidden'); try{o.remove();}catch(_){} }); /* restore scroll: onboarding/modals set body overflow:hidden; hiding them must not leave the page scroll-locked */ document.body.style.overflow = ''; document.documentElement.style.overflow = ''; }).catch(() => {});
 }
 
 async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }) {
@@ -54,8 +54,9 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
     const p = await ctx.newPage();
     try {
       await p.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await p.waitForTimeout(2500);
+      await p.waitForTimeout(3500);
       await dismiss(p);
+      await p.waitForTimeout(800); await dismiss(p); // second pass for late-showing modals (e.g. WizeHealth disclaimer)
 
       // 6 hamburger visible
       const ham = await p.evaluate((sel) => { const el = document.querySelector(sel); if (!el) return null; const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return { r: { x: r.x, y: r.y, w: r.width, h: r.height }, vis: cs.display !== 'none' && cs.visibility !== 'hidden' && +cs.opacity > 0, z: cs.zIndex }; }, hamSelector);
