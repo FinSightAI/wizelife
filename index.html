@@ -1972,7 +1972,21 @@ applyLandingLang();
          .then(function () { if (typeof window._wlInitAuthUI === 'function') window._wlInitAuthUI(); })
          .catch(function (e) { try { console.warn('Deferred Firebase load failed', e); } catch (_) {} });
   }
+  // Capture ?ref=CODE now (no SDK needed) so referral attribution survives even
+  // when Firebase is skipped for logged-out visitors.
+  try {
+    var _ref = new URLSearchParams(location.search).get('ref');
+    if (_ref && /^[A-Z0-9]{4,10}$/i.test(_ref)) localStorage.setItem('wl_ref_pending', _ref.toUpperCase());
+  } catch (e) {}
+  function needFirebase() {
+    try {
+      if (localStorage.getItem('wl_authed')) return true;                     // returning signed-in user
+      if (/[?&](wl_token|wl_plan|auth)=/.test(location.search)) return true;  // SSO / auth handoff
+      return false;                                                          // brand-new logged-out visitor -> skip ~1MB SDK
+    } catch (e) { return true; }                                             // on error, be safe and load
+  }
   function start() {
+    if (!needFirebase()) return;  // logged-out: nav keeps its static "Sign in" state, no Firebase downloaded
     if ('requestIdleCallback' in window) requestIdleCallback(loadFirebase, { timeout: 3000 });
     else setTimeout(loadFirebase, 1200);
   }

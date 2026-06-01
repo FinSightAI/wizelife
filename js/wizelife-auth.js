@@ -107,6 +107,9 @@ const wlDb   = firebase.firestore();
 // Heavily defensive: every step is wrapped, missing SDKs become silent no-ops
 // so the auth flow itself never breaks.
 wlAuth.onAuthStateChanged((user) => {
+    // Lightweight marker so the landing can skip the full Firebase SDK for
+    // brand-new (logged-out) visitors. Set on sign-in, cleared on sign-out.
+    try { if (user) localStorage.setItem('wl_authed', '1'); else localStorage.removeItem('wl_authed'); } catch (e) {}
     if (!user) return;
     try {
         if (sessionStorage.getItem('wl_login_alert_fired')) return;
