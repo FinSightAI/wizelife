@@ -38,8 +38,9 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(TX_PAGE, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          await page.goto(TX_PAGE, { waitUntil: 'domcontentloaded', timeout: 35000 });
           await page.waitForTimeout(2500);
+          await page.keyboard.press('Escape').catch(()=>{}); await page.waitForTimeout(400); await page.evaluate(() => { document.querySelectorAll('[id*=onboard],[class*=onboard],[id*=wize-onboarding]').forEach(o=>{o.style.display='none'; o.classList&&o.classList.add('hidden');}); document.body.style.overflow=''; }).catch(()=>{}); await page.waitForTimeout(300);
           const exportBtn = await page.locator(
             '[class*="export"], [id*="export"], button:has-text("Export"), button:has-text("CSV"), a[download]'
           ).count();

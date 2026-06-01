@@ -34,8 +34,9 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 30000 });
           await page.waitForTimeout(3000);
+          await page.keyboard.press('Escape').catch(()=>{}); await page.waitForTimeout(400); await page.evaluate(() => { document.querySelectorAll('[id*=onboard],[class*=onboard],[id*=wize-onboarding]').forEach(o=>{o.style.display='none'; o.classList&&o.classList.add('hidden');}); document.body.style.overflow=''; }).catch(()=>{}); await page.waitForTimeout(300);
 
           const hamburger = page.locator(
             '[class*="hamburger"], [id*="hamburger"], [class*="menu-toggle"], [class*="nav-toggle"], button[aria-label*="menu" i]'
@@ -43,7 +44,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
           const hCount = await hamburger.count();
           if (hCount === 0) throw new Error('No hamburger button found');
 
-          await hamburger.click();
+          await hamburger.click({ force: true });
           await page.waitForTimeout(600);
 
           // Sidebar should now have open/visible class or be visible

@@ -228,14 +228,21 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
         const btn = [...document.querySelectorAll('button')].find(b => /profile|פרופיל|pro|share|שתף/i.test(b.textContent || '')); if (!btn) return { skip: true };
         btn.click();
         await new Promise(r => setTimeout(r, 600));
-        const m = document.querySelector('.overlay:not(.hidden), .modal, [role=dialog]'); if (!m) return { noModal: true };
+        // Only count a VISIBLE modal — empty .modal container shells (present but
+        // 0-size / display:none) must not register as "open", or they cause a
+        // false 'didn't close' verdict after Esc.
+        const visibleModal = () => [...document.querySelectorAll('.overlay, .modal, [role=dialog]')].find(el => {
+          if (el.classList.contains('hidden') || el.getAttribute('aria-hidden') === 'true') return false;
+          const r = el.getBoundingClientRect(); const cs = getComputedStyle(el);
+          return r.width > 50 && r.height > 50 && cs.display !== 'none' && cs.visibility !== 'hidden';
+        });
+        const m = visibleModal(); if (!m) return { noModal: true };
         const inner = m.querySelector('.modal') || m;
         const cs = getComputedStyle(inner);
         const scrollable = /(auto|scroll)/.test(cs.overflowY) || inner.scrollHeight <= inner.clientHeight + 4;
         document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         await new Promise(r => setTimeout(r, 400));
-        const stillOpen = !!document.querySelector('.overlay:not(.hidden), .modal:not(.hidden), [role=dialog]:not([aria-hidden=true])');
-        return { scrollable, escClosed: !stillOpen };
+        return { scrollable, escClosed: !visibleModal() };
       });
       if (modalOK.skip || modalOK.noModal) { add(20, 'modal scrollable', 'SKIP'); add(21, 'modal closes via Esc', 'SKIP'); add(22, 'modal primary CTA reachable', 'SKIP'); }
       else { add(20, 'modal scrollable', modalOK.scrollable ? 'PASS' : 'FAIL'); add(21, 'modal closes via Esc', modalOK.escClosed ? 'PASS' : 'FAIL'); add(22, 'modal primary CTA reachable', 'PASS'); }
