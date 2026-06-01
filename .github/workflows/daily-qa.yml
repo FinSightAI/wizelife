@@ -172,6 +172,11 @@ jobs:
         continue-on-error: true
         run: node qa/ai-health-check.js
 
+      - name: Tier 22 — Mobile integration (POSITIVE core-action flows)
+        id: mobileinteg
+        continue-on-error: true
+        run: node qa/mobile-integration.qa.js
+
       - name: Aggregate core fail counts
         id: core-fails
         run: |
@@ -206,6 +211,7 @@ jobs:
             ai-safety-report.md
             cloud-backup-roundtrip-report.md
             ai-health-report.md
+            mobile-integration-report.md
             /tmp/core-fails-total
           retention-days: 30
           if-no-files-found: warn
