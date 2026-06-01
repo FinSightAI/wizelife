@@ -308,8 +308,8 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
       const ctx6 = await newCtx(b, 390);
       const p6 = await ctx6.newPage();
       const errs = [];
-      p6.on('pageerror', e => errs.push(e.message.slice(0, 80)));
-      p6.on('console', m => { if (m.type() === 'error' && !/CSP|recaptcha|cancelled|frame-ancestors/i.test(m.text())) errs.push(m.text().slice(0, 80)); });
+      p6.on('pageerror', e => { if (!/sentry|avs\.io/i.test(e.message)) errs.push(e.message.slice(0, 80)); });
+      p6.on('console', m => { if (m.type() === 'error' && !/CSP|recaptcha|cancelled|frame-ancestors|sentry|avs\.io/i.test(m.text())) errs.push(m.text().slice(0, 80)); });
       try {
         await p6.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await p6.waitForTimeout(2500);

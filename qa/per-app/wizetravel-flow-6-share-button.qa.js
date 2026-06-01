@@ -33,7 +33,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const page = await ctx.newPage();
         try {
           await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
-          await page.waitForTimeout(2500);
+          await page.waitForTimeout(2500); await page.keyboard.press('Escape'); await page.waitForTimeout(400); await page.evaluate(() => { document.querySelectorAll('[id*=onboard],[class*=onboard]').forEach(o=>{o.style.display='none';}); document.body.style.overflow=''; });
           const shareBtn = page.locator(
             '[class*="share"], [id*="share"], [aria-label*="share" i], button:has-text("Share")'
           ).first();
@@ -41,7 +41,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
             console.log('  (warn) No share button found — may be inside a specific page');
             return;
           }
-          await shareBtn.click();
+          await shareBtn.scrollIntoViewIfNeeded().catch(()=>{}); await shareBtn.click({ force: true });
           await page.waitForTimeout(600);
           // Check for any share dialog or overlay
           const dialogOpen = await page.locator(

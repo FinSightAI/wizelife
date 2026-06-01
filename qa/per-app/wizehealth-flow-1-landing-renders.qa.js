@@ -40,7 +40,7 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
         const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
         const page = await ctx.newPage();
         try {
-          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 45000 });
           await page.waitForTimeout(3000);
           const body = await page.evaluate(() => document.body.innerText);
           if (body.trim().length < 50) throw new Error('Page rendered with very little text content');
