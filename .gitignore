@@ -3,3 +3,7 @@
 
 # Local Claude Code settings (may contain tokens)
 .claude/
+
+# QA-generated reports (regenerated each run)
+/*-report.md
+reports/
