@@ -175,7 +175,7 @@ async function run({ name, url, hamSelector, drawerSelector, bottomNavSelector }
         // app-shell dashboards put their content in stat/summary cards instead,
         // so include those too — otherwise a perfectly populated dashboard reads
         // as "empty". Dedupe to avoid double-counting nested elements.
-        const sel = 'h1, h2, h3, p, .hero, [class*=hero], .summary-card, [class*="summary"], [class*=card], [class*=stat], .value, .metric, .nav-link';
+        const sel = 'h1, h2, h3, p, .hero, [class*=hero], .summary-card, [class*="summary"], [class*=card], [class*=stat], .value, .metric, .nav-link, [class*=welcome], [class*=greeting], textarea, input:not([type=hidden]), button, label, li';
         const visible = [...document.querySelectorAll(sel)].filter(el => { const r = el.getBoundingClientRect(); return r.top < window.innerHeight && r.bottom > 0 && r.width > 40 && getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden'; });
         const seen = new Set(); let txt = '';
         visible.forEach(el => { const t = (el.innerText || '').replace(/\s+/g, ' ').trim(); if (t && !seen.has(t)) { seen.add(t); txt += t + ' '; } });

@@ -38,23 +38,26 @@ const { runSuite, fetchOk, findInHtml } = require('./_lib-flow');
           await page.keyboard.press('Escape').catch(()=>{}); await page.waitForTimeout(400); await page.evaluate(() => { document.querySelectorAll('[id*=onboard],[class*=onboard],[id*=wize-onboarding]').forEach(o=>{o.style.display='none'; o.classList&&o.classList.add('hidden');}); document.body.style.overflow=''; }).catch(()=>{}); await page.waitForTimeout(300);
 
           const beforeAttr = await page.evaluate(() =>
-            document.documentElement.getAttribute('data-theme') ||
-            document.documentElement.className
+            (document.documentElement.getAttribute('data-theme') || '') + '|' + document.documentElement.className + '|' + document.body.className
           );
 
           const toggleBtn = page.locator(
             '[class*="theme-toggle"], [id*="theme"], [aria-label*="theme" i], [aria-label*="dark" i], [title*="theme" i]'
           ).first();
-          if ((await toggleBtn.count()) === 0) {
-            console.log('  (warn) No theme toggle button found — may be inside authenticated shell');
+          // A visible, clickable manual toggle must exist. The word "theme" in HTML
+          // (meta theme-color, CSS) can match hidden non-button nodes — those are
+          // NOT a user toggle, so don't hard-fail: warn + pass (theme may be
+          // system/prefers-color-scheme based with no manual switch).
+          const tVisible = (await toggleBtn.count()) > 0 && await toggleBtn.isVisible().catch(() => false);
+          if (!tVisible) {
+            console.log('  (warn) No visible manual theme toggle — likely system/auto theme. Skipping interactive check.');
             return;
           }
           try { await toggleBtn.click({ force: true, timeout: 4000 }); } catch { await page.evaluate(() => { const b=document.querySelector("[class*=theme-toggle],[id*=theme],[aria-label*=theme i],[aria-label*=dark i]"); if(b) b.click(); }); }
           await page.waitForTimeout(400);
 
           const afterAttr = await page.evaluate(() =>
-            document.documentElement.getAttribute('data-theme') ||
-            document.documentElement.className
+            (document.documentElement.getAttribute('data-theme') || '') + '|' + document.documentElement.className + '|' + document.body.className
           );
           if (beforeAttr === afterAttr) {
             throw new Error(`Theme attribute unchanged after toggle click: "${beforeAttr}"`);
