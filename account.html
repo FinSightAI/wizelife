@@ -1018,24 +1018,16 @@ async function deleteMyAccount() {
  const typed = prompt("Type DELETE (uppercase) to confirm:");
  if (typed !== "DELETE") { alert("Deletion cancelled."); return; }
  try {
- // 1. Delete Firestore user doc + known subcollections
- for (const sub of ["disclaimers", "preferences", "feedback"]) {
- try {
- const snap = await wlDb.collection("users").doc(user.uid).collection(sub).get();
- await Promise.all(snap.docs.map(d => d.ref.delete()));
- } catch {}
- }
- await wlDb.collection("users").doc(user.uid).delete().catch(() => {});
- // 2. Try to delete Firebase Auth account (requires recent sign-in; if it fails, prompt re-auth)
- try {
- await user.delete();
- } catch (e) {
- // Re-auth required for deletion
- alert("For security, please sign out and back in, then try delete again. Your Firestore data is already gone.");
- await wlAuth.signOut();
- window.location.href = "auth.html";
- return;
- }
+ // 1. Server-side COMPLETE deletion via the deleteUserAccount Cloud Function:
+ //    recursiveDelete on users/{uid} (every subcollection — context, cross_app,
+ //    checkdeal_deals, consent, disclaimers, …) + the userBackups/{uid} mirror
+ //    + the Firebase Auth account. Replaces the old client delete that cleared
+ //    only 3 subcollections and left the rest behind. Admin-side delete also
+ //    avoids the recent-re-auth requirement that user.delete() needed.
+ const fns = await window._wlLazy.functions();
+ await fns.httpsCallable("deleteUserAccount")({});
+ // 2. End the (now-deleted) session.
+ try { await wlAuth.signOut(); } catch {}
  // 3. Clear all wizelife.ai localStorage
  ["wl_token", "wl_sso", "wl_plan", "wl_nickname", "wl_access_code", "wl_lang", "wl_theme"]
  .forEach(k => localStorage.removeItem(k));
