@@ -58,9 +58,14 @@ async function scanPage(page, url, lang) {
                 if (!p) return NodeFilter.FILTER_REJECT;
                 const tn = p.tagName;
                 if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'HEAD'].includes(tn)) return NodeFilter.FILTER_REJECT;
-                // Skip hidden elements
+                // Skip hidden elements (immediate style…)
                 const cs = getComputedStyle(p);
                 if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return NodeFilter.FILTER_REJECT;
+                // …and skip text whose ANCESTOR is hidden (a display:none ancestor
+                // leaves the child with display:block but no rendered box). Without
+                // this, hidden/dead DOM (e.g. a disabled onboarding overlay) leaks
+                // as a false positive even though users never see it.
+                if (typeof p.getClientRects === 'function' && p.getClientRects().length === 0) return NodeFilter.FILTER_REJECT;
                 return NodeFilter.FILTER_ACCEPT;
             },
         });
