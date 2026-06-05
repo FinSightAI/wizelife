@@ -26,7 +26,7 @@ const add  = (l) => out.push(l);
 const pass = (msg) => { passes++; add(`- ✅ ${msg}`); };
 const fail = (msg, fix, who) => { actions.push({severity:'fail',who:who||'claude',msg,fix}); add(`- ❌ ${msg}`); };
 
-const post = (path, body) => new Promise((resolve) => {
+const post = (path, body, extraHeaders) => new Promise((resolve) => {
     const data = JSON.stringify(body || {});
     const u = new URL(BASE + path);
     const req = https.request({
@@ -36,6 +36,9 @@ const post = (path, body) => new Promise((resolve) => {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': Buffer.byteLength(data),
+            // Caller-supplied headers (e.g. an allowed Origin so origin-gated
+            // endpoints like captureLeadEmail reach their validation path).
+            ...(extraHeaders || {}),
         },
     }, (r) => {
         let chunks = '';
