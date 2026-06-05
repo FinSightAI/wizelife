@@ -1,0 +1,74 @@
+# Continuous liveness monitor — fills the gap between the once-a-day daily-qa
+# runs. Pings each deployed app every ~15 min and opens/updates a single alert
+# issue if any is down. NOTE: this is a liveness check (HTTP 200), not a deep
+# journey test — daily-qa still owns functional depth.
+#
+# For lower latency / SMS alerts, an external monitor (UptimeRobot, Cloudflare
+# Health Checks) is recommended in addition; this workflow needs no third party.
+name: uptime-monitor
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # every 15 minutes (GitHub may delay under load)
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe deployed apps
+        id: probe
+        run: |
+          set +e
+          urls=(
+            "https://wizelife.ai/"
+            "https://finsightai.github.io/finsight/"
+            "https://tax.wizelife.ai/advisor"
+            "https://check-deal.vercel.app/"
+            "https://health.wizelife.ai/"
+            "https://nodedai.streamlit.app/"
+          )
+          down=""
+          for u in "${urls[@]}"; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 -L "$u")
+            echo "$code  $u"
+            if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then
+              # one retry to avoid a transient blip paging us
+              sleep 10
+              code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 -L "$u")
+              [ "$code" -lt 200 ] || [ "$code" -ge 400 ] && down="$down- $u → HTTP $code\n"
+            fi
+          done
+          if [ -n "$down" ]; then
+            echo "down<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$down" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Alert on outage
+        if: steps.probe.outputs.down != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `🔴 Uptime monitor detected an outage:\n\n${process.env.DOWN}\n\n_${new Date().toISOString()}_`;
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'uptime-alert',
+            });
+            if (issues.length) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issues[0].number, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: '🔴 Uptime alert', labels: ['uptime-alert'], body,
+              });
+            }
+        env:
+          DOWN: ${{ steps.probe.outputs.down }}
