@@ -97,16 +97,17 @@ async function fresh(browser, viewport = { width: 1280, height: 800 }) {
         } finally { await page.close(); await ctx.close(); }
     });
 
-    await step('20 countries listed (we added 8 in last wave)', async () => {
+    await step('Supported country flags present (BR/IL/US)', async () => {
         const { ctx, page } = await fresh(browser);
         try {
             const countries = await page.evaluate(() => {
-                // Count unique country codes (flag emojis or country names)
+                // Count unique flag emoji. WizeDeal supports 3 deal countries
+                // (Brazil/Israel/USA — see src/lib/constants/countries.ts).
                 const flagRegex = /[\u{1F1E6}-\u{1F1FF}]{2}/gu;
                 const flags = [...new Set((document.body.innerText.match(flagRegex) || []))];
                 return flags.length;
             });
-            if (countries < 15) warn(`Only ${countries} country flags detected (expected ≥15)`, 'verify list rendered');
+            if (countries < 3) warn(`Only ${countries} country flags detected (expected the 3 supported: BR/IL/US)`, 'verify list rendered');
         } finally { await page.close(); await ctx.close(); }
     });
 

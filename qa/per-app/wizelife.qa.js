@@ -48,7 +48,8 @@ const { step, warn, finalize } = makeReporter('WizeLife');
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         const r = await page.goto('https://wizelife.ai/sitemap.xml', { timeout: 10000 });
-        const body = await page.evaluate(() => document.body.innerText);
+        // sitemap.xml is XML — document.body is null, so read the raw response body.
+        const body = r ? await r.text() : '';
         await page.close(); await ctx.close();
         if (!r || r.status() !== 200) throw new Error(`HTTP ${r ? r.status() : 0}`);
         if (!/<urlset|<sitemapindex/.test(body)) throw new Error('not a sitemap');
