@@ -177,6 +177,14 @@ jobs:
         continue-on-error: true
         run: node qa/mobile-integration.qa.js
 
+      - name: Tier 23 — AI authed-smoke (POSITIVE: each AI alive, on-topic, disclaims)
+        id: aismoke
+        continue-on-error: true
+        env:
+          QA_EMAIL: ${{ secrets.QA_EMAIL }}
+          QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+        run: node qa/ai-authed-smoke.js
+
       - name: Aggregate core fail counts
         id: core-fails
         run: |
@@ -190,7 +198,7 @@ jobs:
           # Positive/health tiers (15-22): a failed step counts toward the ALERT so a
           # silent outage (e.g. dead AI → ai-health fail, broken core flow → mobile-integration fail) emails us.
           new_fails=0
-          for o in "${{ steps.aihealth.outcome }}" "${{ steps.mobileinteg.outcome }}" "${{ steps.drift.outcome }}" "${{ steps.jsonld.outcome }}" "${{ steps.calcfuzz.outcome }}"; do
+          for o in "${{ steps.aihealth.outcome }}" "${{ steps.aismoke.outcome }}" "${{ steps.mobileinteg.outcome }}" "${{ steps.drift.outcome }}" "${{ steps.jsonld.outcome }}" "${{ steps.calcfuzz.outcome }}"; do
             [ "$o" = "failure" ] && new_fails=$((new_fails+1))
           done
           total=$((comp_fails + sec_fails + runtime_fails + handler_fails + api_fails + extended_fails + static_extra_fails + new_fails))
@@ -217,6 +225,7 @@ jobs:
             ai-safety-report.md
             cloud-backup-roundtrip-report.md
             ai-health-report.md
+            ai-authed-smoke-report.md
             mobile-integration-report.md
             /tmp/core-fails-total
           retention-days: 30
