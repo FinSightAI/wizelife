@@ -235,6 +235,23 @@ test('All countries: lastVerified field present on Israel-relevant peers', () =>
   });
 });
 
+test('Verified countries: tax data is not stale (lastVerified within 15 months)', () => {
+  // Brackets change each tax year. Data older than ~a full tax year risks giving
+  // outdated advice — this forces an annual re-verification of the headline
+  // countries. (Fires by design once data ages past the threshold.)
+  const now = new Date();
+  const nowMonths = now.getFullYear() * 12 + (now.getMonth() + 1);
+  const STALE_MONTHS = 15;
+  ['IL', 'PT', 'CY', 'IT', 'US', 'DE', 'GB', 'FR'].forEach(code => {
+    const lv = TAX_DATA[code].lastVerified; // 'YYYY-MM'
+    const m = /^(\d{4})-(\d{2})$/.exec(lv || '');
+    assert.ok(m, `${code}: lastVerified '${lv}' not in YYYY-MM form`);
+    const age = nowMonths - (Number(m[1]) * 12 + Number(m[2]));
+    assert.ok(age <= STALE_MONTHS,
+      `${code}: tax data is ${age} months old (lastVerified ${lv}) — re-verify brackets against current-year sources`);
+  });
+});
+
 test('TAX_META: matches expected shape', () => {
   assert.equal(TAX_META.validYear, 2026, 'validYear should be 2026 after today\'s update');
   assert.ok(Array.isArray(TAX_META.sources) && TAX_META.sources.length > 0, 'sources missing');
