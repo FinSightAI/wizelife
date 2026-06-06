@@ -255,7 +255,32 @@ async function findOnscreenDrawer(page) {
 
     // --- (b) Hamburger does not overlap drawer's top content area ---
     try {
-      const overlapResult = await page.evaluate(({ hamSelectors, dRect }) => {
+      const overlapResult = await page.evaluate(({ hamSelectors, dRect, drawerId, drawerCls }) => {
+        // Measure overlap against the drawer's FIRST VISIBLE content item (a real
+        // nav link/button), NOT the panel container edge. The container's top
+        // (dRect.top) includes empty top padding/header space, so a hamburger
+        // sitting over that padding was wrongly flagged even when the first real
+        // item sits well below it (e.g. WizeMoney: item at y109, ham ends y84).
+        let drawerEl = drawerId ? document.getElementById(drawerId) : null;
+        if (!drawerEl && drawerCls) {
+          const sel = '.' + drawerCls.trim().split(/\s+/).filter(Boolean).join('.');
+          drawerEl = Array.from(document.querySelectorAll(sel)).find(el => {
+            const r = el.getBoundingClientRect(); return r.width > 50 && r.height > 100;
+          }) || null;
+        }
+        let itemRect = null;
+        if (drawerEl) {
+          const items = Array.from(drawerEl.querySelectorAll('a,button,[role="button"],.nav-item,.sidebar-item,.sidebar-link'))
+            .map(el => el.getBoundingClientRect())
+            .filter(r => r.width > 2 && r.height > 2 && r.bottom > 0 && r.top < window.innerHeight)
+            .sort((a, b) => a.top - b.top);
+          if (items.length) itemRect = items[0];
+        }
+        // Fall back to the container top-80 band only if no real item was found.
+        const topArea = itemRect
+          ? { left: itemRect.left, right: itemRect.right, top: itemRect.top, bottom: itemRect.bottom }
+          : { left: dRect.left, right: dRect.left + dRect.width, top: dRect.top, bottom: dRect.top + 80 };
+
         const hams = [];
         for (const sel of hamSelectors) {
           const el = document.querySelector(sel);
@@ -270,10 +295,6 @@ async function findOnscreenDrawer(page) {
           if (cs.display === 'none' || cs.visibility === 'hidden') continue;
           const hRect = ham.getBoundingClientRect();
           if (hRect.width === 0) continue;
-          const topArea = {
-            left: dRect.left, right: dRect.left + dRect.width,
-            top: dRect.top, bottom: dRect.top + 80,
-          };
           if (
             hRect.right  > topArea.left  && hRect.left   < topArea.right &&
             hRect.bottom > topArea.top   && hRect.top    < topArea.bottom
@@ -281,12 +302,13 @@ async function findOnscreenDrawer(page) {
             return {
               overlap: true,
               hamRect: { l: Math.round(hRect.left), t: Math.round(hRect.top), r: Math.round(hRect.right), b: Math.round(hRect.bottom) },
-              drawerTop: Math.round(dRect.top),
+              drawerTop: Math.round(topArea.top),
+              measuredItem: !!itemRect,
             };
           }
         }
         return { overlap: false };
-      }, { hamSelectors: HAM_SELECTORS, dRect });
+      }, { hamSelectors: HAM_SELECTORS, dRect, drawerId: drawer.id, drawerCls: drawer.cls });
 
       if (overlapResult && overlapResult.overlap) {
         probs.push(
