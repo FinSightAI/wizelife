@@ -67,11 +67,20 @@ function makeReporter(appName) {
 
 // Login flow shared by every app that requires auth
 async function fillAndLogin(page, email, password) {
-    await page.waitForSelector('input[type=email], #email', { timeout: 15000 });
-    await page.fill('input[type=email], #email', email);
-    await page.fill('input[type=password], #password', password);
+    // auth.html has BOTH a login form (#loginEmail/#loginPassword) and a signup
+    // form (#signupEmail/...). The old `input[type=email]` selector matched both
+    // → Playwright strict-mode violation → fill threw → login never fired →
+    // waitForURL(dashboard) timed out (false-positive in sso-bridge + paywall).
+    // Target the login fields specifically (.first() as a safety net) and give
+    // the page a beat to wire up Firebase auth before submitting.
+    const emailInput = page.locator('#loginEmail, input[type=email]').first();
+    const passInput  = page.locator('#loginPassword, input[type=password]').first();
+    await emailInput.waitFor({ state: 'visible', timeout: 15000 });
+    await page.waitForTimeout(800); // let Firebase auth init wire emailLogin()
+    await emailInput.fill(email);
+    await passInput.fill(password);
     await page.locator(
-        'button:has-text("Sign In"), button:has-text("Sign in"), button:has-text("התחבר"), button#loginBtn, button[type=submit]'
+        'button#loginBtn, button:has-text("Sign In"), button:has-text("Sign in"), button:has-text("התחבר"), button[type=submit]'
     ).first().click({ timeout: 5000 });
 }
 
