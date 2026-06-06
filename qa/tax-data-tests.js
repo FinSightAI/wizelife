@@ -358,3 +358,31 @@ test('Romania: high combined social burden (~35%)', () => {
   const socialEffective = (r.socialSec + r.health) / (r.grossLocal) * 100;
   assert.ok(socialEffective > 25, `RO social burden should be high (~35%), got ${socialEffective.toFixed(1)}%`);
 });
+
+// ─── REGIMES golden anchors — full data-table lock ────────────────────────
+// The behavioral regime tests above prove "beats standard"; these lock the
+// EXACT documented headline figures for the FULL table (rates, durations,
+// caps), so a typo that a behavioral test wouldn't catch — e.g. Beckham
+// durationYrs 6→16, or Greece flatRate 7→17 — fails here before it misleads a
+// user on a /p/relocate-*.html page. Sources: ES Art.93 LIRPF · GR L.4646/2019
+// art.5A · PT IFICI · CY 50% non-dom · IT D.Lgs 209/2023 · GE Small Business ·
+// MT non-dom · IL Income Tax Ordinance §14.
+test('REGIMES: every relocation regime matches its exact documented headline', () => {
+  const want = {
+    'PT.nhr':                { type: 'flat-rate',      flatRate: 20, durationYrs: 10 },
+    'ES.beckham':            { type: 'flat-rate',      flatRate: 24, durationYrs: 6, capEUR: 600000 },
+    'GR.olim':               { type: 'flat-rate',      flatRate: 7,  durationYrs: 15 },
+    'GE.smallbiz':           { type: 'flat-rate',      flatRate: 1,  capUSD: 200000 },
+    'CY.nondom':             { type: 'exemption-pct',  exemptionPct: 50, durationYrs: 17, minSalaryEUR: 55000 },
+    'IT.impatriati':         { type: 'exemption-pct',  exemptionPct: 50, durationYrs: 5,  capEUR: 600000 },
+    'MT.nondom':             { type: 'min-tax',        minTaxEUR: 5000 },
+    'IL.toshav-hozer-vatik': { type: 'foreign-exempt', durationYrs: 10 },
+  };
+  for (const [key, fields] of Object.entries(want)) {
+    const reg = REGIMES[key];
+    assert.ok(reg, `REGIMES is missing "${key}" — a relocation landing page depends on it`);
+    for (const [f, v] of Object.entries(fields)) {
+      assert.strictEqual(reg[f], v, `REGIMES["${key}"].${f}: expected ${v}, got ${reg[f]}`);
+    }
+  }
+});
