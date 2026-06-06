@@ -44,7 +44,7 @@ jobs:
 
       - name: Wake sleeping services
         run: |
-          for url in https://master-backend-79jx.onrender.com/health https://vitara.onrender.com/; do
+          for url in https://wizetax-backend-3ol2retcla-uc.a.run.app/health https://wizehealth-3ol2retcla-uc.a.run.app/; do
             for i in 1 2 3; do
               if curl -fsS --max-time 60 "$url" > /dev/null; then break; fi
               echo "warming $url (attempt $i)"
@@ -248,7 +248,7 @@ jobs:
 
       - name: Wake sleeping services
         run: |
-          for url in https://master-backend-79jx.onrender.com/health https://vitara.onrender.com/; do
+          for url in https://wizetax-backend-3ol2retcla-uc.a.run.app/health https://wizehealth-3ol2retcla-uc.a.run.app/; do
             for i in 1 2 3; do
               if curl -fsS --max-time 60 "$url" > /dev/null; then break; fi
               echo "warming $url (attempt $i)"

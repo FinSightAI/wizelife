@@ -79,10 +79,10 @@ authenticates through a unified SSO bridge.
 | App | Frontend | Backend | Hosting (FE) | Hosting (BE) |
 |---|---|---|---|---|
 | WizeLife | Vanilla HTML/CSS/JS | Firebase | GitHub Pages | Firebase |
-| WizeMoney | Vanilla HTML/CSS/JS (PWA) | Firebase + Render | GitHub Pages | Firebase + Render |
-| WizeTax | Next.js 15 | FastAPI (Python) | Vercel | Render |
-| WizeTravel | Next.js 15 | FastAPI (Python) | Vercel | Render (separate from Tax) |
-| WizeHealth | Vanilla HTML/CSS/JS | Node.js (Express) | Render | Render (same node) |
+| WizeMoney | Vanilla HTML/CSS/JS (PWA) | Firebase + Cloud Run | GitHub Pages | Firebase + Cloud Run |
+| WizeTax | Next.js 15 | FastAPI (Python) | Vercel | Cloud Run (`wizetax-backend`) |
+| WizeTravel | Next.js 15 | FastAPI (Python) | Vercel | HF Space / Streamlit |
+| WizeHealth | Vanilla HTML/CSS/JS | Node.js (Express) | Cloud Run | Cloud Run (`wizehealth`, same node) |
 | WizeDeal | Next.js 15 | Vercel API routes | Vercel | Vercel |
 
 ---
@@ -111,8 +111,8 @@ authenticates through a unified SSO bridge.
 - **Cold start:** Cloud Run scales to zero (~2–8s cold start). Mitigated by GitHub Actions keep-alive pinging `/health` (now repointed to Cloud Run).
 
 ### 4.2 `wizehealth` (was `vitara`) — WizeHealth Node.js server
-- **URL:** `https://wizehealth-3ol2retcla-uc.a.run.app` (Cloud Run service `wizehealth`; old Render `vitara.onrender.com` is suspended)
-- **Repo:** `finsightai/vitara`
+- **URL:** `https://wizehealth-3ol2retcla-uc.a.run.app` (Cloud Run service `wizehealth`). Production `health.wizelife.ai` resolves here (Google Frontend). ⚠️ old Render `vitara.onrender.com` is NOT suspended — it's a live orphan (was kept warm by the daily-QA keepalive until repointed 2026-06-06); **delete the Render service** to remove the open Gemini-keyed endpoint.
+- **Repo:** `finsightai/vitara` (private since 2026-06-06)
 - **Endpoints:** `/api/chat` (streaming), `/api/auth/login`, `/api/auth/check`, `/api/config`, file upload
 - **Auth:** Bearer token (Firebase ID token via SSO) → server queries Firestore for plan
 - **Plan limits:** free 5/day, pro 20/day, yolo 40/day (per `AI_DAILY_LIMITS`)
