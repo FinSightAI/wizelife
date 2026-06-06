@@ -236,7 +236,7 @@ async function tier11_ThirdParty() {
     const probes = [
         { name: 'Yahoo Finance (AAPL)',    url: 'https://query1.finance.yahoo.com/v8/finance/chart/AAPL?range=1d&interval=1d', expectKey: 'chart' },
         { name: 'Open-Meteo weather',      url: 'https://api.open-meteo.com/v1/forecast?latitude=32&longitude=34&current=temperature_2m', expectKey: 'current' },
-        { name: 'Render backend health',   url: 'https://master-backend-79jx.onrender.com/health', expectKey: 'status' },
+        { name: 'Cloud Run backend health', url: 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health', expectKey: 'status' },
     ];
     const out = [];
     for (const p of probes) {
@@ -255,8 +255,8 @@ async function tier11_ThirdParty() {
 }
 
 async function tier12_ColdStart() {
-    // Probe Render endpoints multiple times, measure first vs warm latency
-    const url = 'https://master-backend-79jx.onrender.com/health';
+    // Probe Cloud Run endpoints multiple times, measure first vs warm latency
+    const url = 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health';
     const times = [];
     for (let i = 0; i < 3; i++) {
         const t0 = Date.now();

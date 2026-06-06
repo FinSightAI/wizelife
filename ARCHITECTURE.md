@@ -97,7 +97,7 @@ authenticates through a unified SSO bridge.
 > URL on the correct Vercel project + redeploy with build cache OFF.
 
 ### 4.1 `wizetax-backend` (was `master-backend`) — shared FastAPI for Tax + Money advisor
-- **URL:** `https://wizetax-backend-3ol2retcla-uc.a.run.app` (Cloud Run service `wizetax-backend`; old Render `master-backend-79jx.onrender.com` is suspended)
+- **URL:** `https://wizetax-backend-3ol2retcla-uc.a.run.app` (Cloud Run service `wizetax-backend`; old Render `master-backend-79jx.onrender.com` is dead/503)
 - **Repo:** `FinSightAI/master`, path `tax master/backend/`
 - **Endpoints:**
   - `GET /health` — health probe (returns `{status:"ok",model:"gemini"}`)
@@ -452,7 +452,7 @@ Deploy via: `firebase deploy --only firestore:rules --project finzilla-7f1f9`
 
 | Setting | Value |
 |---|---|
-| Production URL | https://health.wizelife.ai (backend Cloud Run `wizehealth`; old `vitara.onrender.com` suspended) |
+| Production URL | https://health.wizelife.ai (backend Cloud Run `wizehealth`; old `vitara.onrender.com` = live orphan, delete the Render service) |
 | Hosting | Render (single Node.js service) |
 | Repo | `finsightai/vitara` |
 | Local path | `RAMBAM/` |

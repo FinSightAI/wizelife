@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
 const { makeReporter } = require('../shared-lib/helpers');
 
 const BASE = 'https://tax.wizelife.ai';
-const BACKEND = 'https://master-backend-79jx.onrender.com';
+const BACKEND = 'https://wizetax-backend-3ol2retcla-uc.a.run.app';
 const { step, warn, finalize } = makeReporter('WizeTax-SecurityV2');
 
 async function fresh(browser, path = '/advisor') {

@@ -301,7 +301,7 @@ function requireAuth(redirectTo = "auth.html") {
 function redirectIfLoggedIn(redirectTo = "dashboard.html") {
     const SAFE_HOSTS = [
         'finsightai.github.io', 'check-deal.vercel.app', 'mastermove.vercel.app',
-        'wizetravel.hf.space', 'ofirofir-wizetravel.hf.space', 'vitara.onrender.com',
+        'wizetravel.hf.space', 'ofirofir-wizetravel.hf.space',
         'wizelife.ai', 'tax.wizelife.ai', 'deal.wizelife.ai', 'travel.wizelife.ai',
         'health.wizelife.ai', 'money.wizelife.ai',
     ];
