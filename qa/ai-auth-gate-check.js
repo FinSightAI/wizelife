@@ -46,5 +46,30 @@ const ENDPOINTS = [
       }
     });
   }
+  // ── SSO token-exchange guard ──────────────────────────────────────────────
+  // issueCustomToken must NOT mint a session for a forged/expired ID token —
+  // that would let anyone impersonate any user across all apps. A `customToken`
+  // in the response to bad input is a critical breach.
+  const ICT = 'https://us-central1-finzilla-7f1f9.cloudfunctions.net/issueCustomToken';
+  const postICT = async (data, ms) => {
+    const r = await fetch(ICT, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data }), signal: AbortSignal.timeout(ms),
+    });
+    return { status: r.status, body: await r.text() };
+  };
+  await step('issueCustomToken rejects a forged ID token (no session minted)', async () => {
+    const { status, body } = await postICT({ idToken: 'garbage.forged.token' }, 30000);
+    if (status >= 200 && status < 300 && /customToken/.test(body)) {
+      throw new Error('FORGED TOKEN ACCEPTED — issueCustomToken minted a session for a fake idToken!');
+    }
+  });
+  await step('issueCustomToken rejects empty input (no token minted)', async () => {
+    const { status, body } = await postICT({}, 20000);
+    if (status >= 200 && status < 300 && /customToken/.test(body)) {
+      throw new Error('issueCustomToken returned a token for empty input');
+    }
+  });
+
   finalize('ai-auth-gate-report.md');
 })().catch(e => { console.error('Fatal:', e); process.exit(1); });
