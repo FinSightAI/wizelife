@@ -1,10 +1,16 @@
-# 🚨 I18n-Leak action items — 2026-06-05
+# 🚨 I18n-Leak action items — 2026-06-02
 
-✅ **51 checks passed — I18n-Leak clean.**
+**3 failure(s), 0 warning(s), 48 pass.**
+
+## For Claude to fix:
+- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "רגע אחד להתחיל — בחר מה להוסיף ראשון:", "הוסף חשבון בנק", "רשום את יתרות החשבונות שלך")
+- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "רגע אחד להתחיל — בחר מה להוסיף ראשון:", "הוסף חשבון בנק", "רשום את יתרות החשבונות שלך")
+- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "רגע אחד להתחיל — בחר מה להוסיף ראשון:", "הוסף חשבון בנק", "רשום את יתרות החשבונות שלך")
+
 ---
 _<details><summary>Full detail</summary>_
 
-# I18n-Leak QA — 2026-06-05
+# I18n-Leak QA — 2026-06-02
 
 - ✅ https://wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/ [PT] — no Hebrew leaks
@@ -42,9 +48,9 @@ _<details><summary>Full detail</summary>_
 - ✅ https://wizelife.ai/health.html [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [ES] — no Hebrew leaks
-- ✅ https://money.wizelife.ai/ [EN] — no Hebrew leaks
-- ✅ https://money.wizelife.ai/ [PT] — no Hebrew leaks
-- ✅ https://money.wizelife.ai/ [ES] — no Hebrew leaks
+- ❌ https://money.wizelife.ai/ [EN] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "רגע אחד להתחיל — בחר מה להוסיף ראשון:", "הוסף חשבון בנק", "רשום את יתרות החשבונות שלך")
+- ❌ https://money.wizelife.ai/ [PT] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "רגע אחד להתחיל — בחר מה להוסיף ראשון:", "הוסף חשבון בנק", "רשום את יתרות החשבונות שלך")
+- ❌ https://money.wizelife.ai/ [ES] — no Hebrew leaks — 9 Hebrew strings leaked (first 3: "רגע אחד להתחיל — בחר מה להוסיף ראשון:", "הוסף חשבון בנק", "רשום את יתרות החשבונות שלך")
 - ✅ https://tax.wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://tax.wizelife.ai/ [PT] — no Hebrew leaks
 - ✅ https://tax.wizelife.ai/ [ES] — no Hebrew leaks
