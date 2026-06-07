@@ -167,7 +167,7 @@ jobs:
         continue-on-error: true
         run: node qa/cloud-backup-roundtrip-check.js
 
-      - name: Tier 21 — AI health (POSITIVE: AI returns correct results)
+      - name: "Tier 21 — AI health (POSITIVE: AI returns correct results)"
         id: aihealth
         continue-on-error: true
         run: node qa/ai-health-check.js
@@ -177,7 +177,7 @@ jobs:
         continue-on-error: true
         run: node qa/mobile-integration.qa.js
 
-      - name: Tier 23 — AI authed-smoke (POSITIVE: each AI alive, on-topic, disclaims)
+      - name: "Tier 23 — AI authed-smoke (POSITIVE: each AI alive, on-topic, disclaims)"
         id: aismoke
         continue-on-error: true
         env:
