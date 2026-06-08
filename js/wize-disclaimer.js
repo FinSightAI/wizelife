@@ -228,6 +228,52 @@
         decline: 'Salir',
       },
     },
+    travel: {
+      he: {
+        title: '⚠️ לפני שמשתמשים בתכנון הטיול',
+        intro: 'WizeTravel הוא <strong>כלי תכנון למידע בלבד</strong> — לא סוכנות נסיעות ולא ייעוץ.',
+        bullets: [
+          'מחירים, זמינות וזמני טיסה משתנים — אמת תמיד מול חברת התעופה / הספק.',
+          'דרישות ויזה, דרכון ובריאות הן באחריותך — בדוק מול הרשויות הרשמיות.',
+          'AI עלול לטעות ביעדים, מחירים ופרטי מסלול.',
+        ],
+        accept: 'הבנתי, ממשיך',
+        decline: 'יציאה',
+      },
+      en: {
+        title: '⚠️ Before Using Trip Planning',
+        intro: 'WizeTravel is an <strong>information-only planning tool</strong> — not a travel agency or advisor.',
+        bullets: [
+          'Prices, availability and flight times change — always verify with the airline / provider.',
+          'Visa, passport and health requirements are your responsibility — check official authorities.',
+          'AI can make mistakes about destinations, prices and itinerary details.',
+        ],
+        accept: 'I understand and continue',
+        decline: 'Exit',
+      },
+      pt: {
+        title: '⚠️ Antes de usar o Planejamento de Viagem',
+        intro: 'WizeTravel é uma <strong>ferramenta de planejamento apenas informativa</strong> — não é agência de viagens nem consultoria.',
+        bullets: [
+          'Preços, disponibilidade e horários de voo mudam — verifique sempre com a companhia aérea / fornecedor.',
+          'Requisitos de visto, passaporte e saúde são sua responsabilidade — consulte as autoridades oficiais.',
+          'A IA pode errar sobre destinos, preços e detalhes do itinerário.',
+        ],
+        accept: 'Entendi e continuo',
+        decline: 'Sair',
+      },
+      es: {
+        title: '⚠️ Antes de usar la Planificación de Viaje',
+        intro: 'WizeTravel es una <strong>herramienta de planificación solo informativa</strong> — no es una agencia de viajes ni asesoría.',
+        bullets: [
+          'Los precios, la disponibilidad y los horarios de vuelo cambian — verifica siempre con la aerolínea / proveedor.',
+          'Los requisitos de visa, pasaporte y salud son tu responsabilidad — consulta a las autoridades oficiales.',
+          'La IA puede equivocarse con destinos, precios y detalles del itinerario.',
+        ],
+        accept: 'Entiendo y continúo',
+        decline: 'Salir',
+      },
+    },
   };
 
   function getLang() {
