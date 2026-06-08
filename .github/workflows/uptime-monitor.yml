@@ -34,17 +34,23 @@ jobs:
             "https://tax.wizelife.ai/advisor"
             "https://check-deal.vercel.app/"
             "https://health.wizelife.ai/"
-            "https://nodedai.streamlit.app/"
+            "https://travel.wizelife.ai/"
           )
           down=""
+          # Only a real outage pages us: connection failure (000) or server error
+          # (5xx). Cloudflare-proxied apps legitimately return 403 to the bare
+          # curl UA — treating 4xx as "down" opened a false-outage issue + email
+          # every 15 min. Send a browser-like UA so WAFs don't reject us.
+          UA="Mozilla/5.0 (compatible; WizeLifeUptime/1.0)"
+          is_down() { [ "$1" = "000" ] || [ "$1" -ge 500 ]; }
           for u in "${urls[@]}"; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 -L "$u")
+            code=$(curl -s -o /dev/null -A "$UA" -w "%{http_code}" --max-time 30 -L "$u")
             echo "$code  $u"
-            if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then
+            if is_down "$code"; then
               # one retry to avoid a transient blip paging us
               sleep 10
-              code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 -L "$u")
-              [ "$code" -lt 200 ] || [ "$code" -ge 400 ] && down="$down- $u → HTTP $code\n"
+              code=$(curl -s -o /dev/null -A "$UA" -w "%{http_code}" --max-time 30 -L "$u")
+              is_down "$code" && down="$down- $u → HTTP $code\n"
             fi
           done
           if [ -n "$down" ]; then

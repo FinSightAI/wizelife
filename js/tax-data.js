@@ -92,9 +92,14 @@ const TAX_DATA = {
     flag: '🇩🇪', name: 'גרמניה', currency: 'EUR', usdRate: 1.08,
     brackets: [
       { upTo: 12_348,   rate: 0  },            // Grundfreibetrag 2026 (was 12,096)
-      { upTo: 68_480,   rate: 42 },            // progressive 14%→42% simplified to midpoint
-      { upTo: 277_826,  rate: 42 },
-      { upTo: Infinity, rate: 45 },
+      // §32a EStG is a continuous 14%→42% curve from €12,348→€68,480. Approximate
+      // it with 2 marginal bands — a single 42% band hugely overstated DE tax
+      // (€50k showed ~32% effective vs the real ~20%). These bands give ~20.7%
+      // effective at €50k and ~24% at €68k, close to the official figures.
+      { upTo: 23_000,   rate: 16 },            // lower progressive zone (marginal ~14→24)
+      { upTo: 68_480,   rate: 32 },            // upper progressive zone (marginal ~24→42)
+      { upTo: 277_826,  rate: 42 },            // top proportional zone
+      { upTo: Infinity, rate: 45 },            // Reichensteuer
     ],
     credit: 0,
     socialSec: 9.3,                            // Rentenversicherung employee half

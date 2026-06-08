@@ -18,9 +18,9 @@
   ],
   "shortcuts": [
     { "name": "WizeMoney", "short_name": "Money", "url": "https://money.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] },
-    { "name": "WizeTax", "short_name": "Tax", "url": "https://mastermove.vercel.app/advisor", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] },
+    { "name": "WizeTax", "short_name": "Tax", "url": "https://tax.wizelife.ai/advisor", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] },
     { "name": "WizeTravel", "short_name": "Travel", "url": "https://travel.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] },
     { "name": "WizeHealth", "short_name": "Health", "url": "https://health.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] },
-    { "name": "WizeDeal", "short_name": "Deal", "url": "https://check-deal.vercel.app/", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] }
+    { "name": "WizeDeal", "short_name": "Deal", "url": "https://deal.wizelife.ai/", "icons": [{ "src": "assets/wizelife-icon-192.png?v=2026-05-17", "sizes": "192x192" }] }
   ]
 }

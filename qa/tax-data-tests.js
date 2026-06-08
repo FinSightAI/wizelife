@@ -155,8 +155,10 @@ test('IT: 2026 — second bracket dropped to 33%', () => {
 // ─── Germany ──────────────────────────────────────────────────────────────
 
 test('DE: typical (₪25K/mo)', () => {
+  // ~€75K/yr single → ~59% take-home, matching real German net (the old golden
+  // 3315 was anchored to the buggy single-42%-band model that over-taxed DE).
   const r = calc('DE', 25000);
-  inRange(r.netUSD, 3315, 'DE@25K netUSD');
+  inRange(r.netUSD, 3978, 'DE@25K netUSD');
 });
 
 test('DE: low earner under Grundfreibetrag — no income tax', () => {
