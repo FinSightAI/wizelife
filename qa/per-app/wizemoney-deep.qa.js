@@ -120,7 +120,11 @@ async function loginThenGoto(browser, url) {
         try {
             await page.evaluate(() => localStorage.setItem('wl_lang', 'en'));
             await page.reload({ waitUntil: 'load' });
-            await page.waitForTimeout(2500);
+            // money.wizelife.ai is a heavy PWA that never reaches networkidle and
+            // renders its onboarding empty-state client-side AFTER i18n applies.
+            // 2.5s read pre-hydration Hebrew defaults → false leak. 5s is enough
+            // (verified: EN onboarding 'Add a bank account' renders by then).
+            await page.waitForTimeout(5000);
             const leaks = await page.evaluate(() => {
                 const HE = /[֐-׿]/;
                 const ALLOW = /Wize(Life|Money|Tax|Travel|Health|Deal|AI)/;
