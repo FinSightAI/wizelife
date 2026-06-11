@@ -839,7 +839,7 @@ const TAX_META = {
       .filter(function (c) { return c !== 'USD'; });
     currencies = currencies.filter(function (c, i) { return currencies.indexOf(c) === i; });
 
-    fetch('https://api.frankfurter.app/latest?from=USD&to=' + currencies.join(','))
+    fetch('https://api.frankfurter.dev/v1/latest?from=USD&to=' + currencies.join(','))
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (!data || !data.rates) return;
