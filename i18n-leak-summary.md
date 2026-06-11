@@ -1,10 +1,10 @@
-# 🚨 I18n-Leak action items — 2026-06-05
+# 🚨 I18n-Leak action items — 2026-06-10
 
 ✅ **51 checks passed — I18n-Leak clean.**
 ---
 _<details><summary>Full detail</summary>_
 
-# I18n-Leak QA — 2026-06-05
+# I18n-Leak QA — 2026-06-10
 
 - ✅ https://wizelife.ai/ [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/ [PT] — no Hebrew leaks

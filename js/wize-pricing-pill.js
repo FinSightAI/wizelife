@@ -1,5 +1,5 @@
 /* Shared pricing-discovery pill for sub-apps.
- * Shows: "💎 Free · 3 AI/day · Upgrade for unlimited → $9.99/mo"
+ * Shows: "💎 Free · 3 AI/day · Upgrade to 40/day → $9.99/mo"
  * Hidden if: user already paid (wl_plan === 'pro' | 'yolo') OR dismissed.
  * Hidden on landing (wizelife.ai itself — Portal has full Pricing section).
  * Mobile: stays under bottom-nav z-index, doesn't overlap WizeBar.
@@ -14,6 +14,7 @@
   // Skip if user already paid.
   try {
     var plan = (localStorage.getItem('wl_plan') || '').toLowerCase();
+    if (!plan) { try { plan = (JSON.parse(localStorage.getItem('wl_sso') || '{}').plan || '').toLowerCase(); } catch (_) {} }
     if (plan === 'pro' || plan === 'yolo' || plan === 'pro_trial') return;
   } catch (_) {}
 
@@ -25,10 +26,10 @@
 
   // 4-lang strings — no fallback leak.
   var T = {
-    en: { txt: 'Free tier: 3 AI/day · Unlock unlimited for', price: '$9.99/mo', cta: 'See plans', dismiss: 'Dismiss' },
-    he: { txt: 'חינם: 3 תשובות AI ביום · פתח ללא הגבלה ב-', price: '9.99$/חודש', cta: 'ראה תוכניות', dismiss: 'סגור' },
-    pt: { txt: 'Grátis: 3 IA/dia · Ilimitado por', price: '$9,99/mês', cta: 'Ver planos', dismiss: 'Fechar' },
-    es: { txt: 'Gratis: 3 IA/día · Ilimitado por', price: '$9.99/mes', cta: 'Ver planes', dismiss: 'Cerrar' },
+    en: { txt: 'Free: 3 AI/day · Upgrade to 40/day for', price: '$9.99/mo', cta: 'See plans', dismiss: 'Dismiss' },
+    he: { txt: 'חינם: 3 תשובות AI ביום · שדרג ל-40 ביום ב-', price: '9.99$/חודש', cta: 'ראה תוכניות', dismiss: 'סגור' },
+    pt: { txt: 'Grátis: 3 IA/dia · 40/dia por', price: '$9,99/mês', cta: 'Ver planos', dismiss: 'Fechar' },
+    es: { txt: 'Gratis: 3 IA/día · 40/día por', price: '$9.99/mes', cta: 'Ver planes', dismiss: 'Cerrar' },
   };
 
   function getLang() {

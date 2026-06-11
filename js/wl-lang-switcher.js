@@ -117,6 +117,7 @@
 
     ['HE', 'EN', 'PT', 'ES'].forEach(function (code) {
       var p = document.createElement('button');
+      p.type = 'button'; // default is "submit" — would submit a surrounding <form> on click
       p.className = 'wl-lang-pill';
       p.setAttribute('data-lang', code.toLowerCase());
       p.setAttribute('aria-label', code);

@@ -51,6 +51,13 @@
     // ── WizeTravel landing ──────────────────────────────────────────────────
     tr('WizeTravel — טיסות חכמות עם AI', 'WizeTravel — Smart flights with AI', 'WizeTravel — Voos inteligentes com IA', 'WizeTravel — Vuelos inteligentes con IA');
     tr('מאתחל את מנוע AI...', 'Initializing AI engine...', 'Inicializando motor de IA...', 'Inicializando motor de IA...');
+    tr('מחבר למאגרי נתוני טיסות...', 'Connecting to flight databases...', 'Conectando a bancos de dados de voos...', 'Conectando a bases de datos de vuelos...');
+    tr('סורק מסלולים פופולריים...', 'Scanning popular routes...', 'Verificando rotas populares...', 'Escaneando rutas populares...');
+    tr('מנתח מגמות מחירים...', 'Analyzing price trends...', 'Analisando tendências de preços...', 'Analizando tendencias de precios...');
+    tr('מכייל מודל חיזוי מחירים...', 'Calibrating price-prediction model...', 'Calibrando modelo de previsão de preços...', 'Calibrando modelo de predicción de precios...');
+    tr('מאחזר הצעות מחיר בזמן אמת...', 'Fetching real-time quotes...', 'Buscando cotações em tempo real...', 'Obteniendo cotizaciones en tiempo real...');
+    tr('כמעט מוכן...', 'Almost ready...', 'Quase pronto...', 'Casi listo...');
+    tr('✅ WizeTravel מוכן! מעביר...', '✅ WizeTravel is ready! Redirecting...', '✅ WizeTravel pronto! Redirecionando...', '✅ ¡WizeTravel listo! Redirigiendo...');
     tr('פתח את האפליקציה ←', 'Open the app ←', 'Abrir o app ←', 'Abrir la app ←');
     tr('AI מנתח 2.3M+ מחירי טיסה בזמן אמת', 'AI analyzes 2.3M+ flight prices in real time', 'IA analisa 2,3M+ preços de voos em tempo real', 'IA analiza 2,3M+ precios de vuelos en tiempo real');
     tr('חיפוש', 'Search', 'Pesquisar', 'Buscar');
