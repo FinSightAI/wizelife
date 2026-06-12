@@ -415,9 +415,9 @@
           </button>
         </div>
         <div style="margin-top:14px;text-align:center;font-size:11.5px;color:#64748b;">
-          <a href="https://wizelife.ai/terms.html" target="_blank" style="color:#a5b4fc;">Terms</a>
+          <a href="https://wizelife.ai/terms.html" target="_blank" rel="noopener" style="color:#a5b4fc;">Terms</a>
           ·
-          <a href="https://wizelife.ai/privacy.html" target="_blank" style="color:#a5b4fc;">Privacy</a>
+          <a href="https://wizelife.ai/privacy.html" target="_blank" rel="noopener" style="color:#a5b4fc;">Privacy</a>
         </div>
       </div>
     `;
