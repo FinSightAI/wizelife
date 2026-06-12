@@ -111,14 +111,18 @@
       'border:none',
       'color:#fff',
       'cursor:pointer',
-      'font-size:16px',
+      'font-size:18px',
       'line-height:1',
-      'padding:0 6px',
+      'padding:0',
       'border-radius:50%',
       'flex-shrink:0',
       'inset-inline-start:4px',
-      'min-width:20px',
-      'min-height:20px'
+      // WCAG 2.5.5 / iOS HIG: tap target >= 44px (was 20px).
+      'min-width:44px',
+      'min-height:44px',
+      'display:inline-flex',
+      'align-items:center',
+      'justify-content:center'
     ].join(';');
     close.onclick = function () {
       try { localStorage.setItem('wl_pricing_pill_dismissed', String(Date.now())); } catch (_) {}
