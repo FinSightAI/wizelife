@@ -10,3 +10,8 @@ reports/
 qa/*-report.md
 
 node_modules/
+
+# local QA scratch — never publish (repo is public)
+_deep_mobile2.js
+wt-cwv-tmp.js
+qa/
