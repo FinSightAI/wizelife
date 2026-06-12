@@ -1,0 +1,23 @@
+# WizeLife
+
+> WizeLife is an AI-powered life suite of five free tools for managing money, taxes, real-estate deals, health questions, and travel. Each tool runs in the browser, keeps data private (local-first), and works in four languages (English, Hebrew, Portuguese, Spanish).
+
+## Tools
+
+- [WizeMoney](https://money.wizelife.ai/): Personal finance dashboard — track income, expenses, bank accounts, credit cards, stocks, pension and tax in one private dashboard. Includes a savings simulator, fund-fee comparison, loan amortization, and an AI money assistant.
+- [WizeTax](https://tax.wizelife.ai/advisor): International tax advisor and calculator — compare effective tax and social-security across 20+ countries, estimate relocation/exit tax, and ask an AI tax assistant. Educational, not formal advice.
+- [WizeDeal](https://deal.wizelife.ai/): Real-estate deal analyzer — paste or upload a listing and get ROI, cash-flow, tax and market-comparison analysis in seconds, plus multi-deal comparison. Supports Israel, Brazil and the US.
+- [WizeHealth](https://health.wizelife.ai/): AI health assistant — ask medical questions and get holistic, plain-language explanations in four languages, with a blood-test analyzer. For information only, not a substitute for professional medical advice.
+- [WizeTravel](https://travel.wizelife.ai/): AI travel planner and flight search — find cheap flights, plan itineraries, and compare destinations.
+
+## About
+
+- [Home](https://wizelife.ai/): Overview of the WizeLife suite and what each tool does.
+- [Sign in](https://wizelife.ai/auth.html): Single sign-on for all five tools (email or Google).
+- [Pricing](https://wizelife.ai/dashboard.html): Free tier on every tool; Pro ($4.99/mo) and YOLO ($9.99/mo) raise AI limits and unlock advanced features. WizeTravel is fully free.
+
+## Notes
+
+- Privacy: tools are local-first; user data stays in the browser and is only synced to the user's own account when signed in.
+- The tax and health tools are educational and explicitly not professional advice.
+- Languages: English, Hebrew (RTL), Portuguese, Spanish.
