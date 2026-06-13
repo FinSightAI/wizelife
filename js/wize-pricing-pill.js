@@ -127,6 +127,9 @@
     close.onclick = function () {
       try { localStorage.setItem('wl_pricing_pill_dismissed', String(Date.now())); } catch (_) {}
       pill.style.display = 'none';
+      // Let layouts that reserve space for the pill (e.g. the WizeTax advisor
+      // fixed shell) reclaim it once the pill is dismissed.
+      document.documentElement.removeAttribute('data-wl-pill');
     };
     pill.appendChild(close);
 
@@ -138,6 +141,10 @@
     }
 
     document.body.appendChild(pill);
+    // Signal that the fixed bottom pricing pill is on screen, so full-screen
+    // app shells (e.g. WizeTax advisor) can reserve space and not let their
+    // bottom composer overlap the pill's "See plans →" CTA.
+    document.documentElement.setAttribute('data-wl-pill', '1');
   }
 
   if (document.readyState === 'loading') {

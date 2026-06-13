@@ -324,7 +324,12 @@
       st.id = 'wbo-anim';
       st.textContent =
         '@keyframes wbo-fade{from{opacity:0}to{opacity:1}}' +
-        '@keyframes wbo-pop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}';
+        '@keyframes wbo-pop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}' +
+        // Kill the raw browser default focus ring (renders as an off-brand
+        // yellow/amber halo around the auto-focused Next pill on mobile WebKit/
+        // Chromium) and replace it with a clean, accent-neutral ring.
+        '#wize-onboarding button:focus{outline:none}' +
+        '#wize-onboarding button:focus-visible{outline:2px solid rgba(255,255,255,0.7);outline-offset:2px}';
       document.head.appendChild(st);
     }
 
