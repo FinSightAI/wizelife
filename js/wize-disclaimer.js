@@ -406,7 +406,7 @@
                          background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
                          font:800 14px inherit;cursor:not-allowed;opacity:0.5;
                          transition:opacity 0.15s,transform 0.1s;">
-            ${lang === 'he' ? 'המשך לאפליקציה' : 'Continue to app'}
+            ${({ he: 'המשך לאפליקציה', en: 'Continue to app', pt: 'Continuar para o app', es: 'Continuar a la app' })[lang] || 'Continue to app'}
           </button>
           <button id="wl-disc-decline"
                   style="padding:13px 18px;border:1px solid rgba(255,255,255,0.18);border-radius:10px;

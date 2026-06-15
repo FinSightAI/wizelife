@@ -231,11 +231,11 @@
  <!-- Login Form -->
  <div id="loginForm">
  <div class="form-group">
- <label>Email</label>
+ <label for="loginEmail">Email</label>
  <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
  </div>
  <div class="form-group">
- <label>Password</label>
+ <label for="loginPassword">Password</label>
  <div class="pw-wrap">
  <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" style="padding-inline-end:38px;">
  <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
@@ -243,28 +243,28 @@
  </div>
  <div class="forgot"><a href="#" onclick="forgotPassword(); return false;">Forgot password?</a></div>
  <button class="btn-primary" id="loginBtn" onclick="emailLogin()">Sign In</button>
- <div class="error" id="loginError"></div>
+ <div class="error" id="loginError" role="alert" aria-live="assertive"></div>
  </div>
 
  <!-- Signup Form -->
  <div id="signupForm" style="display:none;">
  <div class="form-group">
- <label>Full Name</label>
+ <label for="signupName">Full Name</label>
  <input type="text" id="signupName" data-i18n-placeholder="signup_nick_placeholder" placeholder="Nickname" autocomplete="nickname" required minlength="2" maxlength="40">
  </div>
  <div class="form-group">
- <label>Email</label>
+ <label for="signupEmail">Email</label>
  <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
  </div>
  <div class="form-group">
- <label>Password</label>
+ <label for="signupPassword">Password</label>
  <div class="pw-wrap">
  <input type="password" id="signupPassword" placeholder="8+ chars, A-Z, a-z, 0-9, special" autocomplete="new-password" style="padding-inline-end:38px;">
  <button type="button" class="pw-toggle" onclick="togglePw('signupPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
  </div>
  </div>
  <button class="btn-primary" id="signupBtn" onclick="emailSignup()">Create Account</button>
- <div class="error" id="signupError"></div>
+ <div class="error" id="signupError" role="alert" aria-live="assertive"></div>
  </div>
 
  <div class="divider">or</div>
