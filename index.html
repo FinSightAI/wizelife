@@ -931,7 +931,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="tax-value">$40,800</div>
 </div>
 </div>
-<div style="margin-top:10px;padding:10px 14px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;font-size:.8rem;color:#fcd34d;">⚡ <strong data-i18n="ai_" style="color:#fff">AI recommends:</strong> wait 3 months, then relocate to Portugal — saves $40,800.</div>
+<div style="margin-top:10px;padding:10px 14px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;font-size:.8rem;color:#fcd34d;"><span class="ai-reco-label" style="display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:4px;color:#fcd34d;">Illustrative AI output — not advice</span>⚡ <strong data-i18n="ai_" style="color:#fff">AI recommends:</strong> <span class="ai-reco-body">Example: wait 3 months, then relocate to Portugal — saves $40,800.</span></div>
 </div>
 </div>
 </div>
@@ -1280,6 +1280,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </div>
 </div>
 </div>
+<div class="footer-disclaimer" style="font-size:.78rem;color:var(--muted);line-height:1.6;padding-bottom:18px;">WizeLife is informational only — not licensed financial/tax advice. Consult a professional.</div>
 <div class="footer-bottom">
 <span>© 2026 WizeLife. All rights reserved.</span>
 <span>Smarter by design.</span>
@@ -1612,6 +1613,9 @@ const WIZE_TR = {
  footerContact:'Contact', footerPrivacy:'Privacy Policy', footerTerms:'Terms of Service',
  footerRights:'© 2026 WizeLife. All rights reserved.', footerMade:'',
  mobileGetStarted:'Get Started Free →',
+ aiRecoLabel:'Illustrative AI output — not advice',
+ aiRecoBody:'Example: wait 3 months, then relocate to Portugal — saves $40,800.',
+ landingDisclaimer:'WizeLife is informational only — not licensed financial/tax advice. Consult a professional.',
  trust_panel_eye:'Privacy & Trust',
  trust_panel_title:'Your data. Your rules.',
  trust_do_1:'We never sell your data. Ever.',
@@ -1650,6 +1654,9 @@ const WIZE_TR = {
  footerContact:'Contato', footerPrivacy:'Política de Privacidade', footerTerms:'Termos de Serviço',
  footerRights:'© 2026 WizeLife. Todos os direitos reservados.', footerMade:'',
  mobileGetStarted:'Comece Grátis →',
+ aiRecoLabel:'Saída de IA ilustrativa — não é aconselhamento',
+ aiRecoBody:'Exemplo: espere 3 meses e depois mude-se para Portugal — economiza $40.800.',
+ landingDisclaimer:'O WizeLife é apenas informativo — não é aconselhamento financeiro/fiscal licenciado. Consulte um profissional.',
  trust_panel_eye:'Privacidade & Confiança',
  trust_panel_title:'Seus dados. Suas regras.',
  trust_do_1:'Nunca vendemos seus dados. Jamais.',
@@ -1688,6 +1695,9 @@ const WIZE_TR = {
  footerContact:'Contacto', footerPrivacy:'Política de Privacidad', footerTerms:'Términos de Servicio',
  footerRights:'© 2026 WizeLife. Todos los derechos reservados.', footerMade:'',
  mobileGetStarted:'Comenzar Gratis →',
+ aiRecoLabel:'Salida de IA ilustrativa — no es asesoramiento',
+ aiRecoBody:'Ejemplo: espera 3 meses y luego múdate a Portugal — ahorra $40.800.',
+ landingDisclaimer:'WizeLife es solo informativo — no es asesoramiento financiero/fiscal con licencia. Consulta a un profesional.',
  trust_panel_eye:'Privacidad & Confianza',
  trust_panel_title:'Tus datos. Tus reglas.',
  trust_do_1:'Nunca vendemos tus datos. Jamás.',
@@ -1726,6 +1736,9 @@ const WIZE_TR = {
  footerContact:'צור קשר', footerPrivacy:'מדיניות פרטיות', footerTerms:'תנאי שירות',
  footerRights:'© 2026 WizeLife. כל הזכויות שמורות.', footerMade:'',
  mobileGetStarted:'התחל בחינם ←',
+ aiRecoLabel:'פלט AI להמחשה — לא ייעוץ',
+ aiRecoBody:'דוגמה: המתן 3 חודשים, ואז עבור לפורטוגל — חיסכון של $40,800.',
+ landingDisclaimer:'WizeLife הוא מידע בלבד — לא ייעוץ פיננסי/מס מורשה. התייעץ עם איש מקצוע.',
  trust_panel_eye:'פרטיות ואמון',
  trust_panel_title:'המידע שלך. הכללים שלך.',
  trust_do_1:'אנחנו לעולם לא מוכרים את המידע שלך. אף פעם.',
@@ -1850,6 +1863,12 @@ function applyLandingLang(){
  if(subs[i]) subs[i].textContent = sub;
  });
 
+ // Illustrative AI-output badge in the WizeTax suite panel (labeled, not advice)
+ const aiRecoLabelEl = document.querySelector('.ai-reco-label');
+ if(aiRecoLabelEl && t.aiRecoLabel) aiRecoLabelEl.textContent = t.aiRecoLabel;
+ const aiRecoBodyEl = document.querySelector('.ai-reco-body');
+ if(aiRecoBodyEl && t.aiRecoBody) aiRecoBodyEl.textContent = t.aiRecoBody;
+
  // AI demo (input was removed 2026-05-17 — Quick Demo + YOLO CTA only)
  const aiB = document.getElementById('aiBody');
  if(aiB && aiB.children.length === 1) aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
@@ -1896,6 +1915,8 @@ function applyLandingLang(){
  const fbottom = document.querySelectorAll('.footer-bottom span');
  if(fbottom[0]) fbottom[0].textContent = t.footerRights;
  if(fbottom[1]) fbottom[1].textContent = t.footerMade;
+ const fDisc = document.querySelector('.footer-disclaimer');
+ if(fDisc && t.landingDisclaimer) fDisc.textContent = t.landingDisclaimer;
 
  // AI suggestions — re-render from the rotating pool in the new active lang.
  if (typeof window.__renderAiPrompts === 'function') window.__renderAiPrompts();
