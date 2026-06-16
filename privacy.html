@@ -104,7 +104,7 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
 
 <div class="page">
   <h1 class="page-title">Privacy Policy</h1>
-  <p class="page-sub">Last updated: 2026-05-09 · Version 2.0</p>
+  <p class="page-sub">Last updated: 2026-06-16 · Version 2.1</p>
 
   <section>
     <h2>1. Who We Are</h2>
@@ -124,16 +124,18 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <li><strong>AI queries:</strong> the questions you send, plus relevant context from your profile. Routed to one of: Google Gemini (default), Anthropic Claude, or OpenRouter (when explicitly selected). For tax-related questions, a derived search query may also go to Tavily for fresh regulatory data. Paid-tier APIs do NOT train on customer prompts. We do not retain prompts beyond the response.</li>
       <li><strong>Aggregate analytics:</strong> page views, top routes, country (not city), device type, browser. Collected by <strong>Cloudflare Web Analytics</strong> in cookieless, server-side, aggregate-only form. No personal identifiers, no cross-session user tracking, no advertising ID. Not consent-gated because no cookies are set.</li>
       <li><strong>Auto-categorisation data:</strong> if you use WizeMoney's auto-categorise feature, transaction descriptions are sent to Gemini for tagging, then results returned to your browser. Not stored on AI provider servers.</li>
+      <li><strong>Error &amp; crash diagnostics:</strong> when the app hits an uncaught JavaScript error or an unhandled promise rejection, we capture a compact diagnostic record — the error message, the stack trace, the app id (e.g. WizeMoney), and a sanitised page URL — and send it to <strong>our own first-party endpoint</strong> (a WizeLife Cloud Function that writes to our own Firestore <code>errorLogs</code> collection). This record is <strong>PII-stripped before it leaves your browser</strong> (emails and long digit sequences are redacted) and is <strong>first-party only — no Sentry, no third-party error-monitoring service, no cookies, and no persistent profile</strong>. It is throttled and runs to keep the apps working (legitimate interest), kept for diagnostics, then deleted when no longer needed.</li>
+      <li><strong>Usage analytics (consent-gated):</strong> if you accept analytics in the consent banner, we store a first-party <strong>anonymous id</strong> (<code>wl_anon</code>) in your browser and record basic funnel events (e.g. which steps you reach) to understand how the product is used. This fires <strong>only after you consent</strong>, uses <strong>no third parties and no advertising</strong>, and is not tied to your name. If you choose "Essential only", no <code>wl_anon</code> id and no funnel events are collected.</li>
     </ul>
-    <p>We do <strong>not</strong> use Google Analytics, Microsoft Clarity, Facebook Pixel, advertising trackers, or any cross-site identifier. We do <strong>not</strong> collect: government IDs, passport numbers, payment-card numbers (handled by Stripe directly when billing is live), biometric data, geolocation beyond country-level, or session recordings.</p>
+    <p>We do <strong>not</strong> use Google Analytics, Microsoft Clarity, Facebook Pixel, advertising trackers, or any cross-site identifier. We do <strong>not</strong> collect: government IDs, passport numbers, payment-card numbers (handled by Stripe directly when billing is live), biometric data, or geolocation beyond country-level. We do <strong>not</strong> use session-replay or screen-recording tools — our only diagnostic capture is the PII-stripped, first-party error &amp; crash record described above (it records error/stack details, never a recording of your screen or session).</p>
   </section>
 
   <section>
     <h2>3. Why We Collect It (Legal Basis)</h2>
     <ul>
       <li><strong>Performance of contract:</strong> account auth, syncing your data, generating the AI answers you request.</li>
-      <li><strong>Legitimate interest:</strong> enforcing fair-use AI quotas, preventing abuse, debugging, aggregate analytics (Cloudflare) for service operation. No tracking cookies are set, no profile is built about you.</li>
-      <li><strong>Consent:</strong> marketing emails (when opted in), data sync to Firestore for sensitive WizeHealth records.</li>
+      <li><strong>Legitimate interest:</strong> enforcing fair-use AI quotas, preventing abuse, debugging, PII-stripped first-party error &amp; crash diagnostics, and aggregate analytics (Cloudflare) for service operation. No tracking cookies are set, no profile is built about you.</li>
+      <li><strong>Consent:</strong> usage analytics (the <code>wl_anon</code> anonymous id and funnel events, via the consent banner), marketing emails (when opted in), and data sync to Firestore for sensitive WizeHealth records.</li>
       <li><strong>Legal obligation:</strong> retaining records required by Israeli/EU law (e.g. tax audit if we become a billing entity).</li>
     </ul>
     <p>We do <strong>not</strong> sell your data, share it with advertisers, or use it for any purpose other than operating and improving the service.</p>
@@ -173,9 +175,11 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
     <h2>6. Cookies & Local Storage</h2>
     <p>We use:</p>
     <ul>
-      <li><strong>Functional storage</strong> (always on): <code>wl_token</code>, <code>wl_sso</code>, <code>wl_lang</code>, <code>wl_theme</code>, <code>wl_plan</code> — required to keep you logged in and remember your preferences. Strictly necessary; no consent banner under GDPR Article 6(1)(b).</li>
+      <li><strong>Functional storage</strong> (always on): <code>wl_token</code>, <code>wl_sso</code>, <code>wl_lang</code>, <code>wl_theme</code>, <code>wl_plan</code>, <code>wl_consent</code> (remembers your analytics choice) — required to keep you logged in, remember your preferences, and honour your consent decision. Strictly necessary; no consent banner under GDPR Article 6(1)(b).</li>
       <li><strong>App data</strong> (always on): your portfolio, goals, health markers, etc. stored in your browser's localStorage so the app works offline. This data NEVER leaves your device unless you explicitly sync or send a chat.</li>
-      <li><strong>Analytics</strong>: <strong>Cloudflare Web Analytics</strong> only — cookieless and aggregate-only. No cross-session user identification, no persistent identifier, no advertising signal. Because no cookies are set and no PII is processed, no consent banner is required (per CNIL/ICO guidance for cookieless analytics).</li>
+      <li><strong>Aggregate analytics</strong>: <strong>Cloudflare Web Analytics</strong> — cookieless and aggregate-only. No cross-session user identification, no persistent identifier, no advertising signal. Because no cookies are set and no PII is processed, this does not require consent (per CNIL/ICO guidance for cookieless analytics).</li>
+      <li><strong>Usage analytics</strong> (consent-gated): a first-party anonymous id <code>wl_anon</code> plus funnel events, stored in your browser <strong>only if you choose "Accept all"</strong> in the consent banner. No third parties, no advertising, not tied to your identity. Choose "Essential only" and none of this is set.</li>
+      <li><strong>Error &amp; crash diagnostics</strong> (no cookies): PII-stripped error/stack-trace records sent to our first-party endpoint to keep the apps working. No persistent identifier is stored on your device for this, and no third-party error service is used.</li>
       <li><strong>We do NOT use:</strong> Google Analytics, Microsoft Clarity, Facebook Pixel, Hotjar, FullStory, advertising cookies, retargeting pixels, or any cross-site tracker.</li>
     </ul>
     <p>You can clear all functional storage at any time via your browser's controls; doing so will sign you out and remove cached app data.</p>
@@ -201,7 +205,9 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
     <ul>
       <li>Account data: retained until you delete your account.</li>
       <li>Financial / health / tax data: retained as long as you have an active account; deleted within 30 days of account deletion.</li>
-      <li>Analytics: Cloudflare Web Analytics is cookieless and aggregate-only — no per-user analytics record is stored or retained about you. (We do not use Google Analytics, Microsoft Clarity, or any session-replay tool.)</li>
+      <li>Aggregate analytics: Cloudflare Web Analytics is cookieless and aggregate-only — no per-user Cloudflare record is stored about you. (We do not use Google Analytics, Microsoft Clarity, or any session-replay tool.)</li>
+      <li>Usage analytics (consent-gated): if you accept analytics, the first-party anonymous id (<code>wl_anon</code>) and funnel events are kept only to compute product-usage statistics, and only for as long as needed for that purpose. They are tied to an anonymous id, not your identity. Withdrawing consent or clearing browser storage stops and removes this collection.</li>
+      <li>Error &amp; crash diagnostics: PII-stripped error/crash records in our first-party <code>errorLogs</code> are kept only as long as needed to diagnose and fix issues, then deleted.</li>
       <li>AI query logs: not retained beyond your active session unless required to debug a specific user-reported issue.</li>
     </ul>
   </section>
