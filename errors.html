@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>window.WIZE_APP='wizelife';</script>
+<script src="/js/wize-error-tracker.js?v=2026061601"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>WizeLife — Errors (admin)</title>
+<style>
+  :root { --bg:#0b0f1a; --card:#141a2b; --border:rgba(255,255,255,0.08); --muted:#7b88ad; --text:#eef2ff; --accent:#6366f1; --ok:#10b981; --bad:#fca5a5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:400 14px Inter,-apple-system,system-ui,sans-serif; padding:24px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:12px; margin-bottom:20px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+  select, button { background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); font-weight:700; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:14px; }
+  .gate { max-width:560px; }
+  .uid { font-family:ui-monospace,Menlo,monospace; font-size:12px; background:rgba(99,102,241,0.12); padding:3px 8px; border-radius:6px; word-break:break-all; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.4px; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .msg { font-family:ui-monospace,Menlo,monospace; font-size:12px; color:var(--bad); word-break:break-word; max-width:520px; }
+  .meta { color:var(--muted); font-size:11px; }
+  .app-tag { display:inline-block; background:rgba(99,102,241,0.15); color:#a5b4fc; border-radius:5px; padding:1px 7px; font-size:11px; font-weight:600; }
+  details { margin-top:4px; }
+  details summary { cursor:pointer; color:var(--muted); font-size:11px; }
+  pre { white-space:pre-wrap; word-break:break-word; font-size:11px; color:#cbd5e1; background:rgba(255,255,255,0.04); padding:8px; border-radius:6px; margin:6px 0 0; max-height:220px; overflow:auto; }
+  .hint { color:var(--muted); font-size:12px; line-height:1.6; }
+  .err { color:#fca5a5; }
+  code { background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:4px; font-size:12px; }
+</style>
+</head>
+<body>
+
+<h1>🐞 WizeLife — Error Log</h1>
+<div class="sub">First-party, privacy-first. Source: Firestore <code>errorLogs</code> (from wize-error-tracker.js). Not a public page.</div>
+
+<div id="gate" class="card gate" style="display:none">
+  <div id="gateMsg" class="hint"></div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="row">
+    <label class="hint">App:</label>
+    <select id="appFilter"><option value="">All apps</option></select>
+    <label class="hint">Show:</label>
+    <select id="limit">
+      <option value="200">Latest 200</option>
+      <option value="500" selected>Latest 500</option>
+      <option value="1000">Latest 1000</option>
+    </select>
+    <button class="primary" id="reload">Reload</button>
+    <span id="status" class="hint"></span>
+  </div>
+
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <div class="card" style="flex:1;min-width:240px">
+      <div class="hint" style="margin-bottom:10px">Errors by app</div>
+      <table id="byApp"><thead><tr><th>App</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="card" style="flex:1;min-width:240px">
+      <div class="hint" style="margin-bottom:10px">By kind</div>
+      <table id="byKind"><thead><tr><th>Kind</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Top errors (grouped by message)</div>
+    <table id="grouped"><thead><tr><th>Message</th><th>App</th><th class="num">Count</th><th>Last seen</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="card">
+    <div class="hint" style="margin-bottom:10px">Recent errors</div>
+    <table id="recent"><thead><tr><th>Time</th><th>App</th><th>Kind</th><th>Message / source</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="hint">Totals: <span id="totals"></span></div>
+</div>
+
+<!-- Firebase compat (same versions as the rest of WizeLife) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
+<script>window.WIZELIFE_RECAPTCHA_SITE_KEY = '6Ld5oOMsAAAAAIJpL7Eg55-oiNnMZPfb699RMdpr';</script>
+<script src="js/wizelife-auth.js"></script>
+
+<script>
+// ── Admin allow-list (defence-in-depth; the real gate is Firestore rules) ──
+const ADMIN_UIDS = ['4ocNcJie6Ra1xcUA62M2dv0GikM2'];
+
+const db = firebase.firestore();
+const auth = firebase.auth();
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+function showGate(html) { $('gate').style.display = 'block'; $('gateMsg').innerHTML = html; $('app').style.display = 'none'; }
+
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    showGate('Please <a href="auth.html" style="color:#a5b4fc" rel="nofollow">sign in</a> with an admin account, then return here.');
+    return;
+  }
+  if (ADMIN_UIDS.length && ADMIN_UIDS.indexOf(user.uid) < 0) {
+    showGate('This account is not an admin.<br><br>Your uid:<br><span class="uid">' + esc(user.uid) + '</span><br><br>Add it to <code>ADMIN_UIDS</code> in errors.html and to the Firestore rules.');
+    return;
+  }
+  $('gate').style.display = 'none';
+  $('app').style.display = 'block';
+  $('status').innerHTML = 'admin: <span class="uid">' + esc(user.uid) + '</span>';
+  load();
+});
+
+$('reload').onclick = load;
+$('limit').onchange = load;
+$('appFilter').onchange = () => render(_docs);
+
+let _docs = [];
+
+async function load() {
+  $('status').textContent = 'loading…';
+  const lim = parseInt($('limit').value, 10) || 500;
+  let docs = [];
+  try {
+    // Order by server timestamp desc; filter by app client-side (no composite index needed).
+    const snap = await db.collection('errorLogs').orderBy('at', 'desc').limit(lim).get();
+    snap.forEach((d) => docs.push(d.data()));
+  } catch (e) {
+    showGate('Could not read <code>errorLogs</code>. Either the collection is empty, or Firestore rules block reads for your uid.<br><br>Your uid:<br><span class="uid">' + esc(auth.currentUser ? auth.currentUser.uid : '?') + '</span><br><br><span class="err">' + esc(e && e.message ? e.message : e) + '</span>');
+    return;
+  }
+  _docs = docs;
+  // Populate the app filter once from the data.
+  const apps = Array.from(new Set(docs.map((d) => d.app || '?'))).sort();
+  const cur = $('appFilter').value;
+  $('appFilter').innerHTML = '<option value="">All apps</option>' + apps.map((a) => '<option value="' + esc(a) + '">' + esc(a) + '</option>').join('');
+  $('appFilter').value = cur;
+  render(docs);
+}
+
+function tsStr(d) {
+  try { return d.at && d.at.toDate ? d.at.toDate().toLocaleString() : ''; } catch (e) { return ''; }
+}
+
+function render(all) {
+  const appF = $('appFilter').value;
+  const docs = appF ? all.filter((d) => (d.app || '?') === appF) : all;
+
+  // By app
+  const byApp = {};
+  all.forEach((d) => { const a = d.app || '?'; byApp[a] = (byApp[a] || 0) + 1; });
+  $('byApp').querySelector('tbody').innerHTML = Object.keys(byApp).sort((a, b) => byApp[b] - byApp[a]).map((a) =>
+    '<tr><td><span class="app-tag">' + esc(a) + '</span></td><td class="num">' + byApp[a] + '</td></tr>'
+  ).join('') || '<tr><td colspan="2" class="hint">No errors 🎉</td></tr>';
+
+  // By kind
+  const byKind = {};
+  docs.forEach((d) => { const k = d.kind || '?'; byKind[k] = (byKind[k] || 0) + 1; });
+  $('byKind').querySelector('tbody').innerHTML = Object.keys(byKind).sort((a, b) => byKind[b] - byKind[a]).map((k) =>
+    '<tr><td>' + esc(k) + '</td><td class="num">' + byKind[k] + '</td></tr>'
+  ).join('') || '<tr><td colspan="2" class="hint">—</td></tr>';
+
+  // Grouped by message (the actionable view)
+  const grp = {};
+  docs.forEach((d) => {
+    const key = (d.message || '?');
+    const g = (grp[key] = grp[key] || { count: 0, app: d.app || '?', last: '' });
+    g.count++;
+    const t = tsStr(d);
+    if (!g.last) g.last = t; // first (newest, since desc order)
+  });
+  $('grouped').querySelector('tbody').innerHTML = Object.keys(grp).sort((a, b) => grp[b].count - grp[a].count).slice(0, 50).map((m) =>
+    '<tr><td class="msg">' + esc(m) + '</td><td><span class="app-tag">' + esc(grp[m].app) + '</span></td><td class="num">' + grp[m].count + '</td><td class="meta">' + esc(grp[m].last) + '</td></tr>'
+  ).join('') || '<tr><td colspan="4" class="hint">No errors 🎉</td></tr>';
+
+  // Recent (raw, with stack in a details)
+  $('recent').querySelector('tbody').innerHTML = docs.slice(0, 200).map((d) => {
+    const src = [d.source, d.line, d.col].filter(Boolean).join(':');
+    const stack = d.stack ? '<details><summary>stack / details</summary><pre>' + esc(d.stack) + (d.pageUrl ? '\n\n@ ' + esc(d.pageUrl) : '') + (d.ua ? '\n' + esc(d.ua) : '') + '</pre></details>' : (d.pageUrl ? '<div class="meta">@ ' + esc(d.pageUrl) + '</div>' : '');
+    return '<tr><td class="meta">' + esc(tsStr(d)) + '</td><td><span class="app-tag">' + esc(d.app || '?') + '</span></td><td class="meta">' + esc(d.kind || '') + '</td>'
+      + '<td><div class="msg">' + esc(d.message || '') + '</div>' + (src ? '<div class="meta">' + esc(src) + '</div>' : '') + stack + '</td></tr>';
+  }).join('') || '<tr><td colspan="4" class="hint">No errors 🎉</td></tr>';
+
+  $('totals').textContent = all.length + ' errors loaded · ' + Object.keys(byApp).length + ' apps' + (appF ? ' · filtered: ' + docs.length : '');
+  $('status').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+</script>
+</body>
+</html>
