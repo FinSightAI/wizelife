@@ -95,8 +95,14 @@
 
     /** Log any funnel event. Fire-and-forget; never throws, never blocks UI. */
     track: function (event, meta) {
+      if (!event) return Promise.resolve();
+      // CONSENT GATE (GDPR/ePrivacy): the persistent wl_anon id + funnel events
+      // are non-essential analytics — only fire after explicit consent
+      // (wize-consent.js sets wl_consent='all'). Read the flag directly so this
+      // works regardless of consent-script load order; default = no tracking.
+      try { if (localStorage.getItem('wl_consent') !== 'all') return Promise.resolve(); } catch (e) { return Promise.resolve(); }
       var d = db();
-      if (!d || !event) return Promise.resolve();
+      if (!d) return Promise.resolve();
       try {
         var doc = {
           app: APP,

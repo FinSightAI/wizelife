@@ -58,6 +58,12 @@
 
   function send(event, meta, uid) {
     if (!event) return Promise.resolve();
+    // CONSENT GATE (GDPR/ePrivacy): the persistent wl_anon id + funnel events
+    // are non-essential analytics — only fire after explicit consent
+    // (wize-consent.js sets wl_consent='all'). Read the flag directly so this
+    // works regardless of consent-script load order; default = no tracking.
+    // (anonId() writes wl_anon — keep it gated too, hence checking before send.)
+    try { if (localStorage.getItem('wl_consent') !== 'all') return Promise.resolve(); } catch (e) { return Promise.resolve(); }
     try {
       var body = JSON.stringify({
         app: APP,
