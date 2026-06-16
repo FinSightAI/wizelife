@@ -45,6 +45,7 @@
 </div>
 
 <div id="app" style="display:none">
+  <div id="alertBanner" style="display:none;background:rgba(185,28,28,0.18);border:1px solid rgba(248,113,113,0.4);color:#fecaca;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px"></div>
   <div class="row">
     <label class="hint">App:</label>
     <select id="appFilter"><option value="">All apps</option></select>
@@ -114,7 +115,24 @@ auth.onAuthStateChanged((user) => {
   $('app').style.display = 'block';
   $('status').innerHTML = 'admin: <span class="uid">' + esc(user.uid) + '</span>';
   load();
+  loadAlerts();
 });
+
+// Latest error-spike / payment-failure alert (from errorAlertCron). Shows a
+// red banner if one fired in the last 24h.
+async function loadAlerts() {
+  try {
+    const snap = await db.collection('alerts').orderBy('at', 'desc').limit(1).get();
+    let a = null; snap.forEach((d) => { if (d.id !== '_state') a = d.data(); });
+    if (!a || !a.at || !a.at.toDate) return;
+    const ageH = (Date.now() - a.at.toDate().getTime()) / 3.6e6;
+    if (ageH > 24) return;
+    $('alertBanner').style.display = 'block';
+    $('alertBanner').innerHTML = '🔔 <strong>' + esc(a.subject || 'Alert') + '</strong> · '
+      + Math.round(ageH * 60) + ' min ago · ' + (a.total || 0) + ' errors'
+      + (a.paymentFailures ? ' · <strong>' + a.paymentFailures + ' payment failure(s)</strong>' : '');
+  } catch (e) { /* collection may be empty / index building */ }
+}
 
 $('reload').onclick = load;
 $('limit').onchange = load;
