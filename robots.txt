@@ -23,6 +23,8 @@ Sitemap: https://wizelife.ai/sitemap.xml
 Disallow: /auth.html
 Disallow: /__/auth/
 Disallow: /admin/
+Disallow: /errors.html
+Disallow: /funnel.html
 Disallow: /*?wl_token=
 Disallow: /*?wl_plan=
 
