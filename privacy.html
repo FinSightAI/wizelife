@@ -93,7 +93,7 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
 <script src="/js/wize-error-tracker.js?v=2026061601"></script>
 <script src="/js/wize-consent.js?v=2026061601"></script>
 <script src="/js/wize-sentry.js?v=2026061201" defer></script>
-<script src="/js/sw-register.js" defer></script>
+<script src="/js/sw-register.js?v=2026061701" defer></script>
 </head>
 <body>
 
@@ -188,7 +188,7 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
   </section>
 
   <section>
-    <h2>6. Cookies & Local Storage</h2>
+    <h2 id="cookies">6. Cookies & Local Storage</h2>
     <p>We use:</p>
     <ul>
       <li><strong>Functional storage</strong> (always on): <code>wl_token</code>, <code>wl_sso</code>, <code>wl_lang</code>, <code>wl_theme</code>, <code>wl_plan</code>, <code>wl_consent</code> (remembers your analytics choice) — required to keep you logged in, remember your preferences, and honour your consent decision. Strictly necessary; no consent banner under GDPR Article 6(1)(b).</li>
@@ -199,6 +199,11 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <li><strong>We do NOT use:</strong> Google Analytics, Microsoft Clarity, Facebook Pixel, Hotjar, FullStory, advertising cookies, retargeting pixels, or any cross-site tracker.</li>
     </ul>
     <p>You can clear all functional storage at any time via your browser's controls; doing so will sign you out and remove cached app data.</p>
+  </section>
+
+  <section>
+    <h2 id="accessibility">Accessibility Statement</h2>
+    <p>We want WizeLife to be usable by everyone, including people who rely on assistive technologies. We aim to follow the <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong> and continue to improve as we find gaps. If you encounter an accessibility barrier, or need information in an alternative format, email <a href="mailto:hi@wizelife.ai">hi@wizelife.ai</a> and we will work with you to provide the content or fix the issue.</p>
   </section>
 
   <section>
@@ -262,8 +267,8 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
   </section>
 </div>
 
-<footer>© 2026 WizeLife · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></footer>
-<script defer="" src="/js/wize-bottom-nav.js"></script>
-<script defer="" src="/js/wize-hamburger.js"></script>
+<footer>© 2026 WizeLife · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="privacy.html#accessibility">Accessibility</a> · <a href="privacy.html#cookies">Cookies</a> · <a href="terms.html">Refunds &amp; Cancellation</a></footer>
+<script defer="" src="/js/wize-bottom-nav.js?v=2026061701"></script>
+<script defer="" src="/js/wize-hamburger.js?v=2026061701"></script>
 </body>
 </html>

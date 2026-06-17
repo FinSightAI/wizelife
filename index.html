@@ -1280,6 +1280,9 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <a data-i18n="__87" href="mailto:hi@wizelife.ai">Contact</a>
 <a data-i18n="__88" href="privacy.html">Privacy Policy</a>
 <a data-i18n="__89" href="terms.html">Terms of Service</a>
+<a data-i18n="__90" href="privacy.html#accessibility">Accessibility</a>
+<a data-i18n="__91" href="privacy.html#cookies">Cookies</a>
+<a data-i18n="__92" href="terms.html">Refunds & Cancellation</a>
 </div>
 </div>
 </div>
@@ -2141,11 +2144,11 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  window.addEventListener('storage', function(e){ if(e.key === 'wl_plan') updateLandingPlanBadge(); });
 })();
 </script>
-<script defer="" src="/js/wize-bottom-nav.js"></script>
-<script defer="" src="/js/wize-onboarding.js"></script>
-<script defer="" src="/js/wize-disclaimer.js"></script>
-<script defer="" src="/js/wize-share.js"></script>
-<script defer="" src="/js/wize-hamburger.js"></script>
+<script defer="" src="/js/wize-bottom-nav.js?v=2026061701"></script>
+<script defer="" src="/js/wize-onboarding.js?v=2026061701"></script>
+<script defer="" src="/js/wize-disclaimer.js?v=2026061701"></script>
+<script defer="" src="/js/wize-share.js?v=2026061701"></script>
+<script defer="" src="/js/wize-hamburger.js?v=2026061701"></script>
 <script>
 /* Even on the public landing page, fire a single warm-up GET to Vitara so
  that by the time the user signs in and clicks Health, it's already up. */
@@ -2157,11 +2160,11 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
-<script src="/js/wl-landing-i18n.js?v=1" defer></script>
+<script src="/js/wl-landing-i18n.js?v=2026061701" defer></script>
 <script src="/js/wl-common-i18n.js?v=2" defer></script>
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
 <!-- Funnel: log the landing-page visit (top of funnel). -->
-<script src="/js/wize-track-beacon.js" defer></script>
+<script src="/js/wize-track-beacon.js?v=2026061701" defer></script>
 <script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
 </body>
 </html>

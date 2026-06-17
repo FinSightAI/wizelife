@@ -25,7 +25,7 @@
  document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
  document.documentElement.lang = v;
  }
-}catch(e){}})();
+}catch (e) { console.error(e); }})();
 </script>
 <meta charset="utf-8"/>
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -425,13 +425,13 @@ window._wlLazy = {
   }
 };
 </script>
-<script src="js/wizelife-auth.js"></script>
-<script src="js/wize-track.js"></script>
+<script src="js/wizelife-auth.js?v=2026061701"></script>
+<script src="js/wize-track.js?v=2026061701"></script>
 <script>
   // Funnel: log the dashboard view + which tool the user opens (the step
   // between signup and activation). Fire-and-forget; see /funnel.html.
   (function () {
-    try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}
+    try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) { console.error(e); }
     document.addEventListener('click', function (ev) {
       var card = ev.target && ev.target.closest && ev.target.closest('.tool-card');
       if (!card || !window.WizeTrack) return;
@@ -451,7 +451,7 @@ requireAuth("auth.html").then(async (user) => {
  try {
  const doc = await wlDb.collection("users").doc(user.uid).get();
  if (doc.exists && doc.data().nickname) nick = doc.data().nickname;
- } catch(e) {}
+ } catch (e) { console.error(e); }
  // First name only — "John Doe" → "John"
  if (nick && /\s/.test(nick)) nick = nick.split(/\s+/)[0];
  localStorage.setItem("wl_nickname", nick);
@@ -493,7 +493,7 @@ requireAuth("auth.html").then(async (user) => {
  const planBanner = document.getElementById('planBanner');
  if (planBanner) planBanner.after(bonusBanner);
  }
- } catch(e) {}
+ } catch (e) { console.error(e); }
 
  // Catch the PayPal upgrade path: if the user is now pro/yolo and has an
  // unsent referral, the server-side `awardReferral` function records the
@@ -526,7 +526,7 @@ async function renderReferral(user) {
  const shareBtn = document.getElementById("refShareBtn");
  if (shareBtn) shareBtn.onclick = async () => {
  if (navigator.share) {
- try { await navigator.share({ title: "WizeLife — AI life suite", text: "5 AI tools for money, tax, travel, health, deals.", url: link }); } catch {}
+ try { await navigator.share({ title: "WizeLife — AI life suite", text: "5 AI tools for money, tax, travel, health, deals.", url: link }); } catch (e) { console.error(e); }
  } else {
  window.open("https://wa.me/?text=" + encodeURIComponent("Check out WizeLife — " + link), "_blank");
  }
@@ -543,7 +543,7 @@ async function renderReferral(user) {
  document.getElementById("refCount").textContent = count;
  document.getElementById("refDays").textContent = days;
  }
- } catch {}
+ } catch (e) { console.error(e); }
 }
 
 function renderPlan(plan, user) {
@@ -650,7 +650,7 @@ function renderPlan(plan, user) {
  if (I) I.textContent = x.sub;
  if (IN) IN.placeholder = x.ph;
  if (B) B.textContent = x.btn;
- } catch (e) {}
+ } catch (e) { console.error(e); }
  }
  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
  else go();
@@ -691,7 +691,7 @@ async function applyCode(uid) {
  if (result.data.valid) {
  const newPlan = result.data.plan;
  // Server-side validateCode already calls _grantReferrerReward.
- try { localStorage.setItem('wl_plan', newPlan); } catch {}
+ try { localStorage.setItem('wl_plan', newPlan); } catch (e) { console.error(e); }
  msg.style.color = "#6ee7b7";
  const lang = (function(){ try { return (localStorage.getItem('wl_lang') || 'he').slice(0,2); } catch { return 'he'; } })();
  const isYolo = newPlan === 'yolo';
@@ -761,7 +761,7 @@ async function applyCode(uid) {
  msg.textContent = ({ he:'נשלח! בדוק את הספאם.', en:'Sent — check your spam folder.', pt:'Enviado — verifique o spam.', es:'Enviado — revisa el spam.' })[lang] || 'Sent.';
  }).catch(function () {});
  }
- } catch (err) {}
+ } catch (err) { console.error(err); }
  } else if (e && e.code === 'functions/resource-exhausted') {
  msg.textContent = ({ he:'יותר מדי ניסיונות. חכה דקה.', en:'Too many attempts — wait a minute.', pt:'Muitas tentativas — aguarde 1 min.', es:'Demasiados intentos — espera 1 min.' })[lang] || 'Too many attempts.';
  } else {
@@ -954,7 +954,7 @@ function signOut() {
     PURGE.forEach(k => localStorage.removeItem(k));
     // Anything else with a wl_ prefix is functional; keep wl_lang + wl_theme
     // because they're UX preferences, not user data.
-  } catch (e) {}
+  } catch (e) { console.error(e); }
   wlAuth.signOut().then(() => window.location.href = "index.html");
 }
 
@@ -982,7 +982,7 @@ async function exportMyData() {
  try {
  const snap = await wlDb.collection("users").doc(user.uid).collection(sub).get();
  exportData.firestore[sub] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
- } catch {}
+ } catch (e) { console.error(e); }
  }
  } catch (e) { console.warn("firestore export failed:", e); }
  // Local app data (each sub-app stores in localStorage on its own domain;
@@ -1030,7 +1030,7 @@ async function deleteMyAccount() {
  const fns = await window._wlLazy.functions();
  await fns.httpsCallable("deleteUserAccount")({});
  // 2. End the (now-deleted) session.
- try { await wlAuth.signOut(); } catch {}
+ try { await wlAuth.signOut(); } catch (e) { console.error(e); }
  // 3. Clear all wizelife.ai localStorage
  ["wl_token", "wl_sso", "wl_plan", "wl_nickname", "wl_access_code", "wl_lang", "wl_theme"]
  .forEach(k => localStorage.removeItem(k));
@@ -1056,7 +1056,7 @@ async function attachTokensToTools() {
  try {
  const doc = await wlDb.collection("users").doc(user.uid).get();
  if (doc.exists) plan = doc.data().plan || "free";
- } catch (e) {}
+ } catch (e) { console.error(e); }
  localStorage.setItem("wl_plan", plan);
  const tools = [
  { id: "tool-finsight", base: "https://money.wizelife.ai/" },
@@ -1076,6 +1076,7 @@ async function attachTokensToTools() {
  }
  });
  } catch (e) {
+ console.error(e);
  // fail silently — tools still work without token (free tier)
  }
 }
@@ -1127,7 +1128,7 @@ function injectLangToToolLinks(lang) {
  const url = new URL(link.href);
  url.searchParams.set('lang', lang);
  link.href = url.toString();
- } catch {}
+ } catch (e) { console.error(e); }
  });
 }
 
@@ -1156,7 +1157,7 @@ document.head.appendChild(_swScript);
 /* Wake Render/Vercel backends as soon as the user lands on the dashboard,
  so the cold-start finishes before they tap a tool card. */
 (function prewarmBackends(){
- function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+ function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch (e) { console.error(e); } }
  var TARGETS = [
  'https://wizehealth-3ol2retcla-uc.a.run.app/', // WizeHealth (Render free, sleeps at 15min)
  'https://wizetax-backend-3ol2retcla-uc.a.run.app/health',// WizeTax backend (Render free)
@@ -1195,10 +1196,10 @@ document.head.appendChild(_swScript);
  else attachHover();
 })();
 </script>
-<script defer="" src="js/wize-bottom-nav.js"></script>
-<script defer="" src="js/wize-onboarding.js"></script>
-<script defer="" src="js/wize-share.js"></script>
-<script defer="" src="js/wize-hamburger.js"></script>
+<script defer="" src="js/wize-bottom-nav.js?v=2026061701"></script>
+<script defer="" src="js/wize-onboarding.js?v=2026061701"></script>
+<script defer="" src="js/wize-share.js?v=2026061701"></script>
+<script defer="" src="js/wize-hamburger.js?v=2026061701"></script>
 <script>
 window.WL_TR = {"he": {"plan_free": "חינם", "upgrade_pro": "שדרג ל-Pro", "sign_out": "התנתק", "wizeai_name": "יועץ רב-תחומי", "wizeai_desc": "AI שמכיר את הנתונים שלך מכל 5 האפליקציות — שאל כל דבר.", "your_tools": "הכלים שלך", "tool_money_name": "דשבורד פיננסי", "tool_tax_name": "יועץ מס גלובלי", "tool_travel_name": "מתכנן טיולים AI", "tool_health_name": "מעקב בריאות", "tool_deal_name": "מנתח נדל\"ן", "access_code_heading": "🎟️ קוד גישה", "access_code_intro": "יש לך קוד מחבר, שותף או קמפיין? הפעל כאן ל-Pro/YOLO מיידי.", "apply_btn": "הפעל", "account": "חשבון", "profile": "פרופיל", "name": "שם", "email": "אימייל", "member_since": "חבר מאז", "plan_label": "תוכנית", "subscription": "מנוי", "privacy_title": "🔒 פרטיות וזכויות נתונים", "privacy_intro": "הנתונים שלך — שלך. תחת חוק הגנת הפרטיות הישראלי וה-GDPR, אתה יכול לייצא את כל המידע שלך או למחוק את החשבון בכל עת.", "export_btn": "📥 ייצוא הנתונים שלי (JSON)", "delete_btn": "🗑️ מחק את החשבון שלי", "privacy_footnote": "הייצוא מוריד קובץ JSON עם הפרופיל שלך + נתוני כל האפליקציות. המחיקה סופית — החשבון, התוכנית וכל הנתונים יוסרו תוך 30 ימים.", "invite_share": "🤝 הזמן חברים ושתף משוב", "refer_title": "🎁 הזמן חבר", "refer_intro": "שתף את הקישור שלך. כשחבר משדרג ל-PRO, אתה מקבל חודש PRO חינם. אם הם בוחרים YOLO, אתה מקבל חודש YOLO חינם.", "copy_btn": "📋 העתק", "share_btn": "↗ שתף", "friends_joined": "חברים הצטרפו", "days_earned": "ימים", "earned": "נצברו", "feedback_title": "💬 משוב", "feedback_intro": "ספר לנו מה עובד ומה חסר. כל הערה נקראת על ידי הצוות שלנו.", "send_feedback_btn": "שלח משוב →", "tool_money_desc": "דשבורד פיננסי מלא — בנק, מניות, יעדים, תובנות AI.", "tool_tax_desc": "השווה את המשכורת נטו שלך ב-20 מדינות — נתוני מס מאומתים PwC/OECD 2025.", "tool_travel_desc": "מתכנן טיולים AI — מסלולים, טיפים, פירוט עלויות לכל יעד.", "tool_health_desc": "מעקב בריאות ורווחה — הבן את הגוף שלך, נהל את הבריאות שלך.", "tool_deal_desc": "מנתח השקעות נדל\"ן — הערך כל עסקה תוך שניות.", "loading_plan": "טוען את התוכנית שלך…", "access_code_ph": "יש לך קוד גישה?"}, "en": {"plan_free": "Free", "upgrade_pro": "Upgrade to Pro", "sign_out": "Sign Out", "wizeai_name": "Multi-Domain Advisor", "wizeai_desc": "AI that knows your data from all 5 apps — ask anything.", "your_tools": "Your Tools", "tool_money_name": "Finance Dashboard", "tool_tax_name": "Global Tax Advisor", "tool_travel_name": "AI Travel Planner", "tool_health_name": "Health Tracker", "tool_deal_name": "Real Estate Analyzer", "access_code_heading": "🎟️ Access code", "access_code_intro": "Got a code from a friend, partner or campaign? Apply here for instant Pro/YOLO.", "apply_btn": "Apply", "account": "Account", "profile": "Profile", "name": "Name", "email": "Email", "member_since": "Member since", "plan_label": "Plan", "subscription": "Subscription", "privacy_title": "🔒 Privacy & data rights", "privacy_intro": "Your data is yours. Under Israel's Privacy Protection Law and GDPR, you can export everything we hold about you, or delete your account at any time.", "export_btn": "📥 Export my data (JSON)", "delete_btn": "🗑️ Delete my account", "privacy_footnote": "Export downloads a JSON file with your profile + all sub-app data. Deletion is permanent — your account, plan, and all data are removed within 30 days.", "invite_share": "🤝 Invite friends & share feedback", "refer_title": "🎁 Refer a friend", "refer_intro": "Share your link. When a friend upgrades to PRO, you get a free PRO month. If they pick YOLO, you get a free YOLO month.", "copy_btn": "📋 Copy", "share_btn": "↗ Share", "friends_joined": "friends joined", "days_earned": "days", "earned": "earned", "feedback_title": "💬 Feedback", "feedback_intro": "Tell us what works and what's missing. Every comment is read by our team.", "send_feedback_btn": "Send feedback →", "tool_money_desc": "Full personal finance dashboard — bank, stocks, goals, AI insights.", "tool_tax_desc": "Compare your net take-home salary across 20 countries — verified PwC/OECD 2025 tax data.", "tool_travel_desc": "AI travel planner — routes, tips, cost breakdown for every destination.", "tool_health_desc": "Health & wellness tracker — understand your body, master your wellbeing.", "tool_deal_desc": "Real estate investment analyzer — evaluate any property deal in seconds.", "loading_plan": "Loading your plan…", "access_code_ph": "Have an access code?"}, "pt": {"plan_free": "Grátis", "upgrade_pro": "Atualizar para Pro", "sign_out": "Sair", "wizeai_name": "Consultor Multi-Domínio", "wizeai_desc": "IA que conhece seus dados de todas as 5 apps — pergunte qualquer coisa.", "your_tools": "Suas ferramentas", "tool_money_name": "Painel financeiro", "tool_tax_name": "Consultor fiscal global", "tool_travel_name": "Planejador de viagens IA", "tool_health_name": "Monitor de saúde", "tool_deal_name": "Analisador imobiliário", "access_code_heading": "🎟️ Código de acesso", "access_code_intro": "Tem um código de amigo, parceiro ou campanha? Aplique aqui para Pro/YOLO instantâneo.", "apply_btn": "Aplicar", "account": "Conta", "profile": "Perfil", "name": "Nome", "email": "Email", "member_since": "Membro desde", "plan_label": "Plano", "subscription": "Assinatura", "privacy_title": "🔒 Privacidade e direitos de dados", "privacy_intro": "Seus dados são seus. Sob a lei de privacidade de Israel e o GDPR, você pode exportar tudo que temos sobre você, ou excluir sua conta a qualquer momento.", "export_btn": "📥 Exportar meus dados (JSON)", "delete_btn": "🗑️ Excluir minha conta", "privacy_footnote": "A exportação baixa um arquivo JSON com seu perfil + dados de todos os apps. A exclusão é permanente — sua conta, plano e todos os dados são removidos em 30 dias.", "invite_share": "🤝 Convide amigos e compartilhe feedback", "refer_title": "🎁 Indicar amigo", "refer_intro": "Compartilhe seu link. Quando um amigo atualiza para PRO, você ganha um mês PRO grátis. Se escolher YOLO, você ganha um mês YOLO grátis.", "copy_btn": "📋 Copiar", "share_btn": "↗ Compartilhar", "friends_joined": "amigos entraram", "days_earned": "dias", "earned": "ganhos", "feedback_title": "💬 Feedback", "feedback_intro": "Conte-nos o que funciona e o que falta. Cada comentário é lido pela nossa equipe.", "send_feedback_btn": "Enviar feedback →", "tool_money_desc": "Painel financeiro completo — banco, ações, metas, insights de IA.", "tool_tax_desc": "Compare seu salário líquido em 20 países — dados fiscais verificados PwC/OECD 2025.", "tool_travel_desc": "Planejador de viagens IA — rotas, dicas, custos para cada destino.", "tool_health_desc": "Monitor de saúde e bem-estar — entenda seu corpo, gerencie sua saúde.", "tool_deal_desc": "Analisador de investimentos imobiliários — avalie qualquer negócio em segundos.", "loading_plan": "Carregando seu plano…", "access_code_ph": "Tem um código de acesso?"}, "es": {"plan_free": "Gratis", "upgrade_pro": "Actualizar a Pro", "sign_out": "Cerrar sesión", "wizeai_name": "Asesor Multi-Dominio", "wizeai_desc": "IA que conoce tus datos de las 5 apps — pregunta lo que quieras.", "your_tools": "Tus herramientas", "tool_money_name": "Panel financiero", "tool_tax_name": "Asesor fiscal global", "tool_travel_name": "Planificador de viajes IA", "tool_health_name": "Rastreador de salud", "tool_deal_name": "Analizador inmobiliario", "access_code_heading": "🎟️ Código de acceso", "access_code_intro": "¿Tienes un código de amigo, socio o campaña? Aplícalo aquí para Pro/YOLO inmediato.", "apply_btn": "Aplicar", "account": "Cuenta", "profile": "Perfil", "name": "Nombre", "email": "Email", "member_since": "Miembro desde", "plan_label": "Plan", "subscription": "Suscripción", "privacy_title": "🔒 Privacidad y derechos de datos", "privacy_intro": "Tus datos son tuyos. Bajo la ley de privacidad de Israel y el GDPR, puedes exportar todo lo que tenemos sobre ti, o eliminar tu cuenta en cualquier momento.", "export_btn": "📥 Exportar mis datos (JSON)", "delete_btn": "🗑️ Eliminar mi cuenta", "privacy_footnote": "La exportación descarga un archivo JSON con tu perfil + datos de todas las apps. La eliminación es permanente — tu cuenta, plan y todos los datos se eliminan en 30 días.", "invite_share": "🤝 Invita amigos y comparte comentarios", "refer_title": "🎁 Invitar amigo", "refer_intro": "Comparte tu enlace. Cuando un amigo actualiza a PRO, obtienes un mes PRO gratis. Si eligen YOLO, obtienes un mes YOLO gratis.", "copy_btn": "📋 Copiar", "share_btn": "↗ Compartir", "friends_joined": "amigos se unieron", "days_earned": "días", "earned": "ganados", "feedback_title": "💬 Comentarios", "feedback_intro": "Cuéntanos qué funciona y qué falta. Cada comentario lo lee nuestro equipe.", "send_feedback_btn": "Enviar comentarios →", "tool_money_desc": "Panel financiero completo — banco, acciones, metas, insights de IA.", "tool_tax_desc": "Compara tu salario neto en 20 países — datos fiscales verificados PwC/OECD 2025.", "tool_travel_desc": "Planificador de viajes IA — rutas, consejos, costos para cada destino.", "tool_health_desc": "Monitor de salud y bienestar — entiende tu cuerpo, gestiona tu salud.", "tool_deal_desc": "Analizador de inversiones inmobiliarias — evalúa cualquier trato en segundos.", "loading_plan": "Cargando tu plan…", "access_code_ph": "¿Tienes un código de acceso?"}};
 </script>
@@ -1206,7 +1207,7 @@ window.WL_TR = {"he": {"plan_free": "חינם", "upgrade_pro": "שדרג ל-Pro"
 <script src="/js/wl-lang-switcher.js?v=51" defer></script>
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
 <script>window.WIZE_APP_VERSION = '2026-05-17-1';</script>
-<script src="/js/wize-version-check.js" defer></script>
+<script src="/js/wize-version-check.js?v=2026061701" defer></script>
 <script>
 /* Carry the chosen WizeLife language (+ SSO identity) to the sub-apps when a
    tool card is launched, so the language picked here continues everywhere.
@@ -1216,7 +1217,7 @@ window.WL_TR = {"he": {"plan_free": "חינם", "upgrade_pro": "שדרג ל-Pro"
   function handoff() {
     try {
       var lang = (localStorage.getItem('wl_lang') || 'he').slice(0, 2);
-      var sso = {}; try { sso = JSON.parse(localStorage.getItem('wl_sso') || '{}'); } catch (e) {}
+      var sso = {}; try { sso = JSON.parse(localStorage.getItem('wl_sso') || '{}'); } catch (e) { console.error(e); }
       var nick = sso.nick; var plan = sso.plan || localStorage.getItem('wl_plan'); var token = sso.token;
       document.querySelectorAll('a.tool-card[href^="https://"]').forEach(function (a) {
         try {
@@ -1226,9 +1227,9 @@ window.WL_TR = {"he": {"plan_free": "חינם", "upgrade_pro": "שדרג ל-Pro"
           if (nick) u.searchParams.set('wl_nick', nick);
           if (plan) u.searchParams.set('wl_plan', plan);
           a.href = u.toString() + (token ? '#wl_token=' + encodeURIComponent(token) : '');
-        } catch (e) {}
+        } catch (e) { console.error(e); }
       });
-    } catch (e) {}
+    } catch (e) { console.error(e); }
   }
   if (document.readyState !== 'loading') handoff(); else document.addEventListener('DOMContentLoaded', handoff);
 })();

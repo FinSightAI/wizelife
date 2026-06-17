@@ -25,7 +25,7 @@
  document.documentElement.dir = (v==='he') ? 'rtl' : 'ltr';
  document.documentElement.lang = v;
  }
-}catch(e){}})();
+}catch(e){console.error(e);}})();
 </script>
 
 <meta charset="UTF-8">
@@ -317,8 +317,8 @@ window._wlLazy = {
   }
 };
 </script>
-<script src="js/wizelife-auth.js"></script>
-<script src="js/wize-track.js"></script>
+<script src="js/wizelife-auth.js?v=2026061701"></script>
+<script src="js/wize-track.js?v=2026061701"></script>
 <script>
  redirectIfLoggedIn("dashboard.html");
 
@@ -353,7 +353,7 @@ window._wlLazy = {
  _showVerifyScreen(email);
  return;
  }
- try { await window.WizeTrack?.login({ method: 'email' }); } catch {}
+ try { await window.WizeTrack?.login({ method: 'email' }); } catch (e) { console.error(e); }
  await _afterAuthRedirect();
  } catch (e) {
  document.getElementById("loginError").textContent = friendlyError(e.code);
@@ -402,8 +402,8 @@ window._wlLazy = {
  createdAt: firebase.firestore.FieldValue.serverTimestamp()
  }, { merge: true });
  localStorage.setItem("wl_nickname", name);
- try { await applyReferralOnSignup(cred.user.uid); } catch {}
- try { await window.WizeTrack?.signup({ method: 'email' }); } catch {}
+ try { await applyReferralOnSignup(cred.user.uid); } catch (e) { console.error(e); }
+ try { await window.WizeTrack?.signup({ method: 'email' }); } catch (e) { console.error(e); }
  // Send verification email before redirecting
  try {
  await cred.user.sendEmailVerification({
@@ -454,12 +454,12 @@ window._wlLazy = {
  const nick = cred.user.displayName || cred.user.email.split("@")[0];
  if (!doc.exists) {
  await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
- try { await applyReferralOnSignup(cred.user.uid); } catch {}
- try { await window.WizeTrack?.signup({ method: 'google' }); } catch {}
+ try { await applyReferralOnSignup(cred.user.uid); } catch (e) { console.error(e); }
+ try { await window.WizeTrack?.signup({ method: 'google' }); } catch (e) { console.error(e); }
  } else {
  const d = doc.data();
  if (!d.nickname) await ref.update({ nickname: nick });
- try { await window.WizeTrack?.login({ method: 'google' }); } catch {}
+ try { await window.WizeTrack?.login({ method: 'google' }); } catch (e) { console.error(e); }
  }
  localStorage.setItem("wl_nickname", (doc.exists && doc.data().nickname) ? doc.data().nickname : nick);
  await _afterAuthRedirect();
@@ -490,7 +490,7 @@ window._wlLazy = {
  try {
  const d = await wlDb.collection('users').doc(wlAuth.currentUser.uid).get();
  if (d.exists && d.data().plan) plan = d.data().plan;
- } catch {}
+ } catch (e) { console.error(e); }
  const params = 'wl_token=' + encodeURIComponent(token) + '&wl_nick=' + encodeURIComponent(nick) + '&wl_plan=' + encodeURIComponent(plan);
  const sep = next.indexOf('#') === -1 ? '#' : '&';
  window.location.href = next + sep + params;
@@ -538,7 +538,7 @@ window._wlLazy = {
  const fullMsg = `${reason}\n\nקוד שגיאה: ${code}\n\nצלם והעבר ל-hi@wizelife.ai אם זה ממשיך`;
  // Auto-fallback: on popup-blocked, try redirect
  if (code === "auth/popup-blocked") {
- try { await wlAuth.signInWithRedirect(googleProvider); return; } catch {}
+ try { await wlAuth.signInWithRedirect(googleProvider); return; } catch (e) { console.error(e); }
  }
  alert(fullMsg);
  }
@@ -679,7 +679,7 @@ function setAuthLang(v) {
  sign in and head to the dashboard / a tool — start the wake-up now so the
  30–60s Render cold-start finishes before they tap a card. */
 (function prewarmBackends(){
- function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
+ function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch (e) { console.error(e); } }
  var TARGETS = ['https://wizehealth-3ol2retcla-uc.a.run.app/', 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health', 'https://ofirofir-wizetravel.hf.space/'];
  // Fire immediately on auth page load + every 30 s. By the time user
  // signs in and reaches dashboard, every backend is hot.
