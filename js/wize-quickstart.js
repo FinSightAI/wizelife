@@ -68,7 +68,7 @@
       later:  'אחר כך',
       tax:     { chat: 'שאל יועץ AI', reports: 'הדו"חות שלי', profile: 'הגדר פרופיל', simulator: 'סימולטור מס' },
       travel:  { hotels: 'חפש מלון', flights: 'חפש טיסה', alerts: 'הגדר התראת מחיר', ai: 'יועץ נסיעות AI' },
-      health:  { chat: 'שאל את הרופא AI', mydata: 'נתונים רפואיים', family: 'שתף עם משפחה' },
+      health:  { chat: 'שאל את עוזר הבריאות AI', mydata: 'נתונים רפואיים', family: 'שתף עם משפחה' },
       deal:    { compare: 'השווה עסקה', saved: 'עסקאות שמורות', share: 'שתף עסקה', profile: 'פרופיל' },
     },
     en: {
@@ -77,7 +77,7 @@
       later:  'Later',
       tax:     { chat: 'Ask AI advisor', reports: 'My reports', profile: 'Set up profile', simulator: 'Tax simulator' },
       travel:  { hotels: 'Search hotels', flights: 'Search flights', alerts: 'Set price alert', ai: 'AI travel advisor' },
-      health:  { chat: 'Ask AI doctor', mydata: 'My medical data', family: 'Share with family' },
+      health:  { chat: 'Ask AI health assistant', mydata: 'My medical data', family: 'Share with family' },
       deal:    { compare: 'Compare a deal', saved: 'Saved deals', share: 'Share a deal', profile: 'Profile' },
     },
     pt: {
@@ -86,7 +86,7 @@
       later:  'Mais tarde',
       tax:     { chat: 'Falar com consultor IA', reports: 'Meus relatórios', profile: 'Configurar perfil', simulator: 'Simulador de imposto' },
       travel:  { hotels: 'Buscar hotéis', flights: 'Buscar voos', alerts: 'Alerta de preço', ai: 'Consultor de viagens IA' },
-      health:  { chat: 'Falar com médico IA', mydata: 'Meus dados médicos', family: 'Compartilhar com família' },
+      health:  { chat: 'Falar com assistente de saúde IA', mydata: 'Meus dados médicos', family: 'Compartilhar com família' },
       deal:    { compare: 'Comparar oferta', saved: 'Ofertas salvas', share: 'Compartilhar oferta', profile: 'Perfil' },
     },
     es: {
@@ -95,7 +95,7 @@
       later:  'Más tarde',
       tax:     { chat: 'Consultar asesor IA', reports: 'Mis informes', profile: 'Configurar perfil', simulator: 'Simulador de impuestos' },
       travel:  { hotels: 'Buscar hoteles', flights: 'Buscar vuelos', alerts: 'Alerta de precio', ai: 'Asesor de viajes IA' },
-      health:  { chat: 'Consultar médico IA', mydata: 'Mis datos médicos', family: 'Compartir con familia' },
+      health:  { chat: 'Consultar asistente de salud IA', mydata: 'Mis datos médicos', family: 'Compartir con familia' },
       deal:    { compare: 'Comparar oferta', saved: 'Ofertas guardadas', share: 'Compartir oferta', profile: 'Perfil' },
     },
   };
