@@ -426,3 +426,60 @@ test('REGIMES: every relocation regime matches its exact documented headline', (
     }
   }
 });
+
+// ─── 2026-06-18 official-constant goldens — exact data-table lock ──────────
+// These lock the precise constants verified against official 2026 sources on
+// 2026-06-18. A behavioral range test wouldn't catch a one-off ceiling/credit
+// typo; these fail the instant a value drifts from the official figure.
+// Sources are cited per country in TAX_META.sources.
+test('Constants 2026: exact official ceilings/credits/brackets are locked', () => {
+  const want = {
+    // [path, expected, source]
+    IL_BL_CEIL:   [TAX_DATA.IL.socialCeil,        622_920, 'btl.gov.il ₪51,910/mo ×12'],
+    IL_CREDIT:    [TAX_DATA.IL.credit,            6_534,   '2.25 pts × ₪2,904'],
+    IL_B20_CEIL:  [TAX_DATA.IL.brackets[2].upTo,  228_000, 'Amendment 288 — 20% to ₪19K/mo'],
+    IL_B31_CEIL:  [TAX_DATA.IL.brackets[3].upTo,  301_200, 'Amendment 288 — 31% to ₪25.1K/mo'],
+    US_SS_BASE:   [TAX_DATA.US.socialCeil,        184_500, 'SSA 2026 wage base'],
+    US_STD_DED:   [TAX_DATA.US.deduction,         16_100,  'IRS 2026 standard deduction single'],
+    DE_RV_CEIL:   [TAX_DATA.DE.socialCeil,        101_400, 'DRV 2026 BBG €8,450/mo'],
+    DE_KV_CEIL:   [TAX_DATA.DE.healthCeil,        69_750,  'KV 2026 BBG €5,812.50/mo'],
+    IE_CREDIT:    [TAX_DATA.IE.credit,            3_750,   'Revenue 2026 personal €1,875 + PAYE €1,875'],
+    CA_B1_CEIL:   [TAX_DATA.CA.brackets[0].upTo,  58_523,  'CRA 2026 14% band'],
+    CA_CPP_CEIL:  [TAX_DATA.CA.socialCeil,        74_600,  'CRA 2026 YMPE'],
+    CA_EI_CEIL:   [TAX_DATA.CA.healthCeil,        68_900,  'CRA 2026 EI max insurable'],
+    CA_CREDIT:    [TAX_DATA.CA.credit,            2_303,   'BPA $16,452 × 14%'],
+    BR_IRPF_0:    [TAX_DATA.BR.brackets[0].upTo,  28_546,  'Receita 2026 R$2,428.80/mo ×12'],
+    BR_INSS_CEIL: [TAX_DATA.BR.socialCeil,        101_707, 'Receita 2026 INSS teto R$8,475.55/mo ×12'],
+  };
+  for (const [k, [actual, expected, src]] of Object.entries(want)) {
+    assert.strictEqual(actual, expected, `${k}: expected ${expected} (${src}), got ${actual}`);
+  }
+});
+
+test('IL: child credit constant is ₪2,904 (not the stale ₪2,928)', () => {
+  // Engine bug fixed 2026-06-18. A parent should get the correct 2026 credit point.
+  // Compare 1-child vs 0-child IL tax delta at an income that pays tax (so credit applies).
+  const noKids = calcNet('IL', 25000, 'married', 0);
+  const oneKid = calcNet('IL', 25000, 'married', 1);
+  const annualDelta = (noKids.incomeTax - oneKid.incomeTax) * 12;
+  // Delta should equal the 2026 child credit ₪2,904 (±₪5 rounding), NOT ₪2,928.
+  assert.ok(Math.abs(annualDelta - 2904) <= 5,
+    `IL 1-child credit delta should be ~₪2,904/yr, got ₪${annualDelta} (stale ₪2,928 may have regressed)`);
+});
+
+test('CA: 2026 brackets are the inflated values, not 2025', () => {
+  // 2025 first-band ceiling was 57,375; 2026 is 58,523. Lock all four.
+  assert.deepStrictEqual(
+    TAX_DATA.CA.brackets.map(b => b.upTo),
+    [58_523, 117_045, 181_440, 258_482, Infinity],
+    'CA 2026 federal bracket ceilings drifted from official CRA values'
+  );
+});
+
+test('BR: INSS ceiling reflects 2026 teto (not the 2025 ~R$90K)', () => {
+  // At ₪500K/mo the gross is far above the INSS ceiling, so social is capped.
+  const r = calcNet('BR', 500000, 'single', 0);
+  const annualSocial = r.socialSec * 12;
+  // Capped at 101,707 × 7.5% = R$7,628/yr (engine uses flat 7.5% on capped base).
+  inRange(annualSocial, 101_707 * 0.075, 'BR INSS capped social at 2026 teto', 0.02);
+});

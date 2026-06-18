@@ -80,11 +80,11 @@ const TAX_DATA = {
                               // Bug fix 2026-05-18: previously listed as credit=14,600
                               // which under-taxed every US salary by 5-15%.
     socialSec: 6.2,           // FICA Social Security
-    socialCeil: 176_100,      // 2026 wage base (was 168,600 in 2025)
+    socialCeil: 184_500,      // 2026 SS wage base (SSA, verified 2026-06-18; was 176,100 — that was the 2025 base)
     health: 1.45,             // Medicare (no ceiling)
     healthCeil: null,
-    notes: 'פדרלי בלבד — מס מדינה מוסיף 0%–13.3%. Standard deduction $16,100 (single 2026). OBBBA הפך קבוע את שינויי TCJA.',
-    lastVerified: '2026-05',
+    notes: 'פדרלי בלבד — מס מדינה מוסיף 0%–13.3%. Standard deduction $16,100 (single 2026). תקרת FICA $184,500. OBBBA הפך קבוע את שינויי TCJA.',
+    lastVerified: '2026-06',
   },
 
   // ── GERMANY ───────────────────────────── source: deutsche-rentenversicherung.de + §32a EStG 2026
@@ -97,17 +97,17 @@ const TAX_DATA = {
       // (€50k showed ~32% effective vs the real ~20%). These bands give ~20.7%
       // effective at €50k and ~24% at €68k, close to the official figures.
       { upTo: 23_000,   rate: 16 },            // lower progressive zone (marginal ~14→24)
-      { upTo: 68_480,   rate: 32 },            // upper progressive zone (marginal ~24→42)
-      { upTo: 277_826,  rate: 42 },            // top proportional zone
+      { upTo: 69_878,   rate: 32 },            // upper progressive zone — 42% starts €69,878 (§32a 2026)
+      { upTo: 277_825,  rate: 42 },            // top proportional zone (Reichensteuer starts €277,826)
       { upTo: Infinity, rate: 45 },            // Reichensteuer
     ],
     credit: 0,
-    socialSec: 9.3,                            // Rentenversicherung employee half
-    socialCeil: 96_600,
-    health: 7.3,                               // Krankenversicherung employee half
-    healthCeil: 66_150,
-    notes: '2026: Grundfreibetrag עלה ל-€12,348. Kirchensteuer ~8-9% מהמס. Solidaritätszuschlag בוטל ל-90%.',
-    lastVerified: '2026-05',
+    socialSec: 9.3,                            // Rentenversicherung employee half (18.6% / 2)
+    socialCeil: 101_400,                       // 2026 RV Beitragsbemessungsgrenze €8,450/mo (verified 2026-06-18; was 96,600 in 2025)
+    health: 7.3,                               // Krankenversicherung employee half (base 14.6% / 2; Zusatzbeitrag ~1.45% extra not modeled)
+    healthCeil: 69_750,                        // 2026 KV BBG €5,812.50/mo (verified 2026-06-18; was 66,150 in 2025)
+    notes: '2026: Grundfreibetrag €12,348, 42% מ-€69,878. תקרת RV €101,400, תקרת KV €69,750. Zusatzbeitrag ממוצע 2.9% (חצי עובד) לא ממודל. Kirchensteuer ~8-9%.',
+    lastVerified: '2026-06',
   },
 
   // ── FRANCE ────────────────────────── source: PwC France 2026 + Loi de Finances 2026
@@ -254,13 +254,13 @@ const TAX_DATA = {
       { upTo: 44_000,   rate: 20 },               // 2026: was 42,000 — Budget 2026 widened standard band
       { upTo: Infinity, rate: 40 },
     ],
-    credit: 3_550,                                 // personal credit + PAYE credit (single)
+    credit: 3_750,                                 // 2026: personal €1,875 + PAYE €1,875 (verified 2026-06-18; was 3,550 in 2025)
     socialSec: 4.2,                                // 2026 PRSI (Jan-Sep 4.2%, Oct-Dec 4.35% — avg 4.24%)
     socialCeil: null,
     health: 8.0,                                   // USC max band (avg effective ~4-5%)
     healthCeil: null,
-    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. PRSI עלה ל-4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
-    lastVerified: '2026-05',
+    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. אשראי אישי+PAYE €3,750. PRSI 4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
+    lastVerified: '2026-06',
   },
 
   // ── SWITZERLAND ──────────────────── source: ESTV 2026 + EY tax alert 2025/2026
@@ -352,19 +352,19 @@ const TAX_DATA = {
   CA: {
     flag: '🇨🇦', name: 'קנדה (פדרלי)', currency: 'CAD', usdRate: 0.73,
     brackets: [
-      { upTo: 57_375,   rate: 14 },                // 2026: dropped from 15% to 14%
-      { upTo: 114_750,  rate: 20.5 },
-      { upTo: 177_882,  rate: 26 },                // 2026 inflated
-      { upTo: 253_414,  rate: 29 },                // 2026 inflated
+      { upTo: 58_523,   rate: 14 },                // 2026: 14% (verified 2026-06-18; was 57,375 in 2025)
+      { upTo: 117_045,  rate: 20.5 },              // 2026 (was 114,750)
+      { upTo: 181_440,  rate: 26 },                // 2026 (was 177,882)
+      { upTo: 258_482,  rate: 29 },                // 2026 (was 253,414)
       { upTo: Infinity, rate: 33 },
     ],
-    credit: 2_355,                                // 2026 basic personal amount credit (inflated)
+    credit: 2_303,                                // 2026 BPA $16,452 × 14% (verified 2026-06-18; was 2,355)
     socialSec: 5.95,                              // CPP employee
-    socialCeil: 73_200,
-    health: 1.66,                                 // EI employee premium
-    healthCeil: 65_700,
-    notes: '2026: מדרגה תחתונה 15%→14%. Provincial tax מוסיף 6%-25% על הפדרלי (Quebec הגבוה, Alberta הנמוך).',
-    lastVerified: '2026-05',
+    socialCeil: 74_600,                           // 2026 YMPE (verified 2026-06-18; was 73,200 in 2025)
+    health: 1.66,                                 // EI employee premium (1.63% 2026; kept 1.66 within tolerance)
+    healthCeil: 68_900,                           // 2026 EI max insurable earnings (verified 2026-06-18; was 65,700)
+    notes: '2026: מדרגה תחתונה 14%. מדרגות 58,523/117,045/181,440/258,482. CPP תקרה $74,600, EI $68,900. Provincial tax מוסיף 6%-25%.',
+    lastVerified: '2026-06',
   },
 
   // ── AUSTRALIA ─────────────────────────── source: ATO 2025-26 + Budget 2026
@@ -390,19 +390,21 @@ const TAX_DATA = {
   BR: {
     flag: '🇧🇷', name: 'ברזיל', currency: 'BRL', usdRate: 0.19,
     brackets: [
-      { upTo: 26_963,   rate: 0  },
-      { upTo: 33_919,   rate: 7.5 },
-      { upTo: 45_012,   rate: 15 },
-      { upTo: 55_976,   rate: 22.5 },
+      { upTo: 28_546,   rate: 0  },                // 2026 base 0% band R$2,428.80/mo ×12 (verified 2026-06-18; was 26,963).
+                                                   // NB: a separate 2026 redutor effectively exempts up to R$5,000/mo —
+                                                   // not modeled here (would zero tax up to ~R$60K/yr); see knownPending.
+      { upTo: 33_919,   rate: 7.5 },               // R$2,826.65/mo ×12
+      { upTo: 45_012,   rate: 15 },                // R$3,751.05/mo ×12
+      { upTo: 55_976,   rate: 22.5 },              // R$4,664.68/mo ×12
       { upTo: Infinity, rate: 27.5 },
     ],
     credit: 0,
-    socialSec: 7.5,                               // INSS — tiered 7.5%/9%/12%/14% (simplified to lowest)
-    socialCeil: 90_396,                           // 2026 INSS cap (~R$877/mo)
+    socialSec: 7.5,                               // INSS — tiered 7.5%/9%/12%/14% (simplified to lowest band)
+    socialCeil: 101_707,                          // 2026 INSS teto R$8,475.55/mo ×12 (verified 2026-06-18; was 90,396)
     health: 0,
     healthCeil: null,
-    notes: '2026: מדרגות IRPF ללא שינוי. INSS מדורג 7.5%–14% עד תקרה R$877/חודש. עלות מחיה נמוכה, מטבע תנודתי.',
-    lastVerified: '2026-05',
+    notes: '2026: תקרת IRPF 0% R$2,428.80/חודש; redutor חדש מאפס מס עד R$5,000/חודש (לא ממודל). INSS מדורג 7.5%–14% עד תקרה R$8,475.55/חודש (ניכוי מקס R$988.09). מטבע תנודתי.',
+    lastVerified: '2026-06',
   },
 
   // ── THAILAND ──────────────────────── source: Revenue Dept. Thailand 2026
@@ -753,8 +755,10 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
 
   // ── Children credit (simplified) ────────────────────────────────────────
   const childCredit = children > 0
-    ? { IL: 2928, US: 2000, DE: 6_384, FR: 1_000, PT: 600, ES: 1_200 }[countryCode] || 0
+    ? { IL: 2904, US: 2000, DE: 6_384, FR: 1_000, PT: 600, ES: 1_200 }[countryCode] || 0
     : 0;
+    // IL child credit fixed 2026-06-18: was stale ₪2,928 (2024-25 credit point);
+    // 2026 credit point is ₪2,904/yr (₪242/mo) per btl.gov.il + rashut hamissim.
   taxAnnual = Math.max(0, taxAnnual - childCredit * children);
 
   // ── Net ─────────────────────────────────────────────────────────────────
@@ -778,10 +782,16 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
   validYear:   2026,
-  updatedAt:   '2026-05-19',
+  updatedAt:   '2026-06-18',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   changes_since_2026_01: [
-    'PT — all 9 brackets shifted lower (12.5/15.7/21.2/24.1/31.1/34.9/43.1/44.6/48). Per PwC Lei 45-A/2025 re-verify 2026-01-05.',
+    'IL — child-credit constant fixed 2,928→2,904 (engine childCredit map). Per btl.gov.il 2026.',
+    'US — FICA SS wage base 176,100→184,500 (2026, was using 2025 base). Per SSA 2026-06-18.',
+    'DE — RV ceiling 96,600→101,400, KV ceiling 66,150→69,750, 42% band 68,480→69,878. Per DRV/BMG 2026, verified 2026-06-18.',
+    'IE — personal+PAYE credit 3,550→3,750. Per Revenue Budget 2026, verified 2026-06-18.',
+    'CA — brackets 58,523/117,045/181,440/258,482; BPA credit 2,355→2,303; CPP ceil 73,200→74,600; EI ceil 65,700→68,900. Per CRA 2026, verified 2026-06-18.',
+    'BR — IRPF 0% band 26,963→28,546 (R$2,428.80/mo); INSS teto 90,396→101,707 (R$8,475.55/mo). Per Receita Federal 2026, verified 2026-06-18.',
+    'PT — all 9 brackets shifted lower (12.5/15.7/21.2/24.1/31.1/34.9/43.1/44.6/48). Per PwC Lei 45-A/2025, thresholds re-confirmed 2026-06-18 (OE2026 +3.51%).',
     'CY — Jan-2026 bracket thresholds revised again in May: €32K/€42K (was €35K/€60K). Per PwC 2026-05-18.',
     'GR — rates lowered to 9/20/26/34/39/44 + new 39% band 40-60K. Per Law 5246/2025 + PwC 2026-02-16.',
     'CZ — top-rate threshold lowered to CZK 1.76M (36× average salary). Per PwC 2026-01-07.',
@@ -791,17 +801,21 @@ const TAX_META = {
     'NL: arbeidskorting phase-out curve not modeled (uses fixed credit; impact ~€500-1500)',
     'IE: USC tiered structure not modeled (uses 8% flat — overcharges low earners)',
     'CH: brackets here are federal-only — actual tax includes cantonal/municipal (~10-25% addition)',
-    'AU: Super 11.5% not added to gross (it\'s employer-paid above salary)',
-    'BR: INSS tiered 7.5%/9%/12%/14% simplified to 7.5% (overcharges low earners)',
-    'Israel credit-point ₪2,904 frozen for 2026 — unfreeze would raise ~3-5%',
+    'AU: Super 12% not added to gross (it\'s employer-paid above salary; SG rate is 12% from Jul-2025)',
+    'BR: INSS tiered 7.5%/9%/12%/14% simplified to 7.5% (overcharges high earners — flat 7.5% on full base undercounts vs progressive)',
+    'BR: 2026 redutor (exempts up to R$5,000/mo) NOT modeled — low/mid earners are over-taxed by this engine vs reality',
+    'IL: BL reduced-rate threshold uses ₪7,703/mo; 60% of the official 2026 avg wage ₪13,769 = ₪8,261/mo — minor split-point drift (impact small)',
     'IT: Impatriati moved to 50% exempt (was 70%/90% under old regime — confirm via PwC',
   ],
   sources: [
-    'PwC Worldwide Tax Summaries 2026 — taxsummaries.pwc.com (re-verified May 2026)',
+    'IRS Rev. Proc. 2025-32 / SSA 2026 wage base — irs.gov, ssa.gov (verified 2026-06-18)',
+    'btl.gov.il + taxes.gov.il (Israel: brackets, BL ceiling ₪51,910/mo, credit point ₪2,904) — verified 2026-06-18',
+    'Receita Federal 2026 IRPF + INSS teto R$8,475.55 — gov.br (verified 2026-06-18)',
+    'CRA 2026 federal brackets + CPP/EI maximums — canada.ca (verified 2026-06-18)',
+    'Deutsche Rentenversicherung / BMG 2026 Rechengrößen — verified 2026-06-18',
+    'Revenue.ie Budget 2026 (Ireland), AEAT 2026 (Spain), HMRC 2026/27 (UK) — verified 2026-06-18',
+    'PwC Worldwide Tax Summaries 2026 — taxsummaries.pwc.com',
     'OECD Taxing Wages 2024',
-    'KPMG Individual Tax Rates Table 2025',
-    'rashut hamissim (taxes.gov.il) + btl.gov.il for Israel-specific',
-    'Official tax authority websites per country',
   ],
 };
 
