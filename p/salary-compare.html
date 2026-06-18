@@ -1172,7 +1172,7 @@ function calcDeep(grossILS, pensEmpPct, pensErPct, hasKeren, children) {
     if (code === 'IL') {
       const pensEmpILS  = grossILS * (pensEmpPct / 100);
       const kerenEmpILS = hasKeren ? grossILS * 0.025 : 0;
-      extraDeduction = (pensEmpILS + kerenEmpILS) * 0.27; // ILS → USD
+      extraDeduction = (pensEmpILS + kerenEmpILS) * ((TAX_DATA.IL && TAX_DATA.IL.usdRate) || 0.27); // ILS → USD (live rate)
       pensionLine = '+' + (pensErPct + pensEmpPct).toFixed(1) + '%';
       studyLine   = hasKeren ? _L('+10% (מעסיק + אתה)', '+10% (employer + you)', '+10% (empregador + você)', '+10% (empleador + tú)') : '—';
     } else {
@@ -1387,7 +1387,7 @@ function buildLineItemTable(grossILS, rows) {
   // ceiling enforcement here for clarity; the main /salary-compare table
   // already applies ceilings via calcNet for the headline net figure.
   const monthLbl = t4('/חודש', '/mo', '/mês', '/mes');
-  const grossUsdMonthly = grossILS * 0.27;  // ILS → USD (global rate)
+  const grossUsdMonthly = grossILS * ((TAX_DATA.IL && TAX_DATA.IL.usdRate) || 0.27);  // ILS → USD (live rate)
   const fmtUsd = (usd) => '$' + Math.round(usd).toLocaleString();
   function amountWithPct(usd, pct, suffix) {
     const amountStr = fmtUsd(usd) + monthLbl;
