@@ -254,12 +254,12 @@ const TAX_DATA = {
       { upTo: 44_000,   rate: 20 },               // 2026: was 42,000 — Budget 2026 widened standard band
       { upTo: Infinity, rate: 40 },
     ],
-    credit: 3_750,                                 // 2026: personal €1,875 + PAYE €1,875 (verified 2026-06-18; was 3,550 in 2025)
+    credit: 4_000,                                 // 2026: personal €2,000 + PAYE €2,000 = €4,000 (Budget 2025/Oct 2024 raised each from €1,875; Budget 2026 unchanged; verified 2026-06-18; was 3,750)
     socialSec: 4.2,                                // 2026 PRSI (Jan-Sep 4.2%, Oct-Dec 4.35% — avg 4.24%)
     socialCeil: null,
     health: 8.0,                                   // USC max band (avg effective ~4-5%)
     healthCeil: null,
-    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. אשראי אישי+PAYE €3,750. PRSI 4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
+    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. אשראי אישי+PAYE €4,000 (Budget 2025 הועלה €1,875→€2,000 לכל אחד). PRSI 4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
     lastVerified: '2026-06',
   },
 
@@ -788,7 +788,7 @@ const TAX_META = {
     'IL — child-credit constant fixed 2,928→2,904 (engine childCredit map). Per btl.gov.il 2026.',
     'US — FICA SS wage base 176,100→184,500 (2026, was using 2025 base). Per SSA 2026-06-18.',
     'DE — RV ceiling 96,600→101,400, KV ceiling 66,150→69,750, 42% band 68,480→69,878. Per DRV/BMG 2026, verified 2026-06-18.',
-    'IE — personal+PAYE credit 3,550→3,750. Per Revenue Budget 2026, verified 2026-06-18.',
+    'IE — personal+PAYE credit 3,750→4,000 (Budget 2025/Oct 2024: both personal+PAYE raised €1,875→€2,000 each). Per Revenue.ie, verified 2026-06-18.',
     'CA — brackets 58,523/117,045/181,440/258,482; BPA credit 2,355→2,303; CPP ceil 73,200→74,600; EI ceil 65,700→68,900. Per CRA 2026, verified 2026-06-18.',
     'BR — IRPF 0% band 26,963→28,546 (R$2,428.80/mo); INSS teto 90,396→101,707 (R$8,475.55/mo). Per Receita Federal 2026, verified 2026-06-18.',
     'PT — all 9 brackets shifted lower (12.5/15.7/21.2/24.1/31.1/34.9/43.1/44.6/48). Per PwC Lei 45-A/2025, thresholds re-confirmed 2026-06-18 (OE2026 +3.51%).',
