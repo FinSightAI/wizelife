@@ -192,6 +192,44 @@ test('AE: zero income tax + zero social — any gross goes 100% to net', () => {
   });
 });
 
+// ─── FX live-patch consistency (regression for stale-0.27 ILS bug) ────────
+// The in-browser FX updater live-patches TAX_DATA.*.usdRate from ECB rates.
+// calcNet must use the SAME live IL.usdRate for the ILS→USD step — not a frozen
+// 0.27 — or IL's own grossLocal stops equalling the entered gross and every
+// foreign row is computed from a stale ILS rate mixed with a live foreign rate.
+
+test('FX consistency: IL grossLocal always equals entered gross after rate drift', () => {
+  const orig = TAX_DATA.IL.usdRate;
+  try {
+    [0.24, 0.27, 0.29, 0.31].forEach(rate => {
+      TAX_DATA.IL.usdRate = rate;
+      const r = calcNet('IL', 25000, 'single', 0);
+      // IL grossLocal IS the entered ILS gross — must hold for any ILS rate.
+      assert.equal(r.grossLocal, 25000,
+        `IL.usdRate=${rate}: grossLocal ${r.grossLocal} != 25000 (stale-0.27 ILS bug)`);
+    });
+  } finally {
+    TAX_DATA.IL.usdRate = orig;
+  }
+});
+
+test('FX consistency: foreign gross scales with the LIVE ILS rate, not 0.27', () => {
+  const origIL = TAX_DATA.IL.usdRate, origPT = TAX_DATA.PT.usdRate;
+  try {
+    TAX_DATA.PT.usdRate = 1.08;          // hold EUR fixed
+    TAX_DATA.IL.usdRate = 0.27;
+    const base = calcNet('PT', 25000, 'single', 0).grossLocal;
+    TAX_DATA.IL.usdRate = 0.297;         // ILS strengthens ~10%
+    const strong = calcNet('PT', 25000, 'single', 0).grossLocal;
+    // A stronger ILS buys ~10% more EUR → PT gross must rise ~10%, not stay flat.
+    const pct = (strong / base - 1) * 100;
+    assert.ok(pct > 8 && pct < 12,
+      `PT gross should track live ILS rate (~+10%), got ${pct.toFixed(1)}% — stale-0.27 bug`);
+  } finally {
+    TAX_DATA.IL.usdRate = origIL; TAX_DATA.PT.usdRate = origPT;
+  }
+});
+
 // ─── Edge cases ───────────────────────────────────────────────────────────
 
 test('Edge: gross 0 — no NaN, all zeros', () => {

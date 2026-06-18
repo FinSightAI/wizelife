@@ -51,6 +51,18 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Tax comparison tool -->
+  <url>
+    <loc>https://wizelife.ai/tax-compare.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://wizelife.ai/tax-compare.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wizelife.ai/tax-compare.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://wizelife.ai/tax-compare.html?lang=pt"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://wizelife.ai/tax-compare.html?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wizelife.ai/tax-compare.html"/>
+  </url>
+
   <!-- Sub-app landing pages (cross-domain — also include for discoverability) -->
   <url>
     <loc>https://money.wizelife.ai/</loc>
@@ -84,79 +96,79 @@
   </url>
 
   <url>
-    <loc>https://wizelife.ai/p/digital-nomad</loc>
+    <loc>https://wizelife.ai/p/digital-nomad.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/salary-compare</loc>
+    <loc>https://wizelife.ai/p/salary-compare.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-portugal</loc>
+    <loc>https://wizelife.ai/p/relocate-portugal.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-spain</loc>
+    <loc>https://wizelife.ai/p/relocate-spain.html</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-bulgaria</loc>
+    <loc>https://wizelife.ai/p/relocate-bulgaria.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-romania</loc>
+    <loc>https://wizelife.ai/p/relocate-romania.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-greece</loc>
+    <loc>https://wizelife.ai/p/relocate-greece.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-cyprus</loc>
+    <loc>https://wizelife.ai/p/relocate-cyprus.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-italy</loc>
+    <loc>https://wizelife.ai/p/relocate-italy.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-uae</loc>
+    <loc>https://wizelife.ai/p/relocate-uae.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-brazil</loc>
+    <loc>https://wizelife.ai/p/relocate-brazil.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-thailand</loc>
+    <loc>https://wizelife.ai/p/relocate-thailand.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wizelife.ai/p/relocate-bali</loc>
+    <loc>https://wizelife.ai/p/relocate-bali.html</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

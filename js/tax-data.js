@@ -646,7 +646,13 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
   const c = TAX_DATA[countryCode];
   if (!c) return null;
 
-  const grossUSD    = grossILS * 0.27;                    // approx ILS→USD
+  // ILS→USD must use the SAME (live-patched) ILS rate the FX updater writes to
+  // TAX_DATA.IL.usdRate — not a frozen 0.27 constant. Otherwise, once the live
+  // ECB rate drifts (e.g. 0.27→0.29), every foreign country's gross is derived
+  // from a stale ILS rate while its own usdRate is live, and IL's own grossLocal
+  // no longer equals the entered gross. Fall back to 0.27 only if IL data absent.
+  const ilUsdRate   = (TAX_DATA.IL && TAX_DATA.IL.usdRate) || 0.27;
+  const grossUSD    = grossILS * ilUsdRate;               // ILS→USD (live rate)
   const grossLocal  = grossUSD / c.usdRate;               // USD → local
   const grossAnnual = grossLocal * 12;
 

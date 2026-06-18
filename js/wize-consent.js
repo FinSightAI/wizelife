@@ -75,9 +75,9 @@
       var b = document.createElement('button');
       b.type = 'button';
       b.textContent = label;
-      b.style.cssText = 'border:0;border-radius:9px;padding:9px 14px;min-height:40px;'
+      b.style.cssText = 'border:0;border-radius:9px;padding:9px 14px;min-height:44px;'
         + 'font:600 13px Inter,sans-serif;cursor:pointer;'
-        + (primary ? 'background:#6366f1;color:#fff' : 'background:rgba(255,255,255,0.08);color:#cdd5f5');
+        + (primary ? 'background:#4f46e5;color:#fff' : 'background:rgba(255,255,255,0.08);color:#cdd5f5');
       b.addEventListener('click', function () {
         set(val);
         try { bar.remove(); } catch (e) { /* ignore */ }
