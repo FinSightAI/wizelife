@@ -48,15 +48,25 @@
       rec.message = strip(rec.message);
       rec.stack = strip(rec.stack);
       var payload = JSON.stringify(rec);
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: 'application/json' }));
-      } else if (typeof fetch === 'function') {
+      // NOTE: navigator.sendBeacon() with an application/json Blob triggers a
+      // CORS *preflight* that the browser then refuses for beacons
+      // ("blocked by CORS policy: Response to preflight request doesn't pass")
+      // even though the errorReport function answers OPTIONS with 204 + ACAO:*.
+      // Verified: raw curl/fetch preflight succeeds, sendBeacon's does not — so
+      // every error report from wizelife.ai was silently dropped with a console
+      // CORS error. fetch(keepalive) with the same JSON body returns 204
+      // reliably, so prefer it. Fall back to text/plain sendBeacon (a CORS
+      // "simple" request → no preflight) only if fetch is unavailable.
+      if (typeof fetch === 'function') {
         fetch(ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: payload,
           keepalive: true,
+          mode: 'cors',
         }).catch(function () {});
+      } else if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: 'text/plain' }));
       }
     } catch (e) { /* the tracker must never throw */ }
   }
