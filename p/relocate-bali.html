@@ -416,7 +416,7 @@ const CO_RATES = {
 };
 
 function calcCO(grossILS, type) {
-  const grossUSD = grossILS * ((window.TAX_DATA && TAX_DATA.IL) ? TAX_DATA.IL.usdRate : 0.27);
+  const grossUSD = grossILS * ((typeof TAX_DATA !== "undefined" && TAX_DATA.IL) ? TAX_DATA.IL.usdRate : 0.27);
   const grossAnnualUSD = grossUSD * 12;
   const r = CO_RATES[type] || CO_RATES.foreign_employment;
   const taxAnnual = grossAnnualUSD * r.incomeTax;
@@ -432,7 +432,7 @@ function calcIL(grossILS) {
   const r = calcNet('IL', grossILS, 'single', 0);
   if (!r) return { annualUSD: 0, monthlyUSD: 0 };
   // Israeli "tax paid" per month = gross - net (in USD, approximated)
-  const grossUSD = grossILS * ((window.TAX_DATA && TAX_DATA.IL) ? TAX_DATA.IL.usdRate : 0.27);
+  const grossUSD = grossILS * ((typeof TAX_DATA !== "undefined" && TAX_DATA.IL) ? TAX_DATA.IL.usdRate : 0.27);
   const paidUSD = grossUSD - r.netUSD;
   return {
     annualUSD: Math.round(paidUSD * 12),
