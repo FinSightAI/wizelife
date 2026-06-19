@@ -235,7 +235,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 30
+    timeout-minutes: 55
     steps:
       - name: Checkout
         uses: actions/checkout@v4
