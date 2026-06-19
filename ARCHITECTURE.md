@@ -850,4 +850,28 @@ WizeTax payslip OCR which uses pdf.js + Tesseract client-side).
 
 ---
 
+## UI Standards (suite-wide, D5 — adopted 2026-06-19)
+
+Written baseline so every app + shared component inherits the same a11y/touch floor.
+Apps already largely comply; this codifies it as the gate for new UI.
+
+- **Tap targets: min 44×44px** (Apple HIG / WCAG 2.5.5). Extend the hit area beyond
+  the visual bounds if the glyph is smaller. The legacy global `min-height:40px` on
+  non-`.btn` buttons (e.g. `finance dashboard/css/app.css`) is the known exception to
+  migrate toward 44px. Shared consent/disclaimer CTAs already use `min-height:44px`.
+- **Contrast: 4.5:1 body text, 3:1 UI/large text** (WCAG AA). Verify by COMPUTED color,
+  not screenshots (Check Deal's `!important` input-color traps mislead the eye).
+- **Focus: visible `:focus-visible` ring** on every interactive element (the shared
+  `wize-onboarding.js` focus-ring is the canonical brand-tinted style).
+- **Brand accent** is resolved per-app in shared chrome via `window.WIZE_ACCENT`
+  (fallback: `WIZE_APP` map → indigo `#6366f1`). Money green, Tax amber, Deal violet,
+  Health pink, Travel cyan, Portal indigo. Category sub-accents are allowed for
+  wayfinding, but the **primary CTA per screen uses the app brand color**.
+- **Mobile-first**: no horizontal overflow 320–768px; inputs ≥16px font (iOS zoom);
+  respect `env(safe-area-inset-*)`; fixed bottom bars must reserve body padding.
+- **Cold-start**: overlays show ONE AT A TIME (blocking disclaimer first, then
+  onboarding, then quickstart) — never stacked.
+
+---
+
 _End of document. Update this file alongside any architectural change._
