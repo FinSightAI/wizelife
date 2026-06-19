@@ -4,6 +4,7 @@
 
 const { chromium } = require('playwright');
 const fs = require('fs');
+const { patchBrowser } = require('./waf-bypass');
 
 const QA_EMAIL    = process.env.QA_EMAIL;
 const QA_PASSWORD = process.env.QA_PASSWORD;
@@ -31,6 +32,7 @@ async function fillAndLogin(page, email, password) {
 
 async function main() {
     const browser = await chromium.launch();
+    patchBrowser(browser); // inject Cloudflare WAF-skip header on every context (no-op unless QA_WAF_BYPASS set)
 
     // ══════════════════════════════════════════════════════════════════
     // Flow 1 — WizeLife: login → dashboard elements
@@ -2421,6 +2423,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     out.push('\n## Flow 81 — WebKit (Safari engine) loads each property');
     let wkBrowser = null;
     try { wkBrowser = await webkit.launch(); } catch (e) { out.push(`_skipped — WebKit not installed (${String(e.message).slice(0, 80)})_`); }
+    patchBrowser(wkBrowser);
     if (wkBrowser) {
         for (const prop of SUPPORTED_PROPS) {
             await step(`WebKit: ${prop.name} loads + has body content`, async () => {
@@ -2440,6 +2443,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     out.push('\n## Flow 82 — Firefox loads each property');
     let ffBrowser = null;
     try { ffBrowser = await firefox.launch(); } catch (e) { out.push(`_skipped — Firefox not installed (${String(e.message).slice(0, 80)})_`); }
+    patchBrowser(ffBrowser);
     if (ffBrowser) {
         for (const prop of SUPPORTED_PROPS) {
             await step(`Firefox: ${prop.name} loads + has body content`, async () => {

@@ -183,6 +183,7 @@ jobs:
         env:
           QA_EMAIL: ${{ secrets.QA_EMAIL }}
           QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+          QA_WAF_BYPASS: ${{ secrets.QA_WAF_BYPASS }}
         run: node qa/ai-authed-smoke.js
 
       - name: Aggregate core fail counts
@@ -271,6 +272,7 @@ jobs:
           NODE_PATH: /tmp/qa-deps/node_modules
           QA_EMAIL: ${{ secrets.QA_EMAIL }}
           QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+          QA_WAF_BYPASS: ${{ secrets.QA_WAF_BYPASS }}
         continue-on-error: true
         run: |
           node qa/run-e2e.js
@@ -291,6 +293,7 @@ jobs:
           NODE_PATH: /tmp/qa-deps/node_modules
           QA_EMAIL: ${{ secrets.QA_EMAIL }}
           QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+          QA_WAF_BYPASS: ${{ secrets.QA_WAF_BYPASS }}
         continue-on-error: true
         run: |
           # WebKit isn't preinstalled — best-effort, skip silently if missing
