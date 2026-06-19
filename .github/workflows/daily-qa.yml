@@ -236,7 +236,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 55
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['0', '1', '2']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -266,28 +270,33 @@ jobs:
             done
           done
 
-      - name: E2E flows (Tier 14)
+      - name: E2E flows (Tier 14) — shard ${{ matrix.shard }}/3
         id: e2e
         env:
           NODE_PATH: /tmp/qa-deps/node_modules
           QA_EMAIL: ${{ secrets.QA_EMAIL }}
           QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
           QA_WAF_BYPASS: ${{ secrets.QA_WAF_BYPASS }}
+          E2E_SHARD: ${{ matrix.shard }}
+          E2E_SHARDS: '3'
         continue-on-error: true
         run: |
           node qa/run-e2e.js
-          echo "fails=$(cat /tmp/e2e-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+          mv e2e-report.md "e2e-report-shard${{ matrix.shard }}.md" 2>/dev/null || true
+          echo "$(cat /tmp/e2e-fails 2>/dev/null || echo 0)" > "e2e-fails-shard${{ matrix.shard }}.txt"
 
-      - name: Tier 13k — Integration suite (Playwright, all 6 apps)
+      - name: Tier 13k — Integration suite (Playwright, all 6 apps) [shard 0 only]
+        if: ${{ matrix.shard == '0' }}
         id: integration
         env:
           NODE_PATH: /tmp/qa-deps/node_modules
         continue-on-error: true
         run: |
           node qa/integration-suite.js
-          echo "fails=$(cat /tmp/integration-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+          echo "$(cat /tmp/integration-fails 2>/dev/null || echo 0)" > integration-fails.txt
 
-      - name: Tier 13n-s — Browser extras (i18n, layout-diff, cross-browser, PWA, auth E2E, SSO)
+      - name: Tier 13n-s — Browser extras (i18n, layout-diff, cross-browser, PWA, auth E2E, SSO) [shard 0 only]
+        if: ${{ matrix.shard == '0' }}
         id: browserextra
         env:
           NODE_PATH: /tmp/qa-deps/node_modules
@@ -299,27 +308,19 @@ jobs:
           # WebKit isn't preinstalled — best-effort, skip silently if missing
           npx --prefix /tmp/qa-deps playwright install webkit --with-deps 2>/dev/null || true
           node qa/browser-extra.js
-          echo "fails=$(cat /tmp/browser-extra-fails 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+          echo "$(cat /tmp/browser-extra-fails 2>/dev/null || echo 0)" > browser-extra-fails.txt
 
-      - name: Aggregate e2e fail counts
-        id: e2e-fails
-        run: |
-          e2e_fails=$(cat /tmp/e2e-fails 2>/dev/null || echo 0)
-          integration_fails=$(cat /tmp/integration-fails 2>/dev/null || echo 0)
-          browser_extra_fails=$(cat /tmp/browser-extra-fails 2>/dev/null || echo 0)
-          total=$((e2e_fails + integration_fails + browser_extra_fails))
-          echo "fails=$total" >> $GITHUB_OUTPUT
-          echo "$total" > /tmp/e2e-fails-total
-
-      - name: Upload e2e artifact
+      - name: Upload e2e shard artifact
         uses: actions/upload-artifact@v4
         with:
-          name: qa-e2e-${{ github.run_id }}
+          name: qa-e2e-${{ github.run_id }}-${{ matrix.shard }}
           path: |
-            e2e-report.md
+            e2e-report-shard${{ matrix.shard }}.md
+            e2e-fails-shard${{ matrix.shard }}.txt
             integration-report.md
+            integration-fails.txt
             browser-extra-report.md
-            /tmp/e2e-fails-total
+            browser-extra-fails.txt
           retention-days: 30
           if-no-files-found: warn
 
@@ -338,11 +339,12 @@ jobs:
           path: ./core-reports
         continue-on-error: true
 
-      - name: Download e2e artifact
+      - name: Download e2e artifacts (all shards)
         uses: actions/download-artifact@v4
         with:
-          name: qa-e2e-${{ github.run_id }}
+          pattern: qa-e2e-${{ github.run_id }}-*
           path: ./e2e-reports
+          merge-multiple: true
         continue-on-error: true
 
       - name: Combine reports
@@ -356,7 +358,7 @@ jobs:
             echo ""
             cat core-reports/lighthouse-report.md 2>/dev/null || echo '_lighthouse missing_'
             echo ""
-            cat e2e-reports/e2e-report.md 2>/dev/null || echo '_e2e missing_'
+            cat e2e-reports/e2e-report-shard*.md 2>/dev/null || echo '_e2e missing_'
             echo ""
             cat core-reports/security-report.md 2>/dev/null || echo '_security missing_'
             echo ""
@@ -391,7 +393,10 @@ jobs:
             echo -e "\n\n_…report truncated to fit GitHub comment size_" >> combined-report.md
           fi
           core_fails=$(cat core-reports/core-fails-total 2>/dev/null || echo 0)
-          e2e_fails=$(cat e2e-reports/e2e-fails-total 2>/dev/null || echo 0)
+          e2e_fails=0
+          for f in e2e-reports/e2e-fails-shard*.txt e2e-reports/integration-fails.txt e2e-reports/browser-extra-fails.txt; do
+            [ -f "$f" ] && e2e_fails=$((e2e_fails + $(cat "$f" 2>/dev/null || echo 0)))
+          done
           total=$((core_fails + e2e_fails))
           echo "fails=$total" >> $GITHUB_OUTPUT
 

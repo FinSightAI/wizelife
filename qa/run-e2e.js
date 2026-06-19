@@ -12,6 +12,21 @@ const QA_PASSWORD = process.env.QA_PASSWORD;
 const out   = ['# E2E flows\n'];
 const fails = [];
 
+// ── Opt-in sharding: split flows across parallel CI jobs to cut wall-clock.
+// Each browser.newContext() is one "flow unit"; a unit's step()s run only in its
+// assigned shard (unit % E2E_SHARDS === E2E_SHARD). No-op — everything runs — unless
+// E2E_SHARDS>1, so default/local behaviour is unchanged.
+const E2E_SHARDS = Math.max(1, parseInt(process.env.E2E_SHARDS || '1', 10));
+const E2E_SHARD  = parseInt(process.env.E2E_SHARD || '0', 10);
+let _unitIdx = -1;
+let _inShard = true;
+function _shardWrap(browser) {
+    if (E2E_SHARDS <= 1 || !browser) return browser;
+    const _nc = browser.newContext.bind(browser);
+    browser.newContext = (opts) => { _unitIdx++; _inShard = (_unitIdx % E2E_SHARDS) === E2E_SHARD; return _nc(opts); };
+    return browser;
+}
+
 if (!QA_EMAIL || !QA_PASSWORD) {
     out.push('_skipped — QA_EMAIL/QA_PASSWORD secrets missing_');
     fs.writeFileSync('e2e-report.md', out.join('\n'));
@@ -19,6 +34,7 @@ if (!QA_EMAIL || !QA_PASSWORD) {
 }
 
 async function step(label, fn) {
+    if (E2E_SHARDS > 1 && !_inShard) return undefined; // this flow unit belongs to another shard
     try { await fn(); out.push(`- ✅ ${label}`); return true; }
     catch (e) { out.push(`- ❌ ${label} — ${e.message.slice(0, 220)}`); fails.push(label); return false; }
 }
@@ -32,7 +48,7 @@ async function fillAndLogin(page, email, password) {
 
 async function main() {
     const browser = await chromium.launch();
-    patchBrowser(browser); // inject Cloudflare WAF-skip header on every context (no-op unless QA_WAF_BYPASS set)
+    patchBrowser(browser); _shardWrap(browser); // inject Cloudflare WAF-skip header on every context (no-op unless QA_WAF_BYPASS set)
 
     // ══════════════════════════════════════════════════════════════════
     // Flow 1 — WizeLife: login → dashboard elements
@@ -2423,7 +2439,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     out.push('\n## Flow 81 — WebKit (Safari engine) loads each property');
     let wkBrowser = null;
     try { wkBrowser = await webkit.launch(); } catch (e) { out.push(`_skipped — WebKit not installed (${String(e.message).slice(0, 80)})_`); }
-    patchBrowser(wkBrowser);
+    patchBrowser(wkBrowser); _shardWrap(wkBrowser);
     if (wkBrowser) {
         for (const prop of SUPPORTED_PROPS) {
             await step(`WebKit: ${prop.name} loads + has body content`, async () => {
@@ -2443,7 +2459,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     out.push('\n## Flow 82 — Firefox loads each property');
     let ffBrowser = null;
     try { ffBrowser = await firefox.launch(); } catch (e) { out.push(`_skipped — Firefox not installed (${String(e.message).slice(0, 80)})_`); }
-    patchBrowser(ffBrowser);
+    patchBrowser(ffBrowser); _shardWrap(ffBrowser);
     if (ffBrowser) {
         for (const prop of SUPPORTED_PROPS) {
             await step(`Firefox: ${prop.name} loads + has body content`, async () => {
