@@ -429,6 +429,9 @@ section{padding:120px 24px;position:relative;z-index:1}
 .plan-desc{color:var(--muted2);font-size:.88rem;margin-bottom:26px;line-height:1.6}
 .plan-anchor{display:inline-block;font-size:.78rem;font-weight:700;color:#fcd34d;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);padding:6px 12px;border-radius:14px;margin:2px 0 12px;letter-spacing:.2px;line-height:1.45;max-width:100%}
 .plan-anchor s{color:var(--muted);font-weight:600;text-decoration-thickness:1.5px;white-space:nowrap}
+.plan-founding{display:flex;align-items:center;gap:6px;font-size:.74rem;font-weight:600;line-height:1.4;color:#c4b5fd;margin:-14px 0 22px;letter-spacing:.1px}
+.plan-founding .lock{font-size:.7rem;opacity:.85;flex-shrink:0}
+.plan-founding.yolo-f{color:#fcd34d}
 .plan-features{list-style:none;margin-bottom:30px;display:flex;flex-direction:column}
 .plan-features li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.88rem;display:flex;align-items:flex-start;gap:10px;color:#d1d9f0}
 .plan-features li:last-child{border-bottom:none}
@@ -1223,6 +1226,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="plan-tier" style="color:var(--accent2);">Pro</div>
 <div class="plan-price" style="background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$4.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">per&nbsp;month</sub></div>
 <p class="plan-desc" data-i18n="_5_">For your main tool — all 5 fully unlocked.</p>
+<div class="plan-founding" data-i18n="founding_price"><span class="lock" aria-hidden="true">🔒</span> Founding price — locked while you stay subscribed</div>
 <ul class="plan-features">
 <li data-i18n="20_ai_"><span class="check">✓</span> 20 AI answers/day per tool</li>
 <li data-i18n="ai_story_"><span class="check">✓</span> AI Story, Chat & Reports</li>
@@ -1239,6 +1243,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="plan-price" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$9.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">per&nbsp;month</sub></div>
 <div class="plan-anchor" data-i18n="yolo_anchor">Replaces <s>$15–40/mo</s> of separate apps</div>
 <p class="plan-desc" data-i18n="__73">For your whole life — every tool, every day.</p>
+<div class="plan-founding yolo-f" data-i18n="founding_price"><span class="lock" aria-hidden="true">🔒</span> Founding price — locked while you stay subscribed</div>
 <ul class="plan-features">
 <li><span class="check">✓</span> <strong style="color:#c7d2fe;font-weight:600">WizeAI</strong> — unified advisor across all 5 tools</li>
 <li><span class="check">✓</span> 40 AI answers/day — 2× more than Pro</li>
@@ -1639,6 +1644,7 @@ const WIZE_TR = {
  planDescFree:'To try one tool — no card needed.',
  planDescPro:'For your main tool — all 5 fully unlocked.',
  planDescYolo:'For your whole life — every tool, every day.',
+ foundingPrice:'Founding price — locked while you stay subscribed',
  yoloAnchor:'Replaces <s>$15–40/mo</s> of separate apps',
  heroBtn:'Get started free →', heroBtn2:'Explore the suite ↓',
  feedLabel:'Live from the suite',
@@ -1684,6 +1690,7 @@ const WIZE_TR = {
  planDescFree:'Para testar uma ferramenta — sem cartão.',
  planDescPro:'Para sua ferramenta principal — as 5 desbloqueadas.',
  planDescYolo:'Para a vida toda — cada ferramenta, todos os dias.',
+ foundingPrice:'Preço de fundador — congelado enquanto você mantiver a assinatura',
  yoloAnchor:'Substitui <s>$15–40/mês</s> de apps separados',
  heroBtn:'Comece grátis →', heroBtn2:'Explorar a suíte ↓',
  feedLabel:'Ao vivo na suíte',
@@ -1729,6 +1736,7 @@ const WIZE_TR = {
  planDescFree:'Para probar una herramienta — sin tarjeta.',
  planDescPro:'Para tu herramienta principal — las 5 desbloqueadas.',
  planDescYolo:'Para toda tu vida — cada herramienta, cada día.',
+ foundingPrice:'Precio de fundador — bloqueado mientras mantengas tu suscripción',
  yoloAnchor:'Reemplaza <s>$15–40/mes</s> de apps separadas',
  heroBtn:'Empieza gratis →', heroBtn2:'Explorar la suite ↓',
  feedLabel:'En vivo desde la suite',
@@ -1774,6 +1782,7 @@ const WIZE_TR = {
  planDescFree:'להתנסות בכלי אחד — בלי כרטיס אשראי.',
  planDescPro:'לכלי המרכזי שלך — כל ה-5 נפתחים במלואם.',
  planDescYolo:'לכל החיים — כל הכלים, כל יום.',
+ foundingPrice:'מחיר מייסדים — נעול כל עוד המנוי פעיל',
  yoloAnchor:'מחליף <s>$15–40 לחודש</s> של אפליקציות נפרדות',
  heroBtn:'התחל בחינם ←', heroBtn2:'גלה את הכלים ↓',
  feedLabel:'שידור חי מהחבילה',
@@ -1896,6 +1905,9 @@ function applyLandingLang(){
  if(pdYolo && t.planDescYolo) pdYolo.textContent = t.planDescYolo;
  const yAnchor = document.querySelector('.plan-anchor');
  if(yAnchor && t.yoloAnchor) yAnchor.innerHTML = t.yoloAnchor; // trusted static HTML (<s> strike)
+ if(t.foundingPrice) document.querySelectorAll('.plan-founding').forEach(function(el){
+   el.innerHTML = '<span class="lock" aria-hidden="true">🔒</span> ' + t.foundingPrice; // static dict, no user input
+ });
  const btns = document.querySelectorAll('.hero-btns a');
  if(btns[0]) btns[0].textContent = t.heroBtn;
  if(btns[1]) btns[1].textContent = t.heroBtn2;
