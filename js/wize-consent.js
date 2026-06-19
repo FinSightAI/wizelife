@@ -32,16 +32,19 @@
 
   var lang = (function () {
     try {
-      var l = (localStorage.getItem('wl_lang') || (navigator.language || 'en').slice(0, 2)).toLowerCase();
+      // Match the language the PAGE is actually showing: wl_lang, then the <html lang>
+      // the page's i18n sets, then the browser. (Was navigator.language only → showed
+      // Hebrew on an English page when the browser was Hebrew.)
+      var l = String(localStorage.getItem('wl_lang') || document.documentElement.getAttribute('lang') || navigator.language || 'en').slice(0, 2).toLowerCase();
       return ['he', 'en', 'pt', 'es'].indexOf(l) >= 0 ? l : 'en';
     } catch (e) { return 'en'; }
   })();
 
   var T = {
-    he: { msg: 'אנו משתמשים באחסון מקומי כדי להפעיל את האפליקציה, ובמזהה אנונימי לסטטיסטיקות שימוש (ללא צד-שלישי, ללא פרסום).', all: 'אשר הכל', ess: 'חיוני בלבד', more: 'פרטיות' },
-    en: { msg: 'We use local storage to run the app, and an anonymous id for usage statistics (no third parties, no ads).', all: 'Accept all', ess: 'Essential only', more: 'Privacy' },
-    pt: { msg: 'Usamos armazenamento local para executar o app e um id anônimo para estatísticas de uso (sem terceiros, sem anúncios).', all: 'Aceitar tudo', ess: 'Apenas essencial', more: 'Privacidade' },
-    es: { msg: 'Usamos almacenamiento local para ejecutar la app y un id anónimo para estadísticas de uso (sin terceros, sin anuncios).', all: 'Aceptar todo', ess: 'Solo esencial', more: 'Privacidad' }
+    he: { msg: 'אנו משתמשים באחסון מקומי כדי להפעיל את האפליקציה, ובמזהה אנונימי לסטטיסטיקות שימוש (ללא צד-שלישי, ללא פרסום).', all: 'אשר הכל', ess: 'דחה', more: 'פרטיות' },
+    en: { msg: 'We use local storage to run the app, and an anonymous id for usage statistics (no third parties, no ads).', all: 'Accept all', ess: 'Decline', more: 'Privacy' },
+    pt: { msg: 'Usamos armazenamento local para executar o app e um id anônimo para estatísticas de uso (sem terceiros, sem anúncios).', all: 'Aceitar tudo', ess: 'Recusar', more: 'Privacidade' },
+    es: { msg: 'Usamos almacenamiento local para ejecutar la app y un id anónimo para estadísticas de uso (sin terceros, sin anuncios).', all: 'Aceptar todo', ess: 'Rechazar', more: 'Privacidad' }
   };
   var t = T[lang] || T.en;
   var dir = lang === 'he' ? 'rtl' : 'ltr';
@@ -77,7 +80,7 @@
       b.textContent = label;
       b.style.cssText = 'border:0;border-radius:9px;padding:9px 14px;min-height:44px;'
         + 'font:600 13px Inter,sans-serif;cursor:pointer;'
-        + (primary ? 'background:#4f46e5;color:#fff' : 'background:rgba(255,255,255,0.08);color:#cdd5f5');
+        + (primary ? 'background:#4f46e5;color:#fff' : 'background:rgba(255,255,255,0.10);color:#e7ebff;border:1px solid rgba(255,255,255,0.30)');
       b.addEventListener('click', function () {
         set(val);
         try { bar.remove(); } catch (e) { /* ignore */ }
