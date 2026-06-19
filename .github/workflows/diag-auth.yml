@@ -1,0 +1,21 @@
+name: diag-auth
+on:
+  workflow_dispatch: {}
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1 || true
+          npm i playwright >/dev/null 2>&1
+          npx playwright install chromium >/dev/null 2>&1
+      - name: Diagnose auth.html
+        env:
+          QA_WAF_BYPASS: ${{ secrets.QA_WAF_BYPASS }}
+        run: node qa/diag-auth.js
