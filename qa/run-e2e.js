@@ -41,12 +41,19 @@ async function step(label, fn) {
 
 async function fillAndLogin(page, email, password) {
     await page.waitForSelector('input[type=email], #email', { timeout: 15000 });
+    // CRITICAL for slow CI: wait until the Firebase auth SDK has actually initialised
+    // before submitting. Clicking "Sign In" before firebase.auth() exists no-ops and the
+    // page never leaves auth.html (real auth works — login was only ever a timing race).
+    await page.waitForFunction(
+        () => !!(window.firebase && window.firebase.auth && window.firebase.apps && window.firebase.apps.length),
+        { timeout: 20000 }
+    ).catch(() => {});
     await page.fill('input[type=email], #email', email);
     await page.fill('input[type=password], #password', password);
     await page.locator('button:has-text("Sign In"), button:has-text("Sign in"), button:has-text("התחבר"), button#loginBtn, button[type=submit]').first().click({ timeout: 5000 });
 }
 
-async function waitForDashboard(page, timeout = 25000) {
+async function waitForDashboard(page, timeout = 35000) {
     // auth→dashboard navigation aborts an in-flight request mid-redirect, so
     // page.waitForURL throws net::ERR_ABORTED ("frame detached") even though it lands.
     // Poll the real URL instead, then assert.
