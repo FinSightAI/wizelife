@@ -50,7 +50,15 @@ async function fillAndLogin(page, email, password) {
     ).catch(() => {});
     await page.fill('input[type=email], #email', email);
     await page.fill('input[type=password], #password', password);
-    await page.locator('button:has-text("Sign In"), button:has-text("Sign in"), button:has-text("התחבר"), button#loginBtn, button[type=submit]').first().click({ timeout: 5000 });
+    // Click the real submit, then RETRY: in slow CI the first click can land before the
+    // auth-state handler is ready and gets swallowed (page stays on auth.html). Re-click
+    // until the page actually leaves auth.html.
+    const submit = page.locator('button#loginBtn, button[type=submit], button:has-text("Sign In"), button:has-text("Sign in"), button:has-text("התחבר")').first();
+    for (let attempt = 0; attempt < 3; attempt++) {
+        await submit.click({ timeout: 5000 }).catch(() => {});
+        try { await page.waitForFunction(() => !/auth\.html/.test(location.pathname), { timeout: 9000 }); break; }
+        catch (e) { /* still on auth — first click swallowed, retry */ }
+    }
 }
 
 async function waitForDashboard(page, timeout = 35000) {
