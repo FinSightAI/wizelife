@@ -127,6 +127,8 @@ nav.scrolled{background:rgba(5,6,15,.92);border-bottom-color:var(--border)}
 .nav-signin:hover{color:var(--text)}
 .nav-cta{background:var(--text);color:#05060f;padding:9px 18px;border-radius:999px;font-size:.85rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
 .nav-cta:hover{background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.08)}
+/* Compact sticky CTA — only rendered on mobile (see media query); hidden on desktop. */
+.nav-cta-mobile{display:none;background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff;border-radius:999px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;align-items:center;min-height:44px;padding:0 16px;font-size:.82rem;box-shadow:0 4px 16px rgba(99,102,241,.35)}
 .lang-toggle{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border);padding:7px 13px;border-radius:99px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
 .lang-toggle:hover{background:rgba(255,255,255,.12);color:var(--text)}
 .lang-pill{background:none;border:none;color:var(--muted2);padding:4px 8px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.5px;font-family:inherit;}
@@ -394,7 +396,7 @@ section{padding:120px 24px;position:relative;z-index:1}
 .compare-row > div:first-child{text-align:left;color:#d8dff6;font-weight:500}
 .compare-cell{color:var(--muted2)}
 .compare-cell .yes{color:#34d399;font-weight:900;font-size:1.1rem}
-.compare-cell .no{color:#4b5b7a;font-size:1rem}
+.compare-cell .no{color:#647399;font-size:1rem}
 .compare-cell.hl{background:rgba(99,102,241,.05);color:#c7d2fe;font-weight:600}
 
 /* ── TESTIMONIALS ── */
@@ -494,6 +496,9 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 @media(max-width:768px){
  nav{padding:0 16px;padding-inline-start:60px !important}
  .nav-links,.nav-signin,.nav-cta,#langBtn,#navPlanBadge{display:none !important}
+ /* Compact sticky CTA visible in the fixed header on mobile (the full .nav-cta
+    is hidden, so this keeps the primary action reachable while scrolling). */
+ .nav-cta-mobile{display:inline-flex !important;margin-inline-end:6px}
  /* Hamburger floats to inline-start corner (LTR=left, RTL=right) so the logo
     sits cleanly in the center-ish without being squeezed. */
  .hamburger{display:flex;position:fixed !important;top:max(14px,calc(env(safe-area-inset-top) + 14px));inset-inline-start:8px;z-index:250}
@@ -554,6 +559,8 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  section{padding:48px 14px}
  .hero{padding:80px 14px 40px}
  .panel{padding:18px 14px}
+ /* Keep the compact sticky CTA from crowding the logo on the narrowest phones. */
+ .nav-cta-mobile{padding:0 12px;font-size:.78rem}
 }
 
 /* ── DATA TRUST PANEL ── */
@@ -682,7 +689,10 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 </div>
 <span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);cursor:pointer;transition:background .2s,color .2s;"></span>
 <a class="nav-signin" data-i18n="__4" href="auth.html" id="nav-signin" rel="nofollow" aria-label="Sign in (top navigation)">Sign in</a>
-<a class="nav-cta" data-i18n="__5" href="auth.html" id="nav-cta" rel="nofollow" aria-label="Get started free (top navigation)">Get Started</a>
+<a class="nav-cta" data-i18n="__5" href="auth.html" id="nav-cta" rel="nofollow" aria-label="Get started free (top navigation)">Get started free</a>
+<!-- Compact sticky CTA — shown only on mobile, where the full .nav-cta is hidden
+     behind the hamburger. Keeps the primary action one tap away on scroll. -->
+<a class="nav-cta-mobile" data-i18n="__5" href="auth.html" id="nav-cta-mobile" rel="nofollow" aria-label="Get started free">Get started free</a>
 <button aria-label="Menu" class="hamburger" id="hamburger" onclick="toggleMenu()">
 <span></span><span></span><span></span>
 </button>
@@ -694,7 +704,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <a href="#faq" onclick="toggleMenu()">FAQ</a>
 <a data-i18n="__8" href="about.html" onclick="toggleMenu()">About</a>
 <a data-i18n="__9" href="auth.html" id="mobile-signin" style="color:var(--text);font-weight:600;" rel="nofollow" aria-label="Sign in (mobile menu)">Sign in</a>
-<a href="auth.html" style="color:var(--accent2);font-weight:700;" rel="nofollow" aria-label="Get started free (mobile menu)">Get Started Free →</a>
+<a href="auth.html" style="color:var(--accent2);font-weight:700;" rel="nofollow" aria-label="Get started free (mobile menu)">Get started free →</a>
 <!-- PWA install — hidden until the browser fires beforeinstallprompt -->
 <a id="pwa-install-link" href="#" style="display:none;color:var(--text);font-weight:600;" data-en="📱 Install app" data-he="📱 התקן אפליקציה" data-pt="📱 Instalar app" data-es="📱 Instalar app" onclick="event.preventDefault();window.__wlPwaInstall&amp;&amp;window.__wlPwaInstall();toggleMenu();">📱 Install app</a>
 <div style="display:flex;gap:6px;justify-content:center;padding-top:14px;border-top:1px solid var(--border);margin-top:6px;">
@@ -731,7 +741,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  </style>
 <p class="hero-sub">Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.</p>
 <div class="hero-btns">
-<a class="btn-primary" href="auth.html" rel="nofollow">Start free →</a>
+<a class="btn-primary" href="auth.html" rel="nofollow">Get started free →</a>
 <a class="btn-secondary" href="#products">Explore the suite ↓</a>
 <button type="button" class="btn-secondary" id="wlShareBtn" aria-label="Share" data-i18n="share" onclick="WizeShare&amp;&amp;WizeShare.share({title:'WizeLife',text:'WizeLife — Live Smarter. Every Day.',url:'https://wizelife.ai'})">↗ Share</button>
 </div>
@@ -1618,11 +1628,11 @@ let _rvTO; window.addEventListener('scroll',()=>{clearTimeout(_rvTO);_rvTO=setTi
 const WIZE_TR = {
  en: {
  navProducts:'Products', navPricing:'Pricing', navFaq:'FAQ',
- navSignin:'Sign in', navCta:'Get Started',
+ navSignin:'Sign in', navCta:'Get started free',
  heroBadge:'5 AI tools · one account · live now',
  h1a:'Make every', h1b:'smart decision', h1c:'with AI.',
  heroSub:'Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.',
- heroBtn:'Start free →', heroBtn2:'Explore the suite ↓',
+ heroBtn:'Get started free →', heroBtn2:'Explore the suite ↓',
  feedLabel:'Live from the suite',
  trustLabel0:'AI tools in one suite', trustLabel1:'To get started', trustLabel2:'Countries in WizeTax', trustLabel3:'Real-estate markets',
  suiteEye:'The suite', suiteTitle:'One account.\nEvery smart decision.', suiteSub:'Each tool is purpose-built AI — not a generic chatbot. Click any tool to see a live preview.',
@@ -1643,7 +1653,7 @@ const WIZE_TR = {
  footerSignin:'Sign in', footerSignup:'Sign up free', footerPricing:'Pricing',
  footerContact:'Contact', footerPrivacy:'Privacy Policy', footerTerms:'Terms of Service',
  footerRights:'© 2026 WizeLife. All rights reserved.', footerMade:'',
- mobileGetStarted:'Get Started Free →',
+ mobileGetStarted:'Get started free →',
  aiRecoLabel:'Illustrative AI output — not advice',
  aiRecoBody:'Example: wait 3 months, then relocate to Portugal — saves $40,800.',
  landingDisclaimer:'WizeLife is informational only — not licensed financial/tax advice. Consult a professional.',
@@ -1838,6 +1848,8 @@ function applyLandingLang(){
  if (!window._wlLoggedIn) {
  document.getElementById('nav-signin').textContent = t.navSignin;
  document.getElementById('nav-cta').textContent = t.navCta;
+ var _navCtaM = document.getElementById('nav-cta-mobile');
+ if(_navCtaM) _navCtaM.textContent = t.navCta;
  }
 
  // Mobile nav
@@ -2092,6 +2104,8 @@ window._wlInitAuthUI = function () {
       signinBtn.href = 'dashboard.html';
       ctaBtn.textContent = 'Dashboard →';
       ctaBtn.href = 'dashboard.html';
+      const ctaBtnM = document.getElementById('nav-cta-mobile');
+      if (ctaBtnM) { ctaBtnM.textContent = 'Dashboard →'; ctaBtnM.href = 'dashboard.html'; }
       document.querySelectorAll('a[href="auth.html"].btn-primary').forEach(a => { a.href = 'dashboard.html'; });
       document.querySelectorAll('a[href="auth.html"]').forEach(a => { a.href = 'dashboard.html'; });
     } else {
