@@ -185,7 +185,8 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
 @keyframes wlLogoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
 
 @keyframes logoHue{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(60deg)}}
-.hero-sub{font-size:1.2rem;color:var(--muted2);max-width:540px;margin-bottom:48px;font-weight:400;line-height:1.65;animation:fadeUp .7s .2s ease both}
+.hero-sub{font-size:1.2rem;color:var(--muted2);max-width:560px;margin-bottom:48px;font-weight:400;line-height:1.65;animation:fadeUp .7s .2s ease both}
+.hero-sub strong{color:var(--text);font-weight:700}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s .3s ease both}
 .btn-primary{background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff;border:none;padding:16px 30px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 30px rgba(99,102,241,.4)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(99,102,241,.55)}
@@ -426,6 +427,8 @@ section{padding:120px 24px;position:relative;z-index:1}
 .plan-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:3.2rem;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:6px}
 .plan-price sub{font-size:1rem;font-weight:500;color:var(--muted);vertical-align:bottom;margin-bottom:4px;letter-spacing:0}
 .plan-desc{color:var(--muted2);font-size:.88rem;margin-bottom:26px;line-height:1.6}
+.plan-anchor{display:inline-block;font-size:.78rem;font-weight:700;color:#fcd34d;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);padding:6px 12px;border-radius:14px;margin:2px 0 12px;letter-spacing:.2px;line-height:1.45;max-width:100%}
+.plan-anchor s{color:var(--muted);font-weight:600;text-decoration-thickness:1.5px;white-space:nowrap}
 .plan-features{list-style:none;margin-bottom:30px;display:flex;flex-direction:column}
 .plan-features li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.88rem;display:flex;align-items:flex-start;gap:10px;color:#d1d9f0}
 .plan-features li:last-child{border-bottom:none}
@@ -739,7 +742,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  }
  @keyframes wize-life-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
  </style>
-<p class="hero-sub">Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.</p>
+<p class="hero-sub">5 AI tools, one login: <strong>money</strong>, <strong>tax</strong>, <strong>travel</strong>, <strong>health</strong> &amp; <strong>real estate</strong> — each a purpose-built advisor for life's biggest decisions.</p>
 <div class="hero-btns">
 <a class="btn-primary" href="auth.html" rel="nofollow">Get started free →</a>
 <a class="btn-secondary" href="#products">Explore the suite ↓</a>
@@ -1205,7 +1208,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="price-card reveal">
 <div class="plan-tier" data-i18n="__63">Free</div>
 <div class="plan-price">$0 <sub>per&nbsp;month</sub></div>
-<p class="plan-desc" data-i18n="__64">Try any tool, no card needed.</p>
+<p class="plan-desc" data-i18n="__64">To try one tool — no card needed.</p>
 <ul class="plan-features">
 <li><span class="check">✓</span> 3 AI answers/day per tool</li>
 <li data-i18n="__65"><span class="check">✓</span> Basic dashboard & goals</li>
@@ -1219,7 +1222,7 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="pill pop" data-i18n="__69"><svg fill="currentColor" height="12" style="margin-right:4px" viewbox="0 0 24 24" width="12"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg> Most Popular</div>
 <div class="plan-tier" style="color:var(--accent2);">Pro</div>
 <div class="plan-price" style="background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$4.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">per&nbsp;month</sub></div>
-<p class="plan-desc" data-i18n="_5_">All 5 tools, fully unlocked.</p>
+<p class="plan-desc" data-i18n="_5_">For your main tool — all 5 fully unlocked.</p>
 <ul class="plan-features">
 <li data-i18n="20_ai_"><span class="check">✓</span> 20 AI answers/day per tool</li>
 <li data-i18n="ai_story_"><span class="check">✓</span> AI Story, Chat & Reports</li>
@@ -1234,7 +1237,8 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
 <div class="pill yo" data-i18n="_power"><svg fill="currentColor" height="12" style="margin-right:4px" viewbox="0 0 24 24" width="12"><path d="M13 2L3 14h7l-1 8 10-12h-7z"></path></svg> Power User</div>
 <div class="plan-tier" style="color:#f59e0b;">YOLO</div>
 <div class="plan-price" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$9.99 <sub style="-webkit-text-fill-color:var(--muted);color:var(--muted)">per&nbsp;month</sub></div>
-<p class="plan-desc" data-i18n="__73">For people who go deep. Every day.</p>
+<div class="plan-anchor" data-i18n="yolo_anchor">Replaces <s>$15–40/mo</s> of separate apps</div>
+<p class="plan-desc" data-i18n="__73">For your whole life — every tool, every day.</p>
 <ul class="plan-features">
 <li><span class="check">✓</span> <strong style="color:#c7d2fe;font-weight:600">WizeAI</strong> — unified advisor across all 5 tools</li>
 <li><span class="check">✓</span> 40 AI answers/day — 2× more than Pro</li>
@@ -1631,7 +1635,11 @@ const WIZE_TR = {
  navSignin:'Sign in', navCta:'Get started free',
  heroBadge:'5 AI tools · one account · live now',
  h1a:'Make every', h1b:'smart decision', h1c:'with AI.',
- heroSub:'Money, travel, taxes, health, real estate — the big choices in life, guided by AI built specifically for each domain.',
+ heroSub:'5 AI tools, one login: <strong>money</strong>, <strong>tax</strong>, <strong>travel</strong>, <strong>health</strong> &amp; <strong>real estate</strong> — each a purpose-built advisor for life\'s biggest decisions.',
+ planDescFree:'To try one tool — no card needed.',
+ planDescPro:'For your main tool — all 5 fully unlocked.',
+ planDescYolo:'For your whole life — every tool, every day.',
+ yoloAnchor:'Replaces <s>$15–40/mo</s> of separate apps',
  heroBtn:'Get started free →', heroBtn2:'Explore the suite ↓',
  feedLabel:'Live from the suite',
  trustLabel0:'AI tools in one suite', trustLabel1:'To get started', trustLabel2:'Countries in WizeTax', trustLabel3:'Real-estate markets',
@@ -1672,7 +1680,11 @@ const WIZE_TR = {
  navSignin:'Entrar', navCta:'Começar Grátis',
  heroBadge:'Sua vantagem injusta.',
  h1a:'Tome cada', h1b:'decisão inteligente', h1c:'com IA.',
- heroSub:'Dinheiro, viagens, impostos, saúde, imóveis — as grandes escolhas da vida, guiadas por IA desenvolvida especificamente para cada domínio.',
+ heroSub:'5 ferramentas de IA, um login: <strong>dinheiro</strong>, <strong>impostos</strong>, <strong>viagens</strong>, <strong>saúde</strong> e <strong>imóveis</strong> — cada uma um consultor feito sob medida para as maiores decisões da vida.',
+ planDescFree:'Para testar uma ferramenta — sem cartão.',
+ planDescPro:'Para sua ferramenta principal — as 5 desbloqueadas.',
+ planDescYolo:'Para a vida toda — cada ferramenta, todos os dias.',
+ yoloAnchor:'Substitui <s>$15–40/mês</s> de apps separados',
  heroBtn:'Comece grátis →', heroBtn2:'Explorar a suíte ↓',
  feedLabel:'Ao vivo na suíte',
  trustLabel0:'Ferramentas de IA em uma suíte', trustLabel1:'Para começar', trustLabel2:'Países no WizeTax', trustLabel3:'Mercados imobiliários',
@@ -1713,7 +1725,11 @@ const WIZE_TR = {
  navSignin:'Iniciar sesión', navCta:'Comenzar Gratis',
  heroBadge:'Tu ventaja injusta.',
  h1a:'Toma cada', h1b:'decisión inteligente', h1c:'con IA.',
- heroSub:'Dinero, viajes, impuestos, salud, bienes raíces — las grandes decisiones de la vida, guiadas por IA creada específicamente para cada dominio.',
+ heroSub:'5 herramientas de IA, un inicio de sesión: <strong>dinero</strong>, <strong>impuestos</strong>, <strong>viajes</strong>, <strong>salud</strong> e <strong>inmuebles</strong> — cada una un asesor hecho a medida para las grandes decisiones de la vida.',
+ planDescFree:'Para probar una herramienta — sin tarjeta.',
+ planDescPro:'Para tu herramienta principal — las 5 desbloqueadas.',
+ planDescYolo:'Para toda tu vida — cada herramienta, cada día.',
+ yoloAnchor:'Reemplaza <s>$15–40/mes</s> de apps separadas',
  heroBtn:'Empieza gratis →', heroBtn2:'Explorar la suite ↓',
  feedLabel:'En vivo desde la suite',
  trustLabel0:'Herramientas de IA en una suite', trustLabel1:'Para comenzar', trustLabel2:'Países en WizeTax', trustLabel3:'Mercados inmobiliarios',
@@ -1754,7 +1770,11 @@ const WIZE_TR = {
  navSignin:'כניסה', navCta:'התחל בחינם',
  heroBadge:'היתרון הלא הוגן שלך.',
  h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
- heroSub:'כסף, טיולים, מיסים, בריאות, נדל"ן — ההחלטות הגדולות בחיים, מונחות על ידי AI שנבנה במיוחד לכל תחום.',
+ heroSub:'5 כלי AI, התחברות אחת: <strong>כסף</strong>, <strong>מיסים</strong>, <strong>טיולים</strong>, <strong>בריאות</strong> ו<strong>נדל"ן</strong> — כל אחד יועץ ייעודי להחלטות הגדולות בחיים.',
+ planDescFree:'להתנסות בכלי אחד — בלי כרטיס אשראי.',
+ planDescPro:'לכלי המרכזי שלך — כל ה-5 נפתחים במלואם.',
+ planDescYolo:'לכל החיים — כל הכלים, כל יום.',
+ yoloAnchor:'מחליף <s>$15–40 לחודש</s> של אפליקציות נפרדות',
  heroBtn:'התחל בחינם ←', heroBtn2:'גלה את הכלים ↓',
  feedLabel:'שידור חי מהחבילה',
  trustLabel0:'כלי AI בחבילה אחת', trustLabel1:'להתחלה', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
@@ -1865,7 +1885,17 @@ function applyLandingLang(){
  const h1el = document.querySelector('h1');
  if(h1el) h1el.innerHTML = `${t.h1a}<br><span class="gradient-text">${t.h1b}</span><br>${t.h1c}`;
  const heroSub = document.querySelector('.hero-sub');
- if(heroSub) heroSub.textContent = t.heroSub;
+ if(heroSub) heroSub.innerHTML = t.heroSub; // contains trusted <strong> domain emphasis (static dict, no user input)
+ // Pricing tier value-sentences + YOLO replaces-anchor (data-i18n on these is
+ // not wired on the landing page, so localize them explicitly here, same as hero).
+ const pdFree = document.querySelector('.price-card .plan-desc[data-i18n="__64"]');
+ if(pdFree && t.planDescFree) pdFree.textContent = t.planDescFree;
+ const pdPro = document.querySelector('.price-card .plan-desc[data-i18n="_5_"]');
+ if(pdPro && t.planDescPro) pdPro.textContent = t.planDescPro;
+ const pdYolo = document.querySelector('.price-card .plan-desc[data-i18n="__73"]');
+ if(pdYolo && t.planDescYolo) pdYolo.textContent = t.planDescYolo;
+ const yAnchor = document.querySelector('.plan-anchor');
+ if(yAnchor && t.yoloAnchor) yAnchor.innerHTML = t.yoloAnchor; // trusted static HTML (<s> strike)
  const btns = document.querySelectorAll('.hero-btns a');
  if(btns[0]) btns[0].textContent = t.heroBtn;
  if(btns[1]) btns[1].textContent = t.heroBtn2;
