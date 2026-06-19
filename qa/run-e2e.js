@@ -46,6 +46,15 @@ async function fillAndLogin(page, email, password) {
     await page.locator('button:has-text("Sign In"), button:has-text("Sign in"), button:has-text("התחבר"), button#loginBtn, button[type=submit]').first().click({ timeout: 5000 });
 }
 
+async function waitForDashboard(page, timeout = 25000) {
+    // auth→dashboard navigation aborts an in-flight request mid-redirect, so
+    // page.waitForURL throws net::ERR_ABORTED ("frame detached") even though it lands.
+    // Poll the real URL instead, then assert.
+    try { await page.waitForFunction(() => /dashboard/.test(location.pathname), { timeout }); }
+    catch (e) { /* fall through to explicit check */ }
+    if (!/dashboard/.test(page.url())) throw new Error('did not reach dashboard (url=' + page.url() + ')');
+}
+
 async function main() {
     const browser = await chromium.launch();
     patchBrowser(browser); _shardWrap(browser); // inject Cloudflare WAF-skip header on every context (no-op unless QA_WAF_BYPASS set)
@@ -63,7 +72,7 @@ async function main() {
     });
     wizeLoggedIn = await step('Login → reach dashboard', async () => {
         await fillAndLogin(wizePage, QA_EMAIL, QA_PASSWORD);
-        await wizePage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(wizePage);
     });
     if (wizeLoggedIn) {
         await step('Nickname visible', async () => {
@@ -540,7 +549,7 @@ Monthly rent potential: ₪7,500. HOA: ₪500/mo. Property tax: ₪400/mo.`;
     await step('Login on WizeLife', async () => {
         await ssoWize.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(ssoWize, QA_EMAIL, QA_PASSWORD);
-        await ssoWize.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(ssoWize);
     });
     await step('Dashboard wires SSO token into WizeMoney href', async () => {
         // Wait for attachTokensToTools() to run
@@ -714,7 +723,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     });
     const iPhoneLoggedIn = await step('iPhone: login → dashboard', async () => {
         await fillAndLogin(iphonePage, QA_EMAIL, QA_PASSWORD);
-        await iphonePage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(iphonePage);
     });
     if (iPhoneLoggedIn) {
         await step('iPhone: bottom-nav bar present', async () => {
@@ -1119,7 +1128,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await refPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(refPage, QA_EMAIL, QA_PASSWORD);
-        await refPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(refPage);
         refIn = true;
     });
     if (refIn) {
@@ -1404,7 +1413,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await navPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(navPage, QA_EMAIL, QA_PASSWORD);
-        await navPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(navPage);
         navIn = true;
     });
     if (navIn) {
@@ -1553,7 +1562,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await bonusPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(bonusPage, QA_EMAIL, QA_PASSWORD);
-        await bonusPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(bonusPage);
         bonusIn = true;
     });
     if (bonusIn) {
@@ -1574,7 +1583,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await soPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(soPage, QA_EMAIL, QA_PASSWORD);
-        await soPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(soPage);
         soIn = true;
     });
     if (soIn) {
@@ -1959,7 +1968,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await gdprPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(gdprPage, QA_EMAIL, QA_PASSWORD);
-        await gdprPage.waitForURL(/dashboard/, { timeout: 20000 });
+        await waitForDashboard(gdprPage);
         gdprIn = true;
     });
     if (gdprIn) {
@@ -2181,7 +2190,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
         await trimPage.fill('#loginEmail', QA_EMAIL);
         await trimPage.fill('#loginPassword', QA_PASSWORD + '   '); // trailing spaces
         await trimPage.locator('#loginBtn, button[type=submit]').first().click();
-        await trimPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(trimPage);
     });
     await trimPage.close(); await trimCtx.close();
 
@@ -2487,7 +2496,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await escPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(escPage, QA_EMAIL, QA_PASSWORD);
-        await escPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(escPage);
         escIn = true;
     });
     if (escIn) {
@@ -2515,7 +2524,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login + open dashboard', async () => {
         await clipPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(clipPage, QA_EMAIL, QA_PASSWORD);
-        await clipPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(clipPage);
         clipIn = true;
     });
     if (clipIn) {
@@ -2550,7 +2559,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
         // Clear error + retry
         await netPage.fill('#loginPassword', QA_PASSWORD);
         await netPage.locator('#loginBtn, button[type=submit]').first().click();
-        await netPage.waitForURL(/dashboard\.html/, { timeout: 25000 });
+        await waitForDashboard(netPage);
     });
     await netPage.close(); await netCtx.close();
 
@@ -2700,7 +2709,7 @@ Monthly rent potential: 7500 ILS. HOA: 500/mo.`;
     await step('Login → dashboard', async () => {
         await persistPage.goto('https://wizelife.ai/auth.html', { waitUntil: 'load', timeout: 30000 });
         await fillAndLogin(persistPage, QA_EMAIL, QA_PASSWORD);
-        await persistPage.waitForURL(/dashboard\.html/, { timeout: 20000 });
+        await waitForDashboard(persistPage);
         pIn = true;
     });
     if (pIn) {
