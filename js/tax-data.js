@@ -30,7 +30,7 @@ const TAX_DATA = {
 
   // ── ISRAEL ─────────────────────────────────────────────────── source: rashut hamissim + btl.gov.il + חוק ההסדרים 2026
   IL: {
-    flag: '🇮🇱', name: 'ישראל', currency: 'ILS', usdRate: 0.27,
+    flag: '🇮🇱', name: 'ישראל', currency: 'ILS', usdRate: 0.33,  // USD per 1 ILS — fallback only (loadFx() patches live); refreshed 2026-06-19, USD/ILS≈3.0 (was 0.27 ≈ 3.70, ~20% stale)
     // 2026 brackets — חוק ההסדרים 2026 widened the 20% and 31% bands.
     // Effect: ~30% of workers (mid-high earners) pay less. Cost to budget
     // ~₪4.5B/yr. Retroactive to Jan 1, 2026 — paychecks reflect via 2026
@@ -804,7 +804,6 @@ const TAX_META = {
     'AU: Super 12% not added to gross (it\'s employer-paid above salary; SG rate is 12% from Jul-2025)',
     'BR: INSS tiered 7.5%/9%/12%/14% simplified to 7.5% (overcharges high earners — flat 7.5% on full base undercounts vs progressive)',
     'BR: 2026 redutor (exempts up to R$5,000/mo) NOT modeled — low/mid earners are over-taxed by this engine vs reality',
-    'IL: BL reduced-rate threshold uses ₪7,703/mo; 60% of the official 2026 avg wage ₪13,769 = ₪8,261/mo — minor split-point drift (impact small)',
     'IT: Impatriati moved to 50% exempt (was 70%/90% under old regime — confirm via PwC',
   ],
   sources: [
