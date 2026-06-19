@@ -270,14 +270,14 @@
  <div class="error" id="signupError" role="alert" aria-live="assertive"></div>
  </div>
 
- <div class="divider">or</div>
+ <div class="divider" id="authOrDivider">or</div>
 
  <button class="btn-google" onclick="googleLogin()">
  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
- Continue with Google
+ <span id="authGoogleTxt">Continue with Google</span>
  </button>
 
- <div class="back"><a href="index.html">← Back to WizeLife</a></div>
+ <div class="back"><a href="index.html" id="authBackLink">← Back to WizeLife</a></div>
 </div>
 
 <!-- Firebase -->
@@ -631,10 +631,10 @@ document.head.appendChild(_swScript);
 
 <script>
 const AUTH_TR = {
- he: { signIn: 'כניסה', signUp: 'יצירת חשבון', email: 'אימייל', password: 'סיסמה', fullName: 'שם מלא', forgot: 'שכחת סיסמה?', subtitle: 'הסוויטה לחיים מבוססת AI', signInBtn: 'כניסה', signUpBtn: 'הרשמה' },
- en: { signIn: 'Sign In', signUp: 'Create Account', email: 'Email', password: 'Password', fullName: 'Full Name', forgot: 'Forgot password?', subtitle: 'Your AI-powered life suite', signInBtn: 'Sign In', signUpBtn: 'Create Account' },
- pt: { signIn: 'Entrar', signUp: 'Criar Conta', email: 'Email', password: 'Senha', fullName: 'Nome Completo', forgot: 'Esqueceu a senha?', subtitle: 'Sua suíte de vida com IA', signInBtn: 'Entrar', signUpBtn: 'Criar Conta' },
- es: { signIn: 'Iniciar Sesión', signUp: 'Crear Cuenta', email: 'Email', password: 'Contraseña', fullName: 'Nombre Completo', forgot: '¿Olvidaste la contraseña?', subtitle: 'Tu suite de vida con IA', signInBtn: 'Iniciar Sesión', signUpBtn: 'Crear Cuenta' },
+ he: { signIn: 'כניסה', signUp: 'יצירת חשבון', email: 'אימייל', password: 'סיסמה', fullName: 'שם מלא', forgot: 'שכחת סיסמה?', subtitle: 'הסוויטה לחיים מבוססת AI', signInBtn: 'כניסה', signUpBtn: 'הרשמה', or: 'או', google: 'המשך עם Google', back: 'חזרה ל-WizeLife →' },
+ en: { signIn: 'Sign In', signUp: 'Create Account', email: 'Email', password: 'Password', fullName: 'Full Name', forgot: 'Forgot password?', subtitle: 'Your AI-powered life suite', signInBtn: 'Sign In', signUpBtn: 'Create Account', or: 'or', google: 'Continue with Google', back: '← Back to WizeLife' },
+ pt: { signIn: 'Entrar', signUp: 'Criar Conta', email: 'Email', password: 'Senha', fullName: 'Nome Completo', forgot: 'Esqueceu a senha?', subtitle: 'Sua suíte de vida com IA', signInBtn: 'Entrar', signUpBtn: 'Criar Conta', or: 'ou', google: 'Continuar com Google', back: '← Voltar para o WizeLife' },
+ es: { signIn: 'Iniciar Sesión', signUp: 'Crear Cuenta', email: 'Email', password: 'Contraseña', fullName: 'Nombre Completo', forgot: '¿Olvidaste la contraseña?', subtitle: 'Tu suite de vida con IA', signInBtn: 'Iniciar Sesión', signUpBtn: 'Crear Cuenta', or: 'o', google: 'Continuar con Google', back: '← Volver a WizeLife' },
 };
 function setAuthLang(v) {
  if (!['en','pt','es','he'].includes(v)) return;
@@ -666,6 +666,12 @@ function setAuthLang(v) {
  const subtitle = document.querySelector('.logo p');
  if (subtitle) subtitle.textContent = t.subtitle;
  document.querySelectorAll('.forgot a').forEach(a => a.textContent = t.forgot);
+ const orEl = document.getElementById('authOrDivider');
+ if (orEl) orEl.textContent = t.or;
+ const gEl = document.getElementById('authGoogleTxt');
+ if (gEl) gEl.textContent = t.google;
+ const backEl = document.getElementById('authBackLink');
+ if (backEl) backEl.textContent = t.back;
 }
 (function() {
  const saved = localStorage.getItem('wl_lang') || 'en';
