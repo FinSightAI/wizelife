@@ -40,7 +40,7 @@ const TAX_DATA = {
       { upTo: 120_720, rate: 14 },              // unchanged
       { upTo: 228_000, rate: 20 },              // 2026: ceiling moved 193,800 → 228,000 (19,000/mo)
       { upTo: 301_200, rate: 31 },              // 2026: ceiling moved 269,280 → 301,200 (25,100/mo)
-      { upTo: 559_680, rate: 35 },              // unchanged
+      { upTo: 560_280, rate: 35 },              // 35% band ceiling ₪46,690/mo × 12 (kolzchut/btl 2026); was 559,680 (off by ₪600/yr)
       { upTo: 721_560, rate: 47 },              // unchanged
       { upTo: Infinity, rate: 50 },             // includes 3% mas yesef (surtax) above 721,560
     ],
