@@ -18,4 +18,6 @@ jobs:
       - name: Diagnose auth.html
         env:
           QA_WAF_BYPASS: ${{ secrets.QA_WAF_BYPASS }}
+          QA_EMAIL: ${{ secrets.QA_EMAIL }}
+          QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
         run: node qa/diag-auth.js
