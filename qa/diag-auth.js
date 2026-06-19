@@ -26,17 +26,25 @@ const { patchBrowser } = require('./waf-bypass');
         apps: (window.firebase && window.firebase.apps) ? window.firebase.apps.length : 'n/a',
     })).catch(e => ({ err: String(e) }));
 
-    // try the actual form login
+    // try the actual form login, then let redirects fully settle and report ground truth
     let loginResult = 'not-attempted';
     try {
         await p.fill('input[type=email], #email', process.env.QA_EMAIL || '');
         await p.fill('input[type=password], #password', process.env.QA_PASSWORD || '');
         await p.locator('button:has-text("Sign In"), button#loginBtn, button[type=submit]').first().click({ timeout: 5000 });
         await p.waitForURL(/dashboard\.html/, { timeout: 22000 });
-        loginResult = 'SUCCESS → ' + p.url();
+        loginResult = 'waitForURL SUCCESS';
     } catch (e) {
-        loginResult = 'FAILED: ' + e.message.slice(0, 80) + ' | url=' + p.url();
+        loginResult = 'waitForURL FAILED: ' + e.message.slice(0, 70);
     }
+    // settle, then report ground truth: where did we end up + is the user actually signed in?
+    await p.waitForTimeout(8000);
+    const after = await p.evaluate(() => ({
+        url: location.href,
+        uid: (window.firebase && window.firebase.auth && window.firebase.auth().currentUser) ? window.firebase.auth().currentUser.uid : null,
+    })).catch(e => ({ url: 'eval-failed', uid: 'err' }));
+    console.log('FINAL_URL:', after.url);
+    console.log('CURRENT_USER_UID:', after.uid || '(null — not signed in)');
     // any auth error shown on the page?
     const authErr = await p.evaluate(() => {
         const e = document.querySelector('.error, .alert, [role=alert], #authError, .auth-error');
