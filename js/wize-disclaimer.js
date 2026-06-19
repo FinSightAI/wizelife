@@ -23,6 +23,27 @@
   //                  auto-trigger re-prompt because storageKey is suffixed with the version.
   const TOS_VERSION = 3;
 
+  // Resolve the per-app brand accent ONCE. We do NOT rely on CSS `var(--accent)`
+  // resolving (this modal is appended to <body>; the var isn't reliably in scope),
+  // so we read an explicit global. Order: window.WIZE_ACCENT → per-WIZE_APP map →
+  // indigo fallback. Used for the primary CTA background + checkbox accent-color.
+  function brandAccent() {
+    try {
+      // Each app flips window.WIZE_APP between an early long name (wizetravel) and a
+      // late short name (travel) — include BOTH so the accent is correct whichever
+      // value is live when this modal renders (gate() usually runs after the late one).
+      const map = {
+        wizemoney: '#10b981', money: '#10b981',
+        wizetax: '#f59e0b', tax: '#f59e0b',
+        wizedeal: '#8b5cf6', deal: '#8b5cf6',
+        wizehealth: '#ec4899', health: '#ec4899',
+        wizetravel: '#06b6d4', travel: '#06b6d4',
+        wizelife: '#4f46e5'
+      };
+      return window.WIZE_ACCENT || map[window.WIZE_APP] || '#6366f1';
+    } catch (e) { return '#6366f1'; }
+  }
+
   const COPY = {
     health: {
       he: {
@@ -373,6 +394,7 @@
     const lang = getLang();
     const t = (COPY[app] || COPY.deal)[lang] || COPY[app].en;
     const dir = lang === 'he' ? 'rtl' : 'ltr';
+    const accent = brandAccent();
 
     const wrap = document.createElement('div');
     wrap.id = 'wl-disclaimer-modal';
@@ -397,13 +419,13 @@
                       color:#eef2ff;background:rgba(255,255,255,0.04);padding:11px 13px;
                       border-radius:10px;margin-bottom:14px;cursor:pointer;line-height:1.4;">
           <input type="checkbox" id="wl-disc-check" style="margin-top:2px;flex-shrink:0;
-                 width:18px;height:18px;accent-color:#6366f1;cursor:pointer;">
+                 width:18px;height:18px;accent-color:${accent};cursor:pointer;">
           <span>${t.accept}</span>
         </label>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <button id="wl-disc-accept" disabled
                   style="flex:1;min-width:140px;padding:13px 18px;border:0;border-radius:10px;
-                         background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
+                         background:linear-gradient(135deg,${accent},${accent});color:#fff;
                          font:800 14px inherit;cursor:not-allowed;opacity:0.5;
                          transition:opacity 0.15s,transform 0.1s;">
             ${({ he: 'המשך לאפליקציה', en: 'Continue to app', pt: 'Continuar para o app', es: 'Continuar a la app' })[lang] || 'Continue to app'}

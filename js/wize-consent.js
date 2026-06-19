@@ -30,6 +30,27 @@
 
   if (get()) return; // already decided — no banner
 
+  // Resolve the per-app brand accent ONCE, at render time. We do NOT rely on the
+  // CSS `var(--accent)` resolving — this banner is appended to <body> and on some
+  // apps the var isn't in scope there, so it silently fell back to indigo. Read an
+  // explicit global instead. Order: window.WIZE_ACCENT → per-WIZE_APP map → indigo.
+  var accent = (function () {
+    try {
+      // Each app flips window.WIZE_APP between an early long name (wizetravel) and a
+      // late short name (travel) — include BOTH so the accent is correct whichever
+      // value is live when this banner renders.
+      var map = {
+        wizemoney: '#10b981', money: '#10b981',
+        wizetax: '#f59e0b', tax: '#f59e0b',
+        wizedeal: '#8b5cf6', deal: '#8b5cf6',
+        wizehealth: '#ec4899', health: '#ec4899',
+        wizetravel: '#06b6d4', travel: '#06b6d4',
+        wizelife: '#4f46e5'
+      };
+      return window.WIZE_ACCENT || map[window.WIZE_APP] || '#6366f1';
+    } catch (e) { return '#6366f1'; }
+  })();
+
   var lang = (function () {
     try {
       // Match the language the PAGE is actually showing: wl_lang, then the <html lang>
@@ -80,7 +101,7 @@
       b.textContent = label;
       b.style.cssText = 'border:0;border-radius:9px;padding:9px 14px;min-height:44px;'
         + 'font:600 13px Inter,sans-serif;cursor:pointer;'
-        + (primary ? 'background:#4f46e5;color:#fff' : 'background:rgba(255,255,255,0.10);color:#e7ebff;border:1px solid rgba(255,255,255,0.30)');
+        + (primary ? ('background:' + accent + ';color:#fff') : 'background:rgba(255,255,255,0.10);color:#e7ebff;border:1px solid rgba(255,255,255,0.30)');
       b.addEventListener('click', function () {
         set(val);
         try { bar.remove(); } catch (e) { /* ignore */ }
