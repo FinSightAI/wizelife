@@ -70,6 +70,31 @@
   var t = T[lang] || T.en;
   var dir = lang === 'he' ? 'rtl' : 'ltr';
 
+  // D4 — reserve space so the fixed bottom banner never occludes page content /
+  // bottom CTAs on mobile. We add bottom padding to <body> equal to the banner
+  // height (+ the iOS/Android safe-area inset), and remove it the moment the
+  // user decides/dismisses. Stored on a custom property so we can subtract it
+  // cleanly without clobbering any existing inline padding.
+  var _prevBodyPadBottom = null;
+  function reserveSpace(bar) {
+    try {
+      var body = document.body;
+      if (!body) return;
+      if (_prevBodyPadBottom === null) _prevBodyPadBottom = body.style.paddingBottom || '';
+      var h = bar.getBoundingClientRect().height || bar.offsetHeight || 64;
+      // banner sits 12px above the bottom edge → reserve height + that gap + safe-area.
+      body.style.paddingBottom = 'calc(' + Math.ceil(h + 12) + 'px + env(safe-area-inset-bottom))';
+    } catch (e) { /* ignore */ }
+  }
+  function releaseSpace() {
+    try {
+      if (document.body && _prevBodyPadBottom !== null) {
+        document.body.style.paddingBottom = _prevBodyPadBottom;
+        _prevBodyPadBottom = null;
+      }
+    } catch (e) { /* ignore */ }
+  }
+
   function show() {
     if (document.getElementById('wl-consent')) return;
     var bar = document.createElement('div');
@@ -104,6 +129,8 @@
         + (primary ? ('background:' + accent + ';color:#fff') : 'background:rgba(255,255,255,0.10);color:#e7ebff;border:1px solid rgba(255,255,255,0.30)');
       b.addEventListener('click', function () {
         set(val);
+        releaseSpace();
+        window.removeEventListener('resize', onResize);
         try { bar.remove(); } catch (e) { /* ignore */ }
         try { window.dispatchEvent(new Event('wl-consent-changed')); } catch (e) { /* ignore */ }
       });
@@ -114,6 +141,12 @@
     bar.appendChild(msg);
     bar.appendChild(btns);
     (document.body || document.documentElement).appendChild(bar);
+
+    // Reserve space AFTER layout so the measured height is accurate (the banner
+    // wraps to 2 rows on narrow phones). Re-measure on resize/orientation change.
+    function onResize() { reserveSpace(bar); }
+    requestAnimationFrame(function () { reserveSpace(bar); });
+    window.addEventListener('resize', onResize);
   }
 
   if (document.body) show();

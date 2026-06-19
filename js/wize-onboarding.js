@@ -476,8 +476,45 @@
         sessionStorage.setItem(sessKey, '1');
       } catch (e) {}
     }
-    /* Wait a tick so the rest of the page has painted */
-    setTimeout(function () { buildModal(appId); }, 600);
+    /* Wait a tick so the rest of the page has painted, THEN make sure we don't
+       stack on top of the blocking first-use disclaimer (D2 — value-first:
+       one overlay at a time). If a disclaimer modal is on screen or pending,
+       wait for it to resolve before showing onboarding. */
+    setTimeout(function () { afterDisclaimer(function () { buildModal(appId); }); }, 600);
+  }
+
+  /* Run `cb` once no blocking disclaimer is present. The disclaimer module sets
+     window.__wizeDisclaimerPending while its modal is up and dispatches
+     'wize-disclaimer-resolved' on accept/decline. We also poll as a fallback
+     (in case the disclaimer script loaded after us or the flag was missed). */
+  function disclaimerBlocking() {
+    try {
+      if (window.__wizeDisclaimerPending) return true;
+      if (document.getElementById('wl-disclaimer-modal')) return true;
+    } catch (e) {}
+    return false;
+  }
+  function afterDisclaimer(cb) {
+    if (!disclaimerBlocking()) { cb(); return; }
+    var done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      window.removeEventListener('wize-disclaimer-resolved', onResolved);
+      /* small beat so the disclaimer's exit doesn't visually collide */
+      setTimeout(cb, 350);
+    }
+    function onResolved() { go(); }
+    window.addEventListener('wize-disclaimer-resolved', onResolved);
+    /* Fallback poll: if the event is ever missed, proceed when the modal+flag
+       are gone. Cap so we never lock onboarding out permanently. */
+    var tries = 0;
+    (function poll() {
+      if (done) return;
+      if (!disclaimerBlocking()) { go(); return; }
+      if (tries++ > 120) { go(); return; } // ~60s ceiling
+      setTimeout(poll, 500);
+    })();
   }
 
   /* Public API: window.WizeOnboarding.show('money' | 'tax' | ...) — re-trigger */

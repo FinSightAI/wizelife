@@ -30,6 +30,22 @@
   var POLL_MS = 60000;
   var BANNER_ID = 'wize-update-banner';
 
+  // D3 — never let the update prompt compete with the first-impression hero.
+  // Suppress it for the first ~120s of a SESSION (persisted in sessionStorage so
+  // an in-session reload doesn't reset the grace window). Detection still runs;
+  // we just defer surfacing the toast until the grace window has elapsed.
+  var GRACE_MS = 120000;
+  var _sessStart = (function () {
+    try {
+      var s = sessionStorage.getItem('wize_vc_session_start');
+      if (s) return parseInt(s, 10);
+      var now = Date.now();
+      sessionStorage.setItem('wize_vc_session_start', String(now));
+      return now;
+    } catch (e) { return Date.now(); }
+  })();
+  function withinGrace() { return (Date.now() - _sessStart) < GRACE_MS; }
+
   function getLang() {
     try {
       var stored = (localStorage.getItem('wl_lang') || '').slice(0, 2);
@@ -47,33 +63,45 @@
     es: { msg: 'Nueva versión disponible', btn: 'Actualizar' },
   };
 
+  // D3 — make the update prompt UNOBTRUSIVE: a small dismissible TOAST anchored
+  // to the bottom corner (above any mobile bottom-nav + safe-area) instead of a
+  // full-width top banner that ate first-screen / hero space. The Refresh action
+  // is unchanged. Update detection is unchanged.
   function showBanner(newVersion) {
     if (document.getElementById(BANNER_ID)) return;
     var lang = getLang();
     var tr = TR[lang] || TR.he;
+    var dir = lang === 'he' ? 'rtl' : 'ltr';
     var bar = document.createElement('div');
     bar.id = BANNER_ID;
-    bar.setAttribute('role', 'alert');
+    bar.setAttribute('role', 'status');
+    bar.setAttribute('dir', dir);
     bar.style.cssText = [
-      'position:fixed', 'top:0', 'left:0', 'right:0',
+      'position:fixed',
+      // Sit above a 56px mobile bottom-nav when present + the safe-area inset.
+      'bottom:calc(56px + 14px + env(safe-area-inset-bottom))',
+      'inset-inline-end:14px',
+      'max-width:calc(100vw - 28px)',
       'z-index:100000',
-      'background:linear-gradient(90deg,#6366f1,#8b5cf6)',
-      'color:#fff', 'padding:8px 14px',
+      'background:linear-gradient(135deg,#6366f1,#8b5cf6)',
+      'color:#fff', 'padding:9px 10px 9px 13px',
+      'border-radius:12px',
       'font:600 12px Inter,-apple-system,sans-serif',
-      'text-align:center', 'box-shadow:0 2px 8px rgba(99,102,241,0.4)',
-      'display:flex', 'align-items:center', 'justify-content:center', 'gap:12px',
-      'animation:wize-banner-in 0.3s ease',
+      'box-shadow:0 8px 28px rgba(99,102,241,0.45)',
+      'display:flex', 'align-items:center', 'gap:10px',
+      'animation:wize-toast-in 0.28s cubic-bezier(.16,1,.3,1)',
     ].join(';');
     bar.innerHTML =
-      '<span>✨ ' + tr.msg + '</span>' +
-      '<button id="wize-update-btn" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:6px;font:700 11px Inter,sans-serif;cursor:pointer">' + tr.btn + ' →</button>' +
-      '<button id="wize-update-dismiss" aria-label="dismiss" style="background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:16px;line-height:1;padding:0 4px">×</button>';
+      '<span style="white-space:nowrap">✨ ' + tr.msg + '</span>' +
+      '<button id="wize-update-btn" style="background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 12px;border-radius:8px;font:700 11px Inter,sans-serif;cursor:pointer;min-height:32px">' + tr.btn + ' →</button>' +
+      '<button id="wize-update-dismiss" aria-label="dismiss" style="background:none;border:none;color:rgba(255,255,255,0.75);cursor:pointer;font-size:18px;line-height:1;padding:2px 4px">×</button>';
 
     // Inject animation keyframes once
     if (!document.getElementById('wize-banner-css')) {
       var st = document.createElement('style');
       st.id = 'wize-banner-css';
-      st.textContent = '@keyframes wize-banner-in { from { transform:translateY(-100%) } to { transform:translateY(0) } }';
+      st.textContent = '@keyframes wize-toast-in { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }'
+        + '@media (prefers-reduced-motion: reduce){ #' + BANNER_ID + '{ animation:none !important } }';
       document.head.appendChild(st);
     }
     document.body.appendChild(bar);
@@ -128,6 +156,12 @@
             var acked = localStorage.getItem('wize_acked_version');
             if (acked === j.version) return;
           } catch (e) {}
+          // Defer surfacing during the first-impression grace window; re-check
+          // exactly when it elapses so the toast still appears (once) this session.
+          if (withinGrace()) {
+            setTimeout(function () { if (!document.getElementById(BANNER_ID)) showBanner(j.version); }, GRACE_MS - (Date.now() - _sessStart) + 50);
+            return;
+          }
           showBanner(j.version);
         }
       })

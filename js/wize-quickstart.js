@@ -179,8 +179,21 @@
     if (n) n.remove();
   }
 
+  // Never stack on top of another blocking overlay (D2 — one overlay at a time,
+  // value-first). If the disclaimer or onboarding modal is still on screen,
+  // defer and retry shortly.
+  function overlayBlocking() {
+    try {
+      if (window.__wizeDisclaimerPending) return true;
+      if (document.getElementById('wl-disclaimer-modal')) return true;
+      if (document.getElementById('wize-onboarding')) return true;
+    } catch (_) {}
+    return false;
+  }
+
   function show(app) {
     if (document.getElementById('wlQuickStart')) return;
+    if (overlayBlocking()) { setTimeout(function () { show(app); }, 600); return; }
     const lang = getLang();
     const el = build(app, lang);
     if (!el) return;

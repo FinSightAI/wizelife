@@ -446,10 +446,24 @@
     return wrap;
   }
 
+  // ── Cold-start sequencing signal (D2) ────────────────────────────────────
+  // When a blocking disclaimer modal is actually on screen we set a global flag
+  // so the onboarding + quickstart overlays know to WAIT (value-first: only one
+  // overlay at a time). We clear the flag + dispatch an event the moment the
+  // user accepts OR is sent away on decline, so waiters can proceed promptly.
+  function _setDisclaimerPending(v) {
+    try { window.__wizeDisclaimerPending = !!v; } catch (e) {}
+  }
+  function _signalDisclaimerResolved() {
+    _setDisclaimerPending(false);
+    try { window.dispatchEvent(new Event('wize-disclaimer-resolved')); } catch (e) {}
+  }
+
   function gate(opts) {
     const app = (opts && opts.app) || 'general';
     return new Promise((resolve, reject) => {
       if (alreadyAccepted(app)) { resolve(); return; }
+      _setDisclaimerPending(true);
       const modal = buildModal(app, opts);
       const check = modal.querySelector('#wl-disc-check');
       const accept = modal.querySelector('#wl-disc-accept');
@@ -463,10 +477,12 @@
         if (!check.checked) return;
         recordAcceptance(app);
         modal.remove();
+        _signalDisclaimerResolved();
         resolve();
       });
       decline.addEventListener('click', () => {
         modal.remove();
+        _signalDisclaimerResolved();
         // Send user back to wizelife.ai — they can't use the app without accepting
         try { window.location.href = 'https://wizelife.ai'; } catch {}
         reject(new Error('declined'));
