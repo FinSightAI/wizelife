@@ -104,5 +104,23 @@
     } catch (x) { /* ignore */ }
   });
 })();
-// Gainer — lead capture + AI chat
-(function(){["track","chat"].forEach(function(n){var s=document.createElement("script");s.src="https://gainer-eight.vercel.app/"+n+".js";s.setAttribute("data-tenant","wizelife");s.defer=true;document.head.appendChild(s);});})();
+// Gainer — lead capture + AI chat (consent-gated, skips auth/dashboard)
+(function(){
+  var blocked = /^\/(auth|dashboard|account|login|signup)/;
+  if (blocked.test(location.pathname)) return;
+  function load() {
+    if (window.WizeConsent && !window.WizeConsent.analyticsAllowed()) return;
+    ["track","chat"].forEach(function(n){
+      var s=document.createElement("script");
+      s.src="https://gainer-eight.vercel.app/"+n+".js";
+      s.setAttribute("data-tenant","wizelife");
+      s.defer=true;
+      document.head.appendChild(s);
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", load);
+  } else {
+    load();
+  }
+})();
