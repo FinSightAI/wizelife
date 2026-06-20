@@ -76,14 +76,28 @@
   // user decides/dismisses. Stored on a custom property so we can subtract it
   // cleanly without clobbering any existing inline padding.
   var _prevBodyPadBottom = null;
+  // D4b — when a mobile bottom-nav (#wize-bottom-nav, 56px) is on screen the banner
+  // must float ABOVE it, not overlap its tap targets. Returns the visible nav height
+  // (0 on desktop / when no nav), so the banner bottom + reserved body padding both
+  // clear it.
+  function bottomNavOffset() {
+    try {
+      var nav = document.getElementById('wize-bottom-nav');
+      if (nav && nav.offsetParent !== null) {
+        var r = nav.getBoundingClientRect();
+        if (r.height > 0) return Math.ceil(r.height);
+      }
+    } catch (e) { /* ignore */ }
+    return 0;
+  }
   function reserveSpace(bar) {
     try {
       var body = document.body;
       if (!body) return;
       if (_prevBodyPadBottom === null) _prevBodyPadBottom = body.style.paddingBottom || '';
       var h = bar.getBoundingClientRect().height || bar.offsetHeight || 64;
-      // banner sits 12px above the bottom edge → reserve height + that gap + safe-area.
-      body.style.paddingBottom = 'calc(' + Math.ceil(h + 12) + 'px + env(safe-area-inset-bottom))';
+      // banner sits (12px + any bottom-nav) above the bottom edge → reserve height + that gap + safe-area.
+      body.style.paddingBottom = 'calc(' + Math.ceil(h + 12 + bottomNavOffset()) + 'px + env(safe-area-inset-bottom))';
     } catch (e) { /* ignore */ }
   }
   function releaseSpace() {
@@ -102,7 +116,7 @@
     bar.setAttribute('dir', dir);
     bar.setAttribute('role', 'dialog');
     bar.setAttribute('aria-label', t.more);
-    bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;'
+    bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(' + (12 + bottomNavOffset()) + 'px + env(safe-area-inset-bottom));z-index:2147483000;'
       + 'background:rgba(15,18,32,0.97);color:#e7ebff;border:1px solid rgba(255,255,255,0.12);'
       + 'border-radius:14px;padding:12px 14px;box-shadow:0 10px 40px rgba(0,0,0,0.45);'
       + 'font:400 13px/1.5 Inter,-apple-system,system-ui,sans-serif;display:flex;gap:12px;'
