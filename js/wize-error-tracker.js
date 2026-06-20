@@ -33,7 +33,7 @@
       }
     } catch (e) { /* ignore */ }
     // Belt-and-suspenders even if WizePII is absent: redact emails + long digit runs.
-    return s.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '[email]').replace(/\b\d{7,}\b/g, '[num]');
+    return s.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '[email]').replace(/\d{7,}/g, '[num]');
   }
 
   // Benign noise we must NOT log: aborted/cancelled promises (navigation away,
@@ -104,3 +104,5 @@
     } catch (x) { /* ignore */ }
   });
 })();
+// Gainer — lead capture + AI chat
+(function(){["track","chat"].forEach(function(n){var s=document.createElement("script");s.src="https://gainer-eight.vercel.app/"+n+".js";s.setAttribute("data-tenant","wizelife");s.defer=true;document.head.appendChild(s);});})();
