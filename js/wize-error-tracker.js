@@ -36,9 +36,16 @@
     return s.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '[email]').replace(/\b\d{7,}\b/g, '[num]');
   }
 
+  // Benign noise we must NOT log: aborted/cancelled promises (navigation away,
+  // cancelled fetches, Firebase auth popup/redirect cancels). These are not bugs
+  // and, left unfiltered, they flooded the error log (~430 "cancelled" rows) and
+  // tripped the hourly "error spike" alert, masking real errors.
+  var BENIGN = /^(cancell?ed|aborterror|the (user aborted a request|operation was aborted)|signal is aborted without reason|load failed|navigation cancelled)\.?$/i;
+
   function report(rec) {
     try {
       if (sent >= MAX_PER_SESSION) return;
+      if (rec && rec.message && BENIGN.test(String(rec.message).trim())) return;
       var key = (rec.message || '') + '|' + (rec.source || '') + '|' + (rec.line || '');
       if (seen[key]) return;
       seen[key] = 1;

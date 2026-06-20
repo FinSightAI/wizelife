@@ -195,7 +195,7 @@
 <meta name="wl-sentry-dsn" content="">
 <meta name="wl-sentry-app" content="wizelife">
 <script>window.WIZE_APP='wizelife';</script>
-<script src="/js/wize-error-tracker.js?v=2026061801"></script>
+<script src="/js/wize-error-tracker.js?v=2026062001"></script>
 <script src="/js/wize-consent.js?v=2026061601"></script>
 <script src="/js/wize-sentry.js?v=2026061201" defer></script>
 <script src="/js/wize-attribution.js?v=2026061201" defer></script>
@@ -245,7 +245,7 @@
  </div>
  </div>
  <div class="forgot"><a href="#" onclick="forgotPassword(); return false;">Forgot password?</a></div>
- <button class="btn-primary" id="loginBtn" onclick="emailLogin()">Sign In</button>
+ <button class="btn-primary" id="loginBtn" onclick="emailLogin()" disabled>Sign In</button>
  <div class="error" id="loginError" role="alert" aria-live="assertive"></div>
  </div>
 
@@ -266,7 +266,7 @@
  <button type="button" class="pw-toggle" onclick="togglePw('signupPassword', this)" tabindex="-1" aria-label="Show password">👁</button>
  </div>
  </div>
- <button class="btn-primary" id="signupBtn" onclick="emailSignup()">Create Account</button>
+ <button class="btn-primary" id="signupBtn" onclick="emailSignup()" disabled>Create Account</button>
  <div class="error" id="signupError" role="alert" aria-live="assertive"></div>
  </div>
 
@@ -320,6 +320,13 @@ window._wlLazy = {
 <script src="js/wizelife-auth.js?v=2026061701"></script>
 <script src="js/wize-track.js?v=2026061701"></script>
 <script>
+ // The Sign In / Create Account buttons ship disabled and are enabled here, at the
+ // first line of the script that defines their handlers. Function declarations below
+ // (emailLogin/emailSignup) are hoisted, so they already exist at this point — this
+ // closes a rare "emailLogin is not defined" race where a user on a slow connection
+ // taps the button before this render-blocking-delayed script (after the gstatic
+ // Firebase SDK) has run. If this script never runs, the button stays safely inert.
+ ["loginBtn","signupBtn"].forEach(function(id){var b=document.getElementById(id); if(b) b.disabled=false;});
  redirectIfLoggedIn("dashboard.html");
 
  function switchTab(tab) {
