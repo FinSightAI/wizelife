@@ -427,7 +427,7 @@ window._wlLazy = {
  es: { title: '✉️ Revisa tu email', body: `Enviamos un enlace de verificación a <strong>${email}</strong>.<br>Haz clic para verificar tu cuenta.`, resend: 'Reenviar', done: 'Verifiqué — Iniciar sesión', note: '¿No lo recibiste? Revisa spam / Promociones.' },
  };
  const t = T[lang] || T.en;
- document.querySelector('.auth-card').innerHTML = `
+ document.querySelector('.card').innerHTML = `
  <div style="text-align:center;padding:32px 24px">
  <div style="font-size:48px;margin-bottom:16px">✉️</div>
  <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--text)">${t.title.replace('✉️ ','')}</h2>
