@@ -410,7 +410,11 @@ window._wlLazy = {
  }, { merge: true });
  localStorage.setItem("wl_nickname", name);
  try { await applyReferralOnSignup(cred.user.uid); } catch (e) { console.error(e); }
- try { await window.WizeTrack?.signup({ method: 'email' }); } catch (e) { console.error(e); }
+ try {
+     let _attr;
+     try { _attr = JSON.parse(localStorage.getItem('wl_attribution') || '{}').first; } catch (_) {}
+     await window.WizeTrack?.signup({ method: 'email', ...(_attr ? { attr: _attr } : {}) });
+ } catch (e) { console.error(e); }
  // Send verification email before redirecting
  try {
  await cred.user.sendEmailVerification({
@@ -462,7 +466,11 @@ window._wlLazy = {
  if (!doc.exists) {
  await ref.set({ plan: "free", nickname: nick, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
  try { await applyReferralOnSignup(cred.user.uid); } catch (e) { console.error(e); }
- try { await window.WizeTrack?.signup({ method: 'google' }); } catch (e) { console.error(e); }
+ try {
+     let _attr;
+     try { _attr = JSON.parse(localStorage.getItem('wl_attribution') || '{}').first; } catch (_) {}
+     await window.WizeTrack?.signup({ method: 'google', ...(_attr ? { attr: _attr } : {}) });
+ } catch (e) { console.error(e); }
  } else {
  const d = doc.data();
  if (!d.nickname) await ref.update({ nickname: nick });
