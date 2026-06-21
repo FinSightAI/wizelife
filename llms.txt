@@ -13,6 +13,7 @@
 ## About
 
 - [Home](https://wizelife.ai/): Overview of the WizeLife suite and what each tool does.
+- [Guides](https://wizelife.ai/guides.html): Index of all 23 free guides, calculators and explainers grouped by topic (Tax/Relocation, Money, Real Estate, Travel, Health).
 - [Sign in](https://wizelife.ai/auth.html): Single sign-on for all five tools (email or Google).
 - [Pricing](https://wizelife.ai/dashboard.html): Free tier on every tool; Pro ($4.99/mo) and YOLO ($9.99/mo) raise AI limits and unlock advanced features. WizeTravel is fully free.
 

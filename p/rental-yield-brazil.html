@@ -63,7 +63,7 @@
       "name": "Quais são os principais custos que reduzem o yield líquido no Brasil?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Os principais custos que o proprietário deve considerar são: (1) Condomínio — quando não é transferido ao inquilino, pode representar R$500 a R$2.000+/mês em prédios grandes. (2) IPTU — varia muito por município e pelo valor venal do imóvel; em São Paulo pode ser de 0,5% a 1,5% do valor venal ao ano. (3) Taxa de administração — imobiliárias cobram tipicamente 8% a 10% do aluguel mensal para gestão da locação. (4) Vacância — período sem locatário; provisionar ao menos 1 mês por ano é conservador. (5) Manutenção e reparos — estimativa conservadora de 0,5% a 1% do valor do imóvel ao ano para manutenção estrutural. (6) IR sobre o aluguel — o proprietário pessoa física deve declarar o aluguel recebido no carnê-leão mensalmente; a alíquota varia de 7,5% a 27,5% conforme o valor mensal recebido, com isenção abaixo de R$2.824/mês (tabela 2026 — confirme com contador)."
+        "text": "Os principais custos que o proprietário deve considerar são: (1) Condomínio — quando não é transferido ao inquilino, pode representar R$500 a R$2.000+/mês em prédios grandes. (2) IPTU — varia muito por município e pelo valor venal do imóvel; em São Paulo pode ser de 0,5% a 1,5% do valor venal ao ano. (3) Taxa de administração — imobiliárias cobram tipicamente 8% a 10% do aluguel mensal para gestão da locação. (4) Vacância — período sem locatário; provisionar ao menos 1 mês por ano é conservador. (5) Manutenção e reparos — estimativa conservadora de 0,5% a 1% do valor do imóvel ao ano para manutenção estrutural. (6) IR sobre o aluguel — o proprietário pessoa física deve declarar o aluguel recebido no carnê-leão mensalmente; a alíquota varia de 7,5% a 27,5% conforme o valor mensal recebido. A tabela de 2026 sofreu alterações com a reforma tributária (isenção elevada) — confirme a tabela vigente com seu contador ou na Receita Federal."
       }
     },
     {
@@ -297,7 +297,7 @@ body{
   <div class="ex-row total" style="margin-top:2px"><strong data-i18n="exNetYieldLabel">Yield líquido estimado</strong><span class="val">3,2% a.a.</span></div>
 
   <div class="ex-note" data-i18n="exNote">
-    &#x26A0;&#xFE0F; Exemplo ilustrativo — valores variam conforme o imóvel, o condomínio, o bairro e a alíquota individual de IR. O IR sobre aluguel é apurado pelo carnê-leão com tabela progressiva (isenção abaixo de ~R$2.824/mês em 2026 — confirme com contador). Outros custos como manutenção e seguro não foram incluídos acima para simplificar.
+    &#x26A0;&#xFE0F; Exemplo ilustrativo — valores variam conforme o imóvel, o condomínio, o bairro e a alíquota individual de IR. O IR sobre aluguel é apurado pelo carnê-leão com tabela progressiva (a faixa de isenção foi atualizada para 2026 — confirme a tabela vigente com seu contador ou na Receita Federal). Outros custos como manutenção e seguro não foram incluídos acima para simplificar.
   </div>
 </div>
 
@@ -328,7 +328,7 @@ body{
     <div class="cost-item">
       <div class="ci-label">IR sobre Aluguel</div>
       <div class="ci-val">7,5% – 27,5% (carnê-leão)</div>
-      <div class="ci-desc">Aluguel recebido por pessoa física é tributado pelo carnê-leão com tabela progressiva mensalmente. Há isenção abaixo do limite da primeira faixa (~R$2.824/mês em 2026 — confirme com contador).</div>
+      <div class="ci-desc">Aluguel recebido por pessoa física é tributado pelo carnê-leão com tabela progressiva mensalmente. A faixa de isenção foi atualizada para 2026 (reforma tributária) — confirme a tabela vigente com seu contador ou na Receita Federal.</div>
     </div>
     <div class="cost-item">
       <div class="ci-label">Manutenção &amp; Reparos</div>
@@ -392,7 +392,7 @@ body{
   <div class="faq-item">
     <div class="q" data-i18n="faq5q">Como o IR funciona sobre o aluguel recebido no Brasil?</div>
     <div class="a" data-i18n="faq5a">
-      Aluguel recebido por <strong>pessoa física</strong> é tributado pelo carnê-leão com tabela progressiva: abaixo de ~R$2.824/mês (2026 — confirme a tabela vigente com seu contador), há isenção; entre R$2.825 e R$3.751 a alíquota é 7,5%; entre R$3.752 e R$4.664 é 15%; entre R$4.665 e R$6.101 é 22,5%; acima de R$6.101 é 27,5%. O imposto é apurado e pago mensalmente via DARF e informado na declaração anual de IR. Receber aluguel via pessoa jurídica ou via fundos imobiliários (FIIs) tem tributação diferente — consulte um contador.
+      Aluguel recebido por <strong>pessoa física</strong> é tributado pelo carnê-leão com tabela progressiva, com alíquotas de 7,5% a 27,5%. A faixa de isenção e os limites das faixas foram atualizados para 2026 (a reforma tributária elevou o limiar de isenção para rendimentos mensais até ~R$5.000 com redução gradual até ~R$7.350 — confirme a tabela vigente com seu contador ou no site da Receita Federal). O imposto é apurado e pago mensalmente via DARF e informado na declaração anual de IR. Receber aluguel via pessoa jurídica ou via fundos imobiliários (FIIs) tem tributação diferente — consulte um contador.
     </div>
   </div>
 
@@ -458,7 +458,7 @@ const TR = {
     exIr: 'IR sobre aluguel (carnê-leão, alíquota ~15% s/ aluguel líquido de custos diretos)',
     exNetLabel: 'Aluguel líquido anual estimado',
     exNetYieldLabel: 'Yield líquido estimado',
-    exNote: '&#x26A0;&#xFE0F; Exemplo ilustrativo &mdash; valores variam conforme o imóvel, o condomínio, o bairro e a alíquota individual de IR. Base do IR aqui = aluguel anual − condomínio − IPTU − taxa de adm − vacância (R$18.600) × 15% ≈ R$2.790. Outros custos como manutenção e seguro não foram incluídos para simplificar.',
+    exNote: '&#x26A0;&#xFE0F; Exemplo ilustrativo &mdash; valores variam conforme o imóvel, o condomínio, o bairro e a alíquota individual de IR. A alíquota de 15% no exemplo é ilustrativa; a tabela de 2026 sofreu alterações &mdash; confirme com seu contador. Outros custos como manutenção e seguro não foram incluídos para simplificar.',
     costsTitle: 'Custos que Cortam o Yield Líquido',
     gvsTitle: 'Yield Bruto vs Yield Líquido: Entenda a Diferença',
     gvsPara1: '<strong>Yield bruto</strong> é o retorno antes de qualquer custo: quanto o aluguel anual representa sobre o preço pago pelo imóvel. É o número mais comum em anúncios e comparações rápidas de mercado — mas não é o que você efetivamente embolsa.',
@@ -475,7 +475,7 @@ const TR = {
     faq4q: 'Quais custos mais reduzem o yield líquido de imóvel no Brasil?',
     faq4a: 'Em ordem de impacto típico: <strong>(1) condomínio alto</strong> (em prédios com muita infra pode consumir 15–30% do aluguel); <strong>(2) IR sobre aluguel</strong> para quem está em alíquota de 22,5% ou 27,5%; <strong>(3) vacância</strong> em mercados de menor demanda; <strong>(4) IPTU</strong> em imóveis de alto valor venal; <strong>(5) taxa de administração</strong>. O condomínio é frequentemente subestimado por investidores iniciantes.',
     faq5q: 'Como o IR funciona sobre o aluguel recebido no Brasil?',
-    faq5a: 'Aluguel recebido por <strong>pessoa física</strong> é tributado pelo carnê-leão com tabela progressiva: abaixo de ~R$2.824/mês (2026), isenção; entre R$2.825 e R$3.751 a alíquota é 7,5%; entre R$3.752 e R$4.664 é 15%; entre R$4.665 e R$6.101 é 22,5%; acima de R$6.101 é 27,5%. O imposto é pago mensalmente via DARF e informado na declaração anual. Consulte um contador para sua situação específica.',
+    faq5a: 'Aluguel recebido por <strong>pessoa física</strong> é tributado pelo carnê-leão com tabela progressiva (alíquotas de 7,5% a 27,5%). A tabela de 2026 sofreu alterações com a reforma tributária — o limiar de isenção foi elevado. Confirme os limites de faixa vigentes com seu contador ou no site da Receita Federal antes de calcular. O imposto é pago mensalmente via DARF e informado na declaração anual.',
     faq6q: 'Como calcular o yield do imóvel que estou avaliando comprar?',
     faq6a: '<strong>Yield bruto:</strong> (aluguel mensal × 12) ÷ preço de compra. Exemplo: R$2.500 × 12 = R$30.000 ÷ R$500.000 = 6,0% a.a. <strong>Yield líquido:</strong> ((aluguel anual − custos anuais totais) ÷ preço de compra). Inclua condomínio, IPTU, taxa de administração, vacância, manutenção e IR. O WizeDeal permite inserir os dados do imóvel e calcular o retorno real automaticamente.',
     disclaimerTitle: 'Aviso Importante',
@@ -527,7 +527,7 @@ const TR = {
     faq4q: 'Which costs most reduce net yield in Brazil?',
     faq4a: 'In typical order of impact: <strong>(1) high condo fees</strong> (in buildings with many amenities, can consume 15–30% of rent); <strong>(2) income tax on rent</strong> for those in the 22.5% or 27.5% bracket; <strong>(3) vacancy</strong> in lower-demand markets; <strong>(4) IPTU</strong> on high assessed-value properties; <strong>(5) management fee</strong>. Condo fees are most frequently underestimated by first-time investors.',
     faq5q: 'How is Brazilian income tax applied to rental income?',
-    faq5a: 'Rental income received by an <strong>individual (pessoa física)</strong> is taxed monthly via the carnê-leão progressive table: below ~R$2,824/month (2026), exempt; R$2,825–R$3,751 at 7.5%; R$3,752–R$4,664 at 15%; R$4,665–R$6,101 at 22.5%; above R$6,101 at 27.5%. Tax is paid monthly via DARF and reported in the annual income-tax return. Consult an accountant (contador) for your specific situation.',
+    faq5a: 'Rental income received by an <strong>individual (pessoa física)</strong> is taxed monthly via the carnê-leão progressive table (rates from 7.5% to 27.5%). The 2026 table changed due to Brazil\'s tax reform — the exemption threshold was raised significantly. Verify the current bracket limits with an accountant (contador) or on the Receita Federal website before calculating. Tax is paid monthly via DARF and reported in the annual income-tax return.',
     faq6q: 'How do I calculate yield for a specific property I\'m evaluating?',
     faq6a: '<strong>Gross yield:</strong> (monthly rent × 12) ÷ purchase price. Example: R$2,500 × 12 = R$30,000 ÷ R$500,000 = 6.0% p.a. <strong>Net yield:</strong> ((annual rent − total annual costs) ÷ purchase price). Include condo fees, IPTU, management fee, estimated vacancy, maintenance and income tax. WizeDeal lets you enter the specific property details and calculates real yield automatically.',
     disclaimerTitle: 'Important Disclaimer',
@@ -579,7 +579,7 @@ const TR = {
     faq4q: 'אילו עלויות מפחיתות הכי הרבה את התשואה הנטו?',
     faq4a: 'לפי סדר השפעה טיפוסית: <strong>(1) דמי ועד בית גבוהים</strong> (עשויים לצרוך 15–30% מהשכ"ד בבניינים עם הרבה שירותים); <strong>(2) מס הכנסה על שכ"ד</strong> לבעלי שיעור 22.5% או 27.5%; <strong>(3) ריקון</strong> בשווקים עם ביקוש נמוך; <strong>(4) IPTU</strong>; <strong>(5) דמי ניהול</strong>.',
     faq5q: 'איך עובד מס הכנסה על שכר דירה בברזיל?',
-    faq5a: 'שכ"ד שמקבלת <strong>יחיד (pessoa física)</strong> ממוסה מדי חודש לפי טבלת מדרגות מס: מתחת לכ-R$2,824/חודש (2026) — פטור; R$2,825–R$3,751 — 7.5%; R$3,752–R$4,664 — 15%; R$4,665–R$6,101 — 22.5%; מעל R$6,101 — 27.5%. המס משולם חודשית ומדווח בדוח השנתי. יש להתייעץ עם רואה חשבון.',
+    faq5a: 'שכ"ד שמקבל <strong>יחיד (pessoa física)</strong> ממוסה מדי חודש לפי טבלת מדרגות מס מתקדמת (7.5% עד 27.5%). טבלת 2026 עודכנה בעקבות רפורמת מס ברזילאית — מפתח הפטור הועלה. בדקו את הסכומים המדויקים עם רואה חשבון או באתר Receita Federal. המס משולם חודשית ומדווח בדוח השנתי.',
     faq6q: 'איך לחשב תשואה על נכס ספציפי שאני שוקל לרכוש?',
     faq6a: '<strong>תשואה ברוטו:</strong> (שכ"ד חודשי × 12) ÷ מחיר רכישה. דוגמה: R$2,500 × 12 = R$30,000 ÷ R$500,000 = 6.0% לשנה. <strong>תשואה נטו:</strong> ((שכ"ד שנתי − סה"כ עלויות שנתיות) ÷ מחיר רכישה). כלי WizeDeal מאפשר להזין את נתוני הנכס הספציפי ולחשב את התשואה האמיתית אוטומטית.',
     disclaimerTitle: 'הצהרת אחריות',
@@ -631,7 +631,7 @@ const TR = {
     faq4q: '¿Qué costos reducen más el yield neto en Brasil?',
     faq4a: 'En orden de impacto típico: <strong>(1) cuota de condominio alta</strong> (puede consumir 15–30% del alquiler en edificios con muchos servicios); <strong>(2) impuesto a la renta sobre alquiler</strong> para quienes están en alícuota de 22,5% o 27,5%; <strong>(3) vacancia</strong> en mercados de menor demanda; <strong>(4) IPTU</strong>; <strong>(5) honorario de gestión</strong>.',
     faq5q: '¿Cómo funciona el impuesto a la renta sobre alquiler en Brasil?',
-    faq5a: 'El alquiler recibido por una <strong>persona física</strong> se tributa mensualmente con tabla progresiva: por debajo de ~R$2.824/mes (2026), exento; R$2.825&ndash;R$3.751 al 7,5%; R$3.752&ndash;R$4.664 al 15%; R$4.665&ndash;R$6.101 al 22,5%; superior a R$6.101 al 27,5%. El impuesto se paga mensualmente vía DARF y se informa en la declaración anual. Consulta a un contador.',
+    faq5a: 'El alquiler recibido por una <strong>persona física</strong> se tributa mensualmente con tabla progresiva (tasas del 7,5% al 27,5%). La tabla de 2026 cambió debido a la reforma fiscal brasileña — el umbral de exención fue elevado significativamente. Verifica los tramos vigentes con un contador o en el sitio de la Receita Federal antes de calcular. El impuesto se paga mensualmente vía DARF y se informa en la declaración anual.',
     faq6q: '¿Cómo calcular el yield del inmueble que estoy evaluando comprar?',
     faq6a: '<strong>Yield bruto:</strong> (alquiler mensual × 12) ÷ precio de compra. Ejemplo: R$2.500 × 12 = R$30.000 ÷ R$500.000 = 6,0% anual. <strong>Yield neto:</strong> ((alquiler anual − costos anuales totales) ÷ precio de compra). Incluye condominio, IPTU, honorarios de gestión, vacancia, mantenimiento e impuesto. WizeDeal permite ingresar los datos del inmueble específico y calcular el retorno real automáticamente.',
     disclaimerTitle: 'Aviso Importante',
