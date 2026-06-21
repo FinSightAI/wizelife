@@ -108,8 +108,14 @@
 (function(){
   var blocked = /^\/(auth|dashboard|account|login|signup)/;
   if (blocked.test(location.pathname)) return;
+  var loaded = false;
   function load() {
+    if (loaded) return;
+    // Wait for consent. If it isn't granted yet, don't load now — the
+    // wl-consent-changed listener below re-runs load() the moment the visitor
+    // accepts (same page view), instead of waiting for the next navigation.
     if (window.WizeConsent && !window.WizeConsent.analyticsAllowed()) return;
+    loaded = true;
     ["track","chat"].forEach(function(n){
       var s=document.createElement("script");
       s.src="https://gainer-eight.vercel.app/"+n+".js";
@@ -118,6 +124,8 @@
       document.head.appendChild(s);
     });
   }
+  // Load when consent is granted in-session (first-visit accept fires this).
+  window.addEventListener("wl-consent-changed", load);
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", load);
   } else {
