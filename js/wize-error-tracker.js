@@ -40,7 +40,7 @@
   // cancelled fetches, Firebase auth popup/redirect cancels). These are not bugs
   // and, left unfiltered, they flooded the error log (~430 "cancelled" rows) and
   // tripped the hourly "error spike" alert, masking real errors.
-  var BENIGN = /^(cancell?ed|aborterror|the (user aborted a request|operation was aborted)|signal is aborted without reason|load failed|navigation cancelled)\.?$/i;
+  var BENIGN = /^(cancell?ed|aborterror|the (user aborted a request|operation was aborted)|signal is aborted without reason|navigation cancelled)\.?$/i;
 
   function report(rec) {
     try {
