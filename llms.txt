@@ -21,3 +21,8 @@
 - Privacy: tools are local-first; user data stays in the browser and is only synced to the user's own account when signed in.
 - The tax and health tools are educational and explicitly not professional advice.
 - Languages: English, Hebrew (RTL), Portuguese, Spanish.
+
+## High-intent guides (free tools)
+- Aliyah tax guide — Israel's 10-year exemption on foreign income for new immigrants: https://wizelife.ai/p/aliyah-tax-guide.html
+- Salary comparison across countries (take-home/net): https://wizelife.ai/p/salary-compare-en.html (pt/es variants available)
+- Retire at 55 — how much to save per month to reach $1M: https://wizelife.ai/p/retire-at-55-calculator.html
