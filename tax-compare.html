@@ -536,5 +536,54 @@ function renderTable(rows, grossILS, countryCount, ilNetUSD, maxNet) {
 </script>
 <script src="/js/wl-common-i18n.js?v=1" defer></script>
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which country has the lowest income tax for remote workers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "UAE and Singapore consistently rank among the lowest for personal income tax — UAE levies 0% personal income tax, while Singapore's effective rate on a typical monthly salary of ₪25,000 (~$6,700) is around 3-7%. Cyprus (12.5% corporate, favorable non-dom personal regime) and Georgia (flat 20%, territorial sourcing) are also competitive. WizeTax calculates net monthly take-home in all 20+ countries using verified 2026 PwC / OECD data so you can compare your specific gross salary."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I compare take-home pay across countries?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter your monthly gross salary in shekels (₪) and select the countries you want to compare. WizeTax applies each country's income-tax brackets and mandatory social-security / health contributions for 2026, converts the result to USD at live exchange rates, and shows you the monthly net alongside an effective tax rate and the savings vs. Israel. You can also filter by marital status and number of children to account for credits and deductions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does WizeTax include social security and health insurance in its calculations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The comparison table shows income tax and social security + health contributions as separate columns, then combines them into a single effective rate. For example, Israel's calculation includes Bituach Leumi (national insurance) and health tax; Germany includes Krankenversicherung and Rentenversicherung; Portugal includes Segurança Social. This gives a true picture of the total deduction burden, not just headline income-tax rates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is WizeTax free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The country tax comparison tool is free for all registered WizeLife users. A free account gives you access to the comparison calculator with 20+ countries, verified 2026 tax data, and basic AI recommendations. WizeLife Pro and YOLO plans unlock additional features across all five tools in the suite including deeper tax simulations, AI advisor, and export reports."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the tax data and when was it last updated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WizeTax uses verified 2026 tax brackets and rates sourced from PwC Worldwide Tax Summaries, OECD tax databases, and official national tax authorities (e.g., Israeli Tax Authority, Portuguese AT, German BMF). Data is reviewed and updated whenever official rate changes are published. Each country entry in the comparison is cross-referenced against at least two authoritative sources. The tool is an estimate — always consult a licensed tax advisor before making a relocation decision."
+      }
+    }
+  ]
+}
+</script>
 </body>
 </html>

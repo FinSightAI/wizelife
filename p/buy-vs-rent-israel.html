@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), usb=(), serial=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Buy vs Rent in Israel: What's the Break-Even? · WizeLife</title>
+<meta name="description" content="Israel's price-to-rent ratios hit 25–35× in major cities. Learn when buying beats renting, how to calculate your break-even horizon, and run your own numbers free.">
+<link rel="canonical" href="https://wizelife.ai/p/buy-vs-rent-israel.html">
+
+<link rel="alternate" hreflang="en" href="https://wizelife.ai/p/buy-vs-rent-israel.html">
+<link rel="alternate" hreflang="he" href="https://wizelife.ai/p/buy-vs-rent-israel.html">
+<link rel="alternate" hreflang="pt" href="https://wizelife.ai/p/buy-vs-rent-israel.html">
+<link rel="alternate" hreflang="es" href="https://wizelife.ai/p/buy-vs-rent-israel.html">
+<link rel="alternate" hreflang="x-default" href="https://wizelife.ai/p/buy-vs-rent-israel.html">
+
+<meta property="og:title" content="🏠 Buy vs Rent in Israel: What's the Break-Even?">
+<meta property="og:description" content="Israel's price-to-rent ratios hit 25–35× in major cities. When does buying actually beat renting? Worked example with ₪2.5M apartment, purchase tax math, and a free calculator.">
+<meta property="og:image" content="https://wizelife.ai/og-image.png">
+<meta property="og:url" content="https://wizelife.ai/p/buy-vs-rent-israel.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🏠 Buy vs Rent in Israel: The Break-Even Explained">
+<meta name="twitter:description" content="With price-to-rent ratios of 25–35×, Israel heavily favors renting on paper. Here's when buying wins — worked example + free calculator.">
+
+<link rel="icon" href="/img/wizelife-logo-v2.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it better to buy or rent in Israel in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On a pure cash-flow basis, renting is cheaper in Israel's major cities today. Israel's price-to-rent ratios are 25–35× in Tel Aviv and Jerusalem — among the highest in the developed world. A ₪2,500,000 apartment renting for ₪7,000/month has a ratio of ~30×, which means the annual rent yield to the owner is only ~3.4%. For a buyer with a 25% down payment and a 4.5% mortgage, the all-in monthly ownership cost (mortgage + maintenance + arnona + purchase-tax amortized) is roughly ₪12,000–13,000/month versus ₪7,000 in rent — a gap of ~₪5,000–6,000/month. Buying wins only if you stay long enough for equity accumulation and price appreciation to overcome that gap, or if you have a large cash-down that eliminates most mortgage interest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the price-to-rent ratio in Tel Aviv and Israel's major cities?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The price-to-rent ratio is calculated as: property price ÷ annual rent. In Tel Aviv, a typical 3-room apartment may cost ₪3,000,000–4,000,000 and rent for ₪8,000–11,000/month (₪96,000–132,000/year), giving a ratio of 23–42×. In Jerusalem, ratios are typically 22–35×. In Haifa and the periphery, ratios drop to 15–22×, making buying more attractive there. As a rule of thumb: ratio below 15 favors buying; 15–20 is borderline; above 20 favors renting unless you plan to stay 10+ years or expect strong appreciation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate my buy vs rent break-even in Israel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Step 1: Calculate the annual cost of owning — (monthly mortgage + maintenance + arnona + building fees) × 12 + purchase tax amortized over your expected stay. Step 2: Calculate the annual cost of renting — annual rent + foregone return on your down-payment capital (e.g., 4–5% on ₪625,000 down = ₪25,000–31,000/year in opportunity cost). Step 3: Project both paths forward, adding annual price appreciation to the buying path. The year where cumulative buying wealth (equity built + appreciation − transaction costs) exceeds cumulative renting wealth (invested down payment + savings from lower monthly cost) is your break-even. In Israel's major cities with a standard mortgage, this break-even typically falls between 7–15 years depending on price appreciation assumptions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the purchase tax (mas rechisha) on a first home in Israel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mas rechisha (מס רכישה) is Israel's property purchase tax. For Israeli citizens buying their FIRST home (2026 thresholds, updated annually): 0% on the first ₪1,919,155; 3.5% on the portion between ₪1,919,155 and ₪2,276,360; 5% on ₪2,276,360–₪5,872,725; 8% above ₪5,872,725. Example: on a ₪2,500,000 first home, you pay 0% on the first ₪1,919,155, 3.5% on the next ₪357,205 = ₪12,502, and 5% on the remaining ₪223,640 = ₪11,182 — total ≈ ₪23,684. For a second home (or non-citizens), the rates are 8% on the first ₪5,872,725 and 10% above that — far higher. Verify current thresholds at the Israel Tax Authority website."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does how long I stay in Israel affect whether I should buy or rent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — tenure length is one of the most important variables. Transaction costs in Israel are steep: purchase tax (~1–8% depending on price and whether it's your first home), agent fees (~2% each side), legal fees (~0.5–1%), and on sale: capital gains tax on the non-exempt portion. These one-time costs must be amortized over your stay. If you stay 3 years and sell, transaction costs alone can eat most of any price appreciation. General rule: with Israel's current price-to-rent ratios (25–35×), you typically need at least 7–10 years to break even in Tel Aviv/Jerusalem, shorter in lower-ratio cities like Haifa (perhaps 5–7 years) or the periphery (4–6 years)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What factors tip the buy vs rent decision in Israel toward buying?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Factors that favor buying in Israel: (1) Long tenure — you plan to stay 10+ years. (2) Large cash down — the more you put down, the less mortgage interest you pay; 40–50% down can make ownership cost competitive with rent. (3) Strong price appreciation — Israel's housing market has averaged 7–10% annual appreciation in major cities over the past decade, though past performance doesn't guarantee future results. (4) Rent appreciation risk — if rents rise 5%+/year, the rent side gets more expensive over time. (5) Lower price-to-rent city — Haifa, Beer Sheva, and the periphery have ratios of 15–22×, meaningfully lower than Tel Aviv. (6) Emotional/security factors — housing stability, ability to renovate, no landlord risk — which are real but not financial."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#05060f;--surf:#0d1024;--card:#11142a;--border:rgba(255,255,255,0.08);
+  --text:#eef2ff;--muted:#9ca3af;--muted2:#a5b4fc;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+  --il1:#2563eb;--il2:#1d4ed8;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{
+  padding:0 14px 60px;
+  background:
+    radial-gradient(ellipse at top right,rgba(37,99,235,0.15),transparent 55%),
+    radial-gradient(ellipse at top left,rgba(16,185,129,0.10),transparent 55%),
+    var(--bg);
+}
+
+/* ── Topbar ─────────────────────────────────────────────────── */
+.topbar{max-width:760px;margin:0 auto;padding:14px 0 8px;display:flex;align-items:center;justify-content:space-between}
+.topbar a.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.topbar a.brand img{width:24px;height:24px;display:block}
+.topbar a.brand span{font:800 16px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-.3px}
+.topbar .lang{display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:3px}
+.topbar .lang button{background:none;border:0;color:#7b88ad;padding:4px 9px;border-radius:6px;font:700 11px Inter,sans-serif;cursor:pointer;letter-spacing:.5px}
+.topbar .lang button.on{background:rgba(99,102,241,0.2);color:#a5b4fc}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero{max-width:760px;margin:18px auto 22px;text-align:center}
+.hero .flag{font-size:42px;margin-bottom:8px;line-height:1}
+.hero h1{margin:0 0 10px;font:900 30px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-1.2px;line-height:1.15;background:linear-gradient(135deg,#93c5fd,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{margin:0 auto;font:500 14.5px Inter,sans-serif;color:var(--muted);max-width:580px;line-height:1.55}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.35);color:#93c5fd;padding:5px 12px;border-radius:99px;font:700 11px Inter,sans-serif;margin-bottom:14px}
+
+/* ── Answer-first block ─────────────────────────────────────── */
+.answer-box{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(37,99,235,0.12),rgba(16,185,129,0.07));border:1px solid rgba(37,99,235,0.35);border-radius:18px;padding:22px 20px}
+.answer-box .eye{font:700 11px Inter,sans-serif;color:#93c5fd;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.answer-box p{margin:0;font:500 14.5px Inter,sans-serif;color:#e2e8f0;line-height:1.65}
+.answer-box strong{color:#fff}
+
+/* ── Section card ───────────────────────────────────────────── */
+.card{max-width:760px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}
+.card h2{margin:0 0 14px;font:800 16px Plus Jakarta Sans,Inter,sans-serif;color:#fff;display:flex;align-items:center;gap:8px}
+.card p{margin:0 0 10px;font:500 13.5px Inter,sans-serif;color:#cbd5e1;line-height:1.65}
+.card p:last-child{margin-bottom:0}
+.card ul{margin:8px 0 0;padding-inline-start:20px;font:500 13px Inter,sans-serif;color:#cbd5e1;line-height:1.7}
+.card ul li{margin-bottom:5px}
+.card ul li strong{color:#e2e8f0}
+
+/* ── Worked example block ───────────────────────────────────── */
+.example-box{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:18px 18px 14px;margin-top:14px}
+.example-box .ex-head{font:800 12px Plus Jakarta Sans,Inter,sans-serif;color:#6ee7b7;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px}
+.ex-row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(255,255,255,0.06);padding:6px 0;font:500 13px Inter,sans-serif;color:#94a3b8}
+.ex-row:last-child{border-bottom:0;padding-bottom:0}
+.ex-row .ex-label{flex:1;padding-inline-end:12px}
+.ex-row .ex-val{font:700 13px Inter,sans-serif;color:#e2e8f0;white-space:nowrap}
+.ex-row.total{margin-top:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.12);border-bottom:0}
+.ex-row.total .ex-label{color:#e2e8f0;font-weight:700}
+.ex-row.total .ex-val{color:#fbbf24;font-size:14px}
+.ex-row.highlight .ex-val{color:#6ee7b7}
+.ex-row.warn .ex-val{color:#fca5a5}
+
+/* ── Ratio gauge ────────────────────────────────────────────── */
+.ratio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+@media(max-width:480px){.ratio-grid{grid-template-columns:1fr}}
+.ratio-cell{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center}
+.ratio-cell .rc-city{font:700 11px Inter,sans-serif;color:var(--muted2);letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.ratio-cell .rc-ratio{font:800 22px Plus Jakarta Sans,Inter,sans-serif;margin-bottom:4px}
+.ratio-cell .rc-verdict{font:600 11px Inter,sans-serif}
+.ratio-cell.high .rc-ratio{color:#fca5a5}
+.ratio-cell.high .rc-verdict{color:#fca5a5}
+.ratio-cell.mid .rc-ratio{color:#fcd34d}
+.ratio-cell.mid .rc-verdict{color:#fcd34d}
+.ratio-cell.low .rc-ratio{color:#6ee7b7}
+.ratio-cell.low .rc-verdict{color:#6ee7b7}
+
+/* ── Factor grid ─────────────────────────────────────────────── */
+.factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:520px){.factor-grid{grid-template-columns:1fr}}
+.f-row{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.f-row.buy{border-color:rgba(16,185,129,0.3)}
+.f-row.rent{border-color:rgba(99,102,241,0.3)}
+.f-row .fr-label{font:700 11px Inter,sans-serif;letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.f-row.buy .fr-label{color:#6ee7b7}
+.f-row.rent .fr-label{color:#a5b4fc}
+.f-row ul{margin:0;padding-inline-start:16px;font:500 12.5px Inter,sans-serif;color:#94a3b8;line-height:1.65;list-style:disc}
+.f-row ul li{margin-bottom:3px}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+.faq-item:last-child{border-bottom:0;padding-bottom:0}
+.faq-item .q{font:700 14px Plus Jakarta Sans,Inter,sans-serif;color:#e2e8f0;margin-bottom:8px;line-height:1.4}
+.faq-item .a{font:500 13px Inter,sans-serif;color:#94a3b8;line-height:1.65}
+.faq-item .a strong{color:#cbd5e1}
+
+/* ── Disclaimer ─────────────────────────────────────────────── */
+.disclaimer{max-width:760px;margin:0 auto 18px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:16px}
+.disclaimer h4{margin:0 0 8px;font:800 13px Plus Jakarta Sans,Inter,sans-serif;color:#fcd34d}
+.disclaimer p{margin:0;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6}
+
+/* ── CTA ─────────────────────────────────────────────────────── */
+.cta{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(99,102,241,0.1));border:1px solid rgba(99,102,241,0.3);border-radius:14px;padding:20px}
+.cta h4{margin:0 0 6px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#a5b4fc}
+.cta p{margin:0 0 14px;font:500 13px Inter,sans-serif;color:#cbd5e1;line-height:1.55}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,#2563eb,#6366f1);color:#fff;text-decoration:none;padding:11px 22px;border-radius:99px;font:800 13px Inter,sans-serif;transition:opacity .15s}
+.cta-btn:hover{opacity:.88}
+.cta-btn-sec{display:inline-block;margin-inline-start:10px;color:#a5b4fc;text-decoration:none;font:600 12.5px Inter,sans-serif;border-bottom:1px solid rgba(165,180,252,0.35);padding-bottom:1px}
+
+/* ── Share ───────────────────────────────────────────────────── */
+.share-wrap{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(37,99,235,0.07));border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:16px;text-align:center}
+.share-wrap h3{margin:0 0 4px;font:800 14px Plus Jakarta Sans,Inter,sans-serif}
+.share-wrap p{margin:0 0 12px;font:500 12.5px Inter,sans-serif;color:var(--muted)}
+.share-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.share-btns button{padding:11px 8px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font:700 12.5px Inter,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.share-btns button:hover{background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.4);transform:translateY(-1px)}
+.share-btns button .icon{font-size:20px;line-height:1}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.6}
+.foot a{color:#a5b4fc;text-decoration:none}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.answer-box{animation:fadeUp .4s ease both}
+</style>
+
+<script src="/js/wize-attribution.js?v=2026061201" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="https://wizelife.ai">
+    <img src="/img/wizelife-logo-v2.svg" alt="WizeLife">
+    <span>WizeLife</span>
+  </a>
+  <div class="lang" id="langSwitch">
+    <button data-l="en" class="on">EN</button>
+    <button data-l="he">HE</button>
+    <button data-l="pt">PT</button>
+    <button data-l="es">ES</button>
+  </div>
+</div>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="flag">&#x1F3E0;</div>
+  <div class="badge" data-i18n="badge">&#x2713; Israel Real Estate &middot; Verified 2026</div>
+  <h1 data-i18n="title">Buy vs Rent in Israel:<br>What's the Break-Even?</h1>
+  <p data-i18n="sub">Israel's price-to-rent ratios hit 25–35&#xD7; in major cities — among the highest in the world. Here's how to think about it honestly, with a worked example and the exact math.</p>
+</div>
+
+<!-- ── Answer-first block ─────────────────────────────────────────────── -->
+<div class="answer-box">
+  <div class="eye" data-i18n="answerEye">DIRECT ANSWER</div>
+  <p data-i18n="answerText">
+    <strong>On pure monthly cash flow, renting is cheaper in Israel's major cities today.</strong>
+    The key metric is the <strong>price-to-rent ratio</strong> (property price &divide; annual rent): Tel Aviv and Jerusalem typically show ratios of 25–35&times;, meaning an owner earns a gross yield of only 3–4% annually — far less than mortgage rates. A buyer with a standard mortgage pays <strong>substantially more per month</strong> than an equivalent tenant. The math shifts in buying's favor only if: you stay long enough (typically 7–15 years in Tel Aviv) for equity and appreciation to overcome the monthly gap, you put down a large cash sum that eliminates most interest, or you expect strong continued price appreciation. There is also a cultural buy-bias in Israel — homeownership signals stability — but that is a lifestyle decision, not a financial one.
+  </p>
+</div>
+
+<!-- ── Price-to-rent by city ──────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x1F4CA; Price-to-Rent Ratios Across Israel (2026)</h2>
+  <p>The price-to-rent ratio = <strong>property price &divide; annual rent</strong>. A ratio above 20 generally favors renting; below 15 generally favors buying. Israel's major cities are well above 20.</p>
+  <div class="ratio-grid">
+    <div class="ratio-cell high">
+      <div class="rc-city">Tel Aviv</div>
+      <div class="rc-ratio">28–38&times;</div>
+      <div class="rc-verdict">Strongly favors renting</div>
+    </div>
+    <div class="ratio-cell high">
+      <div class="rc-city">Jerusalem</div>
+      <div class="rc-ratio">22–32&times;</div>
+      <div class="rc-verdict">Favors renting</div>
+    </div>
+    <div class="ratio-cell mid">
+      <div class="rc-city">Haifa</div>
+      <div class="rc-ratio">16–22&times;</div>
+      <div class="rc-verdict">Borderline</div>
+    </div>
+    <div class="ratio-cell mid">
+      <div class="rc-city">Ra'anana / Modi'in</div>
+      <div class="rc-ratio">20–26&times;</div>
+      <div class="rc-verdict">Favors renting</div>
+    </div>
+    <div class="ratio-cell low">
+      <div class="rc-city">Beer Sheva</div>
+      <div class="rc-ratio">12–16&times;</div>
+      <div class="rc-verdict">Leans buying</div>
+    </div>
+    <div class="ratio-cell low">
+      <div class="rc-city">Periphery</div>
+      <div class="rc-ratio">10–15&times;</div>
+      <div class="rc-verdict">Favors buying</div>
+    </div>
+  </div>
+  <p style="margin-top:14px;font-size:12px;color:#64748b">Ratios are illustrative ranges based on typical listings in each area; individual properties vary widely. Verify with current market data.</p>
+</div>
+
+<!-- ── Worked example ─────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x1F9EE; Worked Example: &#x20AA;2,500,000 Apartment vs &#x20AA;7,000/mo Rent</h2>
+  <p>A typical 3-room apartment in a mid-tier Tel Aviv neighborhood or a good Jerusalem address. All numbers are illustrative — label your own assumptions and model yours.</p>
+
+  <div class="example-box">
+    <div class="ex-head">Step 1 — Price-to-Rent Ratio</div>
+    <div class="ex-row">
+      <span class="ex-label">Property price</span>
+      <span class="ex-val">&#x20AA;2,500,000</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Monthly rent (equivalent flat)</span>
+      <span class="ex-val">&#x20AA;7,000/mo</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Annual rent</span>
+      <span class="ex-val">&#x20AA;84,000/yr</span>
+    </div>
+    <div class="ex-row highlight total">
+      <span class="ex-label">Price-to-rent ratio: &#x20AA;2,500,000 &divide; &#x20AA;84,000</span>
+      <span class="ex-val">&#x2248; 29.8&times; &#x2192; favors renting</span>
+    </div>
+  </div>
+
+  <div class="example-box" style="margin-top:12px">
+    <div class="ex-head">Step 2 — Monthly Cost of Ownership (Assumptions labeled)</div>
+    <div class="ex-row">
+      <span class="ex-label">Down payment (25% = &#x20AA;625,000)</span>
+      <span class="ex-val">From savings</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Mortgage principal (&#x20AA;1,875,000 &middot; 4.5% fixed &middot; 25 years)</span>
+      <span class="ex-val">assumption</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Monthly mortgage payment</span>
+      <span class="ex-val">&#x20AA;10,425/mo</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Maintenance + building fees (va'ad bayit)</span>
+      <span class="ex-val">&#x20AA;800/mo</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Arnona (municipal tax) — mid-tier flat</span>
+      <span class="ex-val">&#x20AA;650/mo</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Purchase tax (mas rechisha) on 1st home: &#x20AA;23,684 &divide; 120 months</span>
+      <span class="ex-val">&#x20AA;197/mo</span>
+    </div>
+    <div class="ex-row warn total">
+      <span class="ex-label">Total monthly ownership cost</span>
+      <span class="ex-val">&#x2248; &#x20AA;12,072/mo</span>
+    </div>
+  </div>
+
+  <div class="example-box" style="margin-top:12px">
+    <div class="ex-head">Step 3 — Monthly Cash-Flow Comparison</div>
+    <div class="ex-row highlight">
+      <span class="ex-label">Renting</span>
+      <span class="ex-val">&#x20AA;7,000/mo</span>
+    </div>
+    <div class="ex-row warn">
+      <span class="ex-label">Buying (all-in)</span>
+      <span class="ex-val">&#x20AA;12,072/mo</span>
+    </div>
+    <div class="ex-row total">
+      <span class="ex-label">Monthly gap (ownership premium)</span>
+      <span class="ex-val">&#x2248; &#x20AA;5,072/mo MORE to own</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">Annual gap</span>
+      <span class="ex-val">&#x2248; &#x20AA;60,864/yr</span>
+    </div>
+  </div>
+
+  <div class="example-box" style="margin-top:12px;background:rgba(99,102,241,0.06);border-color:rgba(99,102,241,0.25)">
+    <div class="ex-head" style="color:#a5b4fc">Step 4 — When Does Buying Win? (Break-Even Logic)</div>
+    <div class="ex-row">
+      <span class="ex-label">The renter invests the &#x20AA;625,000 down payment at 5%/yr</span>
+      <span class="ex-val">+&#x20AA;31,250/yr return</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">The renter also invests the &#x20AA;5,072/mo cash saving</span>
+      <span class="ex-val">+&#x20AA;60,864/yr</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">The buyer builds equity (principal paydown, yr 1)</span>
+      <span class="ex-val">&#x2248; &#x20AA;33,000/yr</span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label">For buying to win: price appreciation must close the gap</span>
+      <span class="ex-val">&#x2248; 3.7%/yr needed to break even</span>
+    </div>
+    <div class="ex-row highlight total">
+      <span class="ex-label">At 5% annual appreciation: break-even horizon</span>
+      <span class="ex-val">&#x2248; 8–10 years</span>
+    </div>
+    <div class="ex-row total" style="border-top:0;margin-top:0;padding-top:0">
+      <span class="ex-label">At 3% appreciation (slower market): break-even</span>
+      <span class="ex-val">&#x2248; 12–15 years</span>
+    </div>
+  </div>
+
+  <p style="margin-top:14px;font-size:12.5px;color:#64748b">
+    <strong>Assumptions:</strong> 4.5% mortgage rate (prime + 1.5%, prime = 3.0% as of mid-2026), 25-year term, 25% down, arnona and va'ad bayit at mid-range for a 3-room flat. Purchase tax calculated on first-home brackets (verify annually at the ITA). Opportunity cost on down payment at 5%/yr. Ignores capital gains tax on future sale (exempt if primary residence and meets conditions — verify). Rent inflation assumed 0% for simplicity; at 3%/yr rent inflation, buying looks better sooner.
+  </p>
+</div>
+
+<!-- ── Mas rechisha (purchase tax) explained ─────────────────────────── -->
+<div class="card">
+  <h2>&#x1F4B8; Mas Rechisha (Purchase Tax) — Israel's Big Transaction Cost</h2>
+  <p><strong>Mas rechisha (&#x05DE;&#x05E1; &#x05E8;&#x05DB;&#x05D9;&#x05E9;&#x05D4;)</strong> is a one-time tax paid by the buyer. The rate depends on price and whether it's your first home in Israel. 2026 thresholds (updated annually — verify at the ITA):</p>
+  <ul>
+    <li><strong>First home (Israeli citizen):</strong> 0% on first &#x20AA;1,919,155 &middot; 3.5% on &#x20AA;1,919,155–2,276,360 &middot; 5% on &#x20AA;2,276,360–5,872,725 &middot; 8% above that</li>
+    <li><strong>Second/investment property:</strong> 8% on first &#x20AA;5,872,725 &middot; 10% above</li>
+    <li><strong>New immigrants (olim) — first home:</strong> reduced flat rate of 0.5% on the first &#x20AA;1,994,005; consult the ITA for your exact eligibility</li>
+  </ul>
+  <p><strong>Example on &#x20AA;2,500,000 first home (Israeli citizen):</strong></p>
+  <ul>
+    <li>0% &times; &#x20AA;1,919,155 = &#x20AA;0</li>
+    <li>3.5% &times; &#x20AA;357,205 (1,919,155 to 2,276,360) = &#x20AA;12,502</li>
+    <li>5% &times; &#x20AA;223,640 (2,276,360 to 2,500,000) = &#x20AA;11,182</li>
+    <li><strong>Total mas rechisha: &#x20AA;23,684</strong></li>
+  </ul>
+  <p>Add agent fees (~2% each side = &#x20AA;50,000 buyer side), legal fees (~&#x20AA;10,000–15,000), and mortgage arrangement fees (~&#x20AA;5,000–10,000). Total transaction costs on a &#x20AA;2.5M purchase: <strong>&#x2248; &#x20AA;90,000–100,000</strong> — roughly 3.6–4% of purchase price. These must be recovered before you "break even" against renting.</p>
+</div>
+
+<!-- ── Factors that tip the decision ─────────────────────────────────── -->
+<div class="card">
+  <h2>&#x2696;&#xFE0F; What Tips the Decision</h2>
+  <div class="factor-grid">
+    <div class="f-row buy">
+      <div class="fr-label">&#x2705; Favors Buying</div>
+      <ul>
+        <li>Long tenure (10+ years)</li>
+        <li>Large cash down (&gt;40%) — reduces interest drag</li>
+        <li>Strong price appreciation expected</li>
+        <li>Rents rising fast in your area</li>
+        <li>Lower price-to-rent city (Haifa, periphery)</li>
+        <li>Oleh chadash purchase tax discount</li>
+        <li>Stability/no-landlord-risk matters to you</li>
+      </ul>
+    </div>
+    <div class="f-row rent">
+      <div class="fr-label">&#x1F4BC; Favors Renting</div>
+      <ul>
+        <li>Short or uncertain tenure (&lt;7 years)</li>
+        <li>Small down payment — high loan-to-value</li>
+        <li>High mortgage rates (above 4.5%)</li>
+        <li>Tel Aviv / Jerusalem (ratio 25–35&times;)</li>
+        <li>Price appreciation plateaus or slows</li>
+        <li>You invest the savings productively</li>
+        <li>Flexibility/mobility is important</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:14px">
+    One nuance: Israel's housing market has averaged roughly <strong>7–10% annual price appreciation</strong> in major cities over 2010–2024 — one of the strongest runs globally. If that continues, buyers do very well. But that pace is not guaranteed, and past performance is the classic trap. Many economists flag the structural imbalance between supply and demand as the main driver — and some expect it to persist; others point to affordability ceilings. Model conservatively.
+  </p>
+</div>
+
+<!-- ── FAQ ───────────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x2753; Frequently Asked Questions</h2>
+  <div class="faq-item">
+    <div class="q" data-i18n="faq1q">Is it better to buy or rent in Israel right now?</div>
+    <div class="a" data-i18n="faq1a">On a pure monthly cash-flow basis, <strong>renting is cheaper</strong> in Israel's major cities. With a typical mortgage at 4.5% on a &#x20AA;2.5M apartment, all-in ownership costs run &#x2248;&#x20AA;12,000/mo versus &#x20AA;7,000 in rent — a &#x20AA;5,000/mo gap. Buying makes financial sense if you stay 7–15 years (depending on appreciation) and the equity + price gains overcome that monthly premium. Shorter stays almost always favor renting once transaction costs are factored in.</div>
+  </div>
+  <div class="faq-item">
+    <div class="q" data-i18n="faq2q">What is the price-to-rent ratio in Tel Aviv?</div>
+    <div class="a" data-i18n="faq2a">Tel Aviv's price-to-rent ratio is roughly <strong>28–38&times;</strong> in 2026, meaning a property costs 28–38 times its annual rent. A &#x20AA;3,000,000 apartment renting for &#x20AA;8,000/mo (&#x20AA;96,000/yr) has a ratio of ~31&times;. This implies a gross rental yield of only ~3.2% — well below typical mortgage rates of 4–5%. In Jerusalem it's 22–32&times;; in Haifa 16–22&times;; in Beer Sheva 12–16&times;.</div>
+  </div>
+  <div class="faq-item">
+    <div class="q" data-i18n="faq3q">How long do I need to stay in Israel for buying to break even?</div>
+    <div class="a" data-i18n="faq3a">With current mortgage rates (~4.5%) and Tel Aviv/Jerusalem price-to-rent ratios: <strong>approximately 8–10 years</strong> if prices appreciate ~5%/yr; <strong>12–15 years</strong> at ~3%/yr appreciation; <strong>shorter (5–7 years) in lower-ratio cities</strong> like Haifa or the periphery. The break-even is driven by how fast equity accumulation + price gains offset the monthly ownership premium and transaction costs. Run your specific numbers — WizeDeal's calculator below does this for free.</div>
+  </div>
+  <div class="faq-item">
+    <div class="q" data-i18n="faq4q">What is purchase tax (mas rechisha) on a first home in Israel?</div>
+    <div class="a" data-i18n="faq4a">On a first home bought by an Israeli citizen: <strong>0%</strong> on the first &#x20AA;1,919,155 (2026 threshold); <strong>3.5%</strong> on the next slice up to &#x20AA;2,276,360; <strong>5%</strong> up to &#x20AA;5,872,725. On a &#x20AA;2,500,000 first home, the total mas rechisha is approximately <strong>&#x20AA;23,684</strong>. New immigrants (olim chadashim) may qualify for a reduced flat rate — consult the Israel Tax Authority. Second homes and investment properties face 8–10% rates. Thresholds update each January; always verify at <em>mas.gov.il</em>.</div>
+  </div>
+  <div class="faq-item">
+    <div class="q" data-i18n="faq5q">Does how long I plan to stay affect whether I should buy or rent in Israel?</div>
+    <div class="a" data-i18n="faq5a"><strong>Yes — tenure length is the single biggest variable.</strong> Transaction costs (purchase tax + agent + legal) total 3.5–5% of purchase price upfront. In a flat market, you need years just to recover those. In a rising market you recover faster, but if you sell at year 3–4, the gains likely won't cover costs. General rule for Israeli major cities: if you're staying fewer than 7 years, renting is almost always the better financial decision. Beyond 10 years, buying typically wins — especially if prices keep rising.</div>
+  </div>
+  <div class="faq-item">
+    <div class="q" data-i18n="faq6q">Why do Israelis buy even when renting is cheaper?</div>
+    <div class="a" data-i18n="faq6a">Several reasons: <strong>cultural buy-bias</strong> — homeownership is deeply embedded in Israeli culture and identity; <strong>rent instability</strong> — Israeli landlords can raise rents sharply or end leases at 12 months, making long-term renting feel insecure; <strong>fear of being "priced out"</strong> — with years of double-digit appreciation, renters worry prices will keep rising beyond reach; <strong>forced savings</strong> — mortgage principal paydown is savings that renters may not replicate. These are real considerations, but they are separate from the pure financial comparison. A good financial model accounts for all of them.</div>
+  </div>
+</div>
+
+<!-- ── Disclaimer ────────────────────────────────────────────────────── -->
+<div class="disclaimer">
+  <h4>&#x26A0;&#xFE0F; Disclaimer</h4>
+  <p>
+    This page is <strong>illustrative only — it is not financial, real-estate, tax, or legal advice</strong> of any kind.
+    All numbers (prices, rents, mortgage rates, appreciation rates, purchase-tax thresholds) are examples based on approximate 2026 market conditions and change constantly.
+    Your actual break-even depends on your specific property, mortgage terms, holding period, appreciation in your area, and personal circumstances.
+    <strong>Before making any real-estate decision, consult a licensed real-estate agent, mortgage broker, and financial advisor in Israel.</strong>
+    Purchase-tax thresholds update annually — verify at mas.gov.il. WizeLife and WizeDeal provide tools and information, not regulated financial or real-estate advice.
+  </p>
+</div>
+
+<!-- ── CTA ───────────────────────────────────────────────────────────── -->
+<div class="cta">
+  <h4 data-i18n="ctaT">Run your buy vs rent numbers free &#x2192;</h4>
+  <p data-i18n="ctaP">WizeDeal's buy-vs-rent calculator lets you plug in your actual property price, rent, mortgage rate, down payment, expected tenure, and appreciation assumption — and tells you your personal break-even year. Free. No sign-up required to start.</p>
+  <a class="cta-btn" href="https://deal.wizelife.ai/" data-i18n="ctaBtn">Run your buy vs rent numbers free &#x2192;</a>
+  <a class="cta-btn-sec" href="https://wizelife.ai/auth.html?next=%2Fdashboard.html" data-i18n="ctaBtnSec">Or create a free account</a>
+</div>
+
+<!-- ── Share ─────────────────────────────────────────────────────────── -->
+<div class="share-wrap">
+  <h3 data-i18n="shareTitle">Thinking about buying in Israel? Send this to your partner</h3>
+  <p data-i18n="shareSub">Share via WhatsApp / Email / link</p>
+  <div class="share-btns">
+    <button onclick="shareTo('whatsapp')"><span class="icon">&#x1F4AC;</span><span>WhatsApp</span></button>
+    <button onclick="shareTo('email')"><span class="icon">&#x2709;&#xFE0F;</span><span data-i18n="shareEmail">Email</span></button>
+    <button onclick="shareTo('copy')"><span class="icon">&#x1F4CB;</span><span data-i18n="shareCopy">Copy link</span></button>
+  </div>
+</div>
+
+<div class="foot">
+  <span data-i18n="footSource">Sources: Israel Central Bureau of Statistics (CBS) &middot; Bank of Israel mortgage data &middot; Israel Tax Authority (mas.gov.il) &middot; Madlan &middot; Yad2 market data &middot; OECD Housing Indicators 2025.</span><br>
+  <span data-i18n="footLegal">&#x26A0;&#xFE0F; Illustrative only &mdash; not financial or real-estate advice. Verify all figures with a licensed advisor.</span><br>
+  <a href="https://wizelife.ai">wizelife.ai</a> &middot; <a href="https://wizelife.ai/privacy.html">Privacy</a> &middot; <a href="https://wizelife.ai/terms.html">Terms</a>
+</div>
+
+<script src="/js/wize-share.js" defer></script>
+<script>
+const TR = {
+  en: {
+    badge: '&#x2713; Israel Real Estate &middot; Verified 2026',
+    title: 'Buy vs Rent in Israel:<br>What\'s the Break-Even?',
+    sub: 'Israel\'s price-to-rent ratios hit 25&ndash;35&times; in major cities &mdash; among the highest in the world. Here\'s how to think about it honestly, with a worked example and the exact math.',
+    answerEye: 'DIRECT ANSWER',
+    answerText: '<strong>On pure monthly cash flow, renting is cheaper in Israel\'s major cities today.</strong> The key metric is the <strong>price-to-rent ratio</strong> (property price &divide; annual rent): Tel Aviv and Jerusalem typically show ratios of 25&ndash;35&times;, meaning an owner earns a gross yield of only 3&ndash;4% annually &mdash; far less than mortgage rates. A buyer with a standard mortgage pays <strong>substantially more per month</strong> than an equivalent tenant. The math shifts in buying\'s favor only if: you stay long enough (typically 7&ndash;15 years in Tel Aviv) for equity and appreciation to overcome the monthly gap, you put down a large cash sum that eliminates most interest, or you expect strong continued price appreciation. There is also a cultural buy-bias in Israel &mdash; homeownership signals stability &mdash; but that is a lifestyle decision, not a financial one.',
+    faq1q: 'Is it better to buy or rent in Israel right now?',
+    faq1a: 'On a pure monthly cash-flow basis, <strong>renting is cheaper</strong> in Israel\'s major cities. With a typical mortgage at 4.5% on a &#x20AA;2.5M apartment, all-in ownership costs run &#x2248;&#x20AA;12,000/mo versus &#x20AA;7,000 in rent &mdash; a &#x20AA;5,000/mo gap. Buying makes financial sense if you stay 7&ndash;15 years (depending on appreciation) and the equity + price gains overcome that monthly premium. Shorter stays almost always favor renting once transaction costs are factored in.',
+    faq2q: 'What is the price-to-rent ratio in Tel Aviv?',
+    faq2a: 'Tel Aviv\'s price-to-rent ratio is roughly <strong>28&ndash;38&times;</strong> in 2026, meaning a property costs 28&ndash;38 times its annual rent. A &#x20AA;3,000,000 apartment renting for &#x20AA;8,000/mo (&#x20AA;96,000/yr) has a ratio of ~31&times;. This implies a gross rental yield of only ~3.2% &mdash; well below typical mortgage rates of 4&ndash;5%. In Jerusalem it\'s 22&ndash;32&times;; in Haifa 16&ndash;22&times;; in Beer Sheva 12&ndash;16&times;.',
+    faq3q: 'How long do I need to stay in Israel for buying to break even?',
+    faq3a: 'With current mortgage rates (~4.5%) and Tel Aviv/Jerusalem price-to-rent ratios: <strong>approximately 8&ndash;10 years</strong> if prices appreciate ~5%/yr; <strong>12&ndash;15 years</strong> at ~3%/yr appreciation; <strong>shorter (5&ndash;7 years) in lower-ratio cities</strong> like Haifa or the periphery. The break-even is driven by how fast equity accumulation + price gains offset the monthly ownership premium and transaction costs.',
+    faq4q: 'What is purchase tax (mas rechisha) on a first home in Israel?',
+    faq4a: 'On a first home bought by an Israeli citizen: <strong>0%</strong> on the first &#x20AA;1,919,155 (2026 threshold); <strong>3.5%</strong> on the next slice up to &#x20AA;2,276,360; <strong>5%</strong> up to &#x20AA;5,872,725. On a &#x20AA;2,500,000 first home, the total mas rechisha is approximately <strong>&#x20AA;23,684</strong>. New immigrants (olim chadashim) may qualify for a reduced flat rate. Thresholds update each January &mdash; verify at <em>mas.gov.il</em>.',
+    faq5q: 'Does how long I plan to stay affect whether I should buy or rent in Israel?',
+    faq5a: '<strong>Yes &mdash; tenure length is the single biggest variable.</strong> Transaction costs (purchase tax + agent + legal) total 3.5&ndash;5% of purchase price upfront. General rule for Israeli major cities: if you\'re staying fewer than 7 years, renting is almost always the better financial decision. Beyond 10 years, buying typically wins &mdash; especially if prices keep rising.',
+    faq6q: 'Why do Israelis buy even when renting is cheaper?',
+    faq6a: 'Several reasons: <strong>cultural buy-bias</strong> &mdash; homeownership is deeply embedded in Israeli culture; <strong>rent instability</strong> &mdash; Israeli landlords can raise rents sharply or end leases at 12 months; <strong>fear of being "priced out"</strong> &mdash; years of appreciation create FOMO; <strong>forced savings</strong> &mdash; mortgage principal paydown is savings renters may not replicate. These are real considerations, but separate from pure financial comparison.',
+    ctaT: 'Run your buy vs rent numbers free &rarr;',
+    ctaP: 'WizeDeal\'s buy-vs-rent calculator lets you plug in your actual property price, rent, mortgage rate, down payment, expected tenure, and appreciation assumption &mdash; and tells you your personal break-even year. Free. No sign-up required to start.',
+    ctaBtn: 'Run your buy vs rent numbers free &rarr;',
+    ctaBtnSec: 'Or create a free account',
+    shareTitle: 'Thinking about buying in Israel? Send this to your partner',
+    shareSub: 'Share via WhatsApp / Email / link',
+    shareEmail: 'Email',
+    shareCopy: 'Copy link',
+    footSource: 'Sources: Israel CBS &middot; Bank of Israel &middot; Israel Tax Authority (mas.gov.il) &middot; Madlan &middot; Yad2 &middot; OECD Housing Indicators 2025.',
+    footLegal: '&#x26A0;&#xFE0F; Illustrative only &mdash; not financial or real-estate advice. Verify all figures with a licensed advisor.',
+  },
+  he: {
+    badge: '&#x2713; נדל&quot;ן ישראל &middot; מאומת 2026',
+    title: '&#x05E7;&#x05E0;&#x05D5;&#x05EA; &#x05D0;&#x05D5; &#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D1;&#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC;:<br>&#x05D0;&#x05D9;&#x05D9;&#x05E4;&#x05D4; &#x05E0;&#x05E7;&#x05D5;&#x05D3;&#x05EA; &#x05D4;&#x05D0;&#x05D9;&#x05D6;&#x05D5;&#x05DF;?',
+    sub: '&#x05D9;&#x05D7;&#x05E1;&#x05D9; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05DC;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D1;&#x05E2;&#x05E8;&#x05D9; &#x05D4;&#x05DE;&#x05E8;&#x05DB;&#x05D6; &#x05E2;&#x05D5;&#x05DE;&#x05D3;&#x05D9;&#x05DD; &#x05E2;&#x05DC; 25&ndash;35 &#x05E4;&#x05E2;&#x05DE;&#x05D9;&#x05DD; &#x05D4;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D4;&#x05E9;&#x05E0;&#x05EA;&#x05D9;&#x05EA; &mdash; &#x05D1;&#x05D9;&#x05DF; &#x05D4;&#x05D2;&#x05D1;&#x05D5;&#x05D4;&#x05D9;&#x05DD; &#x05D1;&#x05E2;&#x05D5;&#x05DC;&#x05DD;. &#x05D4;&#x05E0;&#x05D4; &#x05D0;&#x05D9;&#x05DA; &#x05DC;&#x05D7;&#x05E9;&#x05D5;&#x05D1; &#x05E2;&#x05DC; &#x05D6;&#x05D4; &#x05D1;&#x05D0;&#x05DE;&#x05EA;, &#x05E2;&#x05DD; &#x05D3;&#x05D5;&#x05D2;&#x05DE;&#x05D0; &#x05DE;&#x05D7;&#x05D5;&#x05E9;&#x05D1;&#x05EA; &#x05D5;&#x05DE;&#x05EA;&#x05DE;&#x05D8;&#x05D9;&#x05E7;&#x05D4; &#x05DE;&#x05D3;&#x05D5;&#x05D9;&#x05E7;&#x05EA;.',
+    answerEye: '&#x05EA;&#x05E9;&#x05D5;&#x05D1;&#x05D4; &#x05D9;&#x05E9;&#x05D9;&#x05E8;&#x05D4;',
+    answerText: '<strong>&#x05DE;&#x05D1;&#x05D7;&#x05D9;&#x05E0;&#x05EA; &#x05EA;&#x05D6;&#x05E8;&#x05D9;&#x05DD; &#x05D7;&#x05D5;&#x05D3;&#x05E9;&#x05D9;&#x05D9;&#x05DD; &#x05D1;&#x05DC;&#x05D1;&#x05D3; &mdash; &#x05D4;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D6;&#x05D5;&#x05DC;&#x05D4; &#x05D9;&#x05D5;&#x05EA;&#x05E8; &#x05D1;&#x05E2;&#x05E8;&#x05D9; &#x05D4;&#x05DE;&#x05E8;&#x05DB;&#x05D6; &#x05D4;&#x05D9;&#x05D5;&#x05DD;.</strong> &#x05D4;&#x05DE;&#x05D3;&#x05D3; &#x05D4;&#x05DE;&#x05E8;&#x05DB;&#x05D6;&#x05D9; &#x05D4;&#x05D5;&#x05D0; <strong>&#x05D9;&#x05D7;&#x05E1; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05DC;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA;</strong> (&#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05E0;&#x05DB;&#x05E1; &divide; &#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05E9;&#x05E0;&#x05EA;&#x05D9;&#x05EA;): &#x05EA;&#x05DC; &#x05D0;&#x05D1;&#x05D9;&#x05D1; &#x05D5;&#x05D9;&#x05E8;&#x05D5;&#x05E9;&#x05DC;&#x05D9;&#x05DD; &#x05DE;&#x05E6;&#x05D9;&#x05D2;&#x05D5;&#x05EA; &#x05D9;&#x05D7;&#x05E1;&#x05D9;&#x05DD; &#x05E9;&#x05DC; 25&ndash;35&#xD7;, &#x05DB;&#x05DC;&#x05D5;&#x05DE;&#x05E8; &#x05D1;&#x05E2;&#x05DC; &#x05D4;&#x05E0;&#x05DB;&#x05E1; &#x05DE;&#x05E8;&#x05D5;&#x05D5;&#x05D9;&#x05D7; &#x05D0;&#x05DA; &#x05D5;&#x05E8;&#x05E7; 3&ndash;4% &#x05E9;&#x05E0;&#x05EA;&#x05D9;&#x05EA; &mdash; &#x05D4;&#x05E8;&#x05D1;&#x05D4; &#x05E4;&#x05D7;&#x05D5;&#x05EA; &#x05DE;&#x05E9;&#x05D9;&#x05E2;&#x05D5;&#x05E8;&#x05D9; &#x05DE;&#x05E9;&#x05DB;&#x05E0;&#x05EA;&#x05D0;. &#x05E7;&#x05D5;&#x05E0;&#x05D4; &#x05D1;&#x05DE;&#x05E9;&#x05DB;&#x05E0;&#x05EA;&#x05D0; &#x05E1;&#x05D8;&#x05E0;&#x05D3;&#x05E8;&#x05D8;&#x05D9; &#x05DE;&#x05E9;&#x05DC;&#x05DD; <strong>&#x05D4;&#x05E8;&#x05D1;&#x05D4; &#x05D9;&#x05D5;&#x05EA;&#x05E8; &#x05D1;&#x05DB;&#x05DC; &#x05D7;&#x05D5;&#x05D3;&#x05E9;</strong> &#x05DE;&#x05E9;&#x05D5;&#x05DB;&#x05E8;. &#x05D4;&#x05D7;&#x05E9;&#x05D1;&#x05D5;&#x05DF; &#x05DE;&#x05E9;&#x05EA;&#x05E0;&#x05D4; &#x05DC;&#x05D8;&#x05D5;&#x05D1;&#x05EA; &#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4; &#x05E8;&#x05E7; &#x05D0;&#x05DD;: &#x05D0;&#x05EA;&#x05DD; &#x05D3;&#x05E8;&#x05D9;&#x05DD; &#x05DC;&#x05D9;&#x05E9;&#x05D5;&#x05D1; 7&ndash;15 &#x05E9;&#x05E0;&#x05D9;&#x05DD; &#x05DC;&#x05E4;&#x05D7;&#x05D5;&#x05EA; (&#x05D1;&#x05EA;&#x05DC; &#x05D0;&#x05D1;&#x05D9;&#x05D1;), &#x05D0;&#x05EA;&#x05DD; &#x05DE;&#x05E9;&#x05E7;&#x05D9;&#x05E2;&#x05D9;&#x05DD; &#x05DE;&#x05E7;&#x05D3;&#x05DE;&#x05D4; &#x05D2;&#x05D3;&#x05D5;&#x05DC;&#x05D4; &#x05E9;&#x05DE;&#x05E4;&#x05D7;&#x05D9;&#x05EA;&#x05D4; &#x05D0;&#x05EA; &#x05E2;&#x05DC;&#x05D5;&#x05D9;&#x05D5;&#x05EA; &#x05D4;&#x05E8;&#x05D9;&#x05D1;&#x05D9;&#x05EA;, &#x05D0;&#x05D5; &#x05E9;&#x05D0;&#x05EA;&#x05DD; &#x05DE;&#x05E6;&#x05E4;&#x05D9;&#x05DD; &#x05DC;&#x05E2;&#x05DC;&#x05D9;&#x05D9;&#x05D4; &#x05D7;&#x05D6;&#x05E7;&#x05D4; &#x05D1;&#x05DE;&#x05D7;&#x05D9;&#x05E8;&#x05D9;&#x05DD;. &#x05D9;&#x05E9; &#x05D2;&#x05DD; &#x05DE;&#x05E0;&#x05D8;&#x05DC;&#x05D9;&#x05D5;&#x05EA; &#x05EA;&#x05E8;&#x05D1;&#x05D5;&#x05EA;&#x05D9;&#x05EA; &#x05D1;&#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC; &#x05DC;&#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4; &mdash; &#x05D1;&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05D1;&#x05D9;&#x05EA; &#x05DE;&#x05E1;&#x05DE;&#x05DC;&#x05EA; &#x05D9;&#x05E6;&#x05D9;&#x05D1;&#x05D5;&#x05EA; &mdash; &#x05D0;&#x05DA; &#x05D6;&#x05D5;&#x05D4;&#x05D9; &#x05E2;&#x05E0;&#x05D9;&#x05D9;&#x05DF; &#x05E1;&#x05D2;&#x05E0;&#x05D5;&#x05DF; &#x05D7;&#x05D9;&#x05D9;&#x05DD;, &#x05DC;&#x05D0; &#x05E4;&#x05D9;&#x05E0;&#x05E0;&#x05E1;&#x05D9;.',
+    faq1q: '&#x05D4;&#x05D0;&#x05DD; &#x05E2;&#x05D3;&#x05D9;&#x05E3; &#x05DC;&#x05E7;&#x05E0;&#x05D5;&#x05EA; &#x05D0;&#x05D5; &#x05DC;&#x05E9;&#x05DB;&#x05D5;&#x05E8; &#x05D1;&#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC; &#x05D4;&#x05D9;&#x05D5;&#x05DD;?',
+    faq1a: '&#x05DE;&#x05D1;&#x05D7;&#x05D9;&#x05E0;&#x05EA; &#x05EA;&#x05D6;&#x05E8;&#x05D9;&#x05DD; &#x05D7;&#x05D5;&#x05D3;&#x05E9;&#x05D9;&#x05D9;&#x05DD; &#x05D1;&#x05DC;&#x05D1;&#x05D3;, <strong>&#x05D4;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D6;&#x05D5;&#x05DC;&#x05D4; &#x05D9;&#x05D5;&#x05EA;&#x05E8;</strong> &#x05D1;&#x05E2;&#x05E8;&#x05D9; &#x05D4;&#x05DE;&#x05E8;&#x05DB;&#x05D6;. &#x05D1;&#x05DE;&#x05E9;&#x05DB;&#x05E0;&#x05EA;&#x05D0; &#x05D8;&#x05D9;&#x05E4;&#x05D5;&#x05E1;&#x05D9; &#x05E9;&#x05DC; 4.5% &#x05E2;&#x05DC; &#x05D3;&#x05D9;&#x05E8;&#x05EA; &#x05D1; 2.5 &#x05DE;&#x05D9;&#x05DC;&#x05D9;&#x05D5;&#x05DF; &#x05E9;&#x05E7;&#x05DC;, &#x05E2;&#x05DC;&#x05D5;&#x05D9;&#x05D5;&#x05EA; &#x05D4;&#x05D1;&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05DB;&#x05D5;&#x05DC;&#x05DC;&#x05D9;&#x05DD; &#x05DB;&#x05DC;&#x05DC; &#x05DE;&#x05D2;&#x05D9;&#x05E2;&#x05D5;&#x05EA; &#x05DC;&#x2248;&#x20AA;12,000 &#x05DC;&#x05D7;&#x05D5;&#x05D3;&#x05E9; &#x05DC;&#x05E2;&#x05D5;&#x05DE;&#x05EA; &#x20AA;7,000 &#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA;. &#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4; &#x05DE;&#x05E9;&#x05EA;&#x05DC;&#x05DE;&#x05EA; &#x05DB;&#x05DC;&#x05DB;&#x05DC;&#x05D9;&#x05EA; &#x05D0;&#x05DD; &#x05E0;&#x05E9;&#x05D0;&#x05E8;&#x05D9;&#x05DD; 7&ndash;15 &#x05E9;&#x05E0;&#x05D9;&#x05DD; &#x05D5;&#x05D4;&#x05E6;&#x05DE;&#x05D9;&#x05D7;&#x05D4; &#x05D1;&#x05DE;&#x05D7;&#x05D9;&#x05E8;&#x05D9;&#x05DD; &#x05DE;&#x05E9;&#x05DC;&#x05D9;&#x05DE;&#x05D4; &#x05D0;&#x05EA; &#x05E2;&#x05DC;&#x05D5;&#x05D9;&#x05D5;&#x05EA; &#x05D4;&#x05D1;&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05D4;&#x05D7;&#x05D5;&#x05D3;&#x05E9;&#x05D9;&#x05D5;&#x05EA; &#x05D4;&#x05D2;&#x05D1;&#x05D5;&#x05D4;&#x05D5;&#x05EA; &#x05D9;&#x05D5;&#x05EA;&#x05E8;.',
+    faq2q: '&#x05DE;&#x05D4; &#x05D9;&#x05D7;&#x05E1; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05DC;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D1;&#x05EA;&#x05DC; &#x05D0;&#x05D1;&#x05D9;&#x05D1;?',
+    faq2a: '&#x05D9;&#x05D7;&#x05E1; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05DC;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D1;&#x05EA;&#x05DC; &#x05D0;&#x05D1;&#x05D9;&#x05D1; &#x05E2;&#x05D5;&#x05DE;&#x05D3; &#x05E2;&#x05DC; <strong>28&ndash;38&#xD7;</strong> &#x05D1;-2026, &#x05DB;&#x05DC;&#x05D5;&#x05DE;&#x05E8; &#x05E0;&#x05DB;&#x05E1; &#x05E2;&#x05D5;&#x05DC;&#x05D4; &#x05E4;&#x05D9; 28&ndash;38 &#x05E2;&#x05DC; &#x05D4;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D4;&#x05E9;&#x05E0;&#x05EA;&#x05D9;&#x05EA;. &#x05D3;&#x05D9;&#x05E8;&#x05D4; &#x05D1; 3,000,000 &#x05E9;&#x05E7;&#x05DC; &#x05E9;&#x05DE;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D9;&#x05DD; &#x05D1; 8,000 &#x05E9;&#x05E7;&#x05DC; &#x05DC;&#x05D7;&#x05D5;&#x05D3;&#x05E9; &#x05DE;&#x05E7;&#x05E0;&#x05D4; &#x05DC;&#x05D0; &#x05D5;&#x05D9;&#x05D5;&#x05EA;&#x05E8; &#x05DE;&#x05DB; 3.2%. &#x05D1;&#x05D9;&#x05E8;&#x05D5;&#x05E9;&#x05DC;&#x05D9;&#x05DD; 22&ndash;32&#xD7;; &#x05D1;&#x05D7;&#x05D9;&#x05E4;&#x05D4; 16&ndash;22&#xD7;; &#x05D1;&#x05D1;&#x05D0;&#x05E8; &#x05E9;&#x05D1;&#x05E2; 12&ndash;16&#xD7;.',
+    faq3q: '&#x05DB;&#x05DE;&#x05D4; &#x05D6;&#x05DE;&#x05DF; &#x05E6;&#x05E8;&#x05D9;&#x05DA; &#x05DC;&#x05D4;&#x05D9;&#x05E9;&#x05D0;&#x05E8; &#x05DB;&#x05D3;&#x05D9; &#x05E9;&#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4; &#x05EA;&#x05E9;&#x05EA;&#x05DC;&#x05DD;?',
+    faq3a: '&#x05D1;&#x05E9;&#x05D9;&#x05E2;&#x05D5;&#x05E8;&#x05D9; &#x05DE;&#x05E9;&#x05DB;&#x05E0;&#x05EA;&#x05D0; &#x05E0;&#x05D5;&#x05DB;&#x05D7;&#x05D9;&#x05D9;&#x05DD; (~4.5%) &#x05D5;&#x05D9;&#x05D7;&#x05E1;&#x05D9; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05DC;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D1;&#x05EA;&#x05DC; &#x05D0;&#x05D1;&#x05D9;&#x05D1;/&#x05D9;&#x05E8;&#x05D5;&#x05E9;&#x05DC;&#x05D9;&#x05DD;: <strong>&#x05DB;&#x05E2;&#x05E9;&#x05E8;&#x05D4; &#x05E9;&#x05E0;&#x05D9;&#x05DD;</strong> &#x05D1;&#x05E2;&#x05DC;&#x05D9;&#x05D9;&#x05D4; &#x05E9;&#x05DC; ~5%/&#x05E9;&#x05E0;&#x05D4;; <strong>12&ndash;15 &#x05E9;&#x05E0;&#x05D9;&#x05DD;</strong> &#x05D1;&#x05E2;&#x05DC;&#x05D9;&#x05D9;&#x05D4; &#x05E9;&#x05DC; ~3%/&#x05E9;&#x05E0;&#x05D4;; <strong>&#x05E7;&#x05E6;&#x05E8; &#x05D9;&#x05D5;&#x05EA;&#x05E8; (5&ndash;7 &#x05E9;&#x05E0;&#x05D9;&#x05DD;) &#x05D1;&#x05E2;&#x05E8;&#x05D9;&#x05DD; &#x05E2;&#x05DD; &#x05D9;&#x05D7;&#x05E1; &#x05E0;&#x05DE;&#x05D5;&#x05DA;</strong> &#x05DB;&#x05DE;&#x05D5; &#x05D7;&#x05D9;&#x05E4;&#x05D4; &#x05D0;&#x05D5; &#x05D4;&#x05E4;&#x05E8;&#x05D9;&#x05E4;&#x05E8;&#x05D9;&#x05D4;.',
+    faq4q: '&#x05DE;&#x05D4; &#x05D4;&#x05DE;&#x05E1; &#x05E8;&#x05DB;&#x05D9;&#x05E9;&#x05D4; &#x05E2;&#x05DC; &#x05D3;&#x05D9;&#x05E8;&#x05D4; &#x05E8;&#x05D0;&#x05E9;&#x05D5;&#x05E0;&#x05D4; &#x05D1;&#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC;?',
+    faq4a: '&#x05E2;&#x05DC; &#x05D3;&#x05D9;&#x05E8;&#x05D4; &#x05E8;&#x05D0;&#x05E9;&#x05D5;&#x05E0;&#x05D4; &#x05DC;&#x05D0;&#x05D6;&#x05E8;&#x05D7; &#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC;&#x05D9;: <strong>0%</strong> &#x05E2;&#x05D3; &#x20AA;1,919,155 (&#x05E1;&#x05E3; 2026); <strong>3.5%</strong> &#x05E2;&#x05DC; &#x05D4;&#x05D7;&#x05DC;&#x05E7; &#x05E2;&#x05D3; &#x20AA;2,276,360; <strong>5%</strong> &#x05E2;&#x05D3; &#x20AA;5,872,725. &#x05E2;&#x05DC; &#x05D3;&#x05D9;&#x05E8;&#x05D4; &#x05D1; 2,500,000 &#x05E9;&#x05E7;&#x05DC; &mdash; &#x05D4;&#x05DE;&#x05E1; &#x05E8;&#x05DB;&#x05D9;&#x05E9;&#x05D4; &#x05D4;&#x05DB;&#x05D5;&#x05DC;&#x05DC; &#x05DB;&#x05DA; <strong>&#x05DB;&#x05D1;&#x05D3; &#x20AA;23,684</strong>. &#x05E2;&#x05D5;&#x05DC;&#x05D9;&#x05DD; &#x05D7;&#x05D3;&#x05E9;&#x05D9;&#x05DD; &#x05D6;&#x05DB;&#x05D0;&#x05D9;&#x05DD; &#x05DC;&#x05E9;&#x05D9;&#x05E2;&#x05D5;&#x05E8; &#x05DE;&#x05D5;&#x05E4;&#x05D7;&#x05EA; &mdash; &#x05D1;&#x05D3;&#x05E7;&#x05D5; &#x05D1;&#x05E8;&#x05E9;&#x05D5;&#x05EA; &#x05D4;&#x05DE;&#x05E1;&#x05D9;&#x05DD;.',
+    faq5q: '&#x05D0;&#x05D9;&#x05DA; &#x05DE;&#x05E9;&#x05DA; &#x05D4;&#x05D6;&#x05DE;&#x05DF; &#x05E9;&#x05D0;&#x05E8; &#x05D1;&#x05E0;&#x05DB;&#x05E1; &#x05DE;&#x05E9;&#x05E4;&#x05D9;&#x05E2; &#x05E2;&#x05DC; &#x05D4;&#x05D7;&#x05DC;&#x05D8;&#x05EA; &#x05D4;&#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4;?',
+    faq5a: '<strong>&#x05D9;&#x05E9;&#x05E0;&#x05D5; &#x05E9;&#x05E0;&#x05D9;&#x05DD; &#x05D6;&#x05D5;&#x05D4; &#x05D4;&#x05DE;&#x05E9;&#x05EA;&#x05E0;&#x05D4; &#x05D4;&#x05D1;&#x05D5;&#x05D3;&#x05D3; &#x05D4;&#x05D1;&#x05D5;&#x05D3;&#x05D3; &#x05D1;&#x05D4;&#x05D7;&#x05DC;&#x05D8;&#x05D4;.</strong> &#x05E2;&#x05DC;&#x05D5;&#x05D9;&#x05D5;&#x05EA; &#x05E2;&#x05E1;&#x05E7;&#x05D4; (&#x05DE;&#x05E1; &#x05E8;&#x05DB;&#x05D9;&#x05E9;&#x05D4; + &#x05EA;&#x05D9;&#x05D5;&#x05DA; + &#x05E2;&#x05D5;&#x05E8;&#x05DA; &#x05D3;&#x05D9;&#x05DF;) &#x05DE;&#x05E1;&#x05EA;&#x05DB;&#x05DE;&#x05D5;&#x05EA; 3.5&ndash;5% &#x05DE;&#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05D4;&#x05E0;&#x05DB;&#x05E1; &#x05DE;&#x05E9;&#x05DC; &#x05D4;&#x05E8;&#x05DB;&#x05D9;&#x05E9;&#x05D4;. &#x05DB;&#x05DC;&#x05DC; &#x05D0;&#x05E6;&#x05D1;&#x05E2;: &#x05D0;&#x05DD; &#x05E9;&#x05D5;&#x05D4;&#x05D9;&#x05DD; &#x05E4;&#x05D7;&#x05D5;&#x05EA; &#x05DE; 7 &#x05E9;&#x05E0;&#x05D9;&#x05DD;, &#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05DB;&#x05DE;&#x05E2;&#x05D8; &#x05EA;&#x05DE;&#x05D9;&#x05D3; &#x05E2;&#x05D3;&#x05D9;&#x05E4;&#x05D4;. &#x05DE;&#x05E2;&#x05DC; 10 &#x05E9;&#x05E0;&#x05D9;&#x05DD;, &#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4; &#x05D1;&#x05D3;&#x05E8;&#x05DA; &#x05DB;&#x05DC;&#x05DC; &#x05E2;&#x05D3;&#x05D9;&#x05E4;&#x05D4;.',
+    faq6q: '&#x05DC;&#x05DE;&#x05D4; &#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC;&#x05D9;&#x05DD; &#x05E7;&#x05D5;&#x05E0;&#x05D9;&#x05DD; &#x05D2;&#x05DD; &#x05DB;&#x05E9;&#x05D4;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05D6;&#x05D5;&#x05DC;&#x05D4; &#x05D9;&#x05D5;&#x05EA;&#x05E8;?',
+    faq6a: '&#x05DB;&#x05DE;&#x05D4; &#x05E1;&#x05D9;&#x05D1;&#x05D5;&#x05EA;: <strong>&#x05D3;&#x05D7;&#x05E3; &#x05EA;&#x05E8;&#x05D1;&#x05D5;&#x05EA;&#x05D9;</strong> &mdash; &#x05D1;&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05D1;&#x05D9;&#x05EA; &#x05DE;&#x05E1;&#x05DE;&#x05DC;&#x05EA; &#x05D9;&#x05E6;&#x05D9;&#x05D1;&#x05D5;&#x05EA; &#x05D5;&#x05D1;&#x05D8;&#x05D9;&#x05D7;&#x05D5;&#x05EA;; <strong>&#x05D0;&#x05D9; &#x05D5;&#x05D3;&#x05D0;&#x05D5;&#x05EA; &#x05D1;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA;</strong> &mdash; &#x05E9;&#x05D5;&#x05DB;&#x05E8;&#x05D9;&#x05DD; &#x05D9;&#x05DB;&#x05D5;&#x05DC;&#x05D9;&#x05DD; &#x05DC;&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05D0;&#x05D5; &#x05DC;&#x05E1;&#x05D9;&#x05D9;&#x05DD; &#x05D7;&#x05D5;&#x05D6;&#x05D4; &#x05D1;12 &#x05D7;&#x05D5;&#x05D3;&#x05E9;; <strong>&#x05E4;&#x05D7;&#x05D3; &#x05DC;&#x05D4;&#x05E9;&#x05D0;&#x05E8; &#x05DE;&#x05D7;&#x05D5;&#x05E5; &#x05DC;&#x05D4;&#x05D9;&#x05E9;&#x05D2;</strong> &mdash; &#x05E9;&#x05E0;&#x05D9;&#x05DD; &#x05E9;&#x05DC; &#x05E2;&#x05DC;&#x05D9;&#x05D9;&#x05D4; &#x05D1;&#x05DE;&#x05D7;&#x05D9;&#x05E8;&#x05D9;&#x05DD; &#x05D9;&#x05D5;&#x05E6;&#x05E8;&#x05EA; &#x05E4;&#x05D5;&#x05DE;&#x05D1;&#x05D9; &#x05E7;&#x05E0;&#x05D9;&#x05D9;&#x05D4;; <strong>&#x05D7;&#x05D9;&#x05E1;&#x05DB;&#x05D5;&#x05DF; &#x05DB;&#x05E4;&#x05D5;&#x05D9;</strong> &mdash; &#x05E7;&#x05E8;&#x05DF; &#x05D4;&#x05DE;&#x05E9;&#x05DB;&#x05E0;&#x05EA;&#x05D0; &#x05D4;&#x05D5;&#x05D0; &#x05D7;&#x05D9;&#x05E1;&#x05DB;&#x05D5;&#x05DF; &#x05E9;&#x05E9;&#x05D5;&#x05DB;&#x05E8;&#x05D9;&#x05DD; &#x05E2;&#x05E9;&#x05D5;&#x05D9;&#x05D9;&#x05DD; &#x05DC;&#x05D0; &#x05DC;&#x05E9;&#x05D7;&#x05D6;&#x05E8;.',
+    ctaT: '&#x05D7;&#x05E9;&#x05D1; &#x05D0;&#x05EA; &#x05D4;&#x05E0;&#x05EA;&#x05D5;&#x05E0;&#x05D9;&#x05DD; &#x05E9;&#x05DC;&#x05DA; &#x05D1;&#x05D7;&#x05D9;&#x05E0;&#x05DD; &larr;',
+    ctaP: '&#x05DE;&#x05D7;&#x05E9;&#x05D1;&#x05D5;&#x05DF; &#x05E7;&#x05E0;&#x05D9;&#x05D4; &#x05D0;&#x05D5; &#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA; &#x05E9;&#x05DC; WizeDeal &#x05DE;&#x05D0;&#x05E4;&#x05E9;&#x05E8; &#x05DC;&#x05D4;&#x05D6;&#x05D9;&#x05DF; &#x05D0;&#x05EA; &#x05DE;&#x05D7;&#x05D9;&#x05E8; &#x05D4;&#x05E0;&#x05DB;&#x05E1;, &#x05D4;&#x05E9;&#x05DB;&#x05D9;&#x05E8;&#x05D5;&#x05EA;, &#x05E9;&#x05D9;&#x05E2;&#x05D5;&#x05E8; &#x05D4;&#x05DE;&#x05E9;&#x05DB;&#x05E0;&#x05EA;&#x05D0;, &#x05D4;&#x05DE;&#x05E7;&#x05D3;&#x05DE;&#x05D4;, &#x05EA;&#x05E7;&#x05D5;&#x05E4;&#x05EA; &#x05D4;&#x05D0;&#x05D7;&#x05D6;&#x05E7;&#x05D4; &#x05D5;&#x05D4;&#x05E2;&#x05DC;&#x05D9;&#x05D9;&#x05D4; &#x05E6;&#x05E4;&#x05D5;&#x05D9;&#x05D4; &mdash; &#x05D5;&#x05DC;&#x05D3;&#x05E2;&#x05EA; &#x05D0;&#x05EA; &#x05E9;&#x05E0;&#x05EA; &#x05E0;&#x05E7;&#x05D5;&#x05D3;&#x05EA; &#x05D4;&#x05D0;&#x05D9;&#x05D6;&#x05D5;&#x05DF; &#x05D4;&#x05D0;&#x05D9;&#x05E9;&#x05D9;&#x05EA; &#x05E9;&#x05DC;&#x05DA;. &#x05D1;&#x05D7;&#x05D9;&#x05E0;&#x05DD;.',
+    ctaBtn: '&#x05D7;&#x05E9;&#x05D1; &#x05D0;&#x05EA; &#x05D4;&#x05E0;&#x05EA;&#x05D5;&#x05E0;&#x05D9;&#x05DD; &#x05E9;&#x05DC;&#x05D9; &#x05D1;&#x05D7;&#x05D9;&#x05E0;&#x05DD; &larr;',
+    ctaBtnSec: '&#x05D0;&#x05D5; &#x05E4;&#x05EA;&#x05D7; &#x05D7;&#x05E9;&#x05D1;&#x05D5;&#x05DF; &#x05D1;&#x05D7;&#x05D9;&#x05E0;&#x05DD;',
+    shareTitle: '&#x05E9;&#x05D5;&#x05E7;&#x05DC;&#x05D9;&#x05DD; &#x05DC;&#x05E7;&#x05E0;&#x05D5;&#x05EA; &#x05D1;&#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC;? &#x05E9;&#x05DC;&#x05D7;&#x05D5; &#x05D0;&#x05EA; &#x05D6;&#x05D4; &#x05DC;&#x05D1;&#x05DF; &#x05D4;&#x05D6;&#x05D5;&#x05D2;',
+    shareSub: '&#x05E9;&#x05D9;&#x05EA;&#x05D5;&#x05E3; &#x05D1;-WhatsApp / Email / &#x05E7;&#x05D9;&#x05E9;&#x05D5;&#x05E8;',
+    shareEmail: 'Email',
+    shareCopy: '&#x05D4;&#x05E2;&#x05EA;&#x05E7; &#x05E7;&#x05D9;&#x05E9;&#x05D5;&#x05E8;',
+    footSource: '&#x05DE;&#x05E7;&#x05D5;&#x05E8;&#x05D5;&#x05EA;: &#x05D4;&#x05DC;&#x05E9;&#x05DB;&#x05D4; &#x05D4;&#x05DE;&#x05E8;&#x05DB;&#x05D6;&#x05D9;&#x05EA; &#x05DC;&#x05E1;&#x05D8;&#x05D8;&#x05D9;&#x05E1;&#x05D8;&#x05D9;&#x05E7;&#x05D4; &middot; &#x05D1;&#x05E0;&#x05E7; &#x05D9;&#x05E9;&#x05E8;&#x05D0;&#x05DC; &middot; &#x05E8;&#x05E9;&#x05D5;&#x05EA; &#x05D4;&#x05DE;&#x05E1;&#x05D9;&#x05DD; &middot; &#x05DE;&#x05D3;&#x05DC;&#x05DF; &middot; &#x05D9;&#x05D3; 2 &middot; OECD 2025.',
+    footLegal: '&#x05DE;&#x05D9;&#x05D3;&#x05E2; &#x05D7;&#x05D9;&#x05E0;&#x05D5;&#x05DB;&#x05D9; &#x05D1;&#x05DC;&#x05D1;&#x05D3; &mdash; &#x05D0;&#x05D9;&#x05E0;&#x05D5; &#x05D9;&#x05D9;&#x05E2;&#x05D5;&#x05E5; &#x05E4;&#x05D9;&#x05E0;&#x05E0;&#x05E1;&#x05D9; &#x05D0;&#x05D5; &#x05DE;&#x05E9;&#x05E4;&#x05D8;&#x05D9;. &#x05D9;&#x05E9; &#x05DC;&#x05D4;&#x05EA;&#x05D9;&#x05D9;&#x05E2;&#x05E5; &#x05E2;&#x05DD; &#x05D9;&#x05D5;&#x05E2;&#x05E5; &#x05DE;&#x05D5;&#x05E1;&#x05DE;&#x05DA;.',
+  },
+  pt: {
+    badge: '&#x2713; Imóveis em Israel &middot; Verificado 2026',
+    title: 'Comprar ou Alugar em Israel:<br>Qual é o Ponto de Equilíbrio?',
+    sub: 'Os índices preço/aluguel em Israel chegam a 25&ndash;35&times; nas principais cidades &mdash; entre os mais altos do mundo. Veja como pensar nessa decisão com honestidade, exemplo prático e a matemática exata.',
+    answerEye: 'RESPOSTA DIRETA',
+    answerText: '<strong>Em termos de fluxo de caixa mensal puro, alugar é mais barato nas principais cidades israelenses hoje.</strong> A métrica central é o <strong>índice preço/aluguel</strong> (preço do imóvel &divide; aluguel anual): Tel Aviv e Jerusalém apresentam índices de 25&ndash;35&times;, o que significa que o rendimento bruto do proprietário é de apenas 3&ndash;4% ao ano &mdash; bem abaixo das taxas de juros dos financiamentos. Comprar só compensa se: você ficará tempo suficiente (geralmente 7&ndash;15 anos em Tel Aviv) para que patrimônio e valorização compensem a diferença mensal, der uma entrada grande que elimine boa parte dos juros, ou esperar forte valorização contínua do imóvel.',
+    faq1q: 'É melhor comprar ou alugar em Israel agora?',
+    faq1a: 'Em termos de fluxo de caixa mensal, <strong>alugar é mais barato</strong> nas grandes cidades. Com financiamento típico a 4,5% sobre um apartamento de &#x20AA;2,5M, o custo total de propriedade chega a &#x2248;&#x20AA;12.000/mês versus &#x20AA;7.000 de aluguel. Comprar faz sentido financeiro se você ficar 7&ndash;15 anos e a valorização cobrir o prêmio mensal.',
+    faq2q: 'Qual é o índice preço/aluguel em Tel Aviv?',
+    faq2a: 'O índice preço/aluguel de Tel Aviv é de aproximadamente <strong>28&ndash;38&times;</strong> em 2026. Um apartamento de &#x20AA;3.000.000 alugado por &#x20AA;8.000/mês tem índice de ~31&times;, implicando rendimento bruto de apenas ~3,2%. Em Jerusalém é 22&ndash;32&times;; em Haifa 16&ndash;22&times;; em Beer Sheva 12&ndash;16&times;.',
+    faq3q: 'Quanto tempo preciso ficar em Israel para compensar comprar?',
+    faq3a: 'Com as taxas atuais (~4,5%) e os índices de Tel Aviv/Jerusalém: <strong>aproximadamente 8&ndash;10 anos</strong> com valorização de ~5%/ano; <strong>12&ndash;15 anos</strong> com ~3%/ano; <strong>menos (5&ndash;7 anos) em cidades com índice menor</strong> como Haifa ou a periferia.',
+    faq4q: 'Qual é o imposto de compra (mas rechisha) na primeira casa em Israel?',
+    faq4a: 'Para cidadão israelense comprando a primeira casa: <strong>0%</strong> até &#x20AA;1.919.155 (2026); <strong>3,5%</strong> até &#x20AA;2.276.360; <strong>5%</strong> até &#x20AA;5.872.725. Num apartamento de &#x20AA;2.500.000, o total é aproximadamente <strong>&#x20AA;23.684</strong>. Imigrantes (olim) podem ter alíquota reduzida &mdash; consulte a Receita Federal israelense.',
+    faq5q: 'O tempo de permanência afeta a decisão de comprar ou alugar em Israel?',
+    faq5a: '<strong>Sim &mdash; é a variável mais importante.</strong> Custos de transação (imposto + corretor + advogado) somam 3,5&ndash;5% do valor do imóvel. Regra geral: menos de 7 anos, quase sempre compensa alugar; acima de 10 anos, comprar costuma vencer.',
+    faq6q: 'Por que israelenses compram mesmo quando alugar é mais barato?',
+    faq6a: 'Razões: <strong>viés cultural</strong> pela propriedade; <strong>insegurança no aluguel</strong> (contratos de 12 meses, reajustes livres); <strong>medo de ficar de fora</strong> com anos de valorização acelerada; <strong>poupança forçada</strong> via amortização do financiamento.',
+    ctaT: 'Simule seus números de compra vs aluguel grátis &rarr;',
+    ctaP: 'A calculadora do WizeDeal permite inserir preço, aluguel, taxa de juros, entrada, prazo e valorização esperada &mdash; e calcula seu ponto de equilíbrio pessoal. Grátis.',
+    ctaBtn: 'Simular meus números grátis &rarr;',
+    ctaBtnSec: 'Ou criar conta gratuita',
+    shareTitle: 'Pensando em comprar em Israel? Envie isso ao seu parceiro(a)',
+    shareSub: 'Partilhar via WhatsApp / Email / link',
+    shareEmail: 'Email',
+    shareCopy: 'Copiar link',
+    footSource: 'Fontes: CBS Israel &middot; Banco de Israel &middot; Receita Federal israelense (mas.gov.il) &middot; Madlan &middot; Yad2 &middot; OCDE 2025.',
+    footLegal: '&#x26A0;&#xFE0F; Apenas ilustrativo &mdash; não é aconselhamento financeiro ou imobiliário. Verifique com um consultor licenciado.',
+  },
+  es: {
+    badge: '&#x2713; Bienes Raíces Israel &middot; Verificado 2026',
+    title: 'Comprar o Alquilar en Israel:<br>&#xBF;Cuál es el Punto de Equilibrio?',
+    sub: 'Los índices precio/alquiler en Israel alcanzan 25&ndash;35&times; en las principales ciudades &mdash; entre los más altos del mundo. Así se piensa en esto con honestidad, con un ejemplo práctico y la matemática exacta.',
+    answerEye: 'RESPUESTA DIRECTA',
+    answerText: '<strong>En términos de flujo de caja mensual puro, alquilar es más barato en las grandes ciudades israelenses hoy.</strong> La métrica clave es el <strong>índice precio/alquiler</strong> (precio del inmueble &divide; alquiler anual): Tel Aviv y Jerusalén muestran índices de 25&ndash;35&times;, lo que significa que el propietario obtiene un rendimiento bruto de solo 3&ndash;4% anual &mdash; muy por debajo de los tipos hipotecarios. Comprar solo conviene si: te quedas el tiempo suficiente (generalmente 7&ndash;15 años en Tel Aviv) para que el patrimonio y la revalorización superen la brecha mensual, das una entrada grande que elimine la mayor parte de los intereses, o esperas una fuerte revalorización continua.',
+    faq1q: '&#xBF;Es mejor comprar o alquilar en Israel ahora mismo?',
+    faq1a: 'En términos de flujo de caja mensual, <strong>alquilar es más barato</strong> en las grandes ciudades. Con una hipoteca típica al 4,5% sobre un apartamento de &#x20AA;2,5M, el coste total de propiedad llega a &#x2248;&#x20AA;12.000/mes frente a &#x20AA;7.000 de alquiler. Comprar tiene sentido financiero si te quedas 7&ndash;15 años y la revalorización cubre la prima mensual.',
+    faq2q: '&#xBF;Cuál es el índice precio/alquiler en Tel Aviv?',
+    faq2a: 'El índice precio/alquiler de Tel Aviv es de aproximadamente <strong>28&ndash;38&times;</strong> en 2026. Un apartamento de &#x20AA;3.000.000 alquilado por &#x20AA;8.000/mes tiene un índice de ~31&times;, lo que implica un rendimiento bruto de solo ~3,2%. En Jerusalén es 22&ndash;32&times;; en Haifa 16&ndash;22&times;; en Beer Sheva 12&ndash;16&times;.',
+    faq3q: '&#xBF;Cuánto tiempo necesito quedarme en Israel para que comprar compense?',
+    faq3a: 'Con los tipos actuales (~4,5%) y los índices de Tel Aviv/Jerusalén: <strong>aproximadamente 8&ndash;10 años</strong> con revalorización de ~5%/año; <strong>12&ndash;15 años</strong> con ~3%/año; <strong>menos (5&ndash;7 años) en ciudades con índice menor</strong> como Haifa o la periferia.',
+    faq4q: '&#xBF;Qué es el impuesto de compra (mas rechisha) en la primera vivienda en Israel?',
+    faq4a: 'Para ciudadano israelense comprando su primera vivienda: <strong>0%</strong> hasta &#x20AA;1.919.155 (2026); <strong>3,5%</strong> hasta &#x20AA;2.276.360; <strong>5%</strong> hasta &#x20AA;5.872.725. En un apartamento de &#x20AA;2.500.000, el total es aproximadamente <strong>&#x20AA;23.684</strong>. Los nuevos inmigrantes (olim) pueden tener tarifa reducida &mdash; consulte la Agencia Tributaria israelense.',
+    faq5q: '&#xBF;El tiempo que planeo quedarme afecta la decisión de comprar o alquilar en Israel?',
+    faq5a: '<strong>Sí &mdash; es la variable más importante.</strong> Los costes de transacción (impuesto + agente + abogado) suman 3,5&ndash;5% del precio. Regla general para las grandes ciudades israelenses: menos de 7 años, casi siempre conviene alquilar; más de 10 años, comprar suele ganar.',
+    faq6q: '&#xBF;Por qué los israelenses compran aunque alquilar sea más barato?',
+    faq6a: 'Varios motivos: <strong>sesgo cultural</strong> hacia la propiedad; <strong>inseguridad en el alquiler</strong> (contratos de 12 meses, subidas libres); <strong>miedo a quedarse fuera</strong> tras años de fuerte revalorización; <strong>ahorro forzado</strong> mediante la amortización de la hipoteca.',
+    ctaT: 'Calcula tus números de compra vs alquiler gratis &rarr;',
+    ctaP: 'La calculadora de WizeDeal te permite introducir precio, alquiler, tipo de interés, entrada, plazo y revalorización esperada &mdash; y calcula tu punto de equilibrio personal. Gratis.',
+    ctaBtn: 'Calcular mis números gratis &rarr;',
+    ctaBtnSec: 'O crear cuenta gratuita',
+    shareTitle: '&#xBF;Pensando en comprar en Israel? Envía esto a tu pareja',
+    shareSub: 'Compartir via WhatsApp / Email / enlace',
+    shareEmail: 'Email',
+    shareCopy: 'Copiar enlace',
+    footSource: 'Fuentes: CBS Israel &middot; Banco de Israel &middot; Agencia Tributaria israelense (mas.gov.il) &middot; Madlan &middot; Yad2 &middot; OCDE 2025.',
+    footLegal: '&#x26A0;&#xFE0F; Solo ilustrativo &mdash; no es asesoramiento financiero ni inmobiliario. Verifique con un asesor autorizado.',
+  },
+};
+
+let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'en'; } catch { return 'en'; }})();
+if (!['en','he','pt','es'].includes(_lang)) _lang = 'en';
+
+function applyLang(l) {
+  _lang = l;
+  try { localStorage.setItem('wl_lang', l); } catch {}
+  document.documentElement.setAttribute('lang', l);
+  document.documentElement.setAttribute('dir', l === 'he' ? 'rtl' : 'ltr');
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n');
+    if (TR[l] && TR[l][k] !== undefined) el.innerHTML = TR[l][k];
+  });
+  document.querySelectorAll('#langSwitch button').forEach(function(b) {
+    b.classList.toggle('on', b.dataset.l === l);
+  });
+}
+document.querySelectorAll('#langSwitch button').forEach(function(b) {
+  b.addEventListener('click', function() { applyLang(b.dataset.l); });
+});
+applyLang(_lang);
+
+// ── Share ──────────────────────────────────────────────────────────────
+var PAGE_URL = 'https://wizelife.ai/p/buy-vs-rent-israel.html';
+var PAGE_TITLES = {
+  en: 'Buy vs Rent in Israel: What\'s the Break-Even?',
+  he: 'קנות או שכירות בישראל: אייפה נקודת האיזון?',
+  pt: 'Comprar ou Alugar em Israel: Qual é o Ponto de Equilíbrio?',
+  es: 'Comprar o Alquilar en Israel: ¿Cuál es el Punto de Equilibrio?',
+};
+var SHARE_TEXTS = {
+  en: 'Israel\'s price-to-rent ratios hit 25-35x in major cities. Here\'s when buying actually beats renting — with worked example and free calculator:',
+  he: 'יחסי מחיר לשכירות בישראל עומדים על 25-35. אימתי קנייה משתלמת? דוגמא מחושבת ומחשבון בחינם:',
+  pt: 'Os índices preço/aluguel em Israel chegam a 25-35x. Quando comprar realmente compensa? Exemplo prático e calculadora grátis:',
+  es: 'Los índices precio/alquiler en Israel llegan a 25-35x. ¿Cuándo comprar realmente gana? Ejemplo práctico y calculadora gratis:',
+};
+function shareTo(channel) {
+  var text = (SHARE_TEXTS[_lang] || SHARE_TEXTS.en);
+  var url  = PAGE_URL;
+  var title = PAGE_TITLES[_lang] || PAGE_TITLES.en;
+  if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank'); return; }
+  if (channel === 'whatsapp') WizeShare.whatsapp({ title: title, text: text, url: url });
+  else if (channel === 'email') WizeShare.email({ title: title, text: text, url: url });
+  else if (channel === 'copy') WizeShare.copy({ title: title, text: text, url: url });
+}
+</script>
+
+<!-- Cloudflare Web Analytics auto-injected by proxy when enabled. -->
+
+<!-- Funnel: log the landing-page visit (top of funnel). -->
+<script src="/js/wize-track-beacon.js"></script>
+<script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
+
+<script defer src="/js/wize-bottom-nav.js"></script>
+<script defer src="/js/wize-hamburger.js"></script>
+</body>
+</html>

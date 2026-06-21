@@ -29,3 +29,5 @@
 - How to read a CBC blood test (markers + ranges): https://wizelife.ai/p/blood-test-guide-cbc.html
 - How to calculate real-estate ROI (yield, cap rate, cash-on-cash): https://wizelife.ai/p/roi-calculator-real-estate.html
 - Rental yield in Brazil (São Paulo / Florianópolis) — gross vs net: https://wizelife.ai/p/rental-yield-brazil.html
+- Airline points vs cash — how to calculate value per point (CPP): https://wizelife.ai/p/points-vs-cash-flights.html
+- Buy vs rent in Israel — price-to-rent ratio + break-even: https://wizelife.ai/p/buy-vs-rent-israel.html
