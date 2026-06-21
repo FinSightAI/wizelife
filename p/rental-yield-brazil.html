@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), usb=(), serial=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rentabilidade de Imóveis no Brasil: São Paulo, Florianópolis e mais · WizeLife</title>
+<meta name="description" content="Qual é o yield de aluguel em São Paulo, Florianópolis, Rio de Janeiro e Balneário Camboriú? Entenda yield bruto vs líquido, os custos que cortam o retorno (IPTU, condomínio, IR) e como calcular o imóvel específico.">
+<link rel="canonical" href="https://wizelife.ai/p/rental-yield-brazil.html">
+
+<link rel="alternate" hreflang="pt" href="https://wizelife.ai/p/rental-yield-brazil.html">
+<link rel="alternate" hreflang="en" href="https://wizelife.ai/p/rental-yield-brazil.html">
+<link rel="alternate" hreflang="he" href="https://wizelife.ai/p/rental-yield-brazil.html">
+<link rel="alternate" hreflang="es" href="https://wizelife.ai/p/rental-yield-brazil.html">
+<link rel="alternate" hreflang="x-default" href="https://wizelife.ai/p/rental-yield-brazil.html">
+
+<meta property="og:title" content="🇧🇷 Rentabilidade de Imóveis no Brasil: Yield Bruto e Líquido Explicado">
+<meta property="og:description" content="Yield bruto, yield líquido, IPTU, condomínio e IR — tudo o que você precisa saber antes de investir em imóvel no Brasil. Exemplos reais para São Paulo, Florianópolis, Rio e Balneário Camboriú.">
+<meta property="og:image" content="https://wizelife.ai/og-image.png">
+<meta property="og:url" content="https://wizelife.ai/p/rental-yield-brazil.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🇧🇷 Yield de Aluguel no Brasil: São Paulo, Florianópolis, Rio e mais">
+<meta name="twitter:description" content="Quanto rende um imóvel para alugar no Brasil? Yield bruto vs líquido, custos reais e como calcular antes de comprar.">
+
+<link rel="icon" href="/img/wizelife-logo-v2.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Qual é a rentabilidade (yield) de aluguel em São Paulo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Em São Paulo, o yield bruto de aluguel residencial varia de forma expressiva conforme o bairro e o tipo de imóvel. Apartamentos compactos (studios e 1 dormitório) em regiões como Vila Madalena, Pinheiros e Brooklin costumam apresentar rentabilidades brutas estimadas entre 4% e 7% ao ano. Imóveis maiores (3+ dormitórios) em bairros premium como Jardins e Itaim Bibi tendem a ter yields menores, na faixa de 3% a 5% brutos. Esses são valores ilustrativos e de mercado — o yield real depende do preço específico de compra, do aluguel praticado no momento e das condições do imóvel. Para o yield líquido, é preciso descontar condomínio, IPTU, taxa de administração (tipicamente 8–10% do aluguel), vacância estimada e IR sobre o rendimento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual é o yield de aluguel em Florianópolis e Balneário Camboriú?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Florianópolis e Balneário Camboriú (BC) são mercados com forte demanda por imóveis de temporada e alta valorização nos últimos anos, o que tende a comprimir o yield de aluguel convencional (anual). Estimativas de mercado para 2026 apontam yields brutos anuais entre 4% e 6% para locação de longa duração em Florianópolis, com grande variação entre bairros (Centro, Trindade, Jurerê Internacional). Em BC, o preço dos imóveis subiu acentuadamente, o que em geral reduz o yield de locação permanente; imóveis voltados para locação de temporada (Airbnb) podem ter yields brutos maiores em tese, mas com sazonalidade, custos operacionais e risco de vacância mais altos. Esses números são estimativas ilustrativas — sempre calcule com o preço de compra e aluguel praticado no imóvel específico."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual a diferença entre yield bruto e yield líquido de aluguel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yield bruto é a rentabilidade antes de descontar qualquer custo: (aluguel anual ÷ preço do imóvel) × 100. Exemplo: apartamento de R$500.000 com aluguel de R$2.500/mês → aluguel anual = R$30.000 → yield bruto = 6,0% ao ano. Yield líquido desconta todos os custos: condomínio (se pago pelo proprietário), IPTU, taxa de administração da imobiliária (tipicamente 8–10%), provisão para vacância (recomenda-se ao menos 1 mês/ano = 8,3% do aluguel anual), manutenção e o Imposto de Renda sobre o aluguel recebido (alíquota progressiva de 7,5% a 27,5% na tabela do carnê-leão). Na prática, os custos recorrentes costumam reduzir o yield em 2 a 3 pontos percentuais em relação ao bruto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quais são os principais custos que reduzem o yield líquido no Brasil?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Os principais custos que o proprietário deve considerar são: (1) Condomínio — quando não é transferido ao inquilino, pode representar R$500 a R$2.000+/mês em prédios grandes. (2) IPTU — varia muito por município e pelo valor venal do imóvel; em São Paulo pode ser de 0,5% a 1,5% do valor venal ao ano. (3) Taxa de administração — imobiliárias cobram tipicamente 8% a 10% do aluguel mensal para gestão da locação. (4) Vacância — período sem locatário; provisionar ao menos 1 mês por ano é conservador. (5) Manutenção e reparos — estimativa conservadora de 0,5% a 1% do valor do imóvel ao ano para manutenção estrutural. (6) IR sobre o aluguel — o proprietário pessoa física deve declarar o aluguel recebido no carnê-leão mensalmente; a alíquota varia de 7,5% a 27,5% conforme o valor mensal recebido, com isenção abaixo de R$2.824/mês (tabela 2026 — confirme com contador)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vale a pena investir em imóvel para alugar no Brasil?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende do objetivo. Para quem busca renda passiva com baixa volatilidade, um yield líquido de 3,5% a 5% ao ano pode ser atraente comparado à poupança (que rende cerca de 70% da Selic). No entanto, o yield líquido real de um imóvel bem analisado precisa superar o CDI líquido de IR para justificar a iliquidez do ativo. Imóveis têm vantagem em valorização de capital (especialmente em cidades com expansão de infraestrutura), mas têm desvantagens de iliquidez, custos de transação (ITBI ~2-3%, escritura, registro), risco de inadimplência e vacância. A decisão ideal considera o imóvel específico, o preço de compra versus o aluguel de mercado praticado na região, e o horizonte de investimento. Use uma ferramenta de análise para calcular o imóvel que você está avaliando antes de comprar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como calcular o yield de aluguel de um imóvel específico no Brasil?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O cálculo básico do yield bruto é: (aluguel mensal × 12) ÷ preço de compra = yield bruto anual. Exemplo: R$2.500/mês × 12 = R$30.000/ano; R$30.000 ÷ R$500.000 = 0,06 = 6,0% a.a. Para o yield líquido, subtraia os custos anuais estimados (condomínio, IPTU, taxa de administração, vacância, manutenção e IR) do aluguel anual antes de dividir pelo preço. Por exemplo, se os custos totais anuais somam R$9.000 sobre um aluguel anual de R$30.000, o aluguel líquido seria R$21.000, e o yield líquido seria R$21.000 ÷ R$500.000 = 4,2% a.a. Ferramentas como o WizeDeal permitem inserir os dados do imóvel específico e calcular automaticamente o retorno real."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#05060f;--surf:#0d1024;--card:#11142a;--border:rgba(255,255,255,0.08);
+  --text:#eef2ff;--muted:#9ca3af;--muted2:#a5b4fc;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+  --br1:#009c3b;--br2:#fedf00;--br3:#002776;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{
+  padding:0 14px 60px;
+  background:
+    radial-gradient(ellipse at top right,rgba(0,156,59,0.14),transparent 55%),
+    radial-gradient(ellipse at top left,rgba(0,39,118,0.14),transparent 55%),
+    var(--bg);
+}
+
+/* ── Topbar ─────────────────────────────────────────────────── */
+.topbar{max-width:760px;margin:0 auto;padding:14px 0 8px;display:flex;align-items:center;justify-content:space-between}
+.topbar a.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.topbar a.brand img{width:24px;height:24px;display:block}
+.topbar a.brand span{font:800 16px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-.3px}
+.topbar .lang{display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:3px}
+.topbar .lang button{background:none;border:0;color:#7b88ad;padding:4px 9px;border-radius:6px;font:700 11px Inter,sans-serif;cursor:pointer;letter-spacing:.5px}
+.topbar .lang button.on{background:rgba(0,156,59,0.25);color:#6ee7b7}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero{max-width:760px;margin:18px auto 22px;text-align:center}
+.hero .flag{font-size:42px;margin-bottom:8px;line-height:1}
+.hero h1{margin:0 0 10px;font:900 30px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-1.2px;line-height:1.15;background:linear-gradient(135deg,#6ee7b7,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{margin:0 auto;font:500 14.5px Inter,sans-serif;color:var(--muted);max-width:580px;line-height:1.55}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,156,59,0.12);border:1px solid rgba(0,156,59,0.35);color:#6ee7b7;padding:5px 12px;border-radius:99px;font:700 11px Inter,sans-serif;margin-bottom:14px}
+
+/* ── Answer-first block ─────────────────────────────────────── */
+.answer-box{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(0,156,59,0.12),rgba(0,39,118,0.10));border:1px solid rgba(0,156,59,0.35);border-radius:18px;padding:22px 20px;animation:fadeUp .4s ease both}
+.answer-box .eye{font:700 11px Inter,sans-serif;color:#6ee7b7;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.answer-box p{margin:0;font:500 14.5px Inter,sans-serif;color:#e2e8f0;line-height:1.65}
+.answer-box strong{color:#fff}
+
+/* ── Section card ───────────────────────────────────────────── */
+.card{max-width:760px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}
+.card h2{margin:0 0 14px;font:800 16px Plus Jakarta Sans,Inter,sans-serif;color:#fff;display:flex;align-items:center;gap:8px}
+.card p{margin:0 0 10px;font:500 13.5px Inter,sans-serif;color:#cbd5e1;line-height:1.65}
+.card p:last-child{margin-bottom:0}
+.card ul{margin:8px 0 0;padding-inline-start:20px;font:500 13px Inter,sans-serif;color:#cbd5e1;line-height:1.7}
+.card ul li{margin-bottom:5px}
+.card ul li strong{color:#e2e8f0}
+.card table{width:100%;border-collapse:collapse;margin-top:12px;font:500 13px Inter,sans-serif}
+.card table th{background:rgba(255,255,255,0.05);color:#a5b4fc;font:700 11.5px Inter,sans-serif;text-transform:uppercase;letter-spacing:.4px;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.card table td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.04);color:#cbd5e1;vertical-align:top}
+.card table tr:last-child td{border-bottom:0}
+.card table td.mkt{font:600 13px Inter,sans-serif;color:#e2e8f0}
+.card table td.y{color:#6ee7b7;font:700 13px Inter,sans-serif}
+.card table td.note{color:#9ca3af;font:500 11.5px Inter,sans-serif}
+
+/* ── Worked example box ─────────────────────────────────────── */
+.example{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(0,39,118,0.07));border:1px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px}
+.example h3{margin:0 0 14px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#6ee7b7}
+.example .ex-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font:500 13px Inter,sans-serif;color:#cbd5e1}
+.example .ex-row:last-child{border-bottom:0}
+.example .ex-row.total{border-top:1px solid rgba(16,185,129,0.3);margin-top:4px;padding-top:10px}
+.example .ex-row strong{color:#e2e8f0}
+.example .ex-row .val{font:700 14px Inter,sans-serif;color:#6ee7b7}
+.example .ex-row.deduction .val{color:#fca5a5}
+.example .ex-row.total .val{font:800 16px Plus Jakarta Sans,Inter,sans-serif;color:#6ee7b7}
+.example .ex-note{margin-top:12px;font:500 11.5px Inter,sans-serif;color:#9ca3af;line-height:1.5}
+
+/* ── Cost grid ──────────────────────────────────────────────── */
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:520px){.cost-grid{grid-template-columns:1fr}}
+.cost-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.cost-item .ci-label{font:700 11px Inter,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#fca5a5;margin-bottom:6px}
+.cost-item .ci-val{font:700 14px Inter,sans-serif;color:#e2e8f0;margin-bottom:4px}
+.cost-item .ci-desc{font:500 12px Inter,sans-serif;color:#9ca3af;line-height:1.5}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+.faq-item:last-child{border-bottom:0;padding-bottom:0}
+.faq-item .q{font:700 14px Plus Jakarta Sans,Inter,sans-serif;color:#e2e8f0;margin-bottom:8px;line-height:1.4}
+.faq-item .a{font:500 13px Inter,sans-serif;color:#94a3b8;line-height:1.65}
+.faq-item .a strong{color:#cbd5e1}
+
+/* ── Disclaimer ─────────────────────────────────────────────── */
+.disclaimer{max-width:760px;margin:0 auto 18px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:16px}
+.disclaimer h4{margin:0 0 8px;font:800 13px Plus Jakarta Sans,Inter,sans-serif;color:#fcd34d}
+.disclaimer p{margin:0;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6}
+
+/* ── CTA ─────────────────────────────────────────────────────── */
+.cta{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(0,156,59,0.1),rgba(168,85,247,0.10));border:1px solid rgba(0,156,59,0.35);border-radius:14px;padding:20px;text-align:center}
+.cta h4{margin:0 0 6px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#6ee7b7}
+.cta p{margin:0 0 14px;font:500 13px Inter,sans-serif;color:#cbd5e1;line-height:1.55}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,#009c3b,#a855f7);color:#fff;text-decoration:none;padding:12px 26px;border-radius:99px;font:800 13.5px Inter,sans-serif;transition:opacity .15s}
+.cta-btn:hover{opacity:.88}
+
+/* ── Share ───────────────────────────────────────────────────── */
+.share-wrap{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(0,156,59,0.07),rgba(0,39,118,0.07));border:1px solid rgba(0,156,59,0.2);border-radius:14px;padding:16px;text-align:center}
+.share-wrap h3{margin:0 0 4px;font:800 14px Plus Jakarta Sans,Inter,sans-serif}
+.share-wrap p{margin:0 0 12px;font:500 12.5px Inter,sans-serif;color:var(--muted)}
+.share-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.share-btns button{padding:11px 8px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font:700 12.5px Inter,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.share-btns button:hover{background:rgba(0,156,59,0.15);border-color:rgba(0,156,59,0.4);transform:translateY(-1px)}
+.share-btns button .icon{font-size:20px;line-height:1}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.6}
+.foot a{color:#a5b4fc;text-decoration:none}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+
+<script src="/js/wize-attribution.js?v=2026061201" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="https://wizelife.ai">
+    <img src="/img/wizelife-logo-v2.svg" alt="WizeLife">
+    <span>WizeLife</span>
+  </a>
+  <div class="lang" id="langSwitch">
+    <button data-l="pt" class="on">PT</button>
+    <button data-l="en">EN</button>
+    <button data-l="he">HE</button>
+    <button data-l="es">ES</button>
+  </div>
+</div>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="flag">&#x1F1E7;&#x1F1F7;</div>
+  <div class="badge" data-i18n="badge">&#x2713; Estimativas ilustrativas 2026 &middot; Dados de mercado</div>
+  <h1 data-i18n="title">Rentabilidade de Imóveis<br>no Brasil: Yield Explicado</h1>
+  <p data-i18n="sub">Yield bruto vs líquido, custos reais (IPTU, condomínio, IR) e faixas ilustrativas para São Paulo, Florianópolis, Rio de Janeiro e Balneário Camboriú. Calcule o seu imóvel específico.</p>
+</div>
+
+<!-- ── Answer-first block (citation target) ───────────────────────────── -->
+<div class="answer-box">
+  <div class="eye" data-i18n="answerEye">RESPOSTA DIRETA</div>
+  <p data-i18n="answerText">
+    <strong>O yield bruto de aluguel residencial no Brasil costuma variar entre 4% e 8% ao ano nas principais cidades</strong> — mas o yield líquido (após IPTU, condomínio, taxa de administração, vacância e IR) é tipicamente 2 a 3 pontos percentuais menor. A fórmula básica: <strong>yield bruto = (aluguel anual ÷ preço do imóvel) × 100</strong>. Exemplo: apartamento de R$500.000 com aluguel de R$2.500/mês → R$30.000/ano ÷ R$500.000 = <strong>6,0% a.a. bruto</strong>. O yield líquido real desse imóvel, depois de descontar custos típicos, ficaria na faixa de 3,5% a 4,5% a.a. O nível exato depende do imóvel específico, do bairro, do tipo de locação (longa duração vs temporada) e da sua faixa de IR.
+  </p>
+</div>
+
+<!-- ── Yield ranges by market ─────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x1F4CA; Faixas Ilustrativas por Mercado (2026, Residencial)</h2>
+  <p style="font:500 12px Inter,sans-serif;color:#9ca3af;margin-bottom:12px">
+    &#x26A0;&#xFE0F; Estimativas de mercado para apartamentos residenciais, locação de longa duração. Valores variam por bairro, tamanho e condições — use como ponto de partida, não como garantia.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Mercado</th>
+        <th>Yield Bruto Estimado</th>
+        <th>Perfil do Mercado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mkt">São Paulo (studios / 1 dorm.)</td>
+        <td class="y">~5% – 7% a.a.</td>
+        <td class="note">Alta liquidez, demanda por aluguel consistente; bairros como Pinheiros e Brooklin tendem a ter compressão de yield por valorização</td>
+      </tr>
+      <tr>
+        <td class="mkt">São Paulo (3+ dorm., bairros premium)</td>
+        <td class="y">~3% – 5% a.a.</td>
+        <td class="note">Ticket mais alto de compra; aluguel não sobe na mesma proporção; maior estabilidade de inquilino</td>
+      </tr>
+      <tr>
+        <td class="mkt">Rio de Janeiro</td>
+        <td class="y">~4% – 7% a.a.</td>
+        <td class="note">Mercado heterogêneo; Zona Sul tem yields menores por preço alto; zonas Norte e Oeste podem ter yields maiores com risco diferente</td>
+      </tr>
+      <tr>
+        <td class="mkt">Florianópolis (locação anual)</td>
+        <td class="y">~4% – 6% a.a.</td>
+        <td class="note">Forte valorização recente tende a comprimir yield de locação permanente; demanda sólida de profissionais e famílias</td>
+      </tr>
+      <tr>
+        <td class="mkt">Balneário Camboriú</td>
+        <td class="y">~3% – 5% a.a.</td>
+        <td class="note">Preços subiram acentuadamente nos últimos 5 anos; yield de locação anual comprimido; temporada pode ter retorno bruto maior com gestão ativa</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:12px;font:500 11.5px Inter,sans-serif;color:#6b7280">
+    Fontes: referências de mercado imobiliário (FipeZap, QuintoAndar pesquisas de mercado, dados de anúncios) — compiladas como faixas ilustrativas. Confirme com imobiliárias locais e análise do imóvel específico antes de qualquer decisão.
+  </p>
+</div>
+
+<!-- ── Worked example ─────────────────────────────────────────────────── -->
+<div class="example">
+  <h3 data-i18n="exTitle">&#x1F4DD; Exemplo Ilustrativo: Apê de R$500.000 em São Paulo</h3>
+
+  <div class="ex-row"><strong data-i18n="exPriceLabel">Preço de compra do imóvel</strong><span class="val">R$ 500.000</span></div>
+  <div class="ex-row"><strong data-i18n="exRentLabel">Aluguel mensal (estimativa de mercado)</strong><span class="val">R$ 2.500 / mês</span></div>
+  <div class="ex-row"><strong data-i18n="exAnnualLabel">Aluguel anual</strong><span class="val">R$ 30.000</span></div>
+  <div class="ex-row"><strong data-i18n="exGrossLabel">Yield bruto</strong><span class="val">6,0% a.a.</span></div>
+
+  <div style="margin:14px 0 8px;font:700 12px Inter,sans-serif;color:#fca5a5;letter-spacing:.5px;text-transform:uppercase" data-i18n="exCostsLabel">Custos anuais estimados (deduções)</div>
+
+  <div class="ex-row deduction"><span data-i18n="exCondo">Condomínio (pago pelo proprietário)</span><span class="val">− R$ 4.200</span></div>
+  <div class="ex-row deduction"><span data-i18n="exIptu">IPTU estimado</span><span class="val">− R$ 2.000</span></div>
+  <div class="ex-row deduction"><span data-i18n="exMgmt">Taxa de administração (~9% do aluguel)</span><span class="val">− R$ 2.700</span></div>
+  <div class="ex-row deduction"><span data-i18n="exVacancy">Vacância estimada (1 mês/ano)</span><span class="val">− R$ 2.500</span></div>
+  <div class="ex-row deduction"><span data-i18n="exIr">IR sobre aluguel (carnê-leão, alíquota ~15% estimada)</span><span class="val">− R$ 2.790</span></div>
+  <div class="ex-row total"><strong data-i18n="exNetLabel">Aluguel líquido anual estimado</strong><span class="val">R$ 15.810</span></div>
+  <div class="ex-row total" style="margin-top:2px"><strong data-i18n="exNetYieldLabel">Yield líquido estimado</strong><span class="val">3,2% a.a.</span></div>
+
+  <div class="ex-note" data-i18n="exNote">
+    &#x26A0;&#xFE0F; Exemplo ilustrativo — valores variam conforme o imóvel, o condomínio, o bairro e a alíquota individual de IR. O IR sobre aluguel é apurado pelo carnê-leão com tabela progressiva (isenção abaixo de ~R$2.824/mês em 2026 — confirme com contador). Outros custos como manutenção e seguro não foram incluídos acima para simplificar.
+  </div>
+</div>
+
+<!-- ── Cost breakdown ─────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x2702;&#xFE0F; <span data-i18n="costsTitle">Custos que Cortam o Yield Líquido</span></h2>
+  <div class="cost-grid">
+    <div class="cost-item">
+      <div class="ci-label">Condomínio</div>
+      <div class="ci-val">R$ 500 – R$ 2.000+/mês</div>
+      <div class="ci-desc">Depende do porte do prédio e dos serviços. Pode ou não ser transferido ao inquilino — verifique o contrato e o mercado local.</div>
+    </div>
+    <div class="cost-item">
+      <div class="ci-label">IPTU</div>
+      <div class="ci-val">~0,5% – 1,5% do valor venal/ano</div>
+      <div class="ci-desc">Varia muito por município e pelo valor venal cadastral. Em São Paulo, isenção para imóveis residenciais de valor venal até ~R$160.000 (verifique a alíquota vigente no seu município).</div>
+    </div>
+    <div class="cost-item">
+      <div class="ci-label">Taxa de Administração</div>
+      <div class="ci-val">8% – 10% do aluguel</div>
+      <div class="ci-desc">Cobrada mensalmente pela imobiliária para gestão da locação. Inclui seleção do inquilino, cobrança e repasse.</div>
+    </div>
+    <div class="cost-item">
+      <div class="ci-label">Vacância</div>
+      <div class="ci-val">Provisionamento mínimo: 1 mês/ano</div>
+      <div class="ci-desc">Períodos sem locatário entre contratos. Um mês de vacância equivale a ~8,3% de redução no aluguel anual. Em mercados competitivos pode ser menor; em regiões de menor demanda, maior.</div>
+    </div>
+    <div class="cost-item">
+      <div class="ci-label">IR sobre Aluguel</div>
+      <div class="ci-val">7,5% – 27,5% (carnê-leão)</div>
+      <div class="ci-desc">Aluguel recebido por pessoa física é tributado pelo carnê-leão com tabela progressiva mensalmente. Há isenção abaixo do limite da primeira faixa (~R$2.824/mês em 2026 — confirme com contador).</div>
+    </div>
+    <div class="cost-item">
+      <div class="ci-label">Manutenção &amp; Reparos</div>
+      <div class="ci-val">~0,5% – 1% do valor/ano</div>
+      <div class="ci-desc">Estimativa conservadora para manutenção estrutural, pintura e reparos entre locações. Imóveis mais antigos tendem a custar mais.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Gross vs net explainer ─────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x1F4D0; <span data-i18n="gvsTitle">Yield Bruto vs Yield Líquido: Entenda a Diferença</span></h2>
+  <p data-i18n="gvsPara1">
+    <strong>Yield bruto</strong> é o retorno antes de qualquer custo: quanto o aluguel anual representa sobre o preço pago pelo imóvel. É o número mais comum em anúncios e comparações rápidas de mercado — mas não é o que você efetivamente embolsa.
+  </p>
+  <p data-i18n="gvsPara2">
+    <strong>Yield líquido</strong> desconta todos os custos recorrentes e o IR sobre o aluguel. É o retorno real sobre o capital investido. Em imóveis no Brasil, a diferença entre bruto e líquido é tipicamente de <strong>2 a 3 pontos percentuais</strong>.
+  </p>
+  <p data-i18n="gvsPara3">
+    Para comparar com outras classes de ativos (Tesouro Direto, CDB, fundos imobiliários), use sempre o <strong>yield líquido real</strong> — descontando também a inflação (IPCA) para saber se o investimento está preservando poder de compra.
+  </p>
+  <ul data-i18n="gvsList">
+    <li><strong>Yield bruto acima de 6% a.a.</strong> em locação convencional costuma ser considerado bom no mercado brasileiro atual — mas confirme sempre com análise do imóvel específico.</li>
+    <li><strong>Yield líquido abaixo de CDI líquido</strong> não justifica a iliquidez do imóvel por renda passiva isoladamente — a tese de investimento precisa incluir perspectiva de valorização de capital.</li>
+    <li><strong>Locação de temporada</strong> (Airbnb/Booking) pode ter yield bruto maior, mas exige gestão ativa, tem sazonalidade e custos operacionais mais altos — o líquido pode não superar a locação convencional bem gerida.</li>
+  </ul>
+</div>
+
+<!-- ── FAQ section (matches JSON-LD) ─────────────────────────────────── -->
+<div class="card">
+  <h2>&#x2753; <span data-i18n="faqTitle">Perguntas Frequentes</span></h2>
+
+  <div class="faq-item">
+    <div class="q" data-i18n="faq1q">Qual rentabilidade de aluguel é considerada boa no Brasil?</div>
+    <div class="a" data-i18n="faq1a">
+      No mercado atual, um <strong>yield bruto de 6% a 8% a.a.</strong> em locação residencial convencional é considerado razoável a bom para a maioria das capitais. Yield bruto acima de 8% é difícil de encontrar em imóveis novos e bem localizados — geralmente indica imóvel com valor de compra abaixo do mercado ou aluguel acima da média. Yield bruto abaixo de 4% tende a não justificar o imóvel como investimento de renda, a menos que a tese seja valorização de capital. O yield líquido esperado fica 2–3 pontos percentuais abaixo do bruto.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q" data-i18n="faq2q">São Paulo tem yield melhor ou pior do que o interior do Brasil?</div>
+    <div class="a" data-i18n="faq2a">
+      Em geral, o <strong>interior e cidades médias tendem a ter yields brutos maiores</strong> do que as capitais mais caras (São Paulo, Rio, Florianópolis, BC), porque o preço de compra é mais baixo proporcionalmente ao aluguel praticado. A troca é liquidez: vender um imóvel em Ribeirão Preto ou Londrina pode levar mais tempo do que em São Paulo. Mercados menores também têm demanda por aluguel menos previsível. A escolha entre capital e interior depende do perfil do investidor — renda imediata vs liquidez vs diversificação.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q" data-i18n="faq3q">Locação de temporada (Airbnb) tem yield melhor do que locação convencional?</div>
+    <div class="a" data-i18n="faq3a">
+      Potencialmente sim em receita bruta, mas <strong>os custos operacionais são muito maiores</strong>: taxa da plataforma (~15–20%), limpeza entre hóspedes, amenities, gestão ativa ou empresa de property management (~20–35% da receita), sazonalidade, oscilação de ocupação e risco de regulação municipal crescente. Em cidades como Florianópolis e BC, onde a temporada é forte, o yield líquido real de temporada vs locação anual bem calculada frequentemente se equilibra — não é automaticamente melhor.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q" data-i18n="faq4q">Quais custos mais reduzem o yield líquido de imóvel no Brasil?</div>
+    <div class="a" data-i18n="faq4a">
+      Em ordem de impacto típico: <strong>(1) condomínio alto</strong> (em prédios com muita infra pode consumir 15–30% do aluguel); <strong>(2) IR sobre aluguel</strong> para quem está em alíquota de 22,5% ou 27,5%; <strong>(3) vacância</strong> em mercados de menor demanda; <strong>(4) IPTU</strong> em imóveis de alto valor venal; <strong>(5) taxa de administração</strong>. O condomínio é frequentemente subestimado por investidores iniciantes que calculam o yield sem considerar que em muitos contratos o condomínio é pago pelo proprietário.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q" data-i18n="faq5q">Como o IR funciona sobre o aluguel recebido no Brasil?</div>
+    <div class="a" data-i18n="faq5a">
+      Aluguel recebido por <strong>pessoa física</strong> é tributado pelo carnê-leão com tabela progressiva: abaixo de ~R$2.824/mês (2026 — confirme a tabela vigente com seu contador), há isenção; entre R$2.825 e R$3.751 a alíquota é 7,5%; entre R$3.752 e R$4.664 é 15%; entre R$4.665 e R$6.101 é 22,5%; acima de R$6.101 é 27,5%. O imposto é apurado e pago mensalmente via DARF e informado na declaração anual de IR. Receber aluguel via pessoa jurídica ou via fundos imobiliários (FIIs) tem tributação diferente — consulte um contador.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q" data-i18n="faq6q">Como calcular o yield do imóvel que estou avaliando comprar?</div>
+    <div class="a" data-i18n="faq6a">
+      <strong>Yield bruto:</strong> (aluguel mensal × 12) ÷ preço de compra. Exemplo: R$2.500 × 12 = R$30.000 ÷ R$500.000 = 6,0% a.a. <strong>Yield líquido:</strong> ((aluguel anual − custos anuais totais) ÷ preço de compra). Inclua: condomínio anual, IPTU, taxa de administração, vacância estimada (meses × aluguel), manutenção e IR estimado. Uma ferramenta como o WizeDeal permite inserir os dados específicos do imóvel e calcular automaticamente o retorno real, comparando diferentes cenários.
+    </div>
+  </div>
+</div>
+
+<!-- ── Disclaimer ────────────────────────────────────────────────────── -->
+<div class="disclaimer">
+  <h4>&#x26A0;&#xFE0F; <span data-i18n="disclaimerTitle">Aviso Importante</span></h4>
+  <p data-i18n="disclaimerText">
+    <strong>Estimativas ilustrativas — não é consultoria de investimento.</strong> Os rendimentos apresentados são faixas de referência de mercado, podendo variar significativamente conforme o imóvel específico, localização, condições do contrato, situação fiscal individual e conjuntura econômica. Dados de aluguel e preço de mercado mudam com frequência — os valores indicados refletem estimativas de 2026 e podem estar desatualizados. <strong>Antes de qualquer decisão de investimento imobiliário, consulte um corretor de imóveis registrado no CRECI, um contador e, se necessário, um consultor financeiro.</strong> WizeLife e WizeDeal fornecem ferramentas e informação — não prestamos consultoria de investimento regulada.
+  </p>
+</div>
+
+<!-- ── CTA ───────────────────────────────────────────────────────────── -->
+<div class="cta">
+  <h4 data-i18n="ctaT">Analise seu imóvel específico — grátis</h4>
+  <p data-i18n="ctaP">O WizeDeal calcula o yield bruto e líquido real do imóvel que você está avaliando, com base no preço de compra, aluguel praticado, custos reais e sua alíquota de IR. Insira os dados e veja o retorno em segundos.</p>
+  <a class="cta-btn" href="https://deal.wizelife.ai/" data-i18n="ctaBtn">Analise seu imóvel grátis &#x2192;</a>
+</div>
+
+<!-- ── Share ─────────────────────────────────────────────────────────── -->
+<div class="share-wrap">
+  <h3 data-i18n="shareTitle">Conhece alguém avaliando comprar imóvel no Brasil? Manda esse link</h3>
+  <p data-i18n="shareSub">Compartilhar via WhatsApp / E-mail / link</p>
+  <div class="share-btns">
+    <button onclick="shareTo('whatsapp')"><span class="icon">&#x1F4AC;</span><span>WhatsApp</span></button>
+    <button onclick="shareTo('email')"><span class="icon">&#x2709;&#xFE0F;</span><span data-i18n="shareEmail">E-mail</span></button>
+    <button onclick="shareTo('copy')"><span class="icon">&#x1F4CB;</span><span data-i18n="shareCopy">Copiar link</span></button>
+  </div>
+</div>
+
+<div class="foot">
+  <span data-i18n="footSource">Referências: FipeZap &middot; QuintoAndar pesquisas de mercado &middot; Receita Federal (tabela carnê-leão) &middot; IBGE &middot; dados de anúncios e mercado imobiliário local. Estimativas 2026.</span><br>
+  <span data-i18n="footLegal">&#x26A0;&#xFE0F; Informação geral e ilustrativa &mdash; não constitui consultoria de investimento. Calcule o imóvel específico antes de decidir.</span><br>
+  <a href="https://wizelife.ai">wizelife.ai</a> &middot; <a href="https://wizelife.ai/privacy.html">Privacy</a> &middot; <a href="https://wizelife.ai/terms.html">Terms</a>
+</div>
+
+<script src="/js/wize-share.js" defer></script>
+<script>
+const TR = {
+  pt: {
+    badge: '&#x2713; Estimativas ilustrativas 2026 &middot; Dados de mercado',
+    title: 'Rentabilidade de Imóveis<br>no Brasil: Yield Explicado',
+    sub: 'Yield bruto vs líquido, custos reais (IPTU, condomínio, IR) e faixas ilustrativas para São Paulo, Florianópolis, Rio de Janeiro e Balneário Camboriú. Calcule o seu imóvel específico.',
+    answerEye: 'RESPOSTA DIRETA',
+    answerText: '<strong>O yield bruto de aluguel residencial no Brasil costuma variar entre 4% e 8% ao ano nas principais cidades</strong> &mdash; mas o yield líquido (após IPTU, condomínio, taxa de administração, vacância e IR) é tipicamente 2 a 3 pontos percentuais menor. A fórmula básica: <strong>yield bruto = (aluguel anual ÷ preço do imóvel) × 100</strong>. Exemplo: apartamento de R$500.000 com aluguel de R$2.500/mês &rarr; R$30.000/ano ÷ R$500.000 = <strong>6,0% a.a. bruto</strong>. O yield líquido real desse imóvel, depois de descontar custos típicos, ficaria na faixa de 3,5% a 4,5% a.a. O nível exato depende do imóvel específico, do bairro, do tipo de locação (longa duração vs temporada) e da sua faixa de IR.',
+    exTitle: '&#x1F4DD; Exemplo Ilustrativo: Apê de R$500.000 em São Paulo',
+    exPriceLabel: 'Preço de compra do imóvel',
+    exRentLabel: 'Aluguel mensal (estimativa de mercado)',
+    exAnnualLabel: 'Aluguel anual',
+    exGrossLabel: 'Yield bruto',
+    exCostsLabel: 'Custos anuais estimados (deduções)',
+    exCondo: 'Condomínio (pago pelo proprietário)',
+    exIptu: 'IPTU estimado',
+    exMgmt: 'Taxa de administração (~9% do aluguel)',
+    exVacancy: 'Vacância estimada (1 mês/ano)',
+    exIr: 'IR sobre aluguel (carnê-leão, alíquota ~15% s/ aluguel líquido de custos diretos)',
+    exNetLabel: 'Aluguel líquido anual estimado',
+    exNetYieldLabel: 'Yield líquido estimado',
+    exNote: '&#x26A0;&#xFE0F; Exemplo ilustrativo &mdash; valores variam conforme o imóvel, o condomínio, o bairro e a alíquota individual de IR. Base do IR aqui = aluguel anual − condomínio − IPTU − taxa de adm − vacância (R$18.600) × 15% ≈ R$2.790. Outros custos como manutenção e seguro não foram incluídos para simplificar.',
+    costsTitle: 'Custos que Cortam o Yield Líquido',
+    gvsTitle: 'Yield Bruto vs Yield Líquido: Entenda a Diferença',
+    gvsPara1: '<strong>Yield bruto</strong> é o retorno antes de qualquer custo: quanto o aluguel anual representa sobre o preço pago pelo imóvel. É o número mais comum em anúncios e comparações rápidas de mercado — mas não é o que você efetivamente embolsa.',
+    gvsPara2: '<strong>Yield líquido</strong> desconta todos os custos recorrentes e o IR sobre o aluguel. É o retorno real sobre o capital investido. Em imóveis no Brasil, a diferença entre bruto e líquido é tipicamente de <strong>2 a 3 pontos percentuais</strong>.',
+    gvsPara3: 'Para comparar com outras classes de ativos (Tesouro Direto, CDB, fundos imobiliários), use sempre o <strong>yield líquido real</strong> — descontando também a inflação (IPCA) para saber se o investimento está preservando poder de compra.',
+    gvsList: '<li><strong>Yield bruto acima de 6% a.a.</strong> em locação convencional costuma ser considerado bom no mercado brasileiro atual — mas confirme sempre com análise do imóvel específico.</li><li><strong>Yield líquido abaixo do CDI líquido</strong> não justifica a iliquidez do imóvel por renda passiva isoladamente — a tese de investimento precisa incluir perspectiva de valorização de capital.</li><li><strong>Locação de temporada</strong> (Airbnb/Booking) pode ter yield bruto maior, mas exige gestão ativa, tem sazonalidade e custos operacionais mais altos — o líquido pode não superar a locação convencional bem gerida.</li>',
+    faqTitle: 'Perguntas Frequentes',
+    faq1q: 'Qual rentabilidade de aluguel é considerada boa no Brasil?',
+    faq1a: 'No mercado atual, um <strong>yield bruto de 6% a 8% a.a.</strong> em locação residencial convencional é considerado razoável a bom para a maioria das capitais. Yield bruto acima de 8% é difícil de encontrar em imóveis novos e bem localizados — geralmente indica imóvel com valor de compra abaixo do mercado ou aluguel acima da média. Yield bruto abaixo de 4% tende a não justificar o imóvel como investimento de renda, a menos que a tese seja valorização de capital. O yield líquido esperado fica 2–3 pontos percentuais abaixo do bruto.',
+    faq2q: 'São Paulo tem yield melhor ou pior do que o interior do Brasil?',
+    faq2a: 'Em geral, o <strong>interior e cidades médias tendem a ter yields brutos maiores</strong> do que as capitais mais caras (São Paulo, Rio, Florianópolis, BC), porque o preço de compra é mais baixo proporcionalmente ao aluguel praticado. A troca é liquidez: vender um imóvel em Ribeirão Preto ou Londrina pode levar mais tempo do que em São Paulo. Mercados menores também têm demanda por aluguel menos previsível. A escolha entre capital e interior depende do perfil do investidor.',
+    faq3q: 'Locação de temporada (Airbnb) tem yield melhor do que locação convencional?',
+    faq3a: 'Potencialmente sim em receita bruta, mas <strong>os custos operacionais são muito maiores</strong>: taxa da plataforma (~15–20%), limpeza entre hóspedes, gestão ativa ou empresa de property management (~20–35% da receita), sazonalidade, oscilação de ocupação e risco de regulação municipal crescente. Em cidades como Florianópolis e BC, o yield líquido real de temporada vs locação anual bem calculada frequentemente se equilibra — não é automaticamente melhor.',
+    faq4q: 'Quais custos mais reduzem o yield líquido de imóvel no Brasil?',
+    faq4a: 'Em ordem de impacto típico: <strong>(1) condomínio alto</strong> (em prédios com muita infra pode consumir 15–30% do aluguel); <strong>(2) IR sobre aluguel</strong> para quem está em alíquota de 22,5% ou 27,5%; <strong>(3) vacância</strong> em mercados de menor demanda; <strong>(4) IPTU</strong> em imóveis de alto valor venal; <strong>(5) taxa de administração</strong>. O condomínio é frequentemente subestimado por investidores iniciantes.',
+    faq5q: 'Como o IR funciona sobre o aluguel recebido no Brasil?',
+    faq5a: 'Aluguel recebido por <strong>pessoa física</strong> é tributado pelo carnê-leão com tabela progressiva: abaixo de ~R$2.824/mês (2026), isenção; entre R$2.825 e R$3.751 a alíquota é 7,5%; entre R$3.752 e R$4.664 é 15%; entre R$4.665 e R$6.101 é 22,5%; acima de R$6.101 é 27,5%. O imposto é pago mensalmente via DARF e informado na declaração anual. Consulte um contador para sua situação específica.',
+    faq6q: 'Como calcular o yield do imóvel que estou avaliando comprar?',
+    faq6a: '<strong>Yield bruto:</strong> (aluguel mensal × 12) ÷ preço de compra. Exemplo: R$2.500 × 12 = R$30.000 ÷ R$500.000 = 6,0% a.a. <strong>Yield líquido:</strong> ((aluguel anual − custos anuais totais) ÷ preço de compra). Inclua condomínio, IPTU, taxa de administração, vacância, manutenção e IR. O WizeDeal permite inserir os dados do imóvel e calcular o retorno real automaticamente.',
+    disclaimerTitle: 'Aviso Importante',
+    disclaimerText: '<strong>Estimativas ilustrativas &mdash; não é consultoria de investimento.</strong> Os rendimentos apresentados são faixas de referência de mercado, podendo variar significativamente conforme o imóvel específico, localização, condições do contrato, situação fiscal individual e conjuntura econômica. Dados de aluguel e preço de mercado mudam com frequência &mdash; os valores indicados refletem estimativas de 2026 e podem estar desatualizados. <strong>Antes de qualquer decisão de investimento imobiliário, consulte um corretor de imóveis registrado no CRECI, um contador e, se necessário, um consultor financeiro.</strong> WizeLife e WizeDeal fornecem ferramentas e informação &mdash; não prestamos consultoria de investimento regulada.',
+    ctaT: 'Analise seu imóvel específico — grátis',
+    ctaP: 'O WizeDeal calcula o yield bruto e líquido real do imóvel que você está avaliando, com base no preço de compra, aluguel praticado, custos reais e sua alíquota de IR. Insira os dados e veja o retorno em segundos.',
+    ctaBtn: 'Analise seu imóvel grátis &rarr;',
+    shareTitle: 'Conhece alguém avaliando comprar imóvel no Brasil? Manda esse link',
+    shareSub: 'Compartilhar via WhatsApp / E-mail / link',
+    shareEmail: 'E-mail',
+    shareCopy: 'Copiar link',
+    footSource: 'Referências: FipeZap &middot; QuintoAndar pesquisas de mercado &middot; Receita Federal (tabela carnê-leão) &middot; IBGE &middot; dados de anúncios e mercado imobiliário local. Estimativas 2026.',
+    footLegal: '&#x26A0;&#xFE0F; Informação geral e ilustrativa &mdash; não constitui consultoria de investimento. Calcule o imóvel específico antes de decidir.',
+    shareText: 'Quanto rende um imóvel para alugar no Brasil? Yield bruto vs líquido, IPTU, condomínio e IR explicados com exemplos reais:',
+  },
+  en: {
+    badge: '&#x2713; Illustrative estimates 2026 &middot; Market data',
+    title: 'Rental Yield in Brazil:<br>São Paulo, Florianópolis &amp; More',
+    sub: 'Gross vs net yield, real costs (IPTU, condo fees, income tax) and illustrative ranges for São Paulo, Florianópolis, Rio de Janeiro and Balneário Camboriú. Calculate your specific property.',
+    answerEye: 'DIRECT ANSWER',
+    answerText: '<strong>Gross rental yields for residential property in Brazil typically range between 4% and 8% per year in major cities</strong> &mdash; but net yield (after condo fees, IPTU, management fees, vacancy and income tax) is usually 2&ndash;3 percentage points lower. The basic formula: <strong>gross yield = (annual rent ÷ purchase price) × 100</strong>. Example: R$500,000 apartment renting for R$2,500/month &rarr; R$30,000/year ÷ R$500,000 = <strong>6.0% p.a. gross</strong>. The actual net yield on that property, after typical costs, would fall in the 3.5%&ndash;4.5% p.a. range. The exact figure depends on the specific property, neighbourhood, lease type (long-term vs short-stay) and your personal income-tax bracket.',
+    exTitle: '&#x1F4DD; Illustrative Example: R$500,000 Apartment in São Paulo',
+    exPriceLabel: 'Purchase price',
+    exRentLabel: 'Monthly rent (market estimate)',
+    exAnnualLabel: 'Annual rent',
+    exGrossLabel: 'Gross yield',
+    exCostsLabel: 'Estimated annual costs (deductions)',
+    exCondo: 'Condo fee (paid by owner)',
+    exIptu: 'IPTU (property tax) estimate',
+    exMgmt: 'Management fee (~9% of rent)',
+    exVacancy: 'Estimated vacancy (1 month/year)',
+    exIr: 'Income tax on rent (carnê-leão, ~15% estimated rate)',
+    exNetLabel: 'Estimated annual net rent',
+    exNetYieldLabel: 'Estimated net yield',
+    exNote: '&#x26A0;&#xFE0F; Illustrative example &mdash; figures vary by property, condo, neighbourhood and individual tax bracket. Brazilian personal income tax on rental income is calculated monthly via the carnê-leão progressive table. Maintenance and insurance were excluded above for simplicity.',
+    costsTitle: 'Costs That Cut Net Yield',
+    gvsTitle: 'Gross vs Net Yield: What\'s the Difference?',
+    gvsPara1: '<strong>Gross yield</strong> is the return before any costs: annual rent as a percentage of purchase price. It\'s the most common number in listings and quick market comparisons &mdash; but it\'s not what you actually take home.',
+    gvsPara2: '<strong>Net yield</strong> deducts all recurring costs and income tax on the rent received. It\'s the real return on invested capital. In Brazilian real estate, the gap between gross and net is typically <strong>2&ndash;3 percentage points</strong>.',
+    gvsPara3: 'When comparing against other asset classes (Tesouro Direto, CDB, REITs / FIIs), always use <strong>real net yield</strong> &mdash; also adjusting for inflation (IPCA) to confirm the investment is preserving purchasing power.',
+    gvsList: '<li><strong>Gross yield above 6% p.a.</strong> in conventional rental is generally considered good in the current Brazilian market &mdash; but always verify with analysis of the specific property.</li><li><strong>Net yield below net CDI</strong> does not justify the illiquidity of direct property ownership for passive income alone &mdash; the investment thesis must also include capital appreciation.</li><li><strong>Short-stay rental</strong> (Airbnb / Booking) may show higher gross yield potential, but operational costs are far higher; net yield often does not outperform a well-managed long-term lease.</li>',
+    faqTitle: 'Frequently Asked Questions',
+    faq1q: 'What rental yield is considered good in Brazil?',
+    faq1a: 'In the current market, a <strong>gross yield of 6%&ndash;8% p.a.</strong> for conventional residential rental is considered reasonable to good in most major cities. Gross yield above 8% is hard to find on new, well-located properties &mdash; it usually signals a below-market purchase price or above-market rent. Gross yield below 4% is generally hard to justify as an income investment unless the thesis is capital appreciation. Expected net yield will be 2&ndash;3 percentage points below gross.',
+    faq2q: 'Is São Paulo yield better or worse than Brazil\'s interior cities?',
+    faq2a: 'As a general rule, <strong>mid-sized interior cities tend to offer higher gross yields</strong> than the most expensive capitals (São Paulo, Rio, Florianópolis, BC) because purchase prices are lower relative to achievable rents. The trade-off is liquidity: selling a property in Ribeirão Preto or Londrina may take longer than in São Paulo. Smaller markets also have less predictable rental demand.',
+    faq3q: 'Does short-stay (Airbnb) yield more than conventional rental?',
+    faq3a: 'Potentially yes in gross revenue, but <strong>operational costs are much higher</strong>: platform fees (~15–20%), cleaning between guests, property management companies (~20–35% of revenue), seasonality, occupancy risk and growing municipal regulation risk. In cities like Florianópolis and BC, net yield on short-stay vs well-managed annual rental frequently equalises &mdash; short-stay is not automatically better.',
+    faq4q: 'Which costs most reduce net yield in Brazil?',
+    faq4a: 'In typical order of impact: <strong>(1) high condo fees</strong> (in buildings with many amenities, can consume 15–30% of rent); <strong>(2) income tax on rent</strong> for those in the 22.5% or 27.5% bracket; <strong>(3) vacancy</strong> in lower-demand markets; <strong>(4) IPTU</strong> on high assessed-value properties; <strong>(5) management fee</strong>. Condo fees are most frequently underestimated by first-time investors.',
+    faq5q: 'How is Brazilian income tax applied to rental income?',
+    faq5a: 'Rental income received by an <strong>individual (pessoa física)</strong> is taxed monthly via the carnê-leão progressive table: below ~R$2,824/month (2026), exempt; R$2,825–R$3,751 at 7.5%; R$3,752–R$4,664 at 15%; R$4,665–R$6,101 at 22.5%; above R$6,101 at 27.5%. Tax is paid monthly via DARF and reported in the annual income-tax return. Consult an accountant (contador) for your specific situation.',
+    faq6q: 'How do I calculate yield for a specific property I\'m evaluating?',
+    faq6a: '<strong>Gross yield:</strong> (monthly rent × 12) ÷ purchase price. Example: R$2,500 × 12 = R$30,000 ÷ R$500,000 = 6.0% p.a. <strong>Net yield:</strong> ((annual rent − total annual costs) ÷ purchase price). Include condo fees, IPTU, management fee, estimated vacancy, maintenance and income tax. WizeDeal lets you enter the specific property details and calculates real yield automatically.',
+    disclaimerTitle: 'Important Disclaimer',
+    disclaimerText: '<strong>Illustrative estimates only &mdash; not investment advice.</strong> The yields presented are market reference ranges that may vary significantly depending on the specific property, location, lease terms, individual tax situation and economic conditions. Rental and purchase price data change frequently &mdash; the figures shown reflect 2026 estimates and may be outdated. <strong>Before any real estate investment decision, consult a CRECI-registered real estate agent, an accountant, and if needed a financial advisor.</strong> WizeLife and WizeDeal provide tools and information &mdash; we do not provide regulated investment advice.',
+    ctaT: 'Analyse your specific property — free',
+    ctaP: 'WizeDeal calculates the real gross and net yield for the property you\'re evaluating, based on purchase price, market rent, actual costs and your tax bracket. Enter the details and see the return in seconds.',
+    ctaBtn: 'Analyze your property free &rarr;',
+    shareTitle: 'Know someone evaluating a property in Brazil? Send them this',
+    shareSub: 'Share via WhatsApp / Email / link',
+    shareEmail: 'Email',
+    shareCopy: 'Copy link',
+    footSource: 'References: FipeZap &middot; QuintoAndar market research &middot; Receita Federal (carnê-leão table) &middot; IBGE &middot; local real-estate market data. 2026 estimates.',
+    footLegal: '&#x26A0;&#xFE0F; General illustrative information only &mdash; not investment advice. Calculate your specific property before deciding.',
+    shareText: 'What\'s the rental yield on Brazilian property? Gross vs net yield, IPTU, condo fees and income tax explained with real examples:',
+  },
+  he: {
+    badge: '&#x2713; הערכות אילוסטרטיביות 2026 &middot; נתוני שוק',
+    title: 'תשואה על שכירות בברזיל:<br>סאו פאולו, פלורינופוליס ועוד',
+    sub: 'תשואה ברוטו לעומת נטו, עלויות אמיתיות (IPTU, דמי ניהול, מס הכנסה) וטווחים אילוסטרטיביים לשוקי הנדל"ן הגדולים בברזיל. חשבו את הנכס הספציפי שלכם.',
+    answerEye: 'תשובה ישירה',
+    answerText: '<strong>התשואה הברוטו על השכרת דירות בברזיל נעה בדרך כלל בין 4% ל-8% לשנה בערים הגדולות</strong> — אך התשואה הנטו (אחרי דמי ועד בית, IPTU, דמי ניהול, תקופות ריקות ומס הכנסה) נמוכה בדרך כלל ב-2 עד 3 נקודות אחוז. הנוסחה הבסיסית: <strong>תשואה ברוטו = (שכר דירה שנתי ÷ מחיר הנכס) × 100</strong>. דוגמה: דירה ב-R$500,000 עם שכר דירה של R$2,500/חודש &rarr; R$30,000/שנה ÷ R$500,000 = <strong>6.0% ברוטו</strong>. התשואה הנטו בפועל, אחרי הוצאות טיפוסיות, תהיה בטווח של 3.5%–4.5% לשנה.',
+    exTitle: '&#x1F4DD; דוגמה אילוסטרטיבית: דירה ב-R$500,000 בסאו פאולו',
+    exPriceLabel: 'מחיר רכישה',
+    exRentLabel: 'שכר דירה חודשי (הערכת שוק)',
+    exAnnualLabel: 'שכר דירה שנתי',
+    exGrossLabel: 'תשואה ברוטו',
+    exCostsLabel: 'עלויות שנתיות משוערות (ניכויים)',
+    exCondo: 'דמי ועד בית (ישולמו ע"י הבעלים)',
+    exIptu: 'IPTU משוער (ארנונה)',
+    exMgmt: 'דמי ניהול (~9% מהשכ"ד)',
+    exVacancy: 'חודש ריקון משוער (1 חודש/שנה)',
+    exIr: 'מס הכנסה על שכ"ד (שיעור משוער ~15%)',
+    exNetLabel: 'שכ"ד נטו שנתי משוער',
+    exNetYieldLabel: 'תשואה נטו משוערת',
+    exNote: '&#x26A0;&#xFE0F; דוגמה אילוסטרטיבית — הערכים משתנים לפי הנכס, ועד הבית, הרובע ושיעור המס האישי. מס הכנסה על שכ"ד בברזיל מחושב מדי חודש לפי מדרגות מס. עלויות תחזוקה וביטוח לא נכללו לצורך הפשטה.',
+    costsTitle: 'עלויות שמפחיתות את התשואה הנטו',
+    gvsTitle: 'ברוטו לעומת נטו: ההבדל שצריך להכיר',
+    gvsPara1: '<strong>תשואה ברוטו</strong> היא התשואה לפני כל עלות: שכר הדירה השנתי כאחוז ממחיר הרכישה. זה המספר הנפוץ ביותר במודעות ובהשוואות מהירות — אבל לא מה שמגיע לכיס.',
+    gvsPara2: '<strong>תשואה נטו</strong> מנכה את כל העלויות השוטפות ואת מס ההכנסה על שכר הדירה. זה התשואה האמיתית על ההון שהושקע. בנדל"ן בברזיל, הפער בין ברוטו לנטו הוא בדרך כלל <strong>2–3 נקודות אחוז</strong>.',
+    gvsPara3: 'להשוואה עם נכסים פיננסיים אחרים (Tesouro Direto, CDB, קרנות נדל"ן), השתמשו תמיד ב<strong>תשואה נטו ריאלית</strong> — לאחר ניכוי גם האינפלציה (IPCA).',
+    gvsList: '<li><strong>תשואה ברוטו מעל 6% לשנה</strong> בהשכרה קונבנציונלית נחשבת טובה בשוק הברזילאי הנוכחי — אך בדקו תמיד עם ניתוח הנכס הספציפי.</li><li><strong>תשואה נטו מתחת ל-CDI נטו</strong> לא מצדיקה את חוסר הנזילות של נדל"ן להכנסה פסיבית בלבד — יש לכלול גם פוטנציאל עליית ערך.</li><li><strong>השכרה לטווח קצר</strong> (Airbnb) עשויה להציג תשואה ברוטו גבוהה יותר, אך עלויות התפעול גבוהות משמעותית — התשואה הנטו לרוב לא עולה על השכרה שנתית מנוהלת היטב.</li>',
+    faqTitle: 'שאלות נפוצות',
+    faq1q: 'איזו תשואה על שכירות נחשבת טובה בברזיל?',
+    faq1a: 'בשוק הנוכחי, <strong>תשואה ברוטו של 6%–8% לשנה</strong> בהשכרה קונבנציונלית נחשבת סבירה עד טובה ברוב הערים הגדולות. מעל 8% קשה למצוא בנכסים חדשים ומיוחסים — בדרך כלל מרמז על מחיר רכישה מתחת לשוק. מתחת ל-4% קשה להצדיק את הנכס כהשקעת הכנסה. התשואה הנטו הצפויה תהיה 2–3 נקודות מתחת לברוטו.',
+    faq2q: 'לסאו פאולו יש תשואה טובה יותר מהפריפריה?',
+    faq2a: 'בדרך כלל, <strong>ערים בינוניות בפנים הארץ מציעות תשואות ברוטו גבוהות יותר</strong> מהבירות היקרות, כי מחיר הרכישה נמוך יחסית לשכר הדירה. הפשרה היא נזילות: מכירת נכס בעיר קטנה לוקחת זמן רב יותר.',
+    faq3q: 'השכרה לטווח קצר (Airbnb) עדיפה על השכרה קונבנציונלית?',
+    faq3a: 'בהכנסה ברוטו — פוטנציאלית כן. אבל <strong>עלויות התפעול גבוהות הרבה יותר</strong>: עמלת הפלטפורמה (15–20%), ניקיון, ניהול פעיל (20–35% מההכנסה), עונתיות ורגולציה מוניציפלית גוברת. התשואה הנטו לרוב מתאזנת עם השכרה שנתית מנוהלת היטב.',
+    faq4q: 'אילו עלויות מפחיתות הכי הרבה את התשואה הנטו?',
+    faq4a: 'לפי סדר השפעה טיפוסית: <strong>(1) דמי ועד בית גבוהים</strong> (עשויים לצרוך 15–30% מהשכ"ד בבניינים עם הרבה שירותים); <strong>(2) מס הכנסה על שכ"ד</strong> לבעלי שיעור 22.5% או 27.5%; <strong>(3) ריקון</strong> בשווקים עם ביקוש נמוך; <strong>(4) IPTU</strong>; <strong>(5) דמי ניהול</strong>.',
+    faq5q: 'איך עובד מס הכנסה על שכר דירה בברזיל?',
+    faq5a: 'שכ"ד שמקבלת <strong>יחיד (pessoa física)</strong> ממוסה מדי חודש לפי טבלת מדרגות מס: מתחת לכ-R$2,824/חודש (2026) — פטור; R$2,825–R$3,751 — 7.5%; R$3,752–R$4,664 — 15%; R$4,665–R$6,101 — 22.5%; מעל R$6,101 — 27.5%. המס משולם חודשית ומדווח בדוח השנתי. יש להתייעץ עם רואה חשבון.',
+    faq6q: 'איך לחשב תשואה על נכס ספציפי שאני שוקל לרכוש?',
+    faq6a: '<strong>תשואה ברוטו:</strong> (שכ"ד חודשי × 12) ÷ מחיר רכישה. דוגמה: R$2,500 × 12 = R$30,000 ÷ R$500,000 = 6.0% לשנה. <strong>תשואה נטו:</strong> ((שכ"ד שנתי − סה"כ עלויות שנתיות) ÷ מחיר רכישה). כלי WizeDeal מאפשר להזין את נתוני הנכס הספציפי ולחשב את התשואה האמיתית אוטומטית.',
+    disclaimerTitle: 'הצהרת אחריות',
+    disclaimerText: '<strong>הערכות אילוסטרטיביות בלבד — אינן מהוות ייעוץ השקעות.</strong> התשואות המוצגות הן טווחי ייחוס לשוק, שעשויים להשתנות משמעותית בהתאם לנכס הספציפי, המיקום, תנאי השכירות, מצב המס האישי ותנאי שוק. נתוני שכ"ד ומחירי נדל"ן משתנים תכופות — הנתונים המוצגים הם הערכות 2026 ועשויים להיות מיושנים. <strong>לפני כל החלטת השקעה נדל"נית, התייעצו עם סוכן נדל"ן, רואה חשבון ויועץ פיננסי במידת הצורך.</strong>',
+    ctaT: 'נתח את הנכס הספציפי שלך — בחינם',
+    ctaP: 'WizeDeal מחשב את התשואה הברוטו והנטו האמיתית של הנכס שאתם מעריכים, על בסיס מחיר הרכישה, שכר הדירה, עלויות אמיתיות ושיעור המס שלכם. הזינו את הנתונים וראו את התשואה תוך שניות.',
+    ctaBtn: 'נתח את הנכס שלי בחינם &#x2190;',
+    shareTitle: 'מכירים מישהו ששוקל להשקיע בנדל"ן בברזיל? שלחו לו את הקישור',
+    shareSub: 'שיתוף ב-WhatsApp / Email / קישור',
+    shareEmail: 'Email',
+    shareCopy: 'העתק קישור',
+    footSource: 'מקורות: FipeZap &middot; QuintoAndar &middot; Receita Federal (טבלת carnê-leão) &middot; IBGE &middot; נתוני שוק מקומיים. הערכות 2026.',
+    footLegal: '&#x26A0;&#xFE0F; מידע כללי ואילוסטרטיבי בלבד &mdash; אינו מהווה ייעוץ השקעות. חשבו את הנכס הספציפי לפני כל החלטה.',
+    shareText: 'כמה מניבה דירה להשכרה בברזיל? תשואה ברוטו לעומת נטו, IPTU ומס הכנסה — עם דוגמאות אמיתיות:',
+  },
+  es: {
+    badge: '&#x2713; Estimaciones ilustrativas 2026 &middot; Datos de mercado',
+    title: 'Rentabilidad de Alquiler en Brasil:<br>São Paulo, Florianópolis y más',
+    sub: 'Yield bruto vs neto, costos reales (IPTU, condominio, impuesto a la renta) y rangos ilustrativos para São Paulo, Florianópolis, Río de Janeiro y Balneário Camboriú. Calcula tu propiedad específica.',
+    answerEye: 'RESPUESTA DIRECTA',
+    answerText: '<strong>El yield bruto de alquiler residencial en Brasil suele oscilar entre el 4% y el 8% anual en las principales ciudades</strong> &mdash; pero el yield neto (después de condominio, IPTU, honorarios de gestión, vacancia e impuesto a la renta) es típicamente 2&ndash;3 puntos porcentuales menor. La fórmula básica: <strong>yield bruto = (alquiler anual ÷ precio de compra) × 100</strong>. Ejemplo: apartamento de R$500.000 con alquiler de R$2.500/mes &rarr; R$30.000/año ÷ R$500.000 = <strong>6,0% anual bruto</strong>. El yield neto real de ese inmueble, después de descontar costos típicos, quedaría en el rango de 3,5%&ndash;4,5% anual.',
+    exTitle: '&#x1F4DD; Ejemplo Ilustrativo: Apartamento de R$500.000 en São Paulo',
+    exPriceLabel: 'Precio de compra',
+    exRentLabel: 'Alquiler mensual (estimación de mercado)',
+    exAnnualLabel: 'Alquiler anual',
+    exGrossLabel: 'Yield bruto',
+    exCostsLabel: 'Costos anuales estimados (deducciones)',
+    exCondo: 'Condominio (pagado por el propietario)',
+    exIptu: 'IPTU estimado (impuesto predial)',
+    exMgmt: 'Honorario de gestión (~9% del alquiler)',
+    exVacancy: 'Vacancia estimada (1 mes/año)',
+    exIr: 'Impuesto a la renta sobre alquiler (tasa ~15% estimada)',
+    exNetLabel: 'Alquiler neto anual estimado',
+    exNetYieldLabel: 'Yield neto estimado',
+    exNote: '&#x26A0;&#xFE0F; Ejemplo ilustrativo &mdash; los valores varían según el inmueble, el condominio, el barrio y la alícuota individual de impuesto. El impuesto sobre renta por alquiler en Brasil se calcula mensualmente con tabla progresiva. Mantenimiento y seguro no fueron incluidos para simplificar.',
+    costsTitle: 'Costos que Reducen el Yield Neto',
+    gvsTitle: 'Yield Bruto vs Yield Neto: Entiende la Diferencia',
+    gvsPara1: '<strong>Yield bruto</strong> es el retorno antes de cualquier costo: cuánto representa el alquiler anual sobre el precio pagado por el inmueble. Es el número más común en anuncios y comparaciones rápidas &mdash; pero no es lo que efectivamente recibes.',
+    gvsPara2: '<strong>Yield neto</strong> descuenta todos los costos recurrentes y el impuesto a la renta sobre el alquiler recibido. Es el retorno real sobre el capital invertido. En inmuebles de Brasil, la diferencia entre bruto y neto es típicamente de <strong>2&ndash;3 puntos porcentuales</strong>.',
+    gvsPara3: 'Para comparar con otras clases de activos (Tesouro Direto, CDB, fondos inmobiliarios), usa siempre el <strong>yield neto real</strong> &mdash; descontando también la inflación (IPCA) para saber si la inversión preserva el poder adquisitivo.',
+    gvsList: '<li><strong>Yield bruto superior al 6% anual</strong> en alquiler convencional generalmente se considera bueno en el mercado brasileño actual &mdash; pero verifica siempre con el análisis del inmueble específico.</li><li><strong>Yield neto inferior al CDI neto</strong> no justifica la iliquidez del inmueble como renta pasiva aislada &mdash; la tesis de inversión debe incluir perspectiva de valorización de capital.</li><li><strong>Alquiler de temporada</strong> (Airbnb/Booking) puede tener mayor yield bruto potencial, pero los costos operativos son mucho más altos; el neto frecuentemente no supera al del alquiler convencional bien gestionado.</li>',
+    faqTitle: 'Preguntas Frecuentes',
+    faq1q: '¿Qué rentabilidad de alquiler se considera buena en Brasil?',
+    faq1a: 'En el mercado actual, un <strong>yield bruto de 6%&ndash;8% anual</strong> en alquiler residencial convencional se considera razonable a bueno en la mayoría de las ciudades grandes. Yield bruto superior al 8% es difícil de encontrar en inmuebles nuevos bien ubicados. Yield bruto inferior al 4% generalmente no justifica el inmueble como inversión de renta. El yield neto esperado será 2&ndash;3 puntos porcentuales menor que el bruto.',
+    faq2q: '¿São Paulo tiene mejor o peor yield que el interior de Brasil?',
+    faq2a: 'En general, <strong>las ciudades medianas del interior tienden a ofrecer yields brutos mayores</strong> que las capitales más caras porque el precio de compra es menor en relación con el alquiler alcanzable. La contrapartida es liquidez: vender un inmueble en ciudades del interior puede tomar más tiempo.',
+    faq3q: '¿El alquiler de temporada (Airbnb) rinde más que el alquiler convencional?',
+    faq3a: 'Potencialmente sí en ingreso bruto, pero <strong>los costos operativos son mucho mayores</strong>: comisión de plataforma (~15–20%), limpieza, gestión activa o empresa de property management (~20–35% de los ingresos), estacionalidad y riesgo de regulación municipal creciente. En ciudades como Florianópolis y BC, el yield neto real de temporada vs alquiler anual bien gestionado frecuentemente se equipara.',
+    faq4q: '¿Qué costos reducen más el yield neto en Brasil?',
+    faq4a: 'En orden de impacto típico: <strong>(1) cuota de condominio alta</strong> (puede consumir 15–30% del alquiler en edificios con muchos servicios); <strong>(2) impuesto a la renta sobre alquiler</strong> para quienes están en alícuota de 22,5% o 27,5%; <strong>(3) vacancia</strong> en mercados de menor demanda; <strong>(4) IPTU</strong>; <strong>(5) honorario de gestión</strong>.',
+    faq5q: '¿Cómo funciona el impuesto a la renta sobre alquiler en Brasil?',
+    faq5a: 'El alquiler recibido por una <strong>persona física</strong> se tributa mensualmente con tabla progresiva: por debajo de ~R$2.824/mes (2026), exento; R$2.825&ndash;R$3.751 al 7,5%; R$3.752&ndash;R$4.664 al 15%; R$4.665&ndash;R$6.101 al 22,5%; superior a R$6.101 al 27,5%. El impuesto se paga mensualmente vía DARF y se informa en la declaración anual. Consulta a un contador.',
+    faq6q: '¿Cómo calcular el yield del inmueble que estoy evaluando comprar?',
+    faq6a: '<strong>Yield bruto:</strong> (alquiler mensual × 12) ÷ precio de compra. Ejemplo: R$2.500 × 12 = R$30.000 ÷ R$500.000 = 6,0% anual. <strong>Yield neto:</strong> ((alquiler anual − costos anuales totales) ÷ precio de compra). Incluye condominio, IPTU, honorarios de gestión, vacancia, mantenimiento e impuesto. WizeDeal permite ingresar los datos del inmueble específico y calcular el retorno real automáticamente.',
+    disclaimerTitle: 'Aviso Importante',
+    disclaimerText: '<strong>Estimaciones ilustrativas &mdash; no constituyen asesoramiento de inversión.</strong> Los rendimientos presentados son rangos de referencia de mercado que pueden variar significativamente según el inmueble específico, ubicación, condiciones del contrato, situación fiscal individual y coyuntura económica. Los datos de alquiler y precio de mercado cambian frecuentemente &mdash; los valores indicados reflejan estimaciones de 2026 y pueden estar desactualizados. <strong>Antes de cualquier decisión de inversión inmobiliaria, consulta a un agente inmobiliario, un contador y si es necesario un asesor financiero.</strong> WizeLife y WizeDeal proporcionan herramientas e información &mdash; no prestamos asesoramiento de inversión regulado.',
+    ctaT: 'Analiza tu inmueble específico — gratis',
+    ctaP: 'WizeDeal calcula el yield bruto y neto real del inmueble que estás evaluando, con base en el precio de compra, alquiler de mercado, costos reales y tu alícuota de impuesto. Ingresa los datos y ve el retorno en segundos.',
+    ctaBtn: 'Analiza tu propiedad gratis &rarr;',
+    shareTitle: '¿Conoces a alguien evaluando una propiedad en Brasil? Mándale este link',
+    shareSub: 'Compartir via WhatsApp / Email / enlace',
+    shareEmail: 'Email',
+    shareCopy: 'Copiar enlace',
+    footSource: 'Referencias: FipeZap &middot; QuintoAndar investigación de mercado &middot; Receita Federal (tabla carnê-leão) &middot; IBGE &middot; datos de mercado inmobiliario local. Estimaciones 2026.',
+    footLegal: '&#x26A0;&#xFE0F; Información general e ilustrativa &mdash; no constituye asesoramiento de inversión. Calcula el inmueble específico antes de decidir.',
+    shareText: '¿Cuánto rinde un inmueble en alquiler en Brasil? Yield bruto vs neto, IPTU, condominio e impuesto a la renta explicados con ejemplos reales:',
+  },
+};
+
+let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'pt'; } catch { return 'pt'; }})();
+if (!['pt','en','he','es'].includes(_lang)) _lang = 'pt';
+
+function applyLang(l) {
+  _lang = l;
+  try { localStorage.setItem('wl_lang', l); } catch {}
+  document.documentElement.setAttribute('lang', l);
+  document.documentElement.setAttribute('dir', l === 'he' ? 'rtl' : 'ltr');
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n');
+    if (TR[l] && TR[l][k] !== undefined) el.innerHTML = TR[l][k];
+  });
+  document.querySelectorAll('#langSwitch button').forEach(function(b) {
+    b.classList.toggle('on', b.dataset.l === l);
+  });
+}
+document.querySelectorAll('#langSwitch button').forEach(function(b) {
+  b.addEventListener('click', function() { applyLang(b.dataset.l); });
+});
+applyLang(_lang);
+
+// ── Share ──────────────────────────────────────────────────────────────
+var PAGE_URL = 'https://wizelife.ai/p/rental-yield-brazil.html';
+var PAGE_TITLES = {
+  pt: 'Rentabilidade de Imóveis no Brasil: Yield Bruto e Líquido Explicado',
+  en: 'Rental Yield in Brazil: São Paulo, Florianópolis and More — Gross vs Net',
+  he: 'תשואה על שכירות בברזיל: סאו פאולו, פלורינופוליס ועוד',
+  es: 'Rentabilidad de Alquiler en Brasil: São Paulo, Florianópolis y más',
+};
+function shareTo(channel) {
+  var t = TR[_lang] || TR.pt;
+  var text = t.shareText || '';
+  var url  = PAGE_URL;
+  var title = PAGE_TITLES[_lang] || PAGE_TITLES.pt;
+  if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank'); return; }
+  if (channel === 'whatsapp') WizeShare.whatsapp({ title: title, text: text, url: url });
+  else if (channel === 'email') WizeShare.email({ title: title, text: text, url: url });
+  else if (channel === 'copy') WizeShare.copy({ title: title, text: text, url: url });
+}
+</script>
+
+<!-- Cloudflare Web Analytics auto-injected by proxy when enabled. -->
+
+<!-- Funnel: log the landing-page visit (top of funnel). -->
+<script src="/js/wize-track-beacon.js"></script>
+<script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
+
+<script defer src="/js/wize-bottom-nav.js"></script>
+<script defer src="/js/wize-hamburger.js"></script>
+</body>
+</html>

@@ -26,3 +26,6 @@
 - Aliyah tax guide — Israel's 10-year exemption on foreign income for new immigrants: https://wizelife.ai/p/aliyah-tax-guide.html
 - Salary comparison across countries (take-home/net): https://wizelife.ai/p/salary-compare-en.html (pt/es variants available)
 - Retire at 55 — how much to save per month to reach $1M: https://wizelife.ai/p/retire-at-55-calculator.html
+- How to read a CBC blood test (markers + ranges): https://wizelife.ai/p/blood-test-guide-cbc.html
+- How to calculate real-estate ROI (yield, cap rate, cash-on-cash): https://wizelife.ai/p/roi-calculator-real-estate.html
+- Rental yield in Brazil (São Paulo / Florianópolis) — gross vs net: https://wizelife.ai/p/rental-yield-brazil.html

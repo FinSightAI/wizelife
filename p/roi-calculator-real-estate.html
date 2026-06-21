@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), usb=(), serial=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>How to Calculate Real Estate ROI: Gross Yield, Net Yield, Cap Rate &amp; Cash-on-Cash · WizeLife</title>
+<meta name="description" content="Step-by-step guide to calculating real estate ROI: gross rental yield, net yield, cap rate, cash-on-cash return, and total ROI — with a verified worked example on a $300k property.">
+<link rel="canonical" href="https://wizelife.ai/p/roi-calculator-real-estate.html">
+
+<link rel="alternate" hreflang="en" href="https://wizelife.ai/p/roi-calculator-real-estate.html">
+<link rel="alternate" hreflang="he" href="https://wizelife.ai/p/roi-calculator-real-estate.html">
+<link rel="alternate" hreflang="pt" href="https://wizelife.ai/p/roi-calculator-real-estate.html">
+<link rel="alternate" hreflang="es" href="https://wizelife.ai/p/roi-calculator-real-estate.html">
+<link rel="alternate" hreflang="x-default" href="https://wizelife.ai/p/roi-calculator-real-estate.html">
+
+<meta property="og:title" content="How to Calculate Real Estate ROI: Gross Yield, Net Yield, Cap Rate &amp; Cash-on-Cash">
+<meta property="og:description" content="The 5 metrics every property investor uses — gross yield, net yield, cap rate, cash-on-cash, total ROI — explained with a verified worked example on a $300k property. Model your own deal free.">
+<meta property="og:image" content="https://wizelife.ai/og-image.png">
+<meta property="og:url" content="https://wizelife.ai/p/roi-calculator-real-estate.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Calculate Real Estate ROI: Gross Yield, Net Yield, Cap Rate &amp; Cash-on-Cash">
+<meta name="twitter:description" content="Gross rental yield, net yield, cap rate, cash-on-cash, total ROI — formulas, definitions, and a full worked example on a $300k property. Free deal analyzer inside.">
+
+<link rel="icon" href="/img/wizelife-logo-v2.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a good rental yield for an investment property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A good gross rental yield is generally considered to be 6–10% or above. Yields below 4% are considered low and may indicate a property that relies heavily on capital appreciation rather than cash flow. Yields above 10% can signal higher risk (e.g., lower-quality tenants, high vacancy, or deferred maintenance). Net yield — after deducting costs like taxes, insurance, management fees, and maintenance — is typically 1–3 percentage points lower than gross yield. What constitutes 'good' also depends heavily on location, asset class (residential vs. commercial), and how the purchase is financed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between cap rate and cash-on-cash return?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cap rate (capitalization rate) measures a property's income potential independent of financing. It is calculated as Net Operating Income (NOI) divided by property value, and assumes an all-cash purchase. Cash-on-cash return, by contrast, measures the actual annual pre-tax cash flow relative to the total cash you actually invested (down payment plus closing costs plus any upfront renovation). Because cash-on-cash accounts for mortgage debt service, it reflects your real leveraged return. A property with a 5.3% cap rate and a 6.5% mortgage may have a cash-on-cash return close to zero or even slightly negative, while still building equity."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What costs should I include when calculating net rental yield?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Net yield deducts all recurring annual costs from gross rent before dividing by property value. Costs to include: property taxes, landlord insurance, property management fees (typically 8–12% of rent), routine maintenance and repairs (commonly estimated at 1% of property value per year), vacancy allowance (typically 5–8% of potential rent), utilities paid by landlord, HOA or strata fees if applicable, and any letting/advertising fees. Mortgage interest is NOT deducted for net yield or cap rate — those metrics measure the property's intrinsic income performance. Mortgage payments are deducted only when calculating cash-on-cash return."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is real estate ROI calculated before or after tax?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard real estate ROI metrics — gross yield, net yield, cap rate, and cash-on-cash — are all calculated on a pre-tax basis. This is the industry convention because tax outcomes vary dramatically by investor (personal income tax bracket, entity structure, depreciation allowances, mortgage interest deductibility, capital gains tax treatment, jurisdiction). Always compare deals on a pre-tax basis first, then apply your specific tax situation to estimate after-tax returns. A deal analyzer like WizeDeal can model your specific tax scenario."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a good cash-on-cash return for a rental property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most experienced real estate investors target a cash-on-cash return of 6–12% or higher on leveraged rental properties. Returns of 8–12% are generally considered strong in most markets. Returns below 4–5% may not adequately compensate for the risk, illiquidity, and management effort of direct property ownership compared to alternatives like REITs or index funds. In high-cost urban markets (New York, London, Sydney, Tel Aviv), cash-on-cash returns of 1–4% are common, with investors relying more on long-term capital appreciation. The right target depends on your investment strategy, local market, and financing costs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate total ROI on a rental property including equity gain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Total ROI on a rental property combines two sources of return: (1) cumulative net cash flow over the holding period, and (2) equity gain — the difference between the sale price and remaining mortgage balance, minus selling costs. The formula is: Total ROI = (Equity Gain + Cumulative Net Cash Flow) / Total Cash Invested, expressed as a percentage. To annualize it, divide by the number of years held. This total-return view is essential for comparing property investment to other asset classes, as many rental properties with modest cash-on-cash returns deliver strong total returns through appreciation."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#05060f;--surf:#0d1024;--card:#11142a;--border:rgba(255,255,255,0.08);
+  --text:#eef2ff;--muted:#9ca3af;--muted2:#a5b4fc;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+  --deal1:#8b5cf6;--deal2:#6d28d9;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{
+  padding:0 14px 60px;
+  background:
+    radial-gradient(ellipse at top right,rgba(139,92,246,0.15),transparent 55%),
+    radial-gradient(ellipse at top left,rgba(16,185,129,0.10),transparent 55%),
+    var(--bg);
+}
+
+/* ── Topbar ─────────────────────────────────────────────────── */
+.topbar{max-width:760px;margin:0 auto;padding:14px 0 8px;display:flex;align-items:center;justify-content:space-between}
+.topbar a.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.topbar a.brand img{width:24px;height:24px;display:block}
+.topbar a.brand span{font:800 16px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-.3px}
+.topbar .lang{display:flex;gap:2px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:3px}
+.topbar .lang button{background:none;border:0;color:#7b88ad;padding:4px 9px;border-radius:6px;font:700 11px Inter,sans-serif;cursor:pointer;letter-spacing:.5px}
+.topbar .lang button.on{background:rgba(139,92,246,0.2);color:#c4b5fd}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero{max-width:760px;margin:18px auto 22px;text-align:center}
+.hero .flag{font-size:42px;margin-bottom:8px;line-height:1}
+.hero h1{margin:0 0 10px;font:900 30px Plus Jakarta Sans,Inter,sans-serif;letter-spacing:-1.2px;line-height:1.15;background:linear-gradient(135deg,#c4b5fd,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{margin:0 auto;font:500 14.5px Inter,sans-serif;color:var(--muted);max-width:580px;line-height:1.55}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.35);color:#c4b5fd;padding:5px 12px;border-radius:99px;font:700 11px Inter,sans-serif;margin-bottom:14px}
+
+/* ── Answer-first block ─────────────────────────────────────── */
+.answer-box{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(16,185,129,0.07));border:1px solid rgba(139,92,246,0.35);border-radius:18px;padding:22px 20px}
+.answer-box .eye{font:700 11px Inter,sans-serif;color:#c4b5fd;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.answer-box p{margin:0 0 12px;font:500 14.5px Inter,sans-serif;color:#e2e8f0;line-height:1.65}
+.answer-box p:last-child{margin-bottom:0}
+.answer-box strong{color:#fff}
+
+/* ── Section card ───────────────────────────────────────────── */
+.card{max-width:760px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}
+.card h2{margin:0 0 14px;font:800 16px Plus Jakarta Sans,Inter,sans-serif;color:#fff;display:flex;align-items:center;gap:8px}
+.card p{margin:0 0 10px;font:500 13.5px Inter,sans-serif;color:#cbd5e1;line-height:1.65}
+.card p:last-child{margin-bottom:0}
+.card ul{margin:8px 0 0;padding-inline-start:20px;font:500 13px Inter,sans-serif;color:#cbd5e1;line-height:1.7}
+.card ul li{margin-bottom:5px}
+.card ul li strong{color:#e2e8f0}
+
+/* ── Metric cards grid ──────────────────────────────────────── */
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:520px){.metric-grid{grid-template-columns:1fr}}
+.metric-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:14px}
+.metric-item .mi-label{font:700 11px Inter,sans-serif;color:#c4b5fd;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.metric-item .mi-formula{font:600 13px 'Courier New',Menlo,monospace;color:#6ee7b7;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);border-radius:6px;padding:6px 10px;margin:6px 0;line-height:1.4}
+.metric-item .mi-desc{font:500 12.5px Inter,sans-serif;color:#94a3b8;line-height:1.6}
+
+/* ── Worked example table ───────────────────────────────────── */
+.example-box{max-width:760px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(139,92,246,0.09),rgba(16,185,129,0.06));border:1px solid rgba(139,92,246,0.3);border-radius:16px;padding:20px}
+.example-box h2{margin:0 0 6px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#fff;display:flex;align-items:center;gap:8px}
+.example-box .assume{font:500 12px Inter,sans-serif;color:#6b7280;margin-bottom:14px}
+.calc-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.calc-row:last-child{border-bottom:0;padding-bottom:0}
+.calc-row .cr-label{font:600 13px Inter,sans-serif;color:#e2e8f0;flex:1}
+.calc-row .cr-formula{font:500 12px 'Courier New',Menlo,monospace;color:#94a3b8;flex:1;line-height:1.5}
+.calc-row .cr-result{font:800 14px Inter,sans-serif;color:#c4b5fd;text-align:right;white-space:nowrap}
+.calc-row.highlight .cr-label{color:#fff}
+.calc-row.highlight .cr-result{color:#6ee7b7;font-size:15px}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+.faq-item:last-child{border-bottom:0;padding-bottom:0}
+.faq-item .q{font:700 14px Plus Jakarta Sans,Inter,sans-serif;color:#e2e8f0;margin-bottom:8px;line-height:1.4}
+.faq-item .a{font:500 13px Inter,sans-serif;color:#94a3b8;line-height:1.65}
+.faq-item .a strong{color:#cbd5e1}
+
+/* ── Disclaimer ─────────────────────────────────────────────── */
+.disclaimer{max-width:760px;margin:0 auto 18px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:16px}
+.disclaimer h4{margin:0 0 8px;font:800 13px Plus Jakarta Sans,Inter,sans-serif;color:#fcd34d}
+.disclaimer p{margin:0;font:500 12.5px Inter,sans-serif;color:#cbd5e1;line-height:1.6}
+
+/* ── CTA ─────────────────────────────────────────────────────── */
+.cta{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(109,40,217,0.10));border:1px solid rgba(139,92,246,0.35);border-radius:14px;padding:20px}
+.cta h4{margin:0 0 6px;font:800 15px Plus Jakarta Sans,Inter,sans-serif;color:#c4b5fd}
+.cta p{margin:0 0 14px;font:500 13px Inter,sans-serif;color:#cbd5e1;line-height:1.55}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;text-decoration:none;padding:12px 24px;border-radius:99px;font:800 13px Inter,sans-serif;transition:opacity .15s}
+.cta-btn:hover{opacity:.88}
+
+/* ── Share ───────────────────────────────────────────────────── */
+.share-wrap{max-width:760px;margin:18px auto;background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(139,92,246,0.07));border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:16px;text-align:center}
+.share-wrap h3{margin:0 0 4px;font:800 14px Plus Jakarta Sans,Inter,sans-serif}
+.share-wrap p{margin:0 0 12px;font:500 12.5px Inter,sans-serif;color:var(--muted)}
+.share-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.share-btns button{padding:11px 8px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font:700 12.5px Inter,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.share-btns button:hover{background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);transform:translateY(-1px)}
+.share-btns button .icon{font-size:20px;line-height:1}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.foot{max-width:760px;margin:24px auto 0;text-align:center;font:500 11px Inter,sans-serif;color:#475569;line-height:1.6}
+.foot a{color:#a5b4fc;text-decoration:none}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.answer-box{animation:fadeUp .4s ease both}
+</style>
+
+<script src="/js/wize-attribution.js?v=2026061201" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="https://wizelife.ai">
+    <img src="/img/wizelife-logo-v2.svg" alt="WizeLife">
+    <span>WizeLife</span>
+  </a>
+  <div class="lang" id="langSwitch">
+    <button data-l="en" class="on">EN</button>
+    <button data-l="he">HE</button>
+    <button data-l="pt">PT</button>
+    <button data-l="es">ES</button>
+  </div>
+</div>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="flag">&#x1F3E0;</div>
+  <div class="badge" data-i18n="badge">&#x2713; Verified formulas &middot; Worked example included</div>
+  <h1 data-i18n="title">How to Calculate<br>Real Estate ROI</h1>
+  <p data-i18n="sub">Gross yield, net yield, cap rate, cash-on-cash return, and total ROI — the 5 metrics every property investor uses, with exact formulas and a fully worked example on a $300,000 property.</p>
+</div>
+
+<!-- ── Answer-first block ─────────────────────────────────────────────── -->
+<div class="answer-box">
+  <div class="eye" data-i18n="answerEye">DIRECT ANSWER</div>
+  <p data-i18n="answerText1">
+    <strong>There are five standard metrics for measuring real estate investment returns.</strong>
+    <strong>Gross rental yield</strong> is the simplest: annual rent divided by purchase price.
+    <strong>Net yield</strong> deducts all annual costs (taxes, insurance, management, maintenance, vacancy) before dividing by price — it tells you the true income return the property generates.
+    <strong>Cap rate</strong> (capitalization rate) is net operating income divided by property value, calculated as if you paid all cash — it lets you compare properties independent of how they are financed.
+    <strong>Cash-on-cash return</strong> is the annual pre-tax cash flow (after mortgage debt service) divided by the total cash you actually put in (down payment plus closing costs) — it measures your real leveraged return.
+    <strong>Total ROI</strong> adds equity gain (appreciation minus remaining mortgage) to cumulative cash flow, divided by total cash invested.
+  </p>
+  <p data-i18n="answerText2">
+    All five metrics are calculated <strong>pre-tax</strong> — tax treatment varies by investor and jurisdiction. The worked example below shows all five computed on a single $300,000 property.
+  </p>
+</div>
+
+<!-- ── The 5 Metrics ──────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x1F4CA; The 5 Metrics &amp; Their Formulas</h2>
+  <div class="metric-grid">
+
+    <div class="metric-item">
+      <div class="mi-label">1. Gross Rental Yield</div>
+      <div class="mi-formula">Annual Rent / Purchase Price</div>
+      <div class="mi-desc">The quick-and-dirty screen. Ignores all costs. Use it only for initial filtering — two properties with the same gross yield can have very different net returns once costs are factored in.</div>
+    </div>
+
+    <div class="metric-item">
+      <div class="mi-label">2. Net Yield</div>
+      <div class="mi-formula">(Annual Rent &minus; Annual Costs) / Purchase Price</div>
+      <div class="mi-desc">Costs include: property taxes, insurance, management fees, maintenance reserve, vacancy allowance, and any owner-paid utilities. Does NOT deduct mortgage payments. Mortgage is a financing choice, not a property cost.</div>
+    </div>
+
+    <div class="metric-item">
+      <div class="mi-label">3. Cap Rate</div>
+      <div class="mi-formula">NOI / Property Value</div>
+      <div class="mi-desc">NOI = annual rent minus all operating costs (same as numerator of net yield). Cap rate is financing-agnostic — it measures the property&#x2019;s income yield as if purchased all cash. The industry standard for comparing investment properties.</div>
+    </div>
+
+    <div class="metric-item">
+      <div class="mi-label">4. Cash-on-Cash Return</div>
+      <div class="mi-formula">Annual Pre-Tax Cash Flow / Total Cash Invested</div>
+      <div class="mi-desc">Annual pre-tax cash flow = NOI minus annual mortgage debt service (principal + interest). Total cash invested = down payment + closing costs + any upfront renovation. This is your real yield on the cash you actually deployed.</div>
+    </div>
+
+    <div class="metric-item" style="grid-column:1/-1">
+      <div class="mi-label">5. Total ROI (holding-period)</div>
+      <div class="mi-formula">(Equity Gain + Cumulative Net Cash Flow) / Total Cash Invested</div>
+      <div class="mi-desc">Equity gain = sale price minus remaining mortgage balance minus selling costs minus original purchase price. Cumulative net cash flow = sum of annual cash flows over the holding period. Divide by years held to annualize. This is the complete picture — it captures both the income and the appreciation.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Worked Example ─────────────────────────────────────────────────── -->
+<div class="example-box">
+  <h2>&#x1F9EE; Worked Example: $300,000 Rental Property</h2>
+  <div class="assume">
+    <strong>Assumptions:</strong> Purchase price $300,000 &middot; Annual rent $24,000 ($2,000/mo) &middot; Annual operating costs $8,000 (taxes, insurance, management, maintenance, vacancy) &middot; Down payment 25% = $75,000 &middot; Closing costs 3% = $9,000 &middot; Total cash invested $84,000 &middot; Mortgage: $225,000 at 6.5% interest-only (for cash-on-cash simplicity) = $14,625/yr &middot; All figures pre-tax and illustrative.
+  </div>
+
+  <div class="calc-row">
+    <div class="cr-label">Annual rent (given)</div>
+    <div class="cr-formula">$2,000 &times; 12</div>
+    <div class="cr-result">$24,000</div>
+  </div>
+  <div class="calc-row">
+    <div class="cr-label">Annual operating costs (given)</div>
+    <div class="cr-formula">taxes + insurance + mgmt + maint + vacancy</div>
+    <div class="cr-result">$8,000</div>
+  </div>
+  <div class="calc-row">
+    <div class="cr-label">Net Operating Income (NOI)</div>
+    <div class="cr-formula">$24,000 &minus; $8,000</div>
+    <div class="cr-result">$16,000</div>
+  </div>
+  <div class="calc-row highlight">
+    <div class="cr-label">Gross Rental Yield</div>
+    <div class="cr-formula">$24,000 / $300,000</div>
+    <div class="cr-result">8.00%</div>
+  </div>
+  <div class="calc-row highlight">
+    <div class="cr-label">Net Yield</div>
+    <div class="cr-formula">$16,000 / $300,000</div>
+    <div class="cr-result">5.33%</div>
+  </div>
+  <div class="calc-row highlight">
+    <div class="cr-label">Cap Rate</div>
+    <div class="cr-formula">NOI $16,000 / Value $300,000</div>
+    <div class="cr-result">5.33%</div>
+  </div>
+  <div class="calc-row">
+    <div class="cr-label">Annual mortgage interest (IO at 6.5%)</div>
+    <div class="cr-formula">$225,000 &times; 6.5%</div>
+    <div class="cr-result">$14,625</div>
+  </div>
+  <div class="calc-row">
+    <div class="cr-label">Annual pre-tax cash flow</div>
+    <div class="cr-formula">NOI $16,000 &minus; debt service $14,625</div>
+    <div class="cr-result">$1,375</div>
+  </div>
+  <div class="calc-row">
+    <div class="cr-label">Total cash invested</div>
+    <div class="cr-formula">down $75,000 + closing $9,000</div>
+    <div class="cr-result">$84,000</div>
+  </div>
+  <div class="calc-row highlight">
+    <div class="cr-label">Cash-on-Cash Return</div>
+    <div class="cr-formula">$1,375 / $84,000</div>
+    <div class="cr-result">1.64%</div>
+  </div>
+  <div style="margin-top:12px;padding:10px 12px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:8px;font:500 12px Inter,sans-serif;color:#fcd34d;line-height:1.6">
+    <strong>Reading these numbers:</strong> The cap rate (5.33%) is solid — this property generates $16,000/yr in NOI on a $300k asset.
+    But at 6.5% financing cost, most of that income goes to service the mortgage, leaving a thin cash-on-cash of 1.64%.
+    The real return case rests on appreciation + principal paydown (equity building) over time &mdash; exactly what Total ROI captures.
+    Change the financing rate, vacancy rate, or rent growth and the picture shifts significantly. Model your specific deal below.
+  </div>
+</div>
+
+<!-- ── What Counts as Costs ─────────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x1F4CB; What to Include in Operating Costs</h2>
+  <ul>
+    <li><strong>Property taxes:</strong> varies enormously by location — from under 0.5% to over 2.5% of value per year. Always verify the actual tax bill.</li>
+    <li><strong>Landlord insurance:</strong> typically 0.5–1% of property value per year.</li>
+    <li><strong>Property management fees:</strong> 8–12% of collected rent if you use a manager. Zero if self-managing, but model your time as an opportunity cost.</li>
+    <li><strong>Maintenance and repairs:</strong> commonly estimated at 1% of property value per year (the "1% rule") — more for older properties, less for new builds.</li>
+    <li><strong>Vacancy allowance:</strong> assume 5–8% of potential annual rent (reflects periods between tenants and lost rent during re-letting).</li>
+    <li><strong>Owner-paid utilities:</strong> water, trash, common-area electricity if applicable.</li>
+    <li><strong>HOA or strata fees:</strong> if applicable.</li>
+    <li><strong>Letting / leasing fees:</strong> often 1 week to 1 month of rent when placing a new tenant.</li>
+  </ul>
+  <p style="margin-top:12px"><strong>Do NOT deduct mortgage principal or interest</strong> when calculating net yield, NOI, or cap rate. Those are financing-side numbers and belong only in the cash-on-cash calculation.</p>
+</div>
+
+<!-- ── FAQ ───────────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>&#x2753; Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="q">What is a good rental yield for an investment property?</div>
+    <div class="a">A gross rental yield of <strong>6–10%+</strong> is generally considered good. Below 4% usually means the return case depends heavily on capital appreciation. Net yield (after costs) typically runs 1–3 percentage points lower than gross. What&#x2019;s achievable depends on location — high-cost cities (Tel Aviv, London, Sydney) often yield 2–4% gross, while secondary markets and emerging economies can yield 8–12%+.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">What&#x2019;s the difference between cap rate and cash-on-cash return?</div>
+    <div class="a"><strong>Cap rate ignores financing</strong> — it measures the property&#x2019;s income yield as an all-cash purchase. <strong>Cash-on-cash accounts for your actual mortgage</strong> — it measures the return on the cash you personally deployed after debt service. Same property, same NOI, but different financing produces identical cap rates and very different cash-on-cash returns. Cap rate is used to compare properties across markets; cash-on-cash is used to evaluate your personal deal economics.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">What costs to include in net yield?</div>
+    <div class="a">Property taxes, landlord insurance, management fees (8–12% of rent), maintenance reserve (typically 1% of value/year), vacancy allowance (5–8% of potential rent), and any owner-paid utilities or HOA fees. Mortgage payments are excluded — they are a financing cost, not an operating cost. Including them would conflate two separate decisions: how good the property is, and how much debt you use.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">Is real estate ROI before or after tax?</div>
+    <div class="a">By industry convention, <strong>all five standard metrics are pre-tax</strong>. This makes deals comparable across investors with different tax situations, entity structures, and jurisdictions. After-tax returns depend on your income bracket, depreciation allowances, mortgage interest deductibility, and capital gains treatment. Always analyze pre-tax first, then model your specific tax picture. A tool like WizeDeal can factor in your local tax context.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">What is a good cash-on-cash return?</div>
+    <div class="a">Most experienced investors target <strong>6–12% cash-on-cash</strong> on leveraged rentals. Returns below 4–5% may not adequately compensate for the risk and management effort vs. alternatives like index funds. In high-cost markets, 1–4% is common, with investors relying on appreciation for total return. In the worked example above, a 1.64% cash-on-cash at current mortgage rates is realistic in many markets — the equity-building and eventual appreciation components are what make the deal work.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">How does financing affect ROI — does leverage help or hurt?</div>
+    <div class="a">Leverage amplifies both gains and losses. If a property&#x2019;s cap rate exceeds your mortgage interest rate, leverage increases your cash-on-cash return (positive leverage). If your mortgage rate exceeds the cap rate — as in the worked example (6.5% rate vs. 5.33% cap rate) — leverage <em>reduces</em> cash-on-cash return (negative leverage). This is common in today&#x2019;s high-rate environment. In negative leverage scenarios, investors are betting that appreciation and rent growth will outperform the financing cost over time.</div>
+  </div>
+
+</div>
+
+<!-- ── Disclaimer ────────────────────────────────────────────────────── -->
+<div class="disclaimer">
+  <h4>&#x26A0;&#xFE0F; Disclaimer</h4>
+  <p>
+    The formulas, definitions, and worked example on this page are <strong>illustrative and educational only — not investment advice</strong>.
+    The $300,000 worked example uses simplified, round-figure assumptions (interest-only financing, flat costs, no vacancy variation, no rent growth, no depreciation).
+    Real investment returns depend on actual financing terms, local tax rates, vacancy history, maintenance needs, rent growth, market appreciation, and your personal tax situation.
+    <strong>Do not make investment decisions based on illustrative numbers.</strong>
+    Always model your specific deal — including local taxes, realistic vacancy, and your actual mortgage terms — before committing capital. WizeDeal can help you model your specific property.
+  </p>
+</div>
+
+<!-- ── CTA ───────────────────────────────────────────────────────────── -->
+<div class="cta">
+  <h4 data-i18n="ctaT">Analyze your real deal free &#x2192;</h4>
+  <p data-i18n="ctaP">WizeDeal lets you plug in your actual property numbers — purchase price, rent, costs, financing — and computes all five ROI metrics for your specific deal, including local taxes, vacancy scenarios, and rent growth projections. No spreadsheet required.</p>
+  <a class="cta-btn" href="https://deal.wizelife.ai/" data-i18n="ctaBtn">Analyze my real deal free &#x2192;</a>
+</div>
+
+<!-- ── Share ─────────────────────────────────────────────────────────── -->
+<div class="share-wrap">
+  <h3 data-i18n="shareTitle">Know someone evaluating a property deal? Send them this</h3>
+  <p data-i18n="shareSub">Share via WhatsApp / Email / link</p>
+  <div class="share-btns">
+    <button onclick="shareTo('whatsapp')"><span class="icon">&#x1F4AC;</span><span>WhatsApp</span></button>
+    <button onclick="shareTo('email')"><span class="icon">&#x2709;&#xFE0F;</span><span data-i18n="shareEmail">Email</span></button>
+    <button onclick="shareTo('copy')"><span class="icon">&#x1F4CB;</span><span data-i18n="shareCopy">Copy link</span></button>
+  </div>
+</div>
+
+<div class="foot">
+  <span data-i18n="footSource">Sources: CCIM Institute &middot; Urban Land Institute &middot; Investopedia Real Estate &middot; RICS Valuation Standards.</span><br>
+  <span data-i18n="footLegal">&#x26A0;&#xFE0F; Educational content only &mdash; not investment or financial advice. Real returns depend on financing, vacancy, taxes, and market conditions specific to each property.</span><br>
+  <a href="https://wizelife.ai">wizelife.ai</a> · <a href="https://wizelife.ai/privacy.html">Privacy</a> · <a href="https://wizelife.ai/terms.html">Terms</a>
+</div>
+
+<script src="/js/wize-share.js" defer></script>
+<script>
+const TR = {
+  en: {
+    badge: '&#x2713; Verified formulas &middot; Worked example included',
+    title: 'How to Calculate<br>Real Estate ROI',
+    sub: 'Gross yield, net yield, cap rate, cash-on-cash return, and total ROI &mdash; the 5 metrics every property investor uses, with exact formulas and a fully worked example on a $300,000 property.',
+    answerEye: 'DIRECT ANSWER',
+    answerText1: '<strong>There are five standard metrics for measuring real estate investment returns.</strong> <strong>Gross rental yield</strong> is the simplest: annual rent divided by purchase price. <strong>Net yield</strong> deducts all annual costs (taxes, insurance, management, maintenance, vacancy) before dividing by price &mdash; it tells you the true income return the property generates. <strong>Cap rate</strong> (capitalization rate) is net operating income divided by property value, calculated as if you paid all cash &mdash; it lets you compare properties independent of how they are financed. <strong>Cash-on-cash return</strong> is the annual pre-tax cash flow (after mortgage debt service) divided by the total cash you actually put in (down payment plus closing costs) &mdash; it measures your real leveraged return. <strong>Total ROI</strong> adds equity gain (appreciation minus remaining mortgage) to cumulative cash flow, divided by total cash invested.',
+    answerText2: 'All five metrics are calculated <strong>pre-tax</strong> &mdash; tax treatment varies by investor and jurisdiction. The worked example below shows all five computed on a single $300,000 property.',
+    ctaT: 'Analyze your real deal free &rarr;',
+    ctaP: 'WizeDeal lets you plug in your actual property numbers &mdash; purchase price, rent, costs, financing &mdash; and computes all five ROI metrics for your specific deal, including local taxes, vacancy scenarios, and rent growth projections. No spreadsheet required.',
+    ctaBtn: 'Analyze my real deal free &rarr;',
+    shareTitle: 'Know someone evaluating a property deal? Send them this',
+    shareSub: 'Share via WhatsApp / Email / link',
+    shareEmail: 'Email',
+    shareCopy: 'Copy link',
+    footSource: 'Sources: CCIM Institute &middot; Urban Land Institute &middot; Investopedia Real Estate &middot; RICS Valuation Standards.',
+    footLegal: '&#x26A0;&#xFE0F; Educational content only &mdash; not investment or financial advice. Real returns depend on financing, vacancy, taxes, and market conditions specific to each property.',
+  },
+  he: {
+    badge: '&#x2713; נוסחאות מאומתות &middot; דוגמה מחושבת כלולה',
+    title: 'איך מחשבים תשואה על נדל"ן?',
+    sub: 'תשואה גולמית, תשואה נטו, שיעור היוון, תשואת מזומן-על-מזומן ו-ROI כולל &mdash; 5 המדדים שכל משקיע נדל"ן משתמש בהם, עם נוסחאות וחישוב מלא על נכס $300,000.',
+    answerEye: 'תשובה ישירה',
+    answerText1: '<strong>קיימים חמישה מדדים סטנדרטיים למדידת תשואת השקעת נדל"ן.</strong> <strong>תשואה גולמית</strong> היא הפשוטה ביותר: שכר דירה שנתי חלקי מחיר הרכישה. <strong>תשואה נטו</strong> מנכה את כל ההוצאות השנתיות (מסים, ביטוח, ניהול, תחזוקה, פנויות) לפני החלוקה במחיר &mdash; היא מראה את תשואת ההכנסה האמיתית. <strong>שיעור היוון (Cap Rate)</strong> הוא הכנסה תפעולית נטו (NOI) חלקי שווי הנכס, מחושב כאילו שולם במזומן מלא &mdash; מאפשר השוואה בין נכסים ללא תלות במימון. <strong>תשואת מזומן-על-מזומן</strong> היא תזרים המזומנים לפני מס (לאחר שירות חוב משכנתא) חלקי סך המזומן שהושקע (מקדמה + עלויות סגירה). <strong>ROI כולל</strong> מחבר רווח הון לתזרים מזומנים מצטבר, מחולק בהשקעת המזומן.',
+    answerText2: 'כל חמשת המדדים מחושבים <strong>לפני מס</strong> &mdash; ההשפעה המסית משתנה לפי משקיע ומדינה. הדוגמה המחושבת מטה מציגה את כל חמשת החישובים על נכס אחד של $300,000.',
+    ctaT: 'נתח את העסקה האמיתית שלך חינם &rarr;',
+    ctaP: 'WizeDeal מאפשר לך להזין את הנתונים האמיתיים של הנכס שלך &mdash; מחיר רכישה, שכר דירה, עלויות, מימון &mdash; ומחשב את כל חמשת מדדי התשואה לעסקה הספציפית שלך, כולל מיסים מקומיים, תרחישי פנויות ותחזיות צמיחת שכר דירה.',
+    ctaBtn: 'נתח את העסקה שלי חינם &rarr;',
+    shareTitle: 'מכירים מישהו שמעריך עסקת נדל"ן? שלחו לו זאת',
+    shareSub: 'שיתוף ב-WhatsApp / Email / קישור',
+    shareEmail: 'Email',
+    shareCopy: 'העתק קישור',
+    footSource: 'מקורות: CCIM Institute &middot; Urban Land Institute &middot; Investopedia &middot; RICS.',
+    footLegal: '&#x26A0;&#xFE0F; תוכן חינוכי בלבד &mdash; לא ייעוץ השקעות. תשואות אמיתיות תלויות במימון, פנויות, מיסים ותנאי שוק ספציפיים לכל נכס.',
+  },
+  pt: {
+    badge: '&#x2713; Fórmulas verificadas &middot; Exemplo prático incluído',
+    title: 'Como Calcular o ROI<br>de Imóveis para Investimento',
+    sub: 'Rendimento bruto, rendimento líquido, cap rate, cash-on-cash e ROI total &mdash; as 5 métricas que todo investidor imobiliário usa, com fórmulas e um exemplo completo num imóvel de $300.000.',
+    answerEye: 'RESPOSTA DIRETA',
+    answerText1: '<strong>Existem cinco métricas padrão para medir o retorno de um investimento imobiliário.</strong> O <strong>rendimento bruto</strong> é o mais simples: renda anual dividida pelo preço de compra. O <strong>rendimento líquido</strong> deduz todos os custos anuais (impostos, seguros, gestão, manutenção, vacância) antes de dividir pelo preço &mdash; revela o retorno real de renda do imóvel. O <strong>cap rate</strong> (taxa de capitalização) é o NOI (resultado operacional líquido) dividido pelo valor do imóvel, calculado como se a compra fosse a pronto &mdash; permite comparar imóveis independentemente do financiamento. O <strong>cash-on-cash</strong> é o fluxo de caixa anual antes de impostos (após serviço da dívida hipotecária) dividido pelo total de dinheiro investido (entrada + custos de escritura). O <strong>ROI total</strong> soma o ganho de capital ao fluxo de caixa acumulado, dividido pelo dinheiro investido.',
+    answerText2: 'Todas as cinco métricas são calculadas <strong>antes de impostos</strong> &mdash; o impacto fiscal varia por investidor e jurisdição. O exemplo abaixo mostra os cinco cálculos num imóvel de $300.000.',
+    ctaT: 'Analise o seu negócio real gratuitamente &rarr;',
+    ctaP: 'O WizeDeal permite introduzir os dados reais do seu imóvel &mdash; preço de compra, renda, custos, financiamento &mdash; e calcula as cinco métricas de ROI para o seu negócio específico, incluindo impostos locais, cenários de vacância e projeções de crescimento de renda.',
+    ctaBtn: 'Analisar o meu negócio real gratuitamente &rarr;',
+    shareTitle: 'Conhece alguém a avaliar um negócio imobiliário? Envie isto',
+    shareSub: 'Partilhar via WhatsApp / Email / link',
+    shareEmail: 'Email',
+    shareCopy: 'Copiar link',
+    footSource: 'Fontes: CCIM Institute &middot; Urban Land Institute &middot; Investopedia &middot; RICS.',
+    footLegal: '&#x26A0;&#xFE0F; Apenas conteúdo educativo &mdash; não constitui aconselhamento de investimento. Os retornos reais dependem de financiamento, vacância, impostos e condições de mercado específicas de cada imóvel.',
+  },
+  es: {
+    badge: '&#x2713; Fórmulas verificadas &middot; Ejemplo práctico incluido',
+    title: 'Cómo Calcular el ROI<br>de Inversión Inmobiliaria',
+    sub: 'Rendimiento bruto, rendimiento neto, cap rate, cash-on-cash y ROI total &mdash; las 5 métricas que todo inversor inmobiliario usa, con fórmulas exactas y un ejemplo completo sobre una propiedad de $300.000.',
+    answerEye: 'RESPUESTA DIRECTA',
+    answerText1: '<strong>Existen cinco métricas estándar para medir el retorno de una inversión inmobiliaria.</strong> El <strong>rendimiento bruto</strong> es el más simple: renta anual dividida por el precio de compra. El <strong>rendimiento neto</strong> deduce todos los costes anuales (impuestos, seguro, gestión, mantenimiento, vacantes) antes de dividir por el precio &mdash; revela el retorno real de ingresos del inmueble. El <strong>cap rate</strong> (tasa de capitalización) es el NOI (resultado operativo neto) dividido por el valor del inmueble, calculado como si la compra fuera al contado &mdash; permite comparar propiedades con independencia de la financiación. El <strong>cash-on-cash</strong> es el flujo de caja anual antes de impuestos (tras el servicio de la deuda hipotecaria) dividido por el total del efectivo invertido (entrada + gastos de cierre). El <strong>ROI total</strong> suma la ganancia de capital al flujo de caja acumulado, dividido por el efectivo invertido.',
+    answerText2: 'Las cinco métricas se calculan <strong>antes de impuestos</strong> &mdash; el impacto fiscal varía por inversor y jurisdicción. El ejemplo siguiente muestra los cinco cálculos sobre una propiedad de $300.000.',
+    ctaT: 'Analiza tu operación real gratuitamente &rarr;',
+    ctaP: 'WizeDeal te permite introducir los datos reales de tu inmueble &mdash; precio de compra, renta, costes, financiación &mdash; y calcula las cinco métricas de ROI para tu operación específica, incluyendo impuestos locales, escenarios de vacante y proyecciones de crecimiento de renta.',
+    ctaBtn: 'Analizar mi operación real gratis &rarr;',
+    shareTitle: '¿Conoces a alguien evaluando una operación inmobiliaria? Envíales esto',
+    shareSub: 'Compartir via WhatsApp / Email / enlace',
+    shareEmail: 'Email',
+    shareCopy: 'Copiar enlace',
+    footSource: 'Fuentes: CCIM Institute &middot; Urban Land Institute &middot; Investopedia &middot; RICS.',
+    footLegal: '&#x26A0;&#xFE0F; Solo contenido educativo &mdash; no constituye asesoramiento de inversión. Los retornos reales dependen de la financiación, vacantes, impuestos y condiciones de mercado específicas de cada propiedad.',
+  },
+};
+
+let _lang = (function(){ try { return localStorage.getItem('wl_lang')||'en'; } catch { return 'en'; }})();
+if (!['en','he','pt','es'].includes(_lang)) _lang = 'en';
+
+function applyLang(l) {
+  _lang = l;
+  try { localStorage.setItem('wl_lang', l); } catch {}
+  document.documentElement.setAttribute('lang', l);
+  document.documentElement.setAttribute('dir', l === 'he' ? 'rtl' : 'ltr');
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n');
+    if (TR[l] && TR[l][k] !== undefined) el.innerHTML = TR[l][k];
+  });
+  document.querySelectorAll('#langSwitch button').forEach(function(b) {
+    b.classList.toggle('on', b.dataset.l === l);
+  });
+}
+document.querySelectorAll('#langSwitch button').forEach(function(b) {
+  b.addEventListener('click', function() { applyLang(b.dataset.l); });
+});
+applyLang(_lang);
+
+// ── Share ──────────────────────────────────────────────────────────────
+var PAGE_URL = 'https://wizelife.ai/p/roi-calculator-real-estate.html';
+var PAGE_TITLES = {
+  en: 'How to Calculate Real Estate ROI: Gross Yield, Net Yield, Cap Rate & Cash-on-Cash',
+  he: 'איך מחשבים תשואה על נדל"ן? תשואה גולמית, נטו, שיעור היוון ו-Cash-on-Cash',
+  pt: 'Como Calcular o ROI de Imóveis: Rendimento Bruto, Líquido, Cap Rate e Cash-on-Cash',
+  es: 'Cómo Calcular el ROI Inmobiliario: Rendimiento Bruto, Neto, Cap Rate y Cash-on-Cash',
+};
+var SHARE_TEXTS = {
+  en: 'Quick guide: how to calculate real estate ROI — gross yield, net yield, cap rate, cash-on-cash — with a full worked example on a $300k property:',
+  he: 'מדריך מהיר: איך מחשבים תשואה על נדל"ן — תשואה גולמית, נטו, שיעור היוון, cash-on-cash — עם חישוב מלא על נכס $300K:',
+  pt: 'Guia rápido: como calcular o ROI de imóveis — rendimento bruto, líquido, cap rate, cash-on-cash — com exemplo completo num imóvel de $300k:',
+  es: 'Guía rápida: cómo calcular el ROI inmobiliario — rendimiento bruto, neto, cap rate, cash-on-cash — con ejemplo completo en una propiedad de $300k:',
+};
+function shareTo(channel) {
+  var text = (SHARE_TEXTS[_lang] || SHARE_TEXTS.en);
+  var url  = PAGE_URL;
+  var title = PAGE_TITLES[_lang] || PAGE_TITLES.en;
+  if (!window.WizeShare) { window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank'); return; }
+  if (channel === 'whatsapp') WizeShare.whatsapp({ title: title, text: text, url: url });
+  else if (channel === 'email') WizeShare.email({ title: title, text: text, url: url });
+  else if (channel === 'copy') WizeShare.copy({ title: title, text: text, url: url });
+}
+</script>
+
+<!-- Cloudflare Web Analytics auto-injected by proxy when enabled. -->
+
+<!-- Funnel: log the landing-page visit (top of funnel). -->
+<script src="/js/wize-track-beacon.js"></script>
+<script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
+
+<script defer src="/js/wize-bottom-nav.js"></script>
+<script defer src="/js/wize-hamburger.js"></script>
+</body>
+</html>
