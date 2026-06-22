@@ -95,9 +95,19 @@
   window.addEventListener('unhandledrejection', function (e) {
     try {
       var r = e && e.reason;
+      var msg = (r && (r.message || String(r))) || 'unhandledrejection';
+      var code = r && (r.code || r.name);
+      // Benign aborts (Firebase/App Check cancelling an in-flight Firestore .get()
+      // with GRPC 'cancelled', AbortController, navigation-away). preventDefault()
+      // so they don't surface as "Uncaught (in promise) cancelled" console noise —
+      // not just dropped from the report.
+      if ((code && BENIGN.test(String(code))) || BENIGN.test(String(msg).trim())) {
+        e.preventDefault();
+        return;
+      }
       report({
         kind: 'unhandledrejection',
-        message: (r && (r.message || String(r))) || 'unhandledrejection',
+        message: msg,
         source: '',
         stack: (r && r.stack) || '',
       });
