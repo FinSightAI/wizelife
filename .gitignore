@@ -15,3 +15,13 @@ node_modules/
 _deep_mobile2.js
 wt-cwv-tmp.js
 qa/
+
+# internal docs — keep OUT of the public repo
+SECRET-ROTATION-CALENDAR.md
+SECURITY-PHASE3-CLICK-GUIDE.md
+STRATEGY.md
+LAUNCH-MESSAGES.md
+SHOW-HN-PLAYBOOK.md
+AUTOMATIONS_ROADMAP.md
+cpa-verification-packet.md
+qa/security-report.md
