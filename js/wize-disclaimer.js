@@ -40,7 +40,16 @@
         wizetravel: '#06b6d4', travel: '#06b6d4',
         wizelife: '#4f46e5'
       };
-      return window.WIZE_ACCENT || map[window.WIZE_APP] || '#6366f1';
+      // Fallback when WIZE_APP isn't set yet (gate() can fire before the app's late
+      // init): derive the accent from the host so the CTA is never a generic indigo.
+      var h = ''; try { h = (location.hostname || '').toLowerCase(); } catch (e) {}
+      var byHost =
+        (h.indexOf('money.') === 0 || h.indexOf('finsight') !== -1) ? '#10b981' :
+        (h.indexOf('tax.') === 0 || h.indexOf('mastermove') !== -1) ? '#f59e0b' :
+        (h.indexOf('deal.') === 0 || h.indexOf('check-deal') !== -1) ? '#8b5cf6' :
+        (h.indexOf('health.') === 0 || h.indexOf('vitara') !== -1 || h.indexOf('wizehealth') !== -1) ? '#ec4899' :
+        (h.indexOf('travel.') === 0 || h.indexOf('wizetravel') !== -1) ? '#06b6d4' : '';
+      return window.WIZE_ACCENT || map[window.WIZE_APP] || byHost || '#6366f1';
     } catch (e) { return '#6366f1'; }
   }
 
