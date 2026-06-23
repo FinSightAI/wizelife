@@ -270,6 +270,9 @@
 
   function buildModal(appId, force) {
     var slides = (COPY[appId] && COPY[appId][getLang()]) || COPY[appId].en;
+    // Shorter tour: keep the intro + the top feature + the closing trust/privacy slide
+    // (was a 6-slide wall before users reached the product).
+    if (slides && slides.length > 3) slides = [slides[0], slides[1], slides[slides.length - 1]];
     var color  = (COPY[appId] && COPY[appId].color) || '#6366f1';
     var lb     = LB[getLang()] || LB.en;
     var lang   = getLang();
