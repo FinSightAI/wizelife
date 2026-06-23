@@ -409,7 +409,7 @@
     wrap.id = 'wl-disclaimer-modal';
     wrap.setAttribute('dir', dir);
     wrap.style.cssText = [
-      'position:fixed','inset:0','z-index:2147483646','background:rgba(0,0,0,0.78)',
+      'position:fixed','inset:0','z-index:2147483646','background:rgba(0,0,0,0.45)','backdrop-filter:blur(7px)','-webkit-backdrop-filter:blur(7px)',
       'backdrop-filter:blur(6px)','-webkit-backdrop-filter:blur(6px)',
       'display:flex','align-items:center','justify-content:center','padding:18px',
       'font-family:"Plus Jakarta Sans",Inter,-apple-system,sans-serif',
