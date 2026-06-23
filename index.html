@@ -2019,9 +2019,17 @@ function applyLandingLang(){
  const aiRecoBodyEl = document.querySelector('.ai-reco-body');
  if(aiRecoBodyEl && t.aiRecoBody) aiRecoBodyEl.textContent = t.aiRecoBody;
 
- // AI demo (input was removed 2026-05-17 — Quick Demo + YOLO CTA only)
+ // AI demo — rebuild in the NEW language: welcome message + a fresh disclaimer
+ // strip + re-rendered sample prompts. The old code only reset the welcome when
+ // aiBody had a single child, so once the strip / sample Q&A were added the whole
+ // demo stayed stuck in the prior language. Resetting innerHTML first also clears
+ // the old-language .wl-ai-strip so chatStrip re-injects it in the new language.
  const aiB = document.getElementById('aiBody');
- if(aiB && aiB.children.length === 1) aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
+ if(aiB){
+  aiB.innerHTML = `<div class="ai-msg bot">${t.aiWelcome}</div>`;
+  try { if (window.WizeDisclaimer && WizeDisclaimer.chatStrip) WizeDisclaimer.chatStrip({ app:'general', container: aiB }); } catch(_){}
+ }
+ if (typeof window.__renderAiPrompts === 'function') window.__renderAiPrompts();
 
  // Calculator
  const calcEyeEl = document.querySelector('.calc-section .sec-eyebrow');
