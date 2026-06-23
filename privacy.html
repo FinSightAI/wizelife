@@ -121,7 +121,7 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <li><strong>Tax-related data:</strong> citizenships, residency, income brackets, and the questions you ask WizeTax. Used to personalise tax answers, not stored beyond your session unless you explicitly save a profile.</li>
       <li><strong>Real-estate data:</strong> deal details (address, price, mortgage terms) you analyse in WizeDeal.</li>
       <li><strong>Travel data:</strong> destinations, dates, trip plans entered in WizeTravel.</li>
-      <li><strong>AI queries:</strong> the questions you send, plus relevant context from your profile. Routed to one of: Google Gemini (default), Anthropic Claude, or OpenRouter (when explicitly selected). For tax-related questions, a derived search query may also go to Tavily for fresh regulatory data. Paid-tier APIs do NOT train on customer prompts. We do not retain prompts beyond the response.</li>
+      <li><strong>AI queries:</strong> the questions you send, plus relevant context from your profile. Routed to one of: Google Gemini (default), Anthropic Claude, Groq, or OpenRouter (when explicitly selected). For tax-related questions, a derived search query may also go to Tavily for fresh regulatory data. Paid-tier APIs do NOT train on customer prompts. We do not retain prompts beyond the response.</li>
       <li><strong>Aggregate analytics:</strong> page views, top routes, country (not city), device type, browser. Collected by <strong>Cloudflare Web Analytics</strong> in cookieless, server-side, aggregate-only form. No personal identifiers, no cross-session user tracking, no advertising ID. Not consent-gated because no cookies are set.</li>
       <li><strong>Auto-categorisation data:</strong> if you use WizeMoney's auto-categorise feature, transaction descriptions are sent to Gemini for tagging, then results returned to your browser. Not stored on AI provider servers.</li>
       <li><strong>Error &amp; crash diagnostics:</strong> when the app hits an uncaught JavaScript error or an unhandled promise rejection, we capture a compact diagnostic record — the error message, the stack trace, the app id (e.g. WizeMoney), and a sanitised page URL — and send it to <strong>our own first-party endpoint</strong> (a WizeLife Cloud Function that writes to our own Firestore <code>errorLogs</code> collection). This record is <strong>PII-stripped before it leaves your browser</strong> (emails and long digit sequences are redacted) and is <strong>first-party only — no Sentry, no third-party error-monitoring service, no cookies, and no persistent profile</strong>. It is throttled and runs to keep the apps working (legitimate interest), kept for diagnostics, then deleted when no longer needed.</li>
@@ -149,12 +149,13 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <tr><td style="padding:6px 8px;">Firebase Auth + Firestore</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Account, financial, goals, profile data</td></tr>
       <tr><td style="padding:6px 8px;">Google Gemini</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries (not retained beyond session)</td></tr>
       <tr><td style="padding:6px 8px;">Tavily</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Web-search queries (financial/tax topics)</td></tr>
-      <tr><td style="padding:6px 8px;">Render</td><td style="padding:6px 8px;">US (Oregon)</td><td style="padding:6px 8px;">API backends (master-backend, vitara)</td></tr>
+      <tr><td style="padding:6px 8px;">Google Cloud Run</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">API backends (WizeTax, WizeHealth, WizeTravel)</td></tr>
       <tr><td style="padding:6px 8px;">Vercel</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">WizeTax / WizeDeal frontends</td></tr>
       <tr><td style="padding:6px 8px;">GitHub Pages</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">WizeLife / WizeMoney static hosting</td></tr>
       <tr><td style="padding:6px 8px;">Cloudflare</td><td style="padding:6px 8px;">Global edge</td><td style="padding:6px 8px;">DNS, DDoS protection, WAF, cookieless aggregate analytics</td></tr>
       <tr><td style="padding:6px 8px;">Anthropic (Claude)</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries when user selects Claude provider (paid API, no training)</td></tr>
       <tr><td style="padding:6px 8px;">OpenRouter</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries when user explicitly switches provider</td></tr>
+      <tr><td style="padding:6px 8px;">Groq</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">AI queries when user explicitly selects the Groq provider (WizeHealth)</td></tr>
       <tr><td style="padding:6px 8px;">Resend (when active)</td><td style="padding:6px 8px;">US</td><td style="padding:6px 8px;">Transactional emails</td></tr>
       <tr><td style="padding:6px 8px;">PayPal</td><td style="padding:6px 8px;">US / EU</td><td style="padding:6px 8px;">Subscription billing &amp; payment processing (WizeMoney Pro/YOLO)</td></tr>
     </table>
@@ -240,7 +241,7 @@ footer{border-top:1px solid var(--border);padding:24px 32px;text-align:center;co
       <li>Firestore security rules: each user can only read/write their own data.</li>
       <li>Cloudflare DDoS + WAF protection.</li>
       <li>API rate limits (slowapi) on backends.</li>
-      <li>Backend secrets stored only in Render/Vercel/GitHub encrypted secret stores.</li>
+      <li>Backend secrets stored only in Google Cloud / Vercel / GitHub encrypted secret stores.</li>
       <li>No staff accesses user data without legal need.</li>
     </ul>
     <p>If a data breach occurs, we will notify affected users within 72 hours, as required by Israeli Privacy Law and GDPR Article 33.</p>
