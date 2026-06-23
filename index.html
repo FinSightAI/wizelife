@@ -192,7 +192,13 @@ h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-3px;line-hei
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(99,102,241,.55)}
 .btn-secondary{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border2);padding:16px 30px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:1rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(8px)}
 .btn-secondary:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.22)}
-
+/* Hero tool pills — visually prove the 5-tool suite with each app's brand color */
+.hero-tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:580px;margin:-18px 0 34px;animation:fadeUp .7s .25s ease both}
+.htool{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--border2);padding:8px 15px;border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;font-weight:600;color:#d8dff6;backdrop-filter:blur(8px);transition:transform .2s,border-color .2s,background .2s}
+.htool i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c);flex-shrink:0}
+.htool:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.hero-microtrust{margin-top:20px;font-size:.82rem;color:var(--muted);font-weight:500;letter-spacing:.2px;animation:fadeUp .7s .45s ease both}
+[data-theme="light"] .htool{background:rgba(0,0,0,.03);color:#475569;border-color:rgba(0,0,0,.08)}
 /* Hero live feed */
 .hero-feed{margin-top:64px;width:100%;max-width:720px;animation:fadeUp .7s .5s ease both}
 .feed-label{font-size:.72rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
@@ -757,11 +763,18 @@ footer{border-top:1px solid var(--border);background:var(--surf);padding:56px 40
  @keyframes wize-life-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
  </style>
 <p class="hero-sub">5 AI tools, one login: <strong>money</strong>, <strong>tax</strong>, <strong>travel</strong>, <strong>health</strong> &amp; <strong>real estate</strong> — each a purpose-built advisor for life's biggest decisions.</p>
+<div class="hero-tools" aria-label="The five WizeLife tools">
+<span class="htool" style="--c:#10b981"><i></i>WizeMoney</span>
+<span class="htool" style="--c:#f59e0b"><i></i>WizeTax</span>
+<span class="htool" style="--c:#06b6d4"><i></i>WizeTravel</span>
+<span class="htool" style="--c:#ec4899"><i></i>WizeHealth</span>
+<span class="htool" style="--c:#8b5cf6"><i></i>WizeDeal</span>
+</div>
 <div class="hero-btns">
 <a class="btn-primary" href="auth.html" rel="nofollow">Get started free →</a>
 <a class="btn-secondary" href="#products">Explore the suite ↓</a>
-<button type="button" class="btn-secondary" id="wlShareBtn" aria-label="Share" data-i18n="share" onclick="WizeShare&amp;&amp;WizeShare.share({title:'WizeLife',text:'WizeLife — Live Smarter. Every Day.',url:'https://wizelife.ai'})">↗ Share</button>
 </div>
+<div class="hero-microtrust" data-i18n="hero_microtrust">Free forever · No credit card · 4 languages (EN/HE/PT/ES)</div>
 <div class="hero-feed">
 <div class="feed-label" data-i18n="__12">Live from the suite</div>
 <div class="feed-track">
@@ -2293,7 +2306,7 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
-<script src="/js/wl-landing-i18n.js?v=2026061801" defer></script>
+<script src="/js/wl-landing-i18n.js?v=2026062301" defer></script>
 <script src="/js/wl-common-i18n.js?v=2" defer></script>
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
 <!-- Funnel: log the landing-page visit (top of funnel). -->
