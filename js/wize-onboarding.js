@@ -17,7 +17,7 @@
     money: {
       color: '#10b981',
       he: [
-        { e: '💰', t: 'WizeMoney',          s: 'דשבורד פיננסי אישי עם AI — מניות, קרנות, ופנסיה במקום אחד.' },
+        { e: '💰', t: 'הכסף שלך מפוזר ב-10 מקומות. כאן הכל במקום אחד.', s: '', cta: 'ארגן לי את הכסף →', b: ['בנק, מניות, פנסיה וקרנות — תמונה אחת', 'תדע בדיוק כמה יש לך, ולאן זה הולך', 'הנתונים שלך בלבד — פרטי ומוצפן'] },
         { e: '🤖', t: 'תובנות AI חכמות',     s: 'ה-AI מנתח את התיק שלך ומציע איך לשפר אותו — בלי ייעוץ אישי.' },
         { e: '🌍', t: 'שלוש שווקים',         s: 'ישראל, ארה״ב וברזיל — בורסות, גמל, פנסיה ומס במקום אחד.' },
         { e: '📈', t: 'מעקב אוטומטי',         s: 'הוסף עסקה אחת — והדשבורד מתעדכן לבד, עם תזרים והחזר שנתי.' },
@@ -25,7 +25,7 @@
         { e: '🔒', t: 'הנתונים שלך מוגנים',   s: 'מידע פיננסי מוצפן ב-AES-256, אף פעם לא נמכר, וניתן למחיקה בכל רגע.' }
       ],
       en: [
-        { e: '💰', t: 'WizeMoney',          s: 'Personal AI finance dashboard — stocks, funds, pension in one place.' },
+        { e: '💰', t: "Your money is scattered across 10 places. Here it's all in one.", s: '', cta: 'Organize my money →', b: ['Bank, stocks, pension & funds — one picture', 'Know exactly what you have, and where it’s going', 'Your data only — private & encrypted'] },
         { e: '🤖', t: 'Smart AI insights',  s: 'AI analyzes your portfolio and suggests improvements — no advisor needed.' },
         { e: '🌍', t: 'Three markets',      s: 'Israel, US and Brazil — equities, retirement and tax under one roof.' },
         { e: '📈', t: 'Auto-tracking',       s: 'Add one transaction — the dashboard updates itself, with cash flow and yearly return.' },
@@ -33,7 +33,7 @@
         { e: '🔒', t: 'Your data is safe',   s: 'Financial data is AES-256 encrypted, never sold, and deletable anytime.' }
       ],
       pt: [
-        { e: '💰', t: 'WizeMoney',          s: 'Painel financeiro com IA — ações, fundos e aposentadoria no mesmo lugar.' },
+        { e: '💰', t: 'Seu dinheiro está espalhado em 10 lugares. Aqui está tudo num só.', s: '', cta: 'Organizar meu dinheiro →', b: ['Banco, ações, previdência e fundos — uma visão', 'Saiba exatamente quanto você tem e para onde vai', 'Somente seus dados — privado e criptografado'] },
         { e: '🤖', t: 'Insights da IA',     s: 'A IA analisa seu portfólio e sugere melhorias — sem consultor.' },
         { e: '🌍', t: 'Três mercados',      s: 'Israel, EUA e Brasil — bolsa, previdência e impostos juntos.' },
         { e: '📈', t: 'Acompanhamento auto.', s: 'Adicione uma transação — o painel se atualiza sozinho, com fluxo e retorno anual.' },
@@ -41,7 +41,7 @@
         { e: '🔒', t: 'Seus dados protegidos', s: 'Dados financeiros com criptografia AES-256, nunca vendidos, deletáveis a qualquer hora.' }
       ],
       es: [
-        { e: '💰', t: 'WizeMoney',          s: 'Panel de finanzas con IA — acciones, fondos y pensión en un lugar.' },
+        { e: '💰', t: 'Tu dinero está repartido en 10 lugares. Aquí está todo junto.', s: '', cta: 'Organizar mi dinero →', b: ['Banco, acciones, pensión y fondos — una sola vista', 'Sabe exactamente cuánto tienes y a dónde va', 'Solo tus datos — privado y cifrado'] },
         { e: '🤖', t: 'Insights de IA',     s: 'La IA analiza tu cartera y sugiere mejoras — sin asesor.' },
         { e: '🌍', t: 'Tres mercados',      s: 'Israel, EE.UU. y Brasil — bolsa, jubilación e impuestos.' },
         { e: '📈', t: 'Seguimiento auto.',   s: 'Agrega una transacción — el panel se actualiza solo, con flujo y retorno anual.' },
@@ -388,9 +388,14 @@
     titleEl.style.cssText = 'margin:0 0 10px;color:#f0f4ff;font-size:22px;font-weight:900;text-align:center;letter-spacing:-0.6px;position:relative;z-index:1;';
     var subEl = document.createElement('p');
     subEl.style.cssText = 'margin:0 0 28px;color:rgba(255,255,255,0.7);font-size:15px;line-height:1.65;text-align:center;position:relative;z-index:1;';
+    /* Optional per-slide value bullets (e.g. the WizeMoney first screen). Slides
+       without a `b` array never show this — fully backward-compatible for all apps. */
+    var bulletsEl = document.createElement('div');
+    bulletsEl.style.cssText = 'margin:0 auto 26px;max-width:300px;flex-direction:column;gap:11px;text-align:' + (rtl ? 'right' : 'left') + ';position:relative;z-index:1;display:none;';
     card.appendChild(iconWrap);
     card.appendChild(titleEl);
     card.appendChild(subEl);
+    card.appendChild(bulletsEl);
 
     /* Bottom: skip + next/done */
     var bottom = document.createElement('div');
@@ -412,12 +417,27 @@
       var s = slides[step];
       iconWrap.textContent = s.e;
       titleEl.textContent = s.t;
-      subEl.textContent = s.s;
+      subEl.textContent = s.s || '';
+      subEl.style.display = s.s ? 'block' : 'none';
+      bulletsEl.innerHTML = '';
+      if (s.b && s.b.length) {
+        bulletsEl.style.display = 'flex';
+        s.b.forEach(function (txt) {
+          var row = document.createElement('div');
+          row.style.cssText = 'display:flex;align-items:flex-start;gap:9px;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.82);';
+          var chk = document.createElement('span'); chk.textContent = '✓';
+          chk.style.cssText = 'color:' + color + ';font-weight:900;flex:0 0 auto;';
+          var tx = document.createElement('span'); tx.textContent = txt;
+          row.appendChild(chk); row.appendChild(tx); bulletsEl.appendChild(row);
+        });
+      } else {
+        bulletsEl.style.display = 'none';
+      }
       Array.prototype.forEach.call(dots.children, function (d, i) {
         d.style.background = i <= step ? color : 'rgba(255,255,255,0.12)';
       });
       var isLast = step === slides.length - 1;
-      nextBtn.textContent = isLast ? lb.done : lb.next;
+      nextBtn.textContent = isLast ? lb.done : (s.cta || lb.next);
       skipBtn.style.visibility = isLast ? 'hidden' : 'visible';
     }
 
