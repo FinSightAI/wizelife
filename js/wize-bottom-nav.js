@@ -106,7 +106,7 @@
     deal: [
       { icon:'home',    key:'home',    href:'/',         label:{he:'בית',     en:'Home',     pt:'Início',  es:'Inicio'  } },
       { icon:'bookmark',key:'saved',   href:'/saved',    label:{he:'שמורים',  en:'Saved',    pt:'Salvos',  es:'Guardados'} },
-      { icon:'user',    key:'profile', href:'/profile',  label:{he:'פרופיל',  en:'Profile',  pt:'Perfil',  es:'Perfil'  } }
+      { icon:'chart',   key:'portfolio', href:'/profile',  label:{he:'תיק',     en:'Portfolio',pt:'Portfólio',es:'Cartera' } }
     ],
     portal: [
       { icon:'home',  key:'home',     href:'/',                  label:{he:'בית',     en:'Home',    pt:'Início', es:'Inicio'} },

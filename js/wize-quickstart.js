@@ -53,10 +53,10 @@
       color: '#a855f7',
       brand: 'WizeDeal',
       steps: [
-        { icon: '🔍', href: '/',        k: 'compare' },
-        { icon: '💾', href: '/saved',   k: 'saved'   },
-        { icon: '📤', href: '/share',   k: 'share'   },
-        { icon: '👤', href: '/profile', k: 'profile' },
+        { icon: '🔍', href: '/',        k: 'compare'   },
+        { icon: '💾', href: '/saved',   k: 'saved'     },
+        { icon: '📤', href: '/share',   k: 'share'     },
+        { icon: '📊', href: '/profile', k: 'portfolio' },
       ],
     },
   };
@@ -69,7 +69,7 @@
       tax:     { chat: 'שאל יועץ AI', reports: 'הדו"חות שלי', profile: 'הגדר פרופיל', simulator: 'סימולטור מס' },
       travel:  { hotels: 'חפש מלון', flights: 'חפש טיסה', alerts: 'הגדר התראת מחיר', ai: 'יועץ נסיעות AI' },
       health:  { chat: 'שאל את עוזר הבריאות AI', mydata: 'נתונים רפואיים', family: 'שתף עם משפחה' },
-      deal:    { compare: 'השווה עסקה', saved: 'עסקאות שמורות', share: 'שתף עסקה', profile: 'פרופיל' },
+      deal:    { compare: 'השווה עסקה', saved: 'עסקאות שמורות', share: 'שתף עסקה', portfolio: 'תיק השקעות' },
     },
     en: {
       title:  'Let\'s get started with {brand} 👋',
@@ -78,7 +78,7 @@
       tax:     { chat: 'Ask AI advisor', reports: 'My reports', profile: 'Set up profile', simulator: 'Tax simulator' },
       travel:  { hotels: 'Search hotels', flights: 'Search flights', alerts: 'Set price alert', ai: 'AI travel advisor' },
       health:  { chat: 'Ask AI health assistant', mydata: 'My medical data', family: 'Share with family' },
-      deal:    { compare: 'Compare a deal', saved: 'Saved deals', share: 'Share a deal', profile: 'Profile' },
+      deal:    { compare: 'Compare a deal', saved: 'Saved deals', share: 'Share a deal', portfolio: 'Portfolio' },
     },
     pt: {
       title:  'Vamos começar no {brand} 👋',
@@ -87,7 +87,7 @@
       tax:     { chat: 'Falar com consultor IA', reports: 'Meus relatórios', profile: 'Configurar perfil', simulator: 'Simulador de imposto' },
       travel:  { hotels: 'Buscar hotéis', flights: 'Buscar voos', alerts: 'Alerta de preço', ai: 'Consultor de viagens IA' },
       health:  { chat: 'Falar com assistente de saúde IA', mydata: 'Meus dados médicos', family: 'Compartilhar com família' },
-      deal:    { compare: 'Comparar oferta', saved: 'Ofertas salvas', share: 'Compartilhar oferta', profile: 'Perfil' },
+      deal:    { compare: 'Comparar oferta', saved: 'Ofertas salvas', share: 'Compartilhar oferta', portfolio: 'Portfólio' },
     },
     es: {
       title:  'Empecemos con {brand} 👋',
@@ -96,7 +96,7 @@
       tax:     { chat: 'Consultar asesor IA', reports: 'Mis informes', profile: 'Configurar perfil', simulator: 'Simulador de impuestos' },
       travel:  { hotels: 'Buscar hoteles', flights: 'Buscar vuelos', alerts: 'Alerta de precio', ai: 'Asesor de viajes IA' },
       health:  { chat: 'Consultar asistente de salud IA', mydata: 'Mis datos médicos', family: 'Compartir con familia' },
-      deal:    { compare: 'Comparar oferta', saved: 'Ofertas guardadas', share: 'Compartir oferta', profile: 'Perfil' },
+      deal:    { compare: 'Comparar oferta', saved: 'Ofertas guardadas', share: 'Compartir oferta', portfolio: 'Cartera' },
     },
   };
 
