@@ -118,12 +118,12 @@
     bar.setAttribute('aria-label', t.more);
     bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(' + (12 + bottomNavOffset()) + 'px + env(safe-area-inset-bottom));z-index:2147483000;'
       + 'background:rgba(15,18,32,0.97);color:#e7ebff;border:1px solid rgba(255,255,255,0.12);'
-      + 'border-radius:14px;padding:12px 14px;box-shadow:0 10px 40px rgba(0,0,0,0.45);'
-      + 'font:400 13px/1.5 Inter,-apple-system,system-ui,sans-serif;display:flex;gap:12px;'
-      + 'align-items:center;flex-wrap:wrap;max-width:720px;margin:0 auto;backdrop-filter:blur(10px)';
+      + 'border-radius:14px;padding:10px 12px;box-shadow:0 10px 40px rgba(0,0,0,0.45);'
+      + 'font:400 12px/1.4 Inter,-apple-system,system-ui,sans-serif;display:flex;gap:8px;'
+      + 'align-items:center;flex-wrap:nowrap;max-width:720px;margin:0 auto;backdrop-filter:blur(10px)';
 
     var msg = document.createElement('div');
-    msg.style.cssText = 'flex:1;min-width:200px';
+    msg.style.cssText = 'flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis';
     var a = document.createElement('a');
     a.href = 'https://wizelife.ai/privacy.html';
     a.target = '_blank'; a.rel = 'noopener';
@@ -138,8 +138,8 @@
       var b = document.createElement('button');
       b.type = 'button';
       b.textContent = label;
-      b.style.cssText = 'border:0;border-radius:9px;padding:9px 14px;min-height:44px;'
-        + 'font:600 13px Inter,sans-serif;cursor:pointer;'
+      b.style.cssText = 'border:0;border-radius:9px;padding:8px 12px;min-height:44px;white-space:nowrap;'
+        + 'font:600 12px Inter,sans-serif;cursor:pointer;flex-shrink:0;'
         + (primary ? ('background:' + accent + ';color:#fff') : 'background:rgba(255,255,255,0.10);color:#e7ebff;border:1px solid rgba(255,255,255,0.30)');
       b.addEventListener('click', function () {
         set(val);
