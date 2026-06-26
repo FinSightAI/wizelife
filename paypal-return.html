@@ -58,9 +58,12 @@ firebase.initializeApp({
     return;
   }
 
-  // Wait for auth state
+  // Wait for auth state (max 8s)
   const user = await new Promise(resolve => {
-    const unsub = firebase.auth().onAuthStateChanged(u => { unsub(); resolve(u); });
+    const timer = setTimeout(() => resolve(null), 8000);
+    const unsub = firebase.auth().onAuthStateChanged(u => {
+      clearTimeout(timer); unsub(); resolve(u);
+    });
   });
 
   if (!user) {
