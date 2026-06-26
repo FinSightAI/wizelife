@@ -855,14 +855,12 @@ async function applyCode(uid) {
 }
 
 function paypalYoloUrl(uid) {
- const returnUrl = encodeURIComponent('https://wizelife.ai/paypal-return.html');
- const base = `https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=${PAYPAL_YOLO_PLAN_ID}&return_url=${returnUrl}`;
+ const base = `https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=${PAYPAL_YOLO_PLAN_ID}`;
  return uid ? base + `&custom_id=${encodeURIComponent(uid)}` : base;
 }
 
 function paypalUrl(uid) {
- const returnUrl = encodeURIComponent('https://wizelife.ai/paypal-return.html');
- const base = `https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=${PAYPAL_PLAN_ID}&return_url=${returnUrl}`;
+ const base = `https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=${PAYPAL_PLAN_ID}`;
  return uid ? `${base}&custom_id=${encodeURIComponent(uid)}` : base;
 }
 
