@@ -123,7 +123,7 @@
       + 'align-items:center;flex-wrap:nowrap;max-width:720px;margin:0 auto;backdrop-filter:blur(10px)';
 
     var msg = document.createElement('div');
-    msg.style.cssText = 'flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis';
+    msg.style.cssText = 'flex:1;min-width:0;white-space:normal';
     var a = document.createElement('a');
     a.href = 'https://wizelife.ai/privacy.html';
     a.target = '_blank'; a.rel = 'noopener';

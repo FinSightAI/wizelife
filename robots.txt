@@ -16,17 +16,18 @@ Allow: /
 
 User-agent: *
 Allow: /
-
-Sitemap: https://wizelife.ai/sitemap.xml
-
 # Block admin/auth flows from search indexing
 Disallow: /auth.html
+Disallow: /dashboard.html
+Disallow: /account.html
 Disallow: /__/auth/
 Disallow: /admin/
 Disallow: /errors.html
 Disallow: /funnel.html
 Disallow: /*?wl_token=
 Disallow: /*?wl_plan=
-
 # Crawl-delay for politeness (most engines ignore this)
 Crawl-delay: 1
+
+Sitemap: https://wizelife.ai/sitemap.xml
+Sitemap: https://wizelife.ai/sitemap-index.xml

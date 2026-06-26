@@ -58,7 +58,8 @@
 <link rel="dns-prefetch" href="https://wizetax-backend-3ol2retcla-uc.a.run.app">
 <link rel="preconnect" href="https://ofirofir-wizetravel.hf.space" crossorigin>
 <link rel="dns-prefetch" href="https://ofirofir-wizetravel.hf.space">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
  :root {
@@ -123,9 +124,9 @@
  .back a:hover { color: var(--text); }
 
  .pw-wrap { position: relative; }
- .pw-wrap input { padding-right: 42px; }
+ .pw-wrap input { padding-inline-end: 42px; }
  .pw-toggle {
- position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+ position: absolute; inset-inline-end: 12px; top: 50%; transform: translateY(-50%);
  background: none; border: none; cursor: pointer; color: var(--muted);
  font-size: 1rem; line-height: 1; padding: 4px;
  transition: color 0.15s;
@@ -337,8 +338,9 @@ window._wlLazy = {
  }
 
  function setLoading(btnId, loading) {
+ const t = _authT();
  document.getElementById(btnId).disabled = loading;
- document.getElementById(btnId).textContent = loading ? "Please wait…" : (btnId === "loginBtn" ? "Sign In" : "Create Account");
+ document.getElementById(btnId).textContent = loading ? t.wait : (btnId === "loginBtn" ? t.signInBtn : t.signUpBtn);
  }
 
  function togglePw(id, btn) {
@@ -369,11 +371,12 @@ window._wlLazy = {
  }
 
  function validatePassword(pass) {
- if (pass.length < 8) return "Password must be at least 8 characters.";
- if (!/[A-Z]/.test(pass)) return "Password must contain at least one uppercase letter (A-Z).";
- if (!/[a-z]/.test(pass)) return "Password must contain at least one lowercase letter (a-z).";
- if (!/[0-9]/.test(pass)) return "Password must contain at least one digit (0-9).";
- if (!/[^A-Za-z0-9]/.test(pass)) return "Password must contain at least one special character (!@#$% etc.).";
+ const t = _authT();
+ if (pass.length < 8) return t.pwMin;
+ if (!/[A-Z]/.test(pass)) return t.pwUpper;
+ if (!/[a-z]/.test(pass)) return t.pwLower;
+ if (!/[0-9]/.test(pass)) return t.pwDigit;
+ if (!/[^A-Za-z0-9]/.test(pass)) return t.pwSpecial;
  return null;
  }
 
@@ -431,32 +434,74 @@ window._wlLazy = {
 
  function _showVerifyScreen(email) {
  const lang = localStorage.getItem('wl_lang') || 'he';
+ // body* split into before/after the email so the user-supplied address can be
+ // inserted via textContent (NEVER innerHTML) — prevents stored/reflected XSS.
  const T = {
- he: { title: '✉️ בדוק את המייל שלך', body: `שלחנו לינק אימות אל <strong>${email}</strong>.<br>לחץ על הלינק כדי לאמת את החשבון ולגשת לכלים.`, resend: 'שלח שוב', done: 'אימתתי — התחבר', note: 'לא קיבלת? בדוק ספאם / Promotions.' },
- en: { title: '✉️ Check your email', body: `We sent a verification link to <strong>${email}</strong>.<br>Click it to verify your account and access the tools.`, resend: 'Resend email', done: 'I verified — Sign in', note: "Didn't get it? Check spam / Promotions." },
- pt: { title: '✉️ Verifique seu e-mail', body: `Enviamos um link de verificação para <strong>${email}</strong>.<br>Clique nele para verificar sua conta.`, resend: 'Reenviar', done: 'Verifiquei — Entrar', note: 'Não recebeu? Verifique spam / Promoções.' },
- es: { title: '✉️ Revisa tu email', body: `Enviamos un enlace de verificación a <strong>${email}</strong>.<br>Haz clic para verificar tu cuenta.`, resend: 'Reenviar', done: 'Verifiqué — Iniciar sesión', note: '¿No lo recibiste? Revisa spam / Promociones.' },
+ he: { title: 'בדוק את המייל שלך', bodyPre: 'שלחנו לינק אימות אל ', bodyPost: '.', bodyLine2: 'לחץ על הלינק כדי לאמת את החשבון ולגשת לכלים.', resend: 'שלח שוב', done: 'אימתתי — התחבר', note: 'לא קיבלת? בדוק ספאם / Promotions.' },
+ en: { title: 'Check your email', bodyPre: 'We sent a verification link to ', bodyPost: '.', bodyLine2: 'Click it to verify your account and access the tools.', resend: 'Resend email', done: 'I verified — Sign in', note: "Didn't get it? Check spam / Promotions." },
+ pt: { title: 'Verifique seu e-mail', bodyPre: 'Enviamos um link de verificação para ', bodyPost: '.', bodyLine2: 'Clique nele para verificar sua conta.', resend: 'Reenviar', done: 'Verifiquei — Entrar', note: 'Não recebeu? Verifique spam / Promoções.' },
+ es: { title: 'Revisa tu email', bodyPre: 'Enviamos un enlace de verificación a ', bodyPost: '.', bodyLine2: 'Haz clic para verificar tu cuenta.', resend: 'Reenviar', done: 'Verifiqué — Iniciar sesión', note: '¿No lo recibiste? Revisa spam / Promociones.' },
  };
  const t = T[lang] || T.en;
- document.querySelector('.card').innerHTML = `
- <div style="text-align:center;padding:32px 24px">
- <div style="font-size:48px;margin-bottom:16px">✉️</div>
- <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--text)">${t.title.replace('✉️ ','')}</h2>
- <p style="color:var(--muted);line-height:1.7;margin-bottom:24px;font-size:.95rem">${t.body}</p>
- <p style="color:var(--muted);font-size:.8rem;margin-bottom:20px">${t.note}</p>
- <button onclick="_resendVerification('${email}')" style="width:100%;padding:12px;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:10px;cursor:pointer;font-size:.9rem;margin-bottom:10px">${t.resend}</button>
- <button onclick="location.reload()" style="width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700">${t.done}</button>
- </div>`;
+
+ const card = document.querySelector('.card');
+ card.textContent = '';
+
+ const wrap = document.createElement('div');
+ wrap.style.cssText = 'text-align:center;padding:32px 24px';
+
+ const icon = document.createElement('div');
+ icon.style.cssText = 'font-size:48px;margin-bottom:16px';
+ icon.textContent = '✉️';
+ wrap.appendChild(icon);
+
+ const h2 = document.createElement('h2');
+ h2.style.cssText = 'font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--text)';
+ h2.textContent = t.title;
+ wrap.appendChild(h2);
+
+ const body = document.createElement('p');
+ body.style.cssText = 'color:var(--muted);line-height:1.7;margin-bottom:24px;font-size:.95rem';
+ body.appendChild(document.createTextNode(t.bodyPre));
+ const emailEl = document.createElement('strong');
+ emailEl.textContent = email; // user-controlled → textContent only
+ body.appendChild(emailEl);
+ body.appendChild(document.createTextNode(t.bodyPost));
+ body.appendChild(document.createElement('br'));
+ body.appendChild(document.createTextNode(t.bodyLine2));
+ wrap.appendChild(body);
+
+ const note = document.createElement('p');
+ note.style.cssText = 'color:var(--muted);font-size:.8rem;margin-bottom:20px';
+ note.textContent = t.note;
+ wrap.appendChild(note);
+
+ const resendBtn = document.createElement('button');
+ resendBtn.type = 'button';
+ resendBtn.style.cssText = 'width:100%;padding:12px;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:10px;cursor:pointer;font-size:.9rem;margin-bottom:10px';
+ resendBtn.textContent = t.resend;
+ resendBtn.addEventListener('click', function () { _resendVerification(email); });
+ wrap.appendChild(resendBtn);
+
+ const doneBtn = document.createElement('button');
+ doneBtn.type = 'button';
+ doneBtn.style.cssText = 'width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700';
+ doneBtn.textContent = t.done;
+ doneBtn.addEventListener('click', function () { location.reload(); });
+ wrap.appendChild(doneBtn);
+
+ card.appendChild(wrap);
  }
 
  async function _resendVerification(email) {
+ const t = _authT();
  try {
  const user = wlAuth.currentUser;
  if (user) {
  await user.sendEmailVerification({ url: 'https://wizelife.ai/auth.html', handleCodeInApp: false });
- alert('✅ Sent!');
+ alert(t.resentOk);
  }
- } catch(e) { alert('Error: ' + e.message); }
+ } catch(e) { alert(t.resentErr + e.message); }
  }
 
  async function _finishGoogleAuth(cred) {
@@ -538,19 +583,20 @@ window._wlLazy = {
  console.error("Google login failed:", e);
  // Always include the raw error code so we can diagnose unknown failures
  const code = e.code || "unknown";
+ const gt = _authG();
  const reason = (
- code === "auth/popup-blocked" ? "הדפדפן חסם את החלון" :
- code === "auth/popup-closed-by-user" ? "ביטלת את ההתחברות" :
- code === "auth/unauthorized-domain" ? "הדומיין הזה לא מורשה ב-Firebase" :
- code === "auth/operation-not-allowed" ? "Google sign-in לא מופעל ב-Firebase Console" :
- code === "auth/network-request-failed" ? "תקלת רשת. בדוק חיבור אינטרנט" :
- code === "auth/cancelled-popup-request" ? "Popup קודם בוטל. רענן ונסה שוב" :
- code === "auth/internal-error" ? "שגיאה פנימית של Firebase" :
- code === "auth/account-exists-with-different-credential" ? "כבר נרשמת עם email/password באימייל הזה" :
- (e.message || "שגיאה לא ידועה")
+ code === "auth/popup-blocked" ? gt.popupBlocked :
+ code === "auth/popup-closed-by-user" ? gt.popupClosed :
+ code === "auth/unauthorized-domain" ? gt.unauthDomain :
+ code === "auth/operation-not-allowed" ? gt.opNotAllowed :
+ code === "auth/network-request-failed" ? gt.network :
+ code === "auth/cancelled-popup-request" ? gt.cancelled :
+ code === "auth/internal-error" ? gt.internal :
+ code === "auth/account-exists-with-different-credential" ? gt.acctExists :
+ (e.message || gt.unknown)
  );
  // Always show the code at the end — copy-paste this when reporting
- const fullMsg = `${reason}\n\nקוד שגיאה: ${code}\n\nצלם והעבר ל-hi@wizelife.ai אם זה ממשיך`;
+ const fullMsg = `${reason}\n\n${gt.errCodeLabel}${code}\n\n${gt.reportFooter}`;
  // Auto-fallback: on popup-blocked, try redirect
  if (code === "auth/popup-blocked") {
  try { await wlAuth.signInWithRedirect(googleProvider); return; } catch (e) { console.error(e); }
@@ -567,31 +613,32 @@ window._wlLazy = {
  }).catch((e) => {
  if (e && e.code && e.code !== "auth/null-user") {
  console.error("Google redirect result error:", e);
- alert("Google sign-in failed: " + e.code);
+ alert(_authG().redirectFailed + e.code);
  }
  });
 
  function friendlyError(code) {
+ const t = _authT();
  const map = {
  // Anti-enumeration: collapse "user-not-found" + "wrong-password" into the
  // same generic message so attackers can't distinguish a real email from a
  // fake one by reading the response. (QA: security-deep-flows.js)
- "auth/user-not-found": "Wrong email or password — check for caps-lock or trailing spaces.",
- "auth/wrong-password": "Wrong email or password — check for caps-lock or trailing spaces.",
- "auth/invalid-credential": "Wrong email or password — check for caps-lock or trailing spaces.",
- "auth/invalid-login-credentials":"Wrong email or password — check for caps-lock or trailing spaces.",
- "auth/invalid-email": "Invalid email address.",
- "auth/email-already-in-use": "This email is already registered. Try signing in.",
- "auth/weak-password": "Password must be at least 8 characters with uppercase and special character.",
- "auth/too-many-requests": "Too many attempts. Try again in a few minutes — or use \"Forgot password\".",
- "auth/popup-closed-by-user": "Sign-in cancelled.",
- "auth/network-request-failed": "Network problem — check your connection.",
- "auth/user-disabled": "This account is disabled. Contact support.",
- "auth/operation-not-allowed": "Email/password sign-in is disabled.",
- "auth/expired-action-code": "This reset link expired. Click \"Forgot password\" to get a new one.",
- "auth/invalid-action-code": "This reset link is invalid or already used. Request a new one.",
+ "auth/user-not-found": t.errWrongCreds,
+ "auth/wrong-password": t.errWrongCreds,
+ "auth/invalid-credential": t.errWrongCreds,
+ "auth/invalid-login-credentials": t.errWrongCreds,
+ "auth/invalid-email": t.errInvalidEmail,
+ "auth/email-already-in-use": t.errEmailInUse,
+ "auth/weak-password": t.errWeakPw,
+ "auth/too-many-requests": t.errTooMany,
+ "auth/popup-closed-by-user": t.errPopupClosed,
+ "auth/network-request-failed": t.errNetwork,
+ "auth/user-disabled": t.errDisabled,
+ "auth/operation-not-allowed": t.errOpNotAllowed,
+ "auth/expired-action-code": t.errExpiredCode,
+ "auth/invalid-action-code": t.errInvalidCode,
  };
- return map[code] || ("Something went wrong (" + (code || "unknown") + "). Please try again.");
+ return map[code] || (t.errGeneric + " (" + (code || "unknown") + ").");
  }
 
  function togglePw(inputId, btn) {
@@ -622,12 +669,12 @@ window._wlLazy = {
  } else {
  // Surface real errors (network/quota) without leaking existence.
  document.getElementById("loginError").style.color = "";
- document.getElementById("loginError").textContent = friendlyError(e.code) || "Something went wrong — try again.";
+ document.getElementById("loginError").textContent = friendlyError(e.code) || _authT().errTryAgain;
  return;
  }
  }
  document.getElementById("loginError").style.color = "#34d399";
- document.getElementById("loginError").textContent = "If an account exists for that email, a reset link was sent — check your inbox.";
+ document.getElementById("loginError").textContent = _authT().resetSent;
  }
 
  // Allow Enter key
@@ -646,11 +693,110 @@ document.head.appendChild(_swScript);
 
 <script>
 const AUTH_TR = {
- he: { signIn: 'כניסה', signUp: 'יצירת חשבון', email: 'אימייל', password: 'סיסמה', fullName: 'שם מלא', forgot: 'שכחת סיסמה?', subtitle: 'הסוויטה לחיים מבוססת AI', signInBtn: 'כניסה', signUpBtn: 'הרשמה', or: 'או', google: 'המשך עם Google', back: 'חזרה ל-WizeLife →' },
- en: { signIn: 'Sign In', signUp: 'Create Account', email: 'Email', password: 'Password', fullName: 'Full Name', forgot: 'Forgot password?', subtitle: 'Your AI-powered life suite', signInBtn: 'Sign In', signUpBtn: 'Create Account', or: 'or', google: 'Continue with Google', back: '← Back to WizeLife' },
- pt: { signIn: 'Entrar', signUp: 'Criar Conta', email: 'Email', password: 'Senha', fullName: 'Nome Completo', forgot: 'Esqueceu a senha?', subtitle: 'Sua suíte de vida com IA', signInBtn: 'Entrar', signUpBtn: 'Criar Conta', or: 'ou', google: 'Continuar com Google', back: '← Voltar para o WizeLife' },
- es: { signIn: 'Iniciar Sesión', signUp: 'Crear Cuenta', email: 'Email', password: 'Contraseña', fullName: 'Nombre Completo', forgot: '¿Olvidaste la contraseña?', subtitle: 'Tu suite de vida con IA', signInBtn: 'Iniciar Sesión', signUpBtn: 'Crear Cuenta', or: 'o', google: 'Continuar con Google', back: '← Volver a WizeLife' },
+ he: { signIn: 'כניסה', signUp: 'יצירת חשבון', email: 'אימייל', password: 'סיסמה', fullName: 'שם מלא', forgot: 'שכחת סיסמה?', subtitle: 'הסוויטה לחיים מבוססת AI', signInBtn: 'כניסה', signUpBtn: 'הרשמה', or: 'או', google: 'המשך עם Google', back: 'חזרה ל-WizeLife →',
+   wait: 'רגע אחד…',
+   resentOk: '✅ נשלח!',
+   resentErr: 'שגיאה: ',
+   resetSent: 'אם קיים חשבון עבור כתובת זו, נשלח קישור לאיפוס — בדוק את תיבת הדואר.',
+   pwMin: 'הסיסמה חייבת להכיל לפחות 8 תווים.',
+   pwUpper: 'הסיסמה חייבת להכיל לפחות אות גדולה אחת (A-Z).',
+   pwLower: 'הסיסמה חייבת להכיל לפחות אות קטנה אחת (a-z).',
+   pwDigit: 'הסיסמה חייבת להכיל לפחות ספרה אחת (0-9).',
+   pwSpecial: 'הסיסמה חייבת להכיל לפחות תו מיוחד אחד (!@#$% וכו׳).',
+   errWrongCreds: 'אימייל או סיסמה שגויים — בדוק Caps-Lock או רווחים מיותרים.',
+   errInvalidEmail: 'כתובת אימייל לא תקינה.',
+   errEmailInUse: 'האימייל הזה כבר רשום. נסה להתחבר.',
+   errWeakPw: 'הסיסמה חייבת להכיל לפחות 8 תווים, אות גדולה ותו מיוחד.',
+   errTooMany: 'יותר מדי ניסיונות. נסה שוב בעוד כמה דקות — או השתמש ב״שכחת סיסמה״.',
+   errPopupClosed: 'ההתחברות בוטלה.',
+   errNetwork: 'בעיית רשת — בדוק את החיבור.',
+   errDisabled: 'החשבון הזה מושבת. פנה לתמיכה.',
+   errOpNotAllowed: 'התחברות עם אימייל/סיסמה מושבתת.',
+   errExpiredCode: 'קישור האיפוס פג תוקף. לחץ ״שכחת סיסמה״ לקבלת חדש.',
+   errInvalidCode: 'קישור האיפוס שגוי או כבר נוצל. בקש חדש.',
+   errGeneric: 'משהו השתבש',
+   errTryAgain: 'משהו השתבש — נסה שוב.' },
+ en: { signIn: 'Sign In', signUp: 'Create Account', email: 'Email', password: 'Password', fullName: 'Full Name', forgot: 'Forgot password?', subtitle: 'Your AI-powered life suite', signInBtn: 'Sign In', signUpBtn: 'Create Account', or: 'or', google: 'Continue with Google', back: '← Back to WizeLife',
+   wait: 'Please wait…',
+   resentOk: '✅ Sent!',
+   resentErr: 'Error: ',
+   resetSent: 'If an account exists for that email, a reset link was sent — check your inbox.',
+   pwMin: 'Password must be at least 8 characters.',
+   pwUpper: 'Password must contain at least one uppercase letter (A-Z).',
+   pwLower: 'Password must contain at least one lowercase letter (a-z).',
+   pwDigit: 'Password must contain at least one digit (0-9).',
+   pwSpecial: 'Password must contain at least one special character (!@#$% etc.).',
+   errWrongCreds: 'Wrong email or password — check for caps-lock or trailing spaces.',
+   errInvalidEmail: 'Invalid email address.',
+   errEmailInUse: 'This email is already registered. Try signing in.',
+   errWeakPw: 'Password must be at least 8 characters with uppercase and special character.',
+   errTooMany: 'Too many attempts. Try again in a few minutes — or use "Forgot password".',
+   errPopupClosed: 'Sign-in cancelled.',
+   errNetwork: 'Network problem — check your connection.',
+   errDisabled: 'This account is disabled. Contact support.',
+   errOpNotAllowed: 'Email/password sign-in is disabled.',
+   errExpiredCode: 'This reset link expired. Click "Forgot password" to get a new one.',
+   errInvalidCode: 'This reset link is invalid or already used. Request a new one.',
+   errGeneric: 'Something went wrong',
+   errTryAgain: 'Something went wrong — try again.' },
+ pt: { signIn: 'Entrar', signUp: 'Criar Conta', email: 'Email', password: 'Senha', fullName: 'Nome Completo', forgot: 'Esqueceu a senha?', subtitle: 'Sua suíte de vida com IA', signInBtn: 'Entrar', signUpBtn: 'Criar Conta', or: 'ou', google: 'Continuar com Google', back: '← Voltar para o WizeLife',
+   wait: 'Aguarde…',
+   resentOk: '✅ Enviado!',
+   resentErr: 'Erro: ',
+   resetSent: 'Se existir uma conta para esse e-mail, um link de redefinição foi enviado — verifique sua caixa de entrada.',
+   pwMin: 'A senha deve ter pelo menos 8 caracteres.',
+   pwUpper: 'A senha deve conter pelo menos uma letra maiúscula (A-Z).',
+   pwLower: 'A senha deve conter pelo menos uma letra minúscula (a-z).',
+   pwDigit: 'A senha deve conter pelo menos um dígito (0-9).',
+   pwSpecial: 'A senha deve conter pelo menos um caractere especial (!@#$% etc.).',
+   errWrongCreds: 'E-mail ou senha incorretos — verifique o Caps-Lock ou espaços extras.',
+   errInvalidEmail: 'Endereço de e-mail inválido.',
+   errEmailInUse: 'Este e-mail já está registrado. Tente entrar.',
+   errWeakPw: 'A senha deve ter pelo menos 8 caracteres, com maiúscula e caractere especial.',
+   errTooMany: 'Muitas tentativas. Tente novamente em alguns minutos — ou use "Esqueceu a senha".',
+   errPopupClosed: 'Login cancelado.',
+   errNetwork: 'Problema de rede — verifique sua conexão.',
+   errDisabled: 'Esta conta está desativada. Contate o suporte.',
+   errOpNotAllowed: 'Login com e-mail/senha está desativado.',
+   errExpiredCode: 'Este link de redefinição expirou. Clique em "Esqueceu a senha" para obter um novo.',
+   errInvalidCode: 'Este link de redefinição é inválido ou já foi usado. Solicite um novo.',
+   errGeneric: 'Algo deu errado',
+   errTryAgain: 'Algo deu errado — tente novamente.' },
+ es: { signIn: 'Iniciar Sesión', signUp: 'Crear Cuenta', email: 'Email', password: 'Contraseña', fullName: 'Nombre Completo', forgot: '¿Olvidaste la contraseña?', subtitle: 'Tu suite de vida con IA', signInBtn: 'Iniciar Sesión', signUpBtn: 'Crear Cuenta', or: 'o', google: 'Continuar con Google', back: '← Volver a WizeLife',
+   wait: 'Espera…',
+   resentOk: '✅ ¡Enviado!',
+   resentErr: 'Error: ',
+   resetSent: 'Si existe una cuenta para ese email, se envió un enlace de restablecimiento — revisa tu bandeja de entrada.',
+   pwMin: 'La contraseña debe tener al menos 8 caracteres.',
+   pwUpper: 'La contraseña debe contener al menos una letra mayúscula (A-Z).',
+   pwLower: 'La contraseña debe contener al menos una letra minúscula (a-z).',
+   pwDigit: 'La contraseña debe contener al menos un dígito (0-9).',
+   pwSpecial: 'La contraseña debe contener al menos un carácter especial (!@#$% etc.).',
+   errWrongCreds: 'Email o contraseña incorrectos — revisa el Bloq Mayús o espacios extra.',
+   errInvalidEmail: 'Dirección de email inválida.',
+   errEmailInUse: 'Este email ya está registrado. Intenta iniciar sesión.',
+   errWeakPw: 'La contraseña debe tener al menos 8 caracteres, con mayúscula y carácter especial.',
+   errTooMany: 'Demasiados intentos. Inténtalo de nuevo en unos minutos — o usa "¿Olvidaste la contraseña?".',
+   errPopupClosed: 'Inicio de sesión cancelado.',
+   errNetwork: 'Problema de red — revisa tu conexión.',
+   errDisabled: 'Esta cuenta está deshabilitada. Contacta con soporte.',
+   errOpNotAllowed: 'El inicio de sesión con email/contraseña está deshabilitado.',
+   errExpiredCode: 'Este enlace de restablecimiento expiró. Haz clic en "¿Olvidaste la contraseña?" para obtener uno nuevo.',
+   errInvalidCode: 'Este enlace de restablecimiento es inválido o ya se usó. Solicita uno nuevo.',
+   errGeneric: 'Algo salió mal',
+   errTryAgain: 'Algo salió mal — inténtalo de nuevo.' },
 };
+// Resolve AUTH_TR for the current wl_lang (falls back to English).
+function _authT() { return AUTH_TR[localStorage.getItem('wl_lang') || 'he'] || AUTH_TR.en; }
+
+// Google sign-in failure strings (separate dict — diagnostic-heavy, alert-only).
+const AUTH_GOOGLE_TR = {
+ he: { popupBlocked: 'הדפדפן חסם את החלון', popupClosed: 'ביטלת את ההתחברות', unauthDomain: 'הדומיין הזה לא מורשה ב-Firebase', opNotAllowed: 'Google sign-in לא מופעל ב-Firebase Console', network: 'תקלת רשת. בדוק חיבור אינטרנט', cancelled: 'Popup קודם בוטל. רענן ונסה שוב', internal: 'שגיאה פנימית של Firebase', acctExists: 'כבר נרשמת עם email/password באימייל הזה', unknown: 'שגיאה לא ידועה', errCodeLabel: 'קוד שגיאה: ', reportFooter: 'צלם והעבר ל-hi@wizelife.ai אם זה ממשיך', redirectFailed: 'התחברות Google נכשלה: ' },
+ en: { popupBlocked: 'The browser blocked the popup', popupClosed: 'You cancelled the sign-in', unauthDomain: 'This domain is not authorized in Firebase', opNotAllowed: 'Google sign-in is not enabled in the Firebase Console', network: 'Network error. Check your internet connection', cancelled: 'A previous popup was cancelled. Refresh and try again', internal: 'Internal Firebase error', acctExists: 'You already registered with email/password for this address', unknown: 'Unknown error', errCodeLabel: 'Error code: ', reportFooter: 'Screenshot and send to hi@wizelife.ai if this persists', redirectFailed: 'Google sign-in failed: ' },
+ pt: { popupBlocked: 'O navegador bloqueou a janela', popupClosed: 'Você cancelou o login', unauthDomain: 'Este domínio não está autorizado no Firebase', opNotAllowed: 'O login com Google não está ativado no Firebase Console', network: 'Erro de rede. Verifique sua conexão com a internet', cancelled: 'Um popup anterior foi cancelado. Atualize e tente novamente', internal: 'Erro interno do Firebase', acctExists: 'Você já se registrou com email/senha para este endereço', unknown: 'Erro desconhecido', errCodeLabel: 'Código de erro: ', reportFooter: 'Tire uma captura e envie para hi@wizelife.ai se persistir', redirectFailed: 'Login com Google falhou: ' },
+ es: { popupBlocked: 'El navegador bloqueó la ventana', popupClosed: 'Cancelaste el inicio de sesión', unauthDomain: 'Este dominio no está autorizado en Firebase', opNotAllowed: 'El inicio de sesión con Google no está habilitado en la consola de Firebase', network: 'Error de red. Verifica tu conexión a internet', cancelled: 'Una ventana anterior fue cancelada. Actualiza e inténtalo de nuevo', internal: 'Error interno de Firebase', acctExists: 'Ya te registraste con email/contraseña para esta dirección', unknown: 'Error desconocido', errCodeLabel: 'Código de error: ', reportFooter: 'Haz una captura y envía a hi@wizelife.ai si continúa', redirectFailed: 'Inicio de sesión con Google falló: ' },
+};
+function _authG() { return AUTH_GOOGLE_TR[localStorage.getItem('wl_lang') || 'he'] || AUTH_GOOGLE_TR.en; }
 function setAuthLang(v) {
  if (!['en','pt','es','he'].includes(v)) return;
  localStorage.setItem('wl_lang', v);
