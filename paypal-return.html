@@ -1,55 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Activating your plan… — WizeLife</title>
-<link rel="icon" href="/favicon.ico">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebaseapp.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com; frame-src 'none'; object-src 'none';">
+<title>מפעיל תוכנית… — WizeLife</title>
 <style>
-  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-         background: #0d1117; font-family: system-ui, sans-serif; color: #f0f4ff; text-align: center; padding: 24px; }
-  .box { max-width: 400px; }
-  .icon { font-size: 3rem; margin-bottom: 16px; }
-  h1 { font-size: 1.4rem; font-weight: 700; margin: 0 0 8px; }
-  p { color: #8892a4; font-size: 0.95rem; margin: 0 0 24px; }
-  .spinner { width: 44px; height: 44px; border: 3px solid rgba(99,102,241,0.2);
-             border-top-color: #6366f1; border-radius: 50%; animation: spin 0.8s linear infinite;
-             margin: 0 auto 24px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .btn { display: inline-block; padding: 13px 32px; background: #6366f1; color: #fff;
-         border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.95rem; }
-  .btn-yolo { background: linear-gradient(135deg,#f59e0b,#ef4444); }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+         background:#0d1117; font-family:system-ui,sans-serif; color:#f0f4ff; text-align:center; padding:24px; }
+  .box { max-width:400px; }
+  .icon { font-size:3rem; margin-bottom:16px; }
+  h1 { font-size:1.4rem; font-weight:700; margin:0 0 8px; }
+  p { color:#8892a4; font-size:0.95rem; margin:0 0 24px; }
+  .spinner { width:44px; height:44px; border:3px solid rgba(99,102,241,0.2);
+             border-top-color:#6366f1; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 24px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .btn { display:inline-block; padding:13px 32px; background:#6366f1; color:#fff;
+         border-radius:12px; text-decoration:none; font-weight:700; font-size:0.95rem; }
+  .btn-yolo { background:linear-gradient(135deg,#f59e0b,#ef4444); }
 </style>
 </head>
 <body>
 <div class="box" id="box">
-  <div class="spinner" id="spinner"></div>
-  <h1 id="title">מפעיל את התוכנית שלך…</h1>
-  <p id="sub">אנא המתן מספר שניות</p>
+  <div class="spinner"></div>
+  <h1>מפעיל את התוכנית שלך…</h1>
+  <p>אנא המתן מספר שניות</p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" integrity="sha384-ViccRjS0k/lvYsrtaKXk+ES61/4PAZlFI/mPHmLC1YWzK0AIbXbI5ZXDzcm3F8gH" crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" integrity="sha384-+/4lqMnmLqwbdHXshvGDmBTeWlNoPRdjXi4ZsiBj10EhQXaTBe3RF5JZktdSjug6" crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js" integrity="sha384-lONBStWloxmdvtJe8gp4aEOmE9dluTdSdGA5pUHFYPBMJRUDDPSdbq32bb0Spi3v" crossorigin="anonymous"></script>
-<script src="/js/firebase-config.js"></script>
 <script>
+firebase.initializeApp({
+  apiKey:            "AIzaSyDuzJHOMe89YmEFpKlaTgxT40BCNhK6PU0",
+  authDomain:        "finzilla-7f1f9.firebaseapp.com",
+  projectId:         "finzilla-7f1f9",
+  storageBucket:     "finzilla-7f1f9.firebasestorage.app",
+  messagingSenderId: "1027614800253",
+  appId:             "1:1027614800253:web:ddfb62426252e0e8ebb414"
+});
+
 (async function () {
+  function show(icon, title, sub, btnText, btnHref, isYolo) {
+    document.getElementById('box').innerHTML =
+      '<div class="icon">' + icon + '</div>' +
+      '<h1>' + title + '</h1>' +
+      '<p>' + sub + '</p>' +
+      (btnText ? '<a class="btn' + (isYolo ? ' btn-yolo' : '') + '" href="' + btnHref + '">' + btnText + '</a>' : '');
+  }
+
   const params = new URLSearchParams(location.search);
   const subscriptionId = params.get('subscription_id') || params.get('token');
 
-  function show(icon, title, sub, btnText, btnHref, isYolo) {
-    document.getElementById('box').innerHTML =
-      `<div class="icon">${icon}</div><h1>${title}</h1><p>${sub}</p>` +
-      (btnText ? `<a class="btn${isYolo ? ' btn-yolo' : ''}" href="${btnHref}">${btnText}</a>` : '');
-  }
-
   if (!subscriptionId) {
-    show('❌', 'Missing subscription ID', 'Something went wrong. Please contact support.', 'Back to dashboard', '/dashboard.html');
+    show('❌', 'חסר מזהה מנוי', 'משהו השתבש. אנא צור קשר עם התמיכה.', 'חזור לדשבורד', '/dashboard.html', false);
     return;
   }
 
-  // Wait for Firebase auth
+  // Wait for auth state
   const user = await new Promise(resolve => {
     const unsub = firebase.auth().onAuthStateChanged(u => { unsub(); resolve(u); });
   });
@@ -64,8 +73,7 @@
     const result = await fn({ subscriptionId });
     const plan = result.data && result.data.plan;
     const isYolo = plan === 'yolo';
-    const label = isYolo ? 'YOLO ⚡' : 'Pro';
-    show('🎉', `${label} מופעל!`,
+    show('🎉', (isYolo ? 'YOLO ⚡' : 'Pro') + ' מופעל!',
       'החשבון שלך שודרג בהצלחה. כל הכלים פתוחים.',
       'פתח את WizeLife ←', '/dashboard.html', isYolo);
   } catch (err) {
@@ -74,7 +82,7 @@
       ? 'המנוי שייך לחשבון אחר. אנא צור קשר.'
       : err.code === 'functions/failed-precondition'
       ? 'המנוי עדיין לא פעיל ב-PayPal. נסה שוב בעוד דקה.'
-      : 'שגיאה בהפעלה — נסה להתחבר מחדש או פנה לתמיכה.';
+      : 'שגיאה בהפעלה. נסה להתחבר מחדש או פנה לתמיכה.';
     show('⚠️', 'בעיה בהפעלה', msg, 'חזור לדשבורד', '/dashboard.html', false);
   }
 })();
