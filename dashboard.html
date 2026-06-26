@@ -710,6 +710,9 @@ function renderPlan(plan, user) {
  <a class="btn-upgrade" href="#" onclick="event.preventDefault();showUpgradeCompareModal()" style="display:block;text-align:center;padding:12px;border-radius:10px;text-decoration:none;margin-bottom:8px;">
  Compare Pro &amp; YOLO →
  </a>
+ <button onclick="showActivateModal()" style="width:100%;background:none;border:1px solid rgba(255,255,255,0.12);color:var(--muted);font-size:0.8rem;padding:8px;border-radius:8px;cursor:pointer;margin-top:4px;">
+ Already paid? Activate your plan →
+ </button>
  ${codeRow}`;
  }
 }
@@ -871,6 +874,47 @@ function paypalUrl(uid) {
  * opened. Eliminates the prior UX where Free users saw two stacked CTAs
  * with no explanation of the difference.
  */
+function showActivateModal() {
+ if (document.getElementById('wl-activate-modal')) return;
+ const overlay = document.createElement('div');
+ overlay.id = 'wl-activate-modal';
+ overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;padding:16px;';
+ overlay.innerHTML = `
+  <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:28px;max-width:400px;width:100%;text-align:center;">
+   <h3 style="margin:0 0 8px;font-size:1.1rem;">הפעלת תוכנית</h3>
+   <p style="color:#8892a4;font-size:0.85rem;margin:0 0 16px;">הזן את ה-Subscription ID מ-PayPal<br><small>ניתן למצוא אותו ב-paypal.com → Subscriptions</small></p>
+   <input id="wl-sub-id-input" type="text" placeholder="I-XXXXXXXXXXXX"
+    style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:#161b27;color:#f0f4ff;font-size:0.9rem;margin-bottom:12px;">
+   <div id="wl-activate-msg" style="font-size:0.82rem;min-height:20px;margin-bottom:12px;"></div>
+   <div style="display:flex;gap:8px;">
+    <button onclick="document.getElementById('wl-activate-modal').remove()" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:none;color:#8892a4;cursor:pointer;">ביטול</button>
+    <button onclick="doActivatePlan()" style="flex:2;padding:10px;border-radius:8px;border:none;background:#6366f1;color:#fff;font-weight:700;cursor:pointer;">הפעל תוכנית</button>
+   </div>
+  </div>`;
+ document.body.appendChild(overlay);
+}
+
+async function doActivatePlan() {
+ const subId = (document.getElementById('wl-sub-id-input').value || '').trim();
+ const msg = document.getElementById('wl-activate-msg');
+ if (!subId || !/^I-[A-Z0-9]+$/.test(subId)) {
+  msg.style.color = '#f87171'; msg.textContent = 'מזהה לא תקין — צריך להתחיל ב-I-'; return;
+ }
+ msg.style.color = '#8892a4'; msg.textContent = 'מאמת עם PayPal…';
+ try {
+  const fn = firebase.functions().httpsCallable('verifyPaypalSubscription');
+  const res = await fn({ subscriptionId: subId });
+  const plan = res.data && res.data.plan;
+  msg.style.color = '#6ee7b7';
+  msg.textContent = (plan === 'yolo' ? '⚡ YOLO' : '✦ Pro') + ' הופעל! מרענן…';
+  setTimeout(() => location.reload(), 1500);
+ } catch(e) {
+  msg.style.color = '#f87171';
+  msg.textContent = e.code === 'functions/permission-denied' ? 'המנוי שייך לחשבון אחר.' :
+   e.code === 'functions/failed-precondition' ? 'המנוי לא פעיל ב-PayPal.' : 'שגיאה — בדוק את ה-ID ונסה שוב.';
+ }
+}
+
 function showUpgradeCompareModal() {
  if (document.getElementById('wl-upgrade-modal')) return;
  const uid = (typeof wlAuth !== 'undefined' && wlAuth.currentUser && wlAuth.currentUser.uid) || '';
