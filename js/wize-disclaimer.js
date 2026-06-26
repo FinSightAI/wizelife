@@ -512,14 +512,43 @@
     };
     const bar = document.createElement('div');
     bar.id = 'wl-emergency-banner';
+    // CLS-safe: `position:fixed` (pinned to the very top) so the banner never
+    // occupies document flow and therefore can NEVER push page content down /
+    // cause a layout shift, even if it's injected after first paint. We then
+    // reserve an equal amount of space via body padding-top so it doesn't OVERLAP
+    // the top of the page. The banner is persistent (no dismiss), so the reserved
+    // space stays for the life of the page.
     bar.style.cssText = [
       'background:linear-gradient(90deg,#dc2626,#ef4444)','color:#fff',
       'font:700 12px Inter,-apple-system,sans-serif','padding:7px 14px','text-align:center',
-      'letter-spacing:0.2px','line-height:1.4','position:relative','z-index:99998',
+      'letter-spacing:0.2px','line-height:1.4','position:fixed','top:0','left:0','right:0','z-index:99998',
       'box-shadow:0 2px 6px rgba(220,38,38,0.3)',
     ].join(';');
     bar.innerHTML = TR[lang] || TR.en;
-    document.body.insertBefore(bar, document.body.firstChild);
+    document.body.appendChild(bar);
+    // Reserve flow space equal to the banner's rendered height so fixed-positioning
+    // doesn't cover the top of the page. Measured after insertion (height varies
+    // with text wrapping / viewport width). Defensive: never go below a sane min.
+    try {
+      var ebH = Math.max(bar.offsetHeight || 0, 28);
+      var prevPadTop = parseFloat(getComputedStyle(document.body).paddingTop) || 0;
+      // Mark how much WE added, so we don't double-count if called again.
+      document.body.style.paddingTop = (prevPadTop + ebH) + 'px';
+      document.body.setAttribute('data-wl-emergency-pad', String(ebH));
+    } catch (e) {}
+  }
+
+  // Release the body padding-top we reserved for the amber pro-disclaimer bar
+  // (desktop only). Subtracts back exactly what we added so other reserved space
+  // (e.g. the emergency banner) is preserved. Idempotent.
+  function _releaseProPad() {
+    try {
+      var added = parseFloat(document.body.getAttribute('data-wl-pro-pad') || '0') || 0;
+      if (!added) return;
+      var cur = parseFloat(getComputedStyle(document.body).paddingTop) || 0;
+      document.body.style.paddingTop = Math.max(0, cur - added) + 'px';
+      document.body.removeAttribute('data-wl-pro-pad');
+    } catch (e) {}
   }
 
   // Persistent professional-disclaimer banner — AMBER, slim, always visible
@@ -600,8 +629,23 @@
         'backdrop-filter:blur(8px)',
       ].filter(Boolean).join(';');
       bar.innerHTML = tr +
-        '<button aria-label="dismiss" style="position:absolute;top:50%;inset-inline-end:8px;transform:translateY(-50%);background:transparent;border:0;color:#78350f;font-size:14px;cursor:pointer;padding:2px 6px;line-height:1;font-family:inherit;opacity:.7;" onclick="(function(b){try{localStorage.setItem(\'' + dismKey + '\',String(Date.now()));}catch(e){}b.remove();})(this.parentNode)">✕</button>';
+        '<button aria-label="dismiss" style="position:absolute;top:50%;inset-inline-end:8px;transform:translateY(-50%);background:transparent;border:0;color:#78350f;font-size:14px;cursor:pointer;padding:2px 6px;line-height:1;font-family:inherit;opacity:.7;" onclick="(function(b){try{localStorage.setItem(\'' + dismKey + '\',String(Date.now()));}catch(e){}if(window.WizeDisclaimer&&window.WizeDisclaimer._releaseProPad)window.WizeDisclaimer._releaseProPad();b.remove();})(this.parentNode)">✕</button>';
       document.body.appendChild(bar);
+      // CLS-safe reservation: the bar is `position:fixed` so it never affects
+      // document flow (cannot push content / cause a layout shift), but on the
+      // DESKTOP layout it sits at top:36px and would otherwise OVERLAP the top of
+      // the page. Reserve equal body padding-top ONLY while the bar is shown, and
+      // release it on dismiss/close (see _releaseProPad + the ✕ handler above).
+      // On the MOBILE layout the bar is pinned to the BOTTOM (above the 56px
+      // bottom-nav), so it never overlaps top content — skip the reservation there.
+      try {
+        if (!barMob) {
+          var pdH = Math.max(bar.offsetHeight || 0, 24);
+          var prevPad = parseFloat(getComputedStyle(document.body).paddingTop) || 0;
+          document.body.style.paddingTop = (prevPad + pdH) + 'px';
+          document.body.setAttribute('data-wl-pro-pad', String(pdH));
+        }
+      } catch (e) {}
     };
     document.body.appendChild(chip);
     /* Auto-expand on first visit (and again after every 7-day dismissal),
@@ -877,6 +921,7 @@
     aiOutputFooter,   // per-output footer (use {firstOnly:true} in chats, or {highStake:true} for one-shot results)
     chatStrip,        // persistent slim strip at top of chat panel
     gateAction,       // modal confirmation before high-stake action
+    _releaseProPad,   // internal: releases reserved body padding on amber-bar dismiss
     TOS_VERSION,
   };
 })(window);
