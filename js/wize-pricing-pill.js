@@ -41,7 +41,15 @@
     return T[bl] ? bl : 'en';
   }
 
+  // The wizard renders form fields in a '.wizard-light-zone'. The pinned pill
+  // sits over the bottom ~100px and blocks those fields, so suppress it while a
+  // wizard step is on screen. (SPA — no reload between steps, so we re-check.)
+  function wizardActive() {
+    try { return !!document.querySelector('.wizard-light-zone'); } catch (_) { return false; }
+  }
+
   function render() {
+    if (wizardActive()) return; // don't inject over the wizard
     if (document.getElementById('wize-pricing-pill')) return;
     var lang = getLang();
     var t = T[lang];
@@ -126,6 +134,7 @@
     ].join(';');
     close.onclick = function () {
       try { localStorage.setItem('wl_pricing_pill_dismissed', String(Date.now())); } catch (_) {}
+      pill.dataset.wlDismissed = '1'; // so the wizard watcher won't re-show it this session
       pill.style.display = 'none';
       // Let layouts that reserve space for the pill (e.g. the WizeTax advisor
       // fixed shell) reclaim it once the pill is dismissed.
@@ -147,9 +156,33 @@
     document.documentElement.setAttribute('data-wl-pill', '1');
   }
 
+  // Keep the pill in sync with wizard presence as the user navigates the SPA:
+  // hide while a wizard step is active, re-show on home/dashboard. Skip entirely
+  // once the user has dismissed it (sticky 30d) — guarded inside render().
+  function syncWithWizard() {
+    var existing = document.getElementById('wize-pricing-pill');
+    if (wizardActive()) {
+      if (existing) existing.style.display = 'none';
+    } else if (existing) {
+      // Only un-hide if it wasn't dismissed by the user (× sets a flag we honour
+      // on next full load; within a session we just toggle wizard-driven hiding).
+      if (existing.dataset.wlDismissed !== '1') existing.style.display = '';
+    } else {
+      render();
+    }
+  }
+
+  function startWatch() {
+    try {
+      var mo = new MutationObserver(function () { syncWithWizard(); });
+      mo.observe(document.body, { childList: true, subtree: true });
+    } catch (_) {}
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', render);
+    document.addEventListener('DOMContentLoaded', function () { render(); startWatch(); });
   } else {
     render();
+    startWatch();
   }
 })();
