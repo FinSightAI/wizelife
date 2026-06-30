@@ -425,6 +425,13 @@ window._wlLazy = {
  handleCodeInApp: false,
  });
  } catch (verErr) { console.warn('verification email failed', verErr); }
+ try {
+   fetch("https://gainer-eight.vercel.app/api/track", {
+     method: "POST",
+     headers: {"Content-Type": "application/json"},
+     body: JSON.stringify({ tenant: "wizelife", name: name, email: email, consent: true, landingPage: "/signup-success" })
+   });
+ } catch (_) {}
  _showVerifyScreen(email);
  } catch (e) {
  document.getElementById("signupError").textContent = friendlyError(e.code);
@@ -856,5 +863,6 @@ function setAuthLang(v) {
 </script>
 <script src="/js/wl-common-i18n.js?v=2" defer></script>
 <script src="/js/wl-text-i18n.js?v=1" defer></script>
+<script src="https://gainer-eight.vercel.app/g.js" data-tenant="wizelife" defer></script>
 </body>
 </html>
