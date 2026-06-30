@@ -505,6 +505,46 @@ window._wlLazy = {
 <script src="js/wizelife-auth.js?v=2026061701"></script>
 <script src="js/wize-track.js?v=2026061701"></script>
 <script>
+  // ── Reliability watchdog ──────────────────────────────────────────────────
+  // The dashboard only renders after Firebase auth resolves AND Firestore reads
+  // return. If the Firebase SDK fails to load (gstatic blocked / SRI / offline)
+  // or a Firestore read hangs, the page would sit on "Loading…" / "Loading your
+  // plan…" forever. After 12s with no resolution, swap the dead spinner for a
+  // clear, localized recovery state with a Refresh button. __wlDashResolved is
+  // flipped true once the real render begins (see requireAuth handler below).
+  (function () {
+    window.__wlDashResolved = false;
+    setTimeout(function () {
+      if (window.__wlDashResolved) return;
+      var nameEl = document.getElementById('navUserName');
+      if (nameEl && nameEl.textContent !== 'Loading…') return; // something rendered
+      var lang = 'en';
+      try { lang = (localStorage.getItem('wl_lang') || 'he').slice(0, 2); } catch (e) {}
+      var M = {
+        he: { t: 'בעיית חיבור', d: 'לא הצלחנו לטעון את החשבון שלך. בדוק את החיבור לאינטרנט.', b: 'רענן' },
+        en: { t: 'Connection problem', d: "We couldn't load your account. Check your internet connection.", b: 'Refresh' },
+        pt: { t: 'Problema de conexão', d: 'Não foi possível carregar sua conta. Verifique sua conexão.', b: 'Atualizar' },
+        es: { t: 'Problema de conexión', d: 'No pudimos cargar tu cuenta. Revisa tu conexión.', b: 'Actualizar' }
+      };
+      var t = M[lang] || M.en;
+      try {
+        var pTitle = document.getElementById('planTitle'); if (pTitle) pTitle.textContent = t.t;
+        var pDesc  = document.getElementById('planDesc');  if (pDesc)  pDesc.textContent  = t.d;
+        if (nameEl) nameEl.textContent = '—';
+        var pAct = document.getElementById('planAction');
+        if (pAct) {
+          pAct.innerHTML = '';
+          var b = document.createElement('button');
+          b.type = 'button'; b.textContent = t.b;
+          b.style.cssText = 'background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;border-radius:10px;padding:10px 22px;font:700 .9rem Inter,sans-serif;cursor:pointer';
+          b.addEventListener('click', function () { location.reload(); });
+          pAct.appendChild(b);
+        }
+      } catch (e) { console.error('dash watchdog render failed', e); }
+    }, 12000);
+  })();
+</script>
+<script>
   // Funnel: log the dashboard view + which tool the user opens (the step
   // between signup and activation). Fire-and-forget; see /funnel.html.
   (function () {
@@ -522,7 +562,11 @@ window._wlLazy = {
 const PAYPAL_PLAN_ID = "P-42B26777LT293231BNHMVWNA";
 const PAYPAL_YOLO_PLAN_ID = "P-3WT61990FP2103335NH32GVA";
 
-requireAuth("auth.html").then(async (user) => {
+(typeof requireAuth === 'function'
+  ? requireAuth("auth.html")
+  : Promise.reject(new Error('Firebase SDK unavailable'))
+).then(async (user) => {
+ window.__wlDashResolved = true; // auth chain works — disarm the connection watchdog
  // Fetch nickname from Firestore (prefer name; fall back to email local-part — never full email)
  let nick = user.displayName || (user.email && user.email.includes('@') ? user.email.split('@')[0].split('+')[0] : (user.email || ""));
  try {
@@ -592,6 +636,10 @@ requireAuth("auth.html").then(async (user) => {
 
  // Referral panel
  try { await renderReferral(user); } catch(e) { console.warn("referral render failed", e); }
+}).catch(function (e) {
+ // Never let an init failure become an unhandled rejection + dead spinner — the
+ // reliability watchdog above will surface a user-facing recovery state.
+ console.error('dashboard init failed', e);
 });
 
 async function renderReferral(user) {

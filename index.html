@@ -2262,7 +2262,10 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  function updateLandingPlanBadge() {
  var el = document.getElementById('navPlanBadge');
  if (!el) return;
- var plan = localStorage.getItem('wl_plan');
+ // localStorage can throw in private mode / blocked-storage browsers — guard it
+ // so a brand-new visitor's landing nav never dies on an uncaught error.
+ var plan = null;
+ try { plan = localStorage.getItem('wl_plan'); } catch (e) { return; }
  if (!plan || plan === 'free') {
  var wlLang2=(localStorage.getItem('wl_lang')||'en').toLowerCase();
  var upgLbls2={he:'חינם · שדרג ←',en:'FREE · Upgrade →',pt:'GRÁTIS · Upgrade →',es:'GRATIS · Upgrade →'};
