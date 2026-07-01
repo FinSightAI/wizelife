@@ -563,6 +563,13 @@ window._wlLazy = {
      try { _attr = JSON.parse(localStorage.getItem('wl_attribution') || '{}').first; } catch (_) {}
      await window.WizeTrack?.signup({ method: 'google', ...(_attr ? { attr: _attr } : {}) });
  } catch (e) { console.error(e); }
+ try {
+   fetch("https://gainer-eight.vercel.app/api/track", {
+     method: "POST",
+     headers: {"Content-Type": "application/json"},
+     body: JSON.stringify({ tenant: "wizelife", name: cred.user.displayName || nick, email: cred.user.email, consent: true, landingPage: "/signup-success" })
+   });
+ } catch (_) {}
  } else {
  const d = doc.data();
  if (!d.nickname) await ref.update({ nickname: nick });
