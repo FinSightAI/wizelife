@@ -37,7 +37,7 @@ authenticates through a unified SSO bridge.
 | WizeMoney | money.wizelife.ai | GitHub Pages | `FinSightAI/finsight` | AI → Cloud Run `wizetax-backend` `/api/ai-proxy`; prices → Cloudflare Worker (Yahoo proxy) | Cloud Run + CF Worker | Cloudflare (orange) → GitHub Pages |
 | WizeTax | tax.wizelife.ai | Vercel | `FinSightAI/master` (`tax master/frontend`) | FastAPI (Python) | Cloud Run `wizetax-backend` | Cloudflare (orange) → Vercel (cname.vercel-dns) |
 | WizeHealth | health.wizelife.ai | Cloud Run (same app) | `finsightai/vitara` (RAMBAM) | Node/Express (same app serves `/api`) | Cloud Run `wizehealth` | Cloudflare **DNS-only (gray)** → ghs.googlehosted (Cloud Run domain-mapping) |
-| WizeTravel | travel.wizelife.ai | Vercel | `FinSightAI/wizetravel-next` | Python (FastAPI/Streamlit) | **Hugging Face Space** `ofirofir/wizetravel` (+ Streamlit `nodedai.streamlit.app`) | Cloudflare (orange) → Vercel |
+| WizeTravel | travel.wizelife.ai | Vercel | `FinSightAI/wizetravel-next` | Python (FastAPI) | Cloud Run `wizetravel-backend` (us-central1) | Cloudflare (orange) → Vercel |
 | WizeDeal | deal.wizelife.ai | Vercel | `finsightai/check-deal` | Next.js API routes (serverless) | Vercel (same project) | Cloudflare (orange) → Vercel |
 
 **Shared infrastructure (all apps):**
@@ -68,7 +68,7 @@ authenticates through a unified SSO bridge.
 | WizeTax (FE) | `FinSightAI/master` | `tax master/frontend/` |
 | WizeTax (BE) | `FinSightAI/master` | `tax master/backend/` |
 | WizeTravel (FE) | `FinSightAI/wizetravel-next` | `wizetravel-app/` |
-| WizeTravel (BE) | (mega traveller, separate) | `mega traveller/` |
+| WizeTravel (BE) | `FinSightAI/wizetravel-next` (shared) | `wizetravel-backend/` |
 | WizeHealth | `finsightai/vitara` | `RAMBAM/` |
 | WizeDeal | `finsightai/check-deal` | `Check Deal/` |
 
@@ -81,7 +81,7 @@ authenticates through a unified SSO bridge.
 | WizeLife | Vanilla HTML/CSS/JS | Firebase | GitHub Pages | Firebase |
 | WizeMoney | Vanilla HTML/CSS/JS (PWA) | Firebase + Cloud Run | GitHub Pages | Firebase + Cloud Run |
 | WizeTax | Next.js 15 | FastAPI (Python) | Vercel | Cloud Run (`wizetax-backend`) |
-| WizeTravel | Next.js 15 | FastAPI (Python) | Vercel | HF Space / Streamlit |
+| WizeTravel | Next.js 15 | FastAPI (Python) | Vercel | Cloud Run `wizetravel-backend`; data in Firestore `wizetravel_data/{uid}` |
 | WizeHealth | Vanilla HTML/CSS/JS | Node.js (Express) | Cloud Run | Cloud Run (`wizehealth`, same node) |
 | WizeDeal | Next.js 15 | Vercel API routes | Vercel | Vercel |
 
