@@ -1,19 +1,16 @@
-# 🚨 I18n-Leak action items — 2026-06-12
+# 🚨 I18n-Leak action items — 2026-06-30
 
 **1 failure(s), 0 warning(s), 50 pass.**
 
 ## For Claude to fix:
-- ❌ https://wizelife.ai/tax-compare.html [PT] — no Hebrew leaks — page load failed: page.reload: Timeout 30000ms exceeded.
-Call log:
-[2m  - waiting for navigation until "load"[22m
-[
+- ❌ https://wizelife.ai/ [EN] — no Hebrew leaks — page load failed: page.evaluate: Execution context was destroyed, most likely because of a navigation
 
 ---
 _<details><summary>Full detail</summary>_
 
-# I18n-Leak QA — 2026-06-12
+# I18n-Leak QA — 2026-06-30
 
-- ✅ https://wizelife.ai/ [EN] — no Hebrew leaks
+- ❌ https://wizelife.ai/ [EN] — no Hebrew leaks — page load failed: page.evaluate: Execution context was destroyed, most likely because of a navigation
 - ✅ https://wizelife.ai/ [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/ [ES] — no Hebrew leaks
 - ✅ https://wizelife.ai/auth.html [EN] — no Hebrew leaks
@@ -44,10 +41,7 @@ _<details><summary>Full detail</summary>_
 - ✅ https://wizelife.ai/travel.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/travel.html [ES] — no Hebrew leaks
 - ✅ https://wizelife.ai/tax-compare.html [EN] — no Hebrew leaks
-- ❌ https://wizelife.ai/tax-compare.html [PT] — no Hebrew leaks — page load failed: page.reload: Timeout 30000ms exceeded.
-Call log:
-[2m  - waiting for navigation until "load"[22m
-[
+- ✅ https://wizelife.ai/tax-compare.html [PT] — no Hebrew leaks
 - ✅ https://wizelife.ai/tax-compare.html [ES] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [EN] — no Hebrew leaks
 - ✅ https://wizelife.ai/health.html [PT] — no Hebrew leaks
