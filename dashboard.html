@@ -567,25 +567,20 @@ const PAYPAL_YOLO_PLAN_ID = "P-3WT61990FP2103335NH32GVA";
   : Promise.reject(new Error('Firebase SDK unavailable'))
 ).then(async (user) => {
  window.__wlDashResolved = true; // auth chain works — disarm the connection watchdog
- // Fetch nickname from Firestore (prefer name; fall back to email local-part — never full email)
+
+ // ── Paint immediately from auth object (no Firestore round-trip needed) ──
+ // This is the fix for the mobile "stuck on Loading…" bug: on slow connections
+ // the Firestore read can take 5-10 s, leaving navUserName frozen. We render
+ // the displayName / email prefix right away and update if Firestore returns
+ // a stored nickname later.
  let nick = user.displayName || (user.email && user.email.includes('@') ? user.email.split('@')[0].split('+')[0] : (user.email || ""));
- try {
- const doc = await wlDb.collection("users").doc(user.uid).get();
- if (doc.exists && doc.data().nickname) nick = doc.data().nickname;
- } catch (e) { console.error(e); }
- // First name only — "John Doe" → "John"
  if (nick && /\s/.test(nick)) nick = nick.split(/\s+/)[0];
  localStorage.setItem("wl_nickname", nick);
- // Re-inject tool links now that wl_nickname is populated. onAuthStateChanged
- // fires attachTokensToTools() before this Firestore round-trip resolves, so
- // without this the tool-card URLs would carry an empty wl_nick=. The function
- // is idempotent (getIdToken is cached), so re-running it is cheap.
- attachTokensToTools();
 
- // Nav
+ // Nav (immediate)
  document.getElementById("navUserName").textContent = nick;
 
- // Account info
+ // Account info (immediate)
  document.getElementById("acctName").textContent = nick;
  document.getElementById("acctEmail").textContent = user.email;
  const _sinceLang = (localStorage.getItem("wl_lang") || "he").slice(0, 2);
@@ -593,7 +588,29 @@ const PAYPAL_YOLO_PLAN_ID = "P-3WT61990FP2103335NH32GVA";
  const since = user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString(_sinceLocale, { month: "short", year: "numeric" }) : "—";
  document.getElementById("acctSince").textContent = since;
 
- // Plan
+ // Show cached plan immediately so the banner isn't stuck on "Loading your plan…"
+ try {
+  const cachedPlan = localStorage.getItem("wl_plan");
+  if (cachedPlan && ["pro","yolo","free"].includes(cachedPlan)) renderPlan(cachedPlan, user);
+ } catch (e) {}
+
+ // ── Background: Firestore nickname + accurate plan ──
+ // Re-inject tool links immediately with whatever nick we have, then again
+ // after Firestore resolves so wl_nick= is correct in deep-link URLs.
+ attachTokensToTools();
+ try {
+ const doc = await wlDb.collection("users").doc(user.uid).get();
+ if (doc.exists && doc.data().nickname) {
+  nick = doc.data().nickname;
+  if (nick && /\s/.test(nick)) nick = nick.split(/\s+/)[0];
+  localStorage.setItem("wl_nickname", nick);
+  document.getElementById("navUserName").textContent = nick;
+  document.getElementById("acctName").textContent = nick;
+  attachTokensToTools(); // re-run with correct nick so tool URLs carry the right wl_nick=
+ }
+ } catch (e) { console.error(e); }
+
+ // Plan (authoritative — may override the cache render above)
  const plan = await getUserPlan(user.uid);
  renderPlan(plan, user);
 
