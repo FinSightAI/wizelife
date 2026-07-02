@@ -390,12 +390,13 @@ const TAX_DATA = {
   BR: {
     flag: '🇧🇷', name: 'ברזיל', currency: 'BRL', usdRate: 0.19,
     brackets: [
-      { upTo: 28_546,   rate: 0  },                // 2026 base 0% band R$2,428.80/mo ×12 (verified 2026-06-18; was 26,963).
-                                                   // NB: a separate 2026 redutor effectively exempts up to R$5,000/mo —
+      { upTo: 28_467.20, rate: 0  },               // 2026 official Receita Federal annual table R$28,467.20 (verified 2026-07-02; was 26,963).
+                                                   // NB: NOT simply R$2,428.80/mo ×12=29,145.60 — Brazil annual table is published separately.
+                                                   // A separate 2026 redutor effectively exempts up to R$5,000/mo —
                                                    // not modeled here (would zero tax up to ~R$60K/yr); see knownPending.
-      { upTo: 33_919,   rate: 7.5 },               // R$2,826.65/mo ×12
-      { upTo: 45_012,   rate: 15 },                // R$3,751.05/mo ×12
-      { upTo: 55_976,   rate: 22.5 },              // R$4,664.68/mo ×12
+      { upTo: 33_919.80, rate: 7.5 },              // R$2,826.65/mo ×12
+      { upTo: 45_012.60, rate: 15 },               // R$3,751.05/mo ×12
+      { upTo: 55_976.16, rate: 22.5 },             // R$4,664.68/mo ×12
       { upTo: Infinity, rate: 27.5 },
     ],
     credit: 0,
@@ -782,7 +783,7 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
   validYear:   2026,
-  updatedAt:   '2026-06-18',
+  updatedAt:   '2026-07-02',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   changes_since_2026_01: [
     'IL — child-credit constant fixed 2,928→2,904 (engine childCredit map). Per btl.gov.il 2026.',
@@ -790,7 +791,7 @@ const TAX_META = {
     'DE — RV ceiling 96,600→101,400, KV ceiling 66,150→69,750, 42% band 68,480→69,878. Per DRV/BMG 2026, verified 2026-06-18.',
     'IE — personal+PAYE credit 3,750→4,000 (Budget 2025/Oct 2024: both personal+PAYE raised €1,875→€2,000 each). Per Revenue.ie, verified 2026-06-18.',
     'CA — brackets 58,523/117,045/181,440/258,482; BPA credit 2,355→2,303; CPP ceil 73,200→74,600; EI ceil 65,700→68,900. Per CRA 2026, verified 2026-06-18.',
-    'BR — IRPF 0% band 26,963→28,546 (R$2,428.80/mo); INSS teto 90,396→101,707 (R$8,475.55/mo). Per Receita Federal 2026, verified 2026-06-18.',
+    'BR — IRPF 0% band 26,963→28,467.20 (official annual Receita Federal table; NOT mo×12); INSS teto 90,396→101,707 (R$8,475.55/mo). Per gov.br/receitafederal 2026, verified 2026-07-02.',
     'PT — all 9 brackets shifted lower (12.5/15.7/21.2/24.1/31.1/34.9/43.1/44.6/48). Per PwC Lei 45-A/2025, thresholds re-confirmed 2026-06-18 (OE2026 +3.51%).',
     'CY — Jan-2026 bracket thresholds revised again in May: €32K/€42K (was €35K/€60K). Per PwC 2026-05-18.',
     'GR — rates lowered to 9/20/26/34/39/44 + new 39% band 40-60K. Per Law 5246/2025 + PwC 2026-02-16.',
