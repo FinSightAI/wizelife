@@ -30,7 +30,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <!-- Security headers (GH Pages doesn't allow HTTP headers, so meta-equivalent) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com https://gainer-eight.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://lh3.googleusercontent.com data:; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://ofirofir-wizetravel.hf.space https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://gainer-eight.vercel.app; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com https://gainer-eight.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://lh3.googleusercontent.com data:; connect-src 'self' https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://wizetravel-backend-3ol2retcla-uc.a.run.app https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://gainer-eight.vercel.app; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <!-- Permissions-Policy via meta — locks down sensors by default on the landing page.
      Sub-apps that need geo/camera (WizeTravel for "use my location", payment in checkout)
@@ -288,7 +288,7 @@ section{padding:120px 24px;position:relative;z-index:1}
 
 /* TRAVEL demo */
 .travel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.route-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#93c5fd;font-weight:600}
+.route-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);padding:4px 12px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#67e8f9;font-weight:600}
 .flight-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .flight-info{font-size:.82rem}
 .flight-route{color:#d1d9f0;font-weight:600;margin-bottom:2px}
@@ -482,6 +482,10 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 .reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}.reveal-d3{transition-delay:.24s}.reveal-d4{transition-delay:.32s}
+/* No-JS / crawler fallback: never leave scroll-reveal content permanently at
+   opacity:0 when the IntersectionObserver never runs. Purely additive — does
+   not affect the animated reveal for JS-enabled users. */
+@media (scripting: none){.reveal{opacity:1!important;transform:none!important}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 /* LCP-safe reveal for the hero <h1>: keep the upward motion but never start at
    opacity:0, so the LCP text element paints on first frame (faster LCP). */
@@ -875,7 +879,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 <!-- TRAVEL -->
-<div class="panel" data-c="#3b82f6" style="--c:#3b82f6;">
+<div class="panel" data-c="#06b6d4" style="--c:#06b6d4;">
 <div class="panel-head">
 <div class="panel-title-block">
 <div class="panel-title-icon"><svg fill="currentColor" viewbox="0 0 24 24"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></div>
@@ -913,7 +917,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="flight-save">− 45%</div>
 </div>
 </div>
-<div class="flight-card" style="border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.05)">
+<div class="flight-card" style="border-color:rgba(6,182,212,.3);background:rgba(6,182,212,.05)">
 <div class="flight-info">
 <div class="flight-route">TLV → LHR (via JFK hidden)</div>
 <div class="flight-type">Hidden-city · British Airways · carry-on only</div>
@@ -1114,7 +1118,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 <div class="calc-slider-wrap">
 <div class="calc-label">
-<div class="calc-lname" data-i18n="__38"><span class="icon" style="background:rgba(59,130,246,.15);color:#93c5fd"><svg fill="currentColor" height="14" viewbox="0 0 24 24" width="14"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></span> Flights per year</div>
+<div class="calc-lname" data-i18n="__38"><span class="icon" style="background:rgba(6,182,212,.15);color:#67e8f9"><svg fill="currentColor" height="14" viewbox="0 0 24 24" width="14"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></span> Flights per year</div>
 <div class="calc-lval" id="v-flights">6</div>
 </div>
 <input class="calc-slider" aria-label="Flights per year" id="s-flights" max="24" min="0" step="1" type="range" value="6"/>
@@ -1140,7 +1144,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="calc-sub">Projected WizeLife value — based on typical user outcomes across the suite.</div>
 <div class="calc-breakdown">
 <div class="calc-brow"><div class="calc-bname" data-i18n="__42"><span class="bicon" style="color:#34d399"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><path d="M3 17l5-5 4 4 8-8"></path><path d="M14 8h6v6"></path></svg></span> Portfolio optimization</div><div class="calc-bval" id="b-money">$0</div></div>
-<div class="calc-brow"><div class="calc-bname" data-i18n="__43"><span class="bicon" style="color:#93c5fd"><svg fill="currentColor" height="14" viewbox="0 0 24 24" width="14"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></span> Flight savings</div><div class="calc-bval" id="b-travel">$0</div></div>
+<div class="calc-brow"><div class="calc-bname" data-i18n="__43"><span class="bicon" style="color:#67e8f9"><svg fill="currentColor" height="14" viewbox="0 0 24 24" width="14"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></span> Flight savings</div><div class="calc-bval" id="b-travel">$0</div></div>
 <div class="calc-brow"><div class="calc-bname" data-i18n="__44"><span class="bicon" style="color:#fcd34d"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><rect height="18" rx="2" width="16" x="4" y="3"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span> Tax optimization</div><div class="calc-bval" id="b-tax">$0</div></div>
 <div class="calc-brow"><div class="calc-bname" data-i18n="__45"><span class="bicon" style="color:#c4b5fd"><svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><path d="M3 12L12 3l9 9"></path><path d="M5 10v10h14V10"></path></svg></span> Real-estate deal edge</div><div class="calc-bval" id="b-deal">$0</div></div>
 </div>
@@ -1190,7 +1194,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="stars"><svg viewbox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg><svg viewbox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg><svg viewbox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg><svg viewbox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg><svg viewbox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg></div>
 <p class="testi-quote">WizeTravel found me a positioning flight: TLV→Amsterdam for $90, then Amsterdam→NYC for $280. Direct was $680. I saved $310 in 30 seconds.</p>
 <div class="testi-author">
-<div class="testi-avatar" style="background:rgba(59,130,246,.15);color:#93c5fd"><svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></div>
+<div class="testi-avatar" style="background:rgba(6,182,212,.15);color:#67e8f9"><svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"></path></svg></div>
 <div><div class="testi-name">Dana K.</div><div class="testi-role" data-i18n="__59">Frequent flyer</div></div>
 </div>
 </div>
@@ -1474,12 +1478,12 @@ glow.style.background = TOOLS[0].color;
 // ── LIVE FEED ──
 const feeds = [
  {dot:'#10b981', t:'WizeMoney', m:'Portfolio up <strong>+2.4%</strong> this week'},
- {dot:'#3b82f6', t:'WizeTravel', m:'TLV → NYC dropped to <strong>$370</strong>'},
+ {dot:'#06b6d4', t:'WizeTravel', m:'TLV → NYC dropped to <strong>$370</strong>'},
  {dot:'#f59e0b', t:'WizeTax', m:'Portugal NHR saves <strong>$40,800</strong>'},
  {dot:'#ec4899', t:'WizeHealth', m:'LDL trending down · <strong>−14%</strong>'},
  {dot:'#8b5cf6', t:'WizeDeal', m:'São Paulo flat · deal score <strong>A</strong>'},
  {dot:'#10b981', t:'WizeMoney', m:'Pension rebalanced · saved <strong>₪1,240 / yr</strong>'},
- {dot:'#3b82f6', t:'WizeTravel', m:'Hidden-city ticket found <strong>− 43%</strong>'},
+ {dot:'#06b6d4', t:'WizeTravel', m:'Hidden-city ticket found <strong>− 43%</strong>'},
  {dot:'#f59e0b', t:'WizeTax', m:'Exit tax simulation complete'},
  {dot:'#ec4899', t:'WizeHealth', m:'Deep sleep +22 min last night'},
  {dot:'#8b5cf6', t:'WizeDeal', m:'3 properties flagged below comps'},
@@ -2312,7 +2316,7 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  that by the time the user signs in and clicks Health, it's already up. */
 (function prewarmBackends(){
  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch(e){} }
- var TARGETS = ['https://wizehealth-3ol2retcla-uc.a.run.app/', 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health', 'https://ofirofir-wizetravel.hf.space/'];
+ var TARGETS = ['https://wizehealth-3ol2retcla-uc.a.run.app/', 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health', 'https://wizetravel-backend-3ol2retcla-uc.a.run.app/'];
  // Fire immediately + every 30 s while landing page is open.
  TARGETS.forEach(ping);
  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);

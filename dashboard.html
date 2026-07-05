@@ -2,7 +2,7 @@
 
 <html dir="rtl" lang="he">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com https://gainer-eight.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://www.google.com https://lh3.googleusercontent.com data:; connect-src 'self' https://www.google.com https://www.gstatic.com https://*.wizelife.ai https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://ofirofir-wizetravel.hf.space https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://gainer-eight.vercel.app; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com https://www.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com https://gainer-eight.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://www.google.com https://lh3.googleusercontent.com data:; connect-src 'self' https://www.google.com https://www.gstatic.com https://*.wizelife.ai https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://wizetravel-backend-3ol2retcla-uc.a.run.app https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://gainer-eight.vercel.app; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com https://www.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
 <script>
 (function(){try{
  // Unified language: URL ?lang (cross-app handoff) → saved wl_lang → browser → English.
@@ -49,8 +49,8 @@
 <link href="https://wizehealth-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
 <link crossorigin="" href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="preconnect"/>
 <link href="https://wizetax-backend-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
-<link crossorigin="" href="https://ofirofir-wizetravel.hf.space" rel="preconnect"/>
-<link href="https://ofirofir-wizetravel.hf.space" rel="dns-prefetch"/>
+<link crossorigin="" href="https://wizetravel-backend-3ol2retcla-uc.a.run.app" rel="preconnect"/>
+<link href="https://wizetravel-backend-3ol2retcla-uc.a.run.app" rel="dns-prefetch"/>
 <!-- Eager prefetch: by the time the user taps a tool card, the browser
  should already have the launcher HTML cached. Each tool also has its
  own "as=document" prefetch so navigation feels instant. -->
@@ -1377,7 +1377,7 @@ document.head.appendChild(_swScript);
  var TARGETS = [
  'https://wizehealth-3ol2retcla-uc.a.run.app/', // WizeHealth (Render free, sleeps at 15min)
  'https://wizetax-backend-3ol2retcla-uc.a.run.app/health',// WizeTax backend (Render free)
- 'https://ofirofir-wizetravel.hf.space/' // WizeTravel API (Hugging Face Spaces, also sleeps)
+ 'https://wizetravel-backend-3ol2retcla-uc.a.run.app/' // WizeTravel API (Hugging Face Spaces, also sleeps)
  ];
  // 1) Initial warm-up IMMEDIATELY (was 1.5s, was too late)
  TARGETS.forEach(ping);
@@ -1395,7 +1395,7 @@ document.head.appendChild(_swScript);
  var map = {
  'tool-health': 'https://wizehealth-3ol2retcla-uc.a.run.app/',
  'tool-tax': 'https://wizetax-backend-3ol2retcla-uc.a.run.app/health',
- 'tool-travel': 'https://ofirofir-wizetravel.hf.space/'
+ 'tool-travel': 'https://wizetravel-backend-3ol2retcla-uc.a.run.app/'
  };
  Object.keys(map).forEach(function(id){
  var el = document.getElementById(id);

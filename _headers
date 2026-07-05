@@ -1,0 +1,23 @@
+# Cloudflare Pages headers for wizelife.ai
+# Deploy = `wrangler pages deploy .` (see .github/workflows/deploy-pages.yml).
+# HSTS / X-Frame-Options / X-Content-Type-Options / Referrer-Policy are set at the
+# Cloudflare edge (dashboard Transform Rules) and are intentionally NOT redefined
+# here to avoid duplicate headers. This file only ADDS what was missing: CSP +
+# Permissions-Policy.
+#
+# CSP strategy (two headers):
+#  1. Content-Security-Policy (ENFORCING) — only directives that CANNOT break the
+#     current site because they don't constrain any resource the site actually
+#     loads. They block base-tag injection, plugin/object injection, cross-origin
+#     framing (clickjacking), and force TLS. Safe to enforce today.
+#  2. Content-Security-Policy-Report-Only (OBSERVE) — the full resource allow-list.
+#     Report-Only NEVER blocks anything; it lets the owner watch the browser console
+#     for violations (esp. the Cloudflare-injected Gainer widget + Firebase auth
+#     popups) before promoting it to enforcing. Once clean, move these directives
+#     into the enforcing header above and drop 'unsafe-inline'/'unsafe-eval' via
+#     script nonces.
+
+/*
+  Content-Security-Policy: object-src 'none'; base-uri 'self'; frame-ancestors 'self'; upgrade-insecure-requests
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://www.google.com https://cdn.jsdelivr.net https://unpkg.com https://browser.sentry-cdn.com https://static.cloudflareinsights.com https://gainer-eight.vercel.app https://www.paypal.com https://www.paypalobjects.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.googleapis.com https://*.run.app https://*.cloudfunctions.net https://*.firebaseio.com wss://*.firebaseio.com https://gainer-eight.vercel.app https://*.sentry.io https://*.ingest.sentry.io https://static.cloudflareinsights.com; frame-src https://www.google.com https://accounts.google.com https://finzilla-7f1f9.firebaseapp.com https://www.paypal.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), payment=(self "https://www.paypal.com")
