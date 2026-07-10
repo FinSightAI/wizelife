@@ -19,6 +19,7 @@ const ALLOWED_HOSTS = new Set([
   'query2.finance.yahoo.com',
   'mayaapi.tase.co.il',
   'api.exchangerate-api.com',
+  'fred.stlouisfed.org', // FinSight Market Internals (HY spread, yield curve, VIX closes) — FRED tarpits Vercel IPs
 ]);
 
 // Browser origins we want to send back as Access-Control-Allow-Origin.
