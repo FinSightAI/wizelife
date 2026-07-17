@@ -1,8 +1,12 @@
 name: Uptime ping — WizeLife
 
+# Schedule disabled 2026-07-17: WizeLife suite is frozen (54 impressions/28d,
+# per portfolio decision 2026-07-02). No real traffic to monitor. Run manually
+# (workflow_dispatch) if needed for ad-hoc checks.
+
 on:
-  schedule:
-    - cron: '*/15 * * * *'
+  # schedule:
+  #   - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:

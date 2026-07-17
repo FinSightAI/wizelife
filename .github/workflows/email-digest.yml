@@ -5,6 +5,9 @@ name: Email Digest Worker
 # deadlines fall in the reminder window, and which users haven't logged in
 # for 30+ days (inactivity nudge).
 #
+# DISABLED 2026-07-17: WizeLife suite is frozen (54 impressions/28d, per
+# portfolio decision 2026-07-02). No active users to email.
+#
 # Required GitHub Secrets (add at /settings/secrets/actions):
 #   RESEND_API_KEY                       — from https://resend.com
 #   FIREBASE_SERVICE_ACCOUNT_JSON        — JSON blob from Firebase console
@@ -14,8 +17,8 @@ name: Email Digest Worker
 # To test without sending real emails, push with workflow_dispatch + DIGEST_DRY_RUN=1.
 
 on:
-  schedule:
-    - cron: '0 8 * * *'   # daily 08:00 UTC = 11:00 Israel
+  # schedule:
+  #   - cron: '0 8 * * *'   # daily 08:00 UTC = 11:00 Israel
   workflow_dispatch:
     inputs:
       mode:

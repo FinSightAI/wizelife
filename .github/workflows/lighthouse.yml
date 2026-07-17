@@ -2,6 +2,8 @@ name: Lighthouse CI
 
 # Runs Lighthouse audits on every push to main + daily at 03:30 UTC
 # Reports: Performance, Accessibility, Best Practices, SEO, PWA per URL.
+# DISABLED 2026-07-17: WizeLife suite is frozen (54 impressions/28d, per
+# portfolio decision 2026-07-02). No need for daily audits on frozen product.
 
 on:
   push:
@@ -10,8 +12,8 @@ on:
       - '*.html'
       - 'js/**'
       - 'css/**'
-  schedule:
-    - cron: '30 3 * * *'   # daily — runs 30 min after main daily-qa
+  # schedule:
+  #   - cron: '30 3 * * *'   # daily — runs 30 min after main daily-qa
   workflow_dispatch: {}
 
 jobs:

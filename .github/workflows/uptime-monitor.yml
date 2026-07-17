@@ -3,13 +3,16 @@
 # issue if any is down. NOTE: this is a liveness check (HTTP 200), not a deep
 # journey test — daily-qa still owns functional depth.
 #
+# DISABLED 2026-07-17: WizeLife suite is frozen (54 impressions/28d, per
+# portfolio decision 2026-07-02). No real traffic to monitor.
+#
 # For lower latency / SMS alerts, an external monitor (UptimeRobot, Cloudflare
 # Health Checks) is recommended in addition; this workflow needs no third party.
 name: uptime-monitor
 
 on:
-  schedule:
-    - cron: '*/15 * * * *'   # every 15 minutes (GitHub may delay under load)
+  # schedule:
+  #   - cron: '*/15 * * * *'   # every 15 minutes (GitHub may delay under load)
   workflow_dispatch: {}
 
 # Run the pinned actions (github-script@v7) on Node 24 (default Node 20 is deprecated).
