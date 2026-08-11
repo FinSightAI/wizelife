@@ -52,8 +52,11 @@ async function tier13n(browser) {
                 const key = el.getAttribute('data-i18n');
                 const text = (el.textContent || '').trim();
                 if (!text) return;
-                // If text equals the key (case-insensitive) OR text is snake_case → not translated
-                if (text === key || /^[a-z_][a-z0-9_.]+$/i.test(text)) {
+                // If text equals the key, or text itself looks like a dotted/underscored
+                // key path (lowercase, multi-segment — e.g. "nav.dashboard") → not translated.
+                // A plain capitalized English word (e.g. "Products", "Dashboard") is a
+                // legitimate translation, not a raw key, so it must NOT match here.
+                if (text === key || /^[a-z][a-z0-9]*([._][a-z0-9]+)+$/.test(text)) {
                     out.push({ key, text: text.slice(0, 60) });
                 }
             });
