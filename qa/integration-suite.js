@@ -77,16 +77,26 @@ async function checkApp(page, app) {
         } else {
             await ham.click({ timeout: 3000 }).catch(() => null);
             await page.waitForTimeout(500);
-            const drawerOpen = await page.evaluate(() => {
-                const d = document.querySelector('#wize-ham-drawer.open, .sidebar.open, aside.open');
-                return !!d;
-            });
+            // Apps that ship their own native drawer (not the shared wize-hamburger.js
+            // script) use their own open-state class — e.g. WizeHealth uses
+            // `body.wh-drawer-open`, confirmed 2026-08-11. Check the shared-script
+            // signature, common independent-drawer naming, and the generic a11y
+            // aria-expanded signal, so a working native drawer isn't flagged as broken.
+            const isDrawerOpen = () => !!(
+                document.querySelector(
+                    '#wize-ham-drawer.open, .sidebar.open, aside.open, ' +
+                    'body.wh-drawer-open, body.drawer-open, body.menu-open, ' +
+                    '.drawer.open, .mobile-drawer.open, .nav-drawer.open, ' +
+                    '[class*="drawer"][class*="open"], [class*="menu"][class*="open"]'
+                ) || document.querySelector('[aria-expanded="true"]')
+            );
+            const drawerOpen = await page.evaluate(isDrawerOpen);
             if (drawerOpen) {
                 pass(`${app.name}: hamburger opens drawer`);
                 // Close via Escape
                 await page.keyboard.press('Escape').catch(() => null);
                 await page.waitForTimeout(400);
-                const drawerClosed = await page.evaluate(() => !document.querySelector('#wize-ham-drawer.open, .sidebar.open, aside.open'));
+                const drawerClosed = await page.evaluate(isDrawerOpen).then(v => !v);
                 if (drawerClosed) pass(`${app.name}: Escape closes drawer`);
                 else warn(`${app.name}: drawer didn't close on Escape`, 'add Escape handler to hamburger', 'claude');
             } else {
