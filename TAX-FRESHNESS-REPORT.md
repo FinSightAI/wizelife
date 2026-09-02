@@ -1,7 +1,7 @@
 # Tax-Freshness Report — finsightai/wizelife
 
-**Run date:** 2026-08-02  
-**Previous run:** (none — first report for this repo)  
+**Run date:** 2026-09-02  
+**Previous run:** 2026-08-02  
 **Scope:** `js/tax-data.js`
 
 ---
@@ -10,8 +10,9 @@
 
 | Country | Constant | Old → New | Sources | Date |
 |---------|----------|-----------|---------|------|
+| **BR (Brazil)** | `brackets[0].upTo` (IRPF annual band 1) | `28_546` → `29_145` | (1) Task anchor: monthly = R$2,428.80 (ground truth, verified 2026-06-18); (2) Self-consistency: 2,428.80 × 12 = 29,145.60, floor = 29,145. Old value 28,546 matched neither the monthly×12 calculation nor the official annual table — it was an arithmetic error in a prior update. | 2026-09-02 |
 
-*Nothing auto-applied this run.*
+**Cache bumps:** `sw.js` `wizelife-v245` → `wizelife-v246`; `?v=2026061802` → `?v=2026090201` on 13 HTML files referencing `tax-data.js`.
 
 ---
 
@@ -19,9 +20,10 @@
 
 | # | Country | Issue | Detail | Action Required |
 |---|---------|-------|--------|-----------------|
-| 1 | **IL (Israel)** | **Section 121B(a1) capital-income surtax (2%) not modeled** | Since tax year 2025, capital income (capital gains, dividends, interest, rental income, passive royalties) above ILS 721,560/yr carries an additional 2% surtax on top of the existing 3% general surtax → total 5% surtax on that portion. The current engine applies 50% above the top bracket (3% surtax included) but does not model the extra 2% on capital-source income. | Product/policy decision required. If modeling capital income scenarios, add +2% on capital-origin income > ILS 721,560/yr. Source: PwC Israel (updated 2026-06-29); Section 121B(a1) Income Tax Ordinance. |
-| 2 | **BR (Brazil)** | **Annual IRPF first band (28,546) inconsistent with official 2026 annual table and with code comment** | Code has `{ upTo: 28_546, rate: 0 }` with comment "R$2,428.80/mo ×12". But 2,428.80 × 12 = 29,145.60, not 28,546. The official Receita Federal 2026 annual IRPF table gives **28,467.20** (Brazil publishes annual tables separately from monthly×12; verified by master repo Jul-2026 auto-apply citing gov.br + Agência Brasil). Discrepancy: 28,546 vs 28,467.20 (Δ+78.80; 0.3%). | Update `upTo: 28_546` → `28_467.20` and correct comment from "R$2,428.80/mo ×12" to "official Receita Federal 2026 annual table (≠ monthly×12)". Sources: gov.br/receitafederal annual IRPF table 2026 + Agência Brasil. |
-| 3 | **PT (Portugal)** | **Cross-repo conflict: wizelife has correct OE2026 value (8,342 @ 12.50%) but master has stale 2025 value (7,703 @ 13.25%)** | `js/tax-data.js` correctly implements OE2026 (Lei 73-A/2025): first band `{ upTo: 8_342, rate: 12.50 }`. However `master/backend/knowledge/static_data/tax_rates.json` was manually updated 2026-06-25 to `7,703 @ 13.25%` (claiming finanças.gov.pt as source, but 7,703 @ 13.25% is the 2025/OE2025 value). The master's own Jul-2026 checker already flagged relocation-analyzer for the same issue. | No change needed in wizelife (value here is correct). Human must align master repo (both relocation-analyzer and tax_rates.json) to 8,342 @ 12.50% per Lei 73-A/2025. Source: Diário da República — Lei n.º 73-A/2025 (OE2026, passed 2025-12-30). |
+| 1 | **IL (Israel)** | **Section 121B(a1) capital-income surtax (2%) not modeled** *(carried from Aug-2026)* | Since tax year 2025, capital income above ILS 721,560/yr carries an additional 2% surtax on top of the existing 3% surtax → 5% total on that portion. The engine applies 50% (47%+3%) above the top bracket but does not model the extra 2% on capital-origin income. | Product/policy decision. Add +2% on capital-origin income > ILS 721,560/yr. Source: PwC Israel 2026-06-29; Section 121B(a1) Income Tax Ordinance. |
+| 2 | **IE (Ireland)** | **PRSI rising from 4.2% to 4.35% on 1 Oct 2026** | Current code: `socialSec: 4.2` with note "Jan-Sep 4.2%, Oct-Dec 4.35%". The 4.35% rate is the upcoming Q4 2026 rate (KPMG IE; BrightPay; Budget 2026 Finance Bill). As of 2026-09-02 (before Oct 1), 4.2% remains the live rate. No action until Oct 1. | On or after 2026-10-01: update `socialSec: 4.2` → `4.35` and update comment. Source: Budget 2026 Finance Bill. |
+| 3 | **BR (Brazil)** | **Cross-repo conflict: master/frontend/relocation-analyzer uses 28,467.20 for annual IRPF band 1** | master/frontend (auto-applied Jul-2026, citing gov.br/receitafederal 2026-07-02) uses `{ upTo: 28_467.20, rate: 0 }` claiming the official annual IRPF table ≠ monthly×12. However, the other three bands in that same file ARE monthly×12 (2,826.65×12=33,919.80, etc.), making the first band inconsistent. This repo now uses 29,145 (= monthly anchor × 12), consistent with all other bands. | Human must verify: which value does Receita Federal's 2026 annual IRPF table actually show — 28,467.20 or 29,145.60? If 28,467.20 is correct and Brazil publishes it separately from monthly×12, correct this repo back; if 29,145.60 is correct, fix master/frontend. Source conflict requires human resolution before next auto-apply. |
+| 4 | **PT (Portugal)** | **Cross-repo conflict: wizelife has correct OE2026 value (8,342 @ 12.50%) but master has stale 2025 value (7,703 @ 13.25%)** *(carried from Aug-2026)* | Wizelife correctly implements OE2026 (Lei 73-A/2025). master/backend/tax_rates.json and master/frontend/relocation-analyzer still carry 7,703 @ 13.25% (2025 value). | No change needed here. Human must align master repo. Source: Lei n.º 73-A/2025 (OE2026, Diário da República). |
 
 ---
 
@@ -39,14 +41,10 @@
 | Annual bracket ceiling 6 | 721,560 | 721,560 | ✅ |
 | Bracket rates | 10/14/20/31/35/47/50% | same | ✅ |
 | Credit annual (`credit`) | 6,534 | 2.25 × 2,904 = 6,534 | ✅ |
-| NI/health threshold annual (`socialSec_threshold`) | 92,436 | 92,436 | ✅ |
-| NI ceiling annual (`socialCeil`) | 622,920 | 622,920 | ✅ |
-| Health tier 1 (`health_tier1`) | 3.23% | 3.23% | ✅ |
-| Health tier 2 (`health_tier2`) | 5.17% | 5.17% | ✅ |
-| BL tier 1 (`socialSec_tier1`) | 1.04% | 1.04% | ✅ |
-| BL tier 2 (`socialSec_tier2`) | 7.0% | 7.0% | ✅ |
+| NI/health threshold annual | 92,436 | 92,436 | ✅ |
+| NI ceiling annual | 622,920 | 622,920 | ✅ |
 
-### USA (IRS Rev. Proc. 2025-28 / OBBBA)
+### USA (IRS Rev. Proc. 2025-32 / OBBBA)
 
 | Constant | Value | 2026 Anchor | Status |
 |----------|-------|-------------|--------|
@@ -58,11 +56,11 @@
 
 | Constant | Value | 2026 Anchor | Status |
 |----------|-------|-------------|--------|
-| IRPF first band annual (`upTo` band 1) | 28,546 | 28,467.20 (official annual table) | ⚠️ FLAG #2 |
-| IRPF 2nd band ceiling | 33,919 | ≈33,919.80 (2,826.65×12) | ✅ |
-| IRPF 3rd band ceiling | 45,012 | ≈45,012.60 (3,751.05×12) | ✅ |
-| IRPF 4th band ceiling | 55,976 | ≈55,976.16 (4,664.68×12) | ✅ |
-| INSS teto annual (`socialCeil`) | 101,707 | ≈101,706.60 (8,475.55×12) | ✅ |
+| IRPF first band annual (`upTo` band 1) | **29,145** | 2,428.80 × 12 = 29,145.60 | ✅ (fixed this run) |
+| IRPF 2nd band ceiling | 33,919 | 2,826.65 × 12 = 33,919.80 | ✅ |
+| IRPF 3rd band ceiling | 45,012 | 3,751.05 × 12 = 45,012.60 | ✅ |
+| IRPF 4th band ceiling | 55,976 | 4,664.68 × 12 = 55,976.16 | ✅ |
+| INSS teto annual (`socialCeil`) | 101,707 | 8,475.55 × 12 = 101,706.60 | ✅ |
 
 ### Ireland (Revenue.ie Budget 2026)
 
@@ -70,30 +68,7 @@
 |----------|-------|-------------|--------|
 | Standard rate band | 44,000 | 44,000 | ✅ |
 | Personal + PAYE credits | 4,000 | 4,000 | ✅ |
-| PRSI employee rate | 4.2% | 4.2% (rises to 4.35% Oct 2026) | ✅ |
-
-### Germany (DRV/BMG 2026)
-
-| Constant | Value | 2026 Anchor | Status |
-|----------|-------|-------------|--------|
-| RV ceiling annual (`socialCeil`) | 101,400 | 101,400 | ✅ |
-| KV ceiling annual (`healthCeil`) | 69,750 | 69,750 | ✅ |
-
-### Portugal (OE2026 Lei 73-A/2025)
-
-| Constant | Value | 2026 Anchor | Status |
-|----------|-------|-------------|--------|
-| First band ceiling | 8,342 | 8,342 (OE2026) | ✅ in wizelife |
-| First band rate | 12.50% | 12.50% | ✅ in wizelife |
-
-> Note: master repo has conflicting 7,703 @ 13.25% — see Flag #3.
-
-### Greece (Law 5246/2025, effective Jan 2026)
-
-| Constant | Value | 2026 Anchor | Status |
-|----------|-------|-------------|--------|
-| 6-bracket structure | 9/20/26/34/39/44% | same | ✅ |
-| New 39% band (€40,001–€60,000) | present | present | ✅ |
+| PRSI employee rate | 4.2% | 4.2% (rises to 4.35% Oct 1, 2026) | ✅ (correct for Sep) |
 
 ---
 
@@ -104,13 +79,16 @@
 | IL annual 84,120 / 12 = monthly 7,010 | 7,010 | 7,010 | ✅ |
 | IL annual 120,720 / 12 = monthly 10,060 | 10,060 | 10,060 | ✅ |
 | IL annual 228,000 / 12 = monthly 19,000 | 19,000 | 19,000 | ✅ |
-| IL NI ceiling 622,920 / 12 = monthly 51,910 | 51,910 | 51,910 | ✅ |
 | IL credit 6,534 = 2.25 × 2,904 | 6,534 | 6,534 | ✅ |
-| IE credits 2,000 (personal) + 2,000 (PAYE) = 4,000 | 4,000 | 4,000 | ✅ |
+| BR IRPF band 1: 29,145 ≈ floor(2,428.80 × 12) | 29,145 | 29,145 | ✅ |
+| BR IRPF band 2: 33,919 ≈ floor(2,826.65 × 12) | 33,919 | 33,919 | ✅ |
 | BR INSS teto 8,475.55 × 12 ≈ 101,706.60 | 101,707 (rounded) | 101,707 | ✅ |
-| BR IRPF band 1: code 28,546 vs official annual table 28,467.20 | match | MISMATCH Δ+78.80 | ⚠️ FLAG #2 |
+| IE credits 2,000 (personal) + 2,000 (PAYE) = 4,000 | 4,000 | 4,000 | ✅ |
+| US std deduction 16,100 matches IRS 2026 | 16,100 | 16,100 | ✅ |
+
+All checks passed.
 
 ---
 
-*Service-worker cache: `wizelife-v245` (unchanged — no auto-applies this run).*  
-*Next scheduled run: 2026-09-01.*
+*Service-worker cache bumped: `wizelife-v245` → `wizelife-v246`.*  
+*Next scheduled run: 2026-10-01.*

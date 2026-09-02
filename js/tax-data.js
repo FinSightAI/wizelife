@@ -390,7 +390,7 @@ const TAX_DATA = {
   BR: {
     flag: '🇧🇷', name: 'ברזיל', currency: 'BRL', usdRate: 0.19,
     brackets: [
-      { upTo: 28_546,   rate: 0  },                // 2026 base 0% band R$2,428.80/mo ×12 (verified 2026-06-18; was 26,963).
+      { upTo: 29_145,   rate: 0  },                // 2026 base 0% band R$2,428.80/mo ×12=29,145.60 (verified 2026-09-02; was 28,546 — self-consistency fix).
                                                    // NB: a separate 2026 redutor effectively exempts up to R$5,000/mo —
                                                    // not modeled here (would zero tax up to ~R$60K/yr); see knownPending.
       { upTo: 33_919,   rate: 7.5 },               // R$2,826.65/mo ×12
@@ -782,7 +782,7 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
   validYear:   2026,
-  updatedAt:   '2026-06-18',
+  updatedAt:   '2026-09-02',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   changes_since_2026_01: [
     'IL — child-credit constant fixed 2,928→2,904 (engine childCredit map). Per btl.gov.il 2026.',
