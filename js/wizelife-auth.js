@@ -179,16 +179,27 @@ async function getUserPlan(uid) {
         const p = localStorage.getItem("wl_plan");
         if (p && ["pro", "yolo", "free"].includes(p)) localPlan = p;
     } catch {}
-    // 3. Pick highest tier: yolo > pro > free
-    const rank = { yolo: 3, pro: 2, free: 1 };
-    const fsRank = rank[firestorePlan] || 0;
-    const lsRank = rank[localPlan] || 0;
-    const best = fsRank >= lsRank ? firestorePlan : localPlan;
-    const plan = best || "free";
-    // 4. Sync back to Firestore if localStorage has higher tier (e.g. access code redeemed)
-    if (lsRank > fsRank && wlDb && uid) {
-        try { await wlDb.collection("users").doc(uid).set({ plan: localPlan }, { merge: true }); } catch {}
-    }
+    // 3. Firestore is authoritative whenever we actually got a value from it.
+    //
+    // This used to take the HIGHEST-ranked of the two, which defeated the expiry
+    // check twenty lines above: that sets firestorePlan to 'free' when a
+    // referral/bonus plan lapses, but a cached "yolo" in localStorage outranked
+    // it, so an expired plan kept working indefinitely. It also meant anyone
+    // could unlock paid features locally with
+    // localStorage.setItem('wl_plan','yolo').
+    //
+    // firestorePlan stays null when the read fails or the user is signed out
+    // (see the catch above), which is what keeps the offline/anonymous case
+    // working: localStorage is a cache for "we don't know yet", not a vote.
+    const plan = firestorePlan || localPlan || "free";
+
+    // 4. No sync-back. It used to write localPlan to Firestore whenever the
+    // cache ranked higher, but firestore.rules only permits a plan write that
+    // is unchanged or 'free' (the 2026-06-25 anti-forgery rule), so an
+    // elevation was always rejected and swallowed by its own catch. Access
+    // codes and paid upgrades are applied server-side by validateCode and the
+    // PayPal webhook in functions/index.js.
+
     // 5. Save to localStorage for next visit
     try { localStorage.setItem("wl_plan", plan); } catch {}
     return plan;
@@ -251,30 +262,21 @@ async function applyReferralOnSignup(uid) {
     } catch (e) { console.warn("applyReferralOnSignup failed", e); }
 }
 
-// Called when a user upgrades to PRO/YOLO — awards 30 days of matching tier to the referrer
-async function rewardReferrerOnUpgrade(uid, newTier) {
-    if (!uid || !wlDb || !["pro", "yolo"].includes(newTier)) return;
-    try {
-        const userDoc = await wlDb.collection("users").doc(uid).get();
-        if (!userDoc.exists) return;
-        const u = userDoc.data();
-        if (!u.referredBy || u.referralRewardSent) return; // only first upgrade triggers reward
-
-        // Append a reward entry to the referrer
-        const refRef = wlDb.collection("users").doc(u.referredBy);
-        await refRef.set({
-            referralRewards: firebase.firestore.FieldValue.arrayUnion({
-                tier: newTier,
-                days: 30,
-                from: uid,
-                ts: Date.now(),
-            }),
-            referralCount: firebase.firestore.FieldValue.increment(1),
-        }, { merge: true });
-
-        await wlDb.collection("users").doc(uid).set({ referralRewardSent: true }, { merge: true });
-    } catch (e) { console.warn("rewardReferrerOnUpgrade failed", e); }
-}
+// Referrer rewards are granted server-side by _grantReferrerReward() in
+// functions/index.js (reached from validateCode and the PayPal webhook), which
+// runs with Admin privileges and is idempotent.
+//
+// A client-side rewardReferrerOnUpgrade() used to live here. It had no callers,
+// and it could not have worked if it had any: it wrote referralRewards and
+// referralCount into the REFERRER's document, which firestore.rules refuses on
+// two counts — writes are isOwner-only, and those two fields are blocked
+// outright by the 2026-06-25 anti-forgery rule.
+//
+// Removed rather than left dormant because of what came after the failing
+// write: it set referralRewardSent: true on the upgrading user's own document,
+// which IS permitted. Wiring this function up would therefore have flagged the
+// reward as sent without sending it, and _grantReferrerReward returns early for
+// any user already flagged — quietly destroying the real reward.
 
 // Stamp a pending capture as soon as this script loads (works on auth.html etc)
 captureReferralCode();
