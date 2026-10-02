@@ -255,12 +255,12 @@ const TAX_DATA = {
       { upTo: Infinity, rate: 40 },
     ],
     credit: 4_000,                                 // 2026: personal €2,000 + PAYE €2,000 = €4,000 (Budget 2025/Oct 2024 raised each from €1,875; Budget 2026 unchanged; verified 2026-06-18; was 3,750)
-    socialSec: 4.2,                                // 2026 PRSI (Jan-Sep 4.2%, Oct-Dec 4.35% — avg 4.24%)
+    socialSec: 4.35,                               // PRSI 4.35% — effective Oct 1, 2026 (was 4.2% Jan–Sep 2026)
     socialCeil: null,
     health: 8.0,                                   // USC max band (avg effective ~4-5%)
     healthCeil: null,
-    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. אשראי אישי+PAYE €4,000 (Budget 2025 הועלה €1,875→€2,000 לכל אחד). PRSI 4.2% (4.35% מאוקטובר). USC 0.5%-8% מדורג.',
-    lastVerified: '2026-06',
+    notes: '2026 Budget: standard 20% band הורחב €42K→€44K. אשראי אישי+PAYE €4,000 (Budget 2025 הועלה €1,875→€2,000 לכל אחד). PRSI 4.35% (עלה מ-4.2% ב-1 באוקטובר 2026). USC 0.5%-8% מדורג.',
+    lastVerified: '2026-10',
   },
 
   // ── SWITZERLAND ──────────────────── source: ESTV 2026 + EY tax alert 2025/2026
@@ -782,7 +782,7 @@ function calcNet(countryCode, grossILS, marital, children, regimeKey) {
 // ── Metadata ────────────────────────────────────────────────────────────────
 const TAX_META = {
   validYear:   2026,
-  updatedAt:   '2026-09-02',
+  updatedAt:   '2026-10-02',
   nextReview:  '2026-11-01',   // re-check before Israeli 2027 budget proposal published
   changes_since_2026_01: [
     'IL — child-credit constant fixed 2,928→2,904 (engine childCredit map). Per btl.gov.il 2026.',
@@ -796,6 +796,7 @@ const TAX_META = {
     'GR — rates lowered to 9/20/26/34/39/44 + new 39% band 40-60K. Per Law 5246/2025 + PwC 2026-02-16.',
     'CZ — top-rate threshold lowered to CZK 1.76M (36× average salary). Per PwC 2026-01-07.',
     'EE — flat rate confirmed 22% for 2026 (raised from 20% in 2025). Per PwC 2026-02-25.',
+    'IE — PRSI 4.2%→4.35% (effective Oct 1, 2026; Class A Schedule E increase). Per gov.ie, verified 2026-10-02.',
   ],
   knownPending: [
     'NL: arbeidskorting phase-out curve not modeled (uses fixed credit; impact ~€500-1500)',
