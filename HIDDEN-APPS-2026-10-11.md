@@ -27,3 +27,9 @@ Also: sw.js cache bumped to v247; `wl-landing-i18n.js?v=2026101101`.
 - llms.txt: the 4 app bullets + the old Pricing line sit in a trailing `<!-- WL-HIDDEN ... -->` comment; Pricing now names only WizeMoney and FitBite.
 - sitemap.xml: 7 URLs (tax-compare, tax/health/travel/deal subdomains, aliyah-tax-guide) wrapped in `<!-- WL-HIDDEN 2026-10-11 ... -->`.
 - Purchase (PayPal) code intentionally left in place (Ofir: fine if someone buys; WizeMoney, later FitBite).
+
+## Round 3
+- dashboard.html + account.html: `prewarmBackends` TARGETS emptied (stops 30s pings to hidden backends); old URLs kept in a `WL-HIDDEN` comment right after.
+- WizeHealth Cloud Run service (finzilla-7f1f9 / us-central1 / wizehealth): public access removed 2026-10-11 (it exposed /api/chat with openAccess:true).
+  Restore: gcloud run services add-iam-policy-binding wizehealth --region us-central1 --project finzilla-7f1f9 --member=allUsers --role=roles/run.invoker
+- Note: billing-kill-switch is LIVE (SIMULATE_DEACTIVATION=False); the "Firebase Project finzilla-7f1f9" budget of ILS 20/month, if exceeded, disables billing for the whole project.
