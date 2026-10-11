@@ -1376,11 +1376,11 @@ document.head.appendChild(_swScript);
  so the cold-start finishes before they tap a tool card. */
 (function prewarmBackends(){
  function ping(u){ try { fetch(u, { mode:'no-cors', cache:'no-cache', credentials:'omit' }).catch(function(){}); } catch (e) { console.error(e); } }
- var TARGETS = [
+ var TARGETS = []; /* WL-HIDDEN 2026-10-11 (apps hidden; restore this array to re-enable pings):
  'https://wizehealth-3ol2retcla-uc.a.run.app/', // WizeHealth (Render free, sleeps at 15min)
  'https://wizetax-backend-3ol2retcla-uc.a.run.app/health',// WizeTax backend (Render free)
  'https://wizetravel-backend-3ol2retcla-uc.a.run.app/' // WizeTravel API (Hugging Face Spaces, also sleeps)
- ];
+  */
  // 1) Initial warm-up IMMEDIATELY (was 1.5s, was too late)
  TARGETS.forEach(ping);
  // 2) Re-ping every 30 SECONDS while the dashboard is foregrounded.
