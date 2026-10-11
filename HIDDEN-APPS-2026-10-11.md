@@ -21,3 +21,9 @@ Old text values (js/wl-landing-i18n.js):
   pt "…Grátis para começar, atualize quando quiser." es "…Gratis para empezar, actualiza cuando quieras."
 
 Also: sw.js cache bumped to v247; `wl-landing-i18n.js?v=2026101101`.
+
+## Round 2 (same day)
+- dashboard.html: block `dashboard-4-app-cards` (the 4 hidden app cards). Their JS is null-guarded; the cold-start ping loop (TARGETS) still pings the hidden backends.
+- llms.txt: the 4 app bullets + the old Pricing line sit in a trailing `<!-- WL-HIDDEN ... -->` comment; Pricing now names only WizeMoney and FitBite.
+- sitemap.xml: 7 URLs (tax-compare, tax/health/travel/deal subdomains, aliyah-tax-guide) wrapped in `<!-- WL-HIDDEN 2026-10-11 ... -->`.
+- Purchase (PayPal) code intentionally left in place (Ofir: fine if someone buys; WizeMoney, later FitBite).
