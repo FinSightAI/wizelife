@@ -1,0 +1,23 @@
+# Hidden on landing page — 2026-10-11 (reversible)
+
+Hidden because the apps are demos that don't really work yet; only FitBite and WizeMoney are live-quality.
+Nothing was deleted. Everything is wrapped in markers in `index.html`:
+
+- HTML: `<!-- WL-HIDDEN-BEGIN <name> … WL-HIDDEN-END <name> -->` (remove the two comment lines to restore)
+- JS: lines prefixed `// WL-HIDDEN 2026-10-11`
+- Elements: `hidden data-wl-hidden="2026-10-11"` (remove both attributes)
+- guides-strip: inside the comment every `--` was written as `- -`; replace back with `--` when restoring.
+- Names: wizetravel, wizetax, wizehealth, wizedeal, testimonials, pricing-subscription, fake-live-feed,
+  ai-demo-section, savings-calculator, compare-all-in-one, hero-tools-4-apps, footer-4-apps,
+  inflated-claims-26-countries-20-markets, guides-strip, original-json-ld (original structured data).
+- A DOM shim (`WL-HIDDEN-SHIM`) keeps old JS from crashing on removed ids; remove it when restoring.
+
+Old text values (js/wl-landing-i18n.js):
+- `5_ai_` en: "Five AI tools for every important decision in your life. Built with love, everywhere."
+  he: "5 כלי AI לכל החלטה חשובה בחייך. נבנה באהבה, בכל מקום."
+  pt: "Cinco ferramentas IA para cada decisão importante da sua vida. Feito com amor, em todo lugar."
+  es: "Cinco herramientas IA para cada decisión importante de tu vida. Hecho con amor, en todas partes."
+- `join_thousands_makin` ended: en "…Free to start, upgrade when you want." he "…חינם להתחלה, שדרגו מתי שתרצו."
+  pt "…Grátis para começar, atualize quando quiser." es "…Gratis para empezar, actualiza cuando quieras."
+
+Also: sw.js cache bumped to v247; `wl-landing-i18n.js?v=2026101101`.

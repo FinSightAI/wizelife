@@ -38,13 +38,13 @@
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), magnetometer=(), accelerometer=(), gyroscope=()">
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
-<title>AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate Tools | WizeLife</title>
-<meta content="5 free AI tools in one place: personal finance, international tax, flight deals, health Q&amp;A, real estate analysis. 4 languages. Free to start." name="description"/>
+<title>WizeLife — AI tools for money and nutrition</title>
+<meta content="Free AI tools for personal finance (WizeMoney) and sport &amp; nutrition (FitBite). 4 languages. Free to start." name="description"/>
 <!-- Open Graph -->
 <meta content="website" property="og:type"/>
 <meta content="https://wizelife.ai/" property="og:url"/>
-<meta content="AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate Tools" property="og:title"/>
-<meta content="5 free AI tools in one place: personal finance, international tax, flight deals, health Q&amp;A, real estate analysis. 4 languages. Free to start." property="og:description"/>
+<meta content="WizeLife — AI tools for money and nutrition" property="og:title"/>
+<meta content="Free AI tools for personal finance (WizeMoney) and sport &amp; nutrition (FitBite). 4 languages. Free to start." property="og:description"/>
 <meta content="https://wizelife.ai/og-image.png" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
@@ -53,11 +53,11 @@
     <meta property="og:locale:alternate" content="pt_BR" />
     <meta property="og:locale:alternate" content="es_ES" />
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="AI Life Suite — Money, Tax, Travel, Health &amp; Real Estate" name="twitter:title"/>
-<meta content="5 free AI tools in one place. 4 languages. Free to start." name="twitter:description"/>
+<meta content="WizeLife — AI tools for money and nutrition" name="twitter:title"/>
+<meta content="Free AI tools for personal finance and sport &amp; nutrition. 4 languages. Free to start." name="twitter:description"/>
 <!-- Localized <title> — SSR ships the English title (highest search volume),
      then JS updates it to the user's language for browser tab + bookmarks. -->
-<script>(function(){var T={en:'AI Life Suite — Money, Tax, Travel, Health & Real Estate Tools | WizeLife',he:'סוויטת AI לחיים — כסף, מס, טיסות, בריאות ונדל״ן | WizeLife',pt:'Suite de IA para a Vida — Dinheiro, Impostos, Viagens, Saúde, Imóveis | WizeLife',es:'Suite de IA para la Vida — Dinero, Impuestos, Viajes, Salud, Inmuebles | WizeLife'};function s(){var l=(localStorage.getItem('wl_lang')||(navigator.language||'en').slice(0,2)||'en').toLowerCase();document.title=T[l]||T.en;}s();window.addEventListener('wl-lang-change',s);})();</script>
+<script>(function(){var T={en:'WizeLife — AI tools for money and nutrition',he:'WizeLife — כלי AI לכסף ולתזונה',pt:'WizeLife — Ferramentas de IA para dinheiro e nutrição',es:'WizeLife — Herramientas de IA para dinero y nutrición'};function s(){var l=(localStorage.getItem('wl_lang')||(navigator.language||'en').slice(0,2)||'en').toLowerCase();document.title=T[l]||T.en;}s();window.addEventListener('wl-lang-change',s);})();</script>
 <meta content="https://wizelife.ai/og-image.png" name="twitter:image"/>
 <!-- Canonical + i18n: WizeLife serves all 4 languages from the same URL (lang
      switch is client-side via wl_lang storage), so we only declare x-default
@@ -602,6 +602,18 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 }
 </style>
 <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","@id":"https://wizelife.ai/#org","name":"WizeLife","url":"https://wizelife.ai","logo":{"@type":"ImageObject","url":"https://wizelife.ai/icon-512.png","width":512,"height":512},"description":"AI tools for money and nutrition — WizeMoney and FitBite.","foundingLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressCountry":"IL"}},"areaServed":"Worldwide","knowsLanguage":["he","en","pt","es"],"sameAs":["https://finsightai.github.io/wizelife/"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"WizeLife","url":"https://wizelife.ai/","description":"Free AI tools in one account: personal finance (WizeMoney) and sport & nutrition (FitBite). Works in English, Hebrew, Portuguese and Spanish.","inLanguage":["en","he","pt","es"],"publisher":{"@id":"https://wizelife.ai/#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WizeLife","applicationCategory":"LifestyleApplication","operatingSystem":"Any","url":"https://wizelife.ai/","description":"AI tools for personal finance (WizeMoney) and sport & nutrition (FitBite) in one free account.","offers":[{"@type":"Offer","price":"0","priceCurrency":"USD","name":"Free"}],"featureList":["Personal finance dashboard (WizeMoney)","4 languages: English, Hebrew, Portuguese, Spanish","Sport and nutrition AI assistant (FitBite)"],"creator":{"@id":"https://wizelife.ai/#org"},"inLanguage":["en","he","pt","es"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Is WizeLife really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can start free — no credit card, no trial period."}},{"@type":"Question","name":"Do I need a separate account for each tool?","acceptedAnswer":{"@type":"Answer","text":"No — one WizeLife account works across both tools (WizeMoney and FitBite). Sign in once, use both."}},{"@type":"Question","name":"Is my data secure?","acceptedAnswer":{"@type":"Answer","text":"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."}}]}
+</script>
+<!-- WL-HIDDEN-BEGIN original-json-ld 2026-10-11 — original structured data before the apps were hidden; restore by putting these back into the matching ld+json script blocks
 {
  "@context": "https://schema.org",
  "@type": "Organization",
@@ -625,14 +637,8 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
  "https://finsightai.github.io/wizelife/"
  ]
 }
-</script>
-<script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"WizeLife","url":"https://wizelife.ai/","description":"Five free AI tools in one account: personal finance (WizeMoney), international tax (WizeTax), real-estate analysis (WizeDeal), health Q&A (WizeHealth), flight search (WizeTravel). Works in English, Hebrew, Portuguese and Spanish.","inLanguage":["en","he","pt","es"],"publisher":{"@id":"https://wizelife.ai/#org"}}
-</script>
-<script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"WizeLife","applicationCategory":"LifestyleApplication","operatingSystem":"Any","url":"https://wizelife.ai/","description":"AI-powered life suite: personal finance, international tax, real-estate deals, health Q&A and flight search — in one free account.","offers":[{"@type":"Offer","price":"0","priceCurrency":"USD","name":"Free"},{"@type":"Offer","price":"4.99","priceCurrency":"USD","billingIncrement":"P1M","name":"Pro"},{"@type":"Offer","price":"9.99","priceCurrency":"USD","billingIncrement":"P1M","name":"YOLO"}],"featureList":["Personal finance dashboard (WizeMoney)","International tax calculator and AI advisor (WizeTax)","Real estate deal analyzer (WizeDeal)","AI health assistant and blood-test explainer (WizeHealth)","AI flight search and trip planner (WizeTravel)","4 languages: English, Hebrew, Portuguese, Spanish","Local-first — data stays in your browser","Free tier with 3–5 AI answers/day per tool"],"creator":{"@id":"https://wizelife.ai/#org"},"inLanguage":["en","he","pt","es"]}
-</script>
-<script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[
 {"@type":"Question","name":"Is WizeLife really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/month) for more answers and unlocked features, or go YOLO ($9.99/month) for 40 AI answers/day across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."}},
 {"@type":"Question","name":"Do I need a separate account for each tool?","acceptedAnswer":{"@type":"Answer","text":"No — one WizeLife account works across all 5 tools. Sign in once, use everything."}},
@@ -642,7 +648,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 {"@type":"Question","name":"Is my data secure?","acceptedAnswer":{"@type":"Answer","text":"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."}},
 {"@type":"Question","name":"Can I cancel anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes. No contracts, no cancellation fees. Cancel from your account at any time and you'll keep Pro access until the end of your billing period."}}
 ]}
-</script>
+WL-HIDDEN-END original-json-ld -->
 <!-- Note: Google's Rich Results spec allows only ONE FAQPage per URL. Since
      our canonical is the English base URL, we ship only the English FAQ for
      rich snippets. Other languages still have FAQ visible to users on-page. -->
@@ -693,6 +699,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <!-- Gainer — lead capture + AI chat -->
 <script src="https://gainer-eight.vercel.app/track.js" data-tenant="wizelife" defer></script>
 <script src="https://gainer-eight.vercel.app/chat.js" data-tenant="wizelife" defer></script>
+<style>[data-wl-hidden]{display:none!important}</style>
 </head>
 <body>
 <!-- NAV -->
@@ -701,7 +708,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
  </a>
 <div class="nav-links">
 <a data-i18n="_" href="#products">Products</a>
-<a data-i18n="__2" href="#pricing">Pricing</a>
+<a data-i18n="__2" href="#pricing" hidden data-wl-hidden="2026-10-11">Pricing</a>
 <a href="#faq">FAQ</a>
 <a data-i18n="__3" href="about.html">About</a>
 <a href="guides.html">Guides</a>
@@ -713,7 +720,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <button class="lang-pill" data-lang="pt" onclick="setWlLang('pt')" title="Português">PT</button>
 <button class="lang-pill" data-lang="he" onclick="setWlLang('he')" title="Hebrew">HE</button>
 </div>
-<span id="navPlanBadge" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);cursor:pointer;transition:background .2s,color .2s;"></span>
+<span id="navPlanBadge" hidden data-wl-hidden="2026-10-11" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);cursor:pointer;transition:background .2s,color .2s;"></span>
 <a class="nav-signin" data-i18n="__4" href="auth.html" id="nav-signin" rel="nofollow" aria-label="Sign in (top navigation)">Sign in</a>
 <a class="nav-cta" data-i18n="__5" href="auth.html" id="nav-cta" rel="nofollow" aria-label="Get started free (top navigation)">Get started free</a>
 <!-- Compact sticky CTA — shown only on mobile, where the full .nav-cta is hidden
@@ -726,7 +733,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </nav>
 <aside class="mobile-nav" id="mobileNav" aria-label="Mobile menu" aria-hidden="true">
 <a data-i18n="__6" href="#products" onclick="toggleMenu()">Products</a>
-<a data-i18n="__7" href="#pricing" onclick="toggleMenu()">Pricing</a>
+<a data-i18n="__7" href="#pricing" onclick="toggleMenu()" hidden data-wl-hidden="2026-10-11">Pricing</a>
 <a href="#faq" onclick="toggleMenu()">FAQ</a>
 <a data-i18n="__8" href="about.html" onclick="toggleMenu()">About</a>
 <a href="guides.html" onclick="toggleMenu()">Guides</a>
@@ -750,7 +757,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="hero-grid"></div>
 <div class="hero-badge">
 <span class="badge-live"></span>
- 5 AI tools · one account · live now
+ 2 AI tools · one account · live now
  </div>
 <div style="font-family:'Plus Jakarta Sans',Inter,sans-serif;font-size:clamp(48px,9vw,86px);font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:18px;color:#eef2ff;animation:fadeUpLcp .5s ease both;">
  Wize<span class="wize-life-grad">Life</span>
@@ -766,36 +773,45 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
  }
  @keyframes wize-life-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
  </style>
-<p class="hero-sub">5 AI tools, one login: <strong>money</strong>, <strong>tax</strong>, <strong>travel</strong>, <strong>health</strong> &amp; <strong>real estate</strong> — each a purpose-built AI tool for life's biggest decisions.</p>
-<div class="hero-tools" aria-label="The five WizeLife tools">
+<p class="hero-sub">2 AI tools, one login: <strong>personal finance</strong> &amp; <strong>sport &amp; nutrition</strong> — each a purpose-built AI tool, not a generic chatbot.</p>
+<div class="hero-tools" aria-label="The WizeLife tools">
 <span class="htool" style="--c:#10b981"><i></i>WizeMoney</span>
+<span class="htool" style="--c:#f97316"><i></i>FitBite</span>
+<!-- WL-HIDDEN-BEGIN hero-tools-4-apps 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <span class="htool" style="--c:#f59e0b"><i></i>WizeTax</span>
 <span class="htool" style="--c:#06b6d4"><i></i>WizeTravel</span>
 <span class="htool" style="--c:#ec4899"><i></i>WizeHealth</span>
 <span class="htool" style="--c:#8b5cf6"><i></i>WizeDeal</span>
-</div>
+
+WL-HIDDEN-END hero-tools-4-apps --></div>
 <div class="hero-btns">
 <a class="btn-primary" href="auth.html" rel="nofollow">Get started free →</a>
 <a class="btn-secondary" href="#products">Explore the suite ↓</a>
 </div>
 <div class="hero-microtrust" data-i18n="hero_microtrust">Free to start · No credit card · 4 languages (EN/HE/PT/ES)</div>
+<!-- WL-HIDDEN-BEGIN fake-live-feed 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <div class="hero-feed">
 <div class="feed-label" data-i18n="__12">Live from the suite</div>
 <div class="feed-track">
 <div class="feed-row" id="feedRow"></div>
 </div>
 </div>
+WL-HIDDEN-END fake-live-feed -->
 </section>
 <!-- TRUST BAR -->
 <div class="trust-bar">
 <div class="trust-inner">
-<div class="trust-item reveal"><div class="trust-num" data-count="5">5</div><div class="trust-label" data-i18n="_ai__2">AI tools in one suite</div></div>
+<div class="trust-item reveal"><div class="trust-num" data-count="2">2</div><div class="trust-label" data-i18n="_ai__2">AI tools in one suite</div></div>
 <div class="trust-item reveal reveal-d1"><div class="trust-num" data-count="0" data-prefix="$">$0</div><div class="trust-label" data-i18n="__13">To get started</div></div>
+<!-- WL-HIDDEN-BEGIN inflated-claims-26-countries-20-markets 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <div class="trust-item reveal reveal-d2"><div class="trust-num" data-count="26">26</div><div class="trust-label" data-i18n="_wizetax">Countries in WizeTax</div></div>
 <div class="trust-item reveal reveal-d3"><div class="trust-num" data-count="20" data-suffix="+">20+</div><div class="trust-label" data-i18n="__14">Real-estate markets</div></div>
+WL-HIDDEN-END inflated-claims-26-countries-20-markets -->
+<div class="trust-item reveal reveal-d2"><div class="trust-num" data-count="4">4</div><div class="trust-label" data-i18n="wl2_langs">Languages</div></div>
 </div>
 </div>
 <!-- AI LIVE DEMO -->
+<!-- WL-HIDDEN-BEGIN ai-demo-section 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <section class="ai-demo-section" id="ai-demo">
 <div class="container">
 <div class="sec-eyebrow reveal" data-i18n="qd_eyebrow">Quick demo · 5 sample questions</div>
@@ -824,6 +840,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </section>
+WL-HIDDEN-END ai-demo-section -->
 <!-- PRODUCTS / SHOWCASE -->
 <section id="products">
 <div class="container">
@@ -878,7 +895,29 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </div>
+<!-- FITBITE -->
+<div class="panel" data-c="#f97316" style="--c:#f97316;">
+<div class="panel-head">
+<div class="panel-title-block">
+<div class="panel-title-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"></path></svg></div>
+<div>
+<div class="panel-title"><em>Fit</em>Bite</div>
+<div class="panel-tag" data-i18n="wl2_fb_tag">Sport · Nutrition · Blood-test food advice</div>
+</div>
+</div>
+<a class="panel-cta" data-i18n="panel_cta" href="https://fitbite.wizelife.ai/" rel="noopener noreferrer" target="_blank" aria-label="Open FitBite tool">Open tool ↗</a>
+</div>
+<p class="panel-desc" data-i18n="wl2_fb_desc">AI that connects sport and nutrition — what to eat around workouts, protein and micronutrients, and food advice based on your blood tests. Israeli foods included.</p>
+<div class="panel-bullets">
+<div class="panel-bullet" data-i18n="wl2_fb_b1"><span class="bullet-dot"></span>What to eat around workouts</div>
+<div class="panel-bullet" data-i18n="wl2_fb_b2"><span class="bullet-dot"></span>Protein &amp; micronutrient guidance</div>
+<div class="panel-bullet" data-i18n="wl2_fb_b3"><span class="bullet-dot"></span>Food advice driven by blood tests</div>
+<div class="panel-bullet" data-i18n="wl2_fb_b4"><span class="bullet-dot"></span>Israeli foods included</div>
+</div>
+</div>
+
 <!-- TRAVEL -->
+<!-- WL-HIDDEN-BEGIN wizetravel 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <div class="panel" data-c="#06b6d4" style="--c:#06b6d4;">
 <div class="panel-head">
 <div class="panel-title-block">
@@ -940,7 +979,9 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </div>
+WL-HIDDEN-END wizetravel -->
 <!-- TAX -->
+<!-- WL-HIDDEN-BEGIN wizetax 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <div class="panel" data-c="#f59e0b" style="--c:#f59e0b;">
 <div class="panel-head">
 <div class="panel-title-block">
@@ -992,7 +1033,9 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </div>
+WL-HIDDEN-END wizetax -->
 <!-- HEALTH -->
+<!-- WL-HIDDEN-BEGIN wizehealth 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <div class="panel" data-c="#ec4899" style="--c:#ec4899;">
 <div class="panel-head">
 <div class="panel-title-block">
@@ -1056,7 +1099,9 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </div>
+WL-HIDDEN-END wizehealth -->
 <!-- DEAL -->
+<!-- WL-HIDDEN-BEGIN wizedeal 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <div class="panel" data-c="#8b5cf6" style="--c:#8b5cf6;">
 <div class="panel-head">
 <div class="panel-title-block">
@@ -1097,11 +1142,13 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </div>
+WL-HIDDEN-END wizedeal -->
 </div>
 </div>
 </div>
 </section>
 <!-- SAVINGS CALCULATOR -->
+<!-- WL-HIDDEN-BEGIN savings-calculator 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <section class="calc-section">
 <div class="container">
 <div class="sec-eyebrow reveal" data-i18n="_roi">ROI calculator</div>
@@ -1152,7 +1199,9 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </section>
+WL-HIDDEN-END savings-calculator -->
 <!-- COMPARE -->
+<!-- WL-HIDDEN-BEGIN compare-all-in-one 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <section>
 <div class="container">
 <div class="sec-eyebrow reveal" data-i18n="_wizelife">Why WizeLife</div>
@@ -1175,7 +1224,9 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </section>
+WL-HIDDEN-END compare-all-in-one -->
 <!-- TESTIMONIALS -->
+<!-- WL-HIDDEN-BEGIN testimonials 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <section class="testimonials-section">
 <div class="container">
 <div class="sec-eyebrow reveal" data-i18n="__56">What people say</div>
@@ -1209,6 +1260,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </section>
+WL-HIDDEN-END testimonials -->
 <!-- DATA TRUST PANEL -->
 <section class="data-trust-section" id="data-trust">
 <div class="data-trust-inner">
@@ -1230,6 +1282,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </section>
 <!-- PRICING -->
+<!-- WL-HIDDEN-BEGIN pricing-subscription 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <section id="pricing">
 <div class="container">
 <div class="sec-eyebrow reveal" data-i18n="__60">Pricing</div>
@@ -1286,6 +1339,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </section>
+WL-HIDDEN-END pricing-subscription -->
 <!-- FAQ -->
 <section class="faq-section" id="faq">
 <div class="container">
@@ -1300,15 +1354,16 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="cta-glow"></div>
 <div class="sec-eyebrow reveal" data-i18n="__77" style="margin-bottom:18px;">Start today</div>
 <h2 class="reveal" data-i18n="__78">Ready to live smarter?</h2>
-<p class="reveal" data-i18n="join_thousands_makin">Join people making smarter decisions with AI. Free to start, upgrade when you want.</p>
+<p class="reveal" data-i18n="join_thousands_makin">Join people making smarter decisions with AI. Free to start.</p>
 <div class="hero-btns reveal" style="justify-content:center;">
 <a class="btn-primary" href="auth.html" style="font-size:1.05rem;padding:18px 36px;" rel="nofollow">Create free account →</a>
 <a class="btn-secondary" data-i18n="__79" href="#products" style="font-size:1.05rem;padding:18px 36px;">Explore tools</a>
 </div>
 </section>
 
-<!-- POPULAR GUIDES STRIP -->
-<section style="background:var(--surf);border-top:1px solid var(--border);padding:72px 24px;position:relative;z-index:1">
+<!-- WL-HIDDEN-BEGIN guides-strip 2026-10-11 (links to tax/salary guides of hidden apps; restore: replace '- -' with '--' inside this block)
+<!- - POPULAR GUIDES STRIP - ->
+<section style="background:var(- -surf);border-top:1px solid var(- -border);padding:72px 24px;position:relative;z-index:1">
 <div class="container">
 <div class="sec-eyebrow reveal">Free Guides</div>
 <h2 class="sec-title reveal" style="margin-bottom:12px">Popular guides &amp; calculators.</h2>
@@ -1316,26 +1371,26 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;max-width:980px;margin:0 auto 40px">
   <a href="p/aliyah-tax-guide.html" style="display:block;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:14px;padding:18px 18px 16px;transition:all .2s;color:inherit" onmouseover="this.style.background='rgba(245,158,11,.12)'" onmouseout="this.style.background='rgba(245,158,11,.06)'">
     <div style="font-size:1.2rem;margin-bottom:10px">🇮🇱</div>
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(--text)">Aliyah Tax Guide</div>
-    <div style="font-size:.78rem;color:var(--muted);line-height:1.5">Israel's 10-year income-tax exemption for new immigrants — who qualifies and what's covered.</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(- -text)">Aliyah Tax Guide</div>
+    <div style="font-size:.78rem;color:var(- -muted);line-height:1.5">Israel's 10-year income-tax exemption for new immigrants — who qualifies and what's covered.</div>
     <div style="margin-top:10px;font-size:.76rem;font-weight:700;color:#fcd34d">Read guide →</div>
   </a>
   <a href="p/salary-compare-en.html" style="display:block;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:14px;padding:18px 18px 16px;transition:all .2s;color:inherit" onmouseover="this.style.background='rgba(245,158,11,.12)'" onmouseout="this.style.background='rgba(245,158,11,.06)'">
     <div style="font-size:1.2rem;margin-bottom:10px">💵</div>
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(--text)">Salary Compare</div>
-    <div style="font-size:.78rem;color:var(--muted);line-height:1.5">Net take-home pay across 20+ countries — same gross income, starkly different results.</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(- -text)">Salary Compare</div>
+    <div style="font-size:.78rem;color:var(- -muted);line-height:1.5">Net take-home pay across 20+ countries — same gross income, starkly different results.</div>
     <div style="margin-top:10px;font-size:.76rem;font-weight:700;color:#fcd34d">Compare →</div>
   </a>
   <a href="p/retire-at-55-calculator.html" style="display:block;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:18px 18px 16px;transition:all .2s;color:inherit" onmouseover="this.style.background='rgba(16,185,129,.12)'" onmouseout="this.style.background='rgba(16,185,129,.06)'">
     <div style="font-size:1.2rem;margin-bottom:10px">🎯</div>
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(--text)">Retire at 55 Calculator</div>
-    <div style="font-size:.78rem;color:var(--muted);line-height:1.5">How much to save each month to reach $1M by age 55 — with compound-interest breakdown.</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(- -text)">Retire at 55 Calculator</div>
+    <div style="font-size:.78rem;color:var(- -muted);line-height:1.5">How much to save each month to reach $1M by age 55 — with compound-interest breakdown.</div>
     <div style="margin-top:10px;font-size:.76rem;font-weight:700;color:#34d399">Calculate →</div>
   </a>
   <a href="p/buy-vs-rent-israel.html" style="display:block;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:14px;padding:18px 18px 16px;transition:all .2s;color:inherit" onmouseover="this.style.background='rgba(139,92,246,.12)'" onmouseout="this.style.background='rgba(139,92,246,.06)'">
     <div style="font-size:1.2rem;margin-bottom:10px">🏠</div>
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(--text)">Buy vs Rent — Israel</div>
-    <div style="font-size:.78rem;color:var(--muted);line-height:1.5">Price-to-rent ratio + break-even calculator for Israeli cities in 2026.</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:6px;color:var(- -text)">Buy vs Rent — Israel</div>
+    <div style="font-size:.78rem;color:var(- -muted);line-height:1.5">Price-to-rent ratio + break-even calculator for Israeli cities in 2026.</div>
     <div style="margin-top:10px;font-size:.76rem;font-weight:700;color:#c4b5fd">Calculate →</div>
   </a>
 </div>
@@ -1346,6 +1401,7 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </div>
 </section>
+WL-HIDDEN-END guides-strip -->
 </main>
 <!-- FOOTER -->
 <footer>
@@ -1353,22 +1409,25 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 <div class="footer-top">
 <div class="footer-brand">
 <span class="logo">WizeLife</span>
-<p data-i18n="5_ai_">Five AI tools for every important decision in your life. Built with love, everywhere.</p>
+<p data-i18n="5_ai_">AI tools for money and nutrition. Built with love, everywhere.</p>
 </div>
 <div class="footer-links">
 <div class="footer-col">
 <h3 data-i18n="__80">Products</h3>
 <a href="https://money.wizelife.ai/" target="_blank" rel="noopener noreferrer">WizeMoney</a>
+<a href="https://fitbite.wizelife.ai/" target="_blank" rel="noopener noreferrer">FitBite</a>
+<!-- WL-HIDDEN-BEGIN footer-4-apps 2026-10-11 — restore: delete this line and the matching WL-HIDDEN-END line
 <a href="https://travel.wizelife.ai" target="_blank" rel="noopener noreferrer">WizeTravel</a>
 <a href="https://mastermove.vercel.app/advisor" target="_blank" rel="noopener noreferrer">WizeTax</a>
 <a href="https://health.wizelife.ai/" target="_blank" rel="noopener noreferrer">WizeHealth</a>
 <a href="https://check-deal.vercel.app/" target="_blank" rel="noopener noreferrer">WizeDeal</a>
-</div>
+
+WL-HIDDEN-END footer-4-apps --></div>
 <div class="footer-col">
 <h3 data-i18n="__81">Account</h3>
 <a data-i18n="__82" href="auth.html" rel="nofollow" aria-label="Sign in (footer)">Sign in</a>
 <a data-i18n="__83" href="auth.html" rel="nofollow" aria-label="Sign up free (footer)">Sign up free</a>
-<a data-i18n="__84" href="#pricing">Pricing</a>
+<a data-i18n="__84" href="#pricing" hidden data-wl-hidden="2026-10-11">Pricing</a>
 <a href="#faq">FAQ</a>
 </div>
 <div class="footer-col">
@@ -1392,6 +1451,17 @@ footer{border-top:1px solid var(--border2);background:var(--surf);padding:56px 4
 </div>
 </footer>
 <script>
+/* WL-HIDDEN-SHIM 2026-10-11 — sections were hidden (see WL-HIDDEN markers). Legacy page JS still looks them up by id/selector;
+   return a detached <div> instead of null so nothing throws. Delete this script when the sections are restored. */
+(function(){
+ var IDS={}; ['aiBody','aiPrompts','feedRow','calcTotal','s-invest','s-flights','s-income','s-prop','v-invest','v-flights','v-income','v-prop','b-money','b-travel','b-tax','b-deal','pricing'].forEach(function(k){IDS[k]=1});
+ var SEL=/\.price-card|\.plan-|#pricing|\.calc-|\.ai-reco|\.feed-|\.ai-|\.testi|\.compare/;
+ var gid=document.getElementById.bind(document), qs=document.querySelector.bind(document);
+ document.getElementById=function(i){return gid(i)||(IDS[i]?document.createElement('div'):null)};
+ document.querySelector=function(q){return qs(q)||(SEL.test(q)?document.createElement('div'):null)};
+})();
+</script>
+<script>
 // ── NAV ──
 function toggleMenu(){
  document.getElementById('hamburger').classList.toggle('open');
@@ -1406,18 +1476,20 @@ window.addEventListener('scroll',()=>{
 // ── TOOLS DATA ──
 const ICONS = {
  money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg>',
- travel: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"/></svg>',
- tax: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5" opacity=".7"/></svg>',
- health: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-6 4 12 2-6h7"/></svg>',
- deal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10" opacity=".7"/><path d="M9 21v-6h6v6" opacity=".5"/></svg>'
+ fitbite: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg>',
+ // WL-HIDDEN 2026-10-11 travel: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19.5l3-1 7-7-7-2.5L7 7.5l8 1.5 4.5-4.5a2 2 0 0 1 2.8 2.8L17.8 11.8l1.5 8-1.5 1.5-2.5-7-7 7-1 3z"/></svg>',
+ // WL-HIDDEN 2026-10-11 tax: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5" opacity=".7"/></svg>',
+ // WL-HIDDEN 2026-10-11 health: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-6 4 12 2-6h7"/></svg>',
+ // WL-HIDDEN 2026-10-11 deal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10" opacity=".7"/><path d="M9 21v-6h6v6" opacity=".5"/></svg>'
 };
 
 const TOOLS = [
  {id:'money', name:'Money', em:'Wize', color:'#10b981', desc:'Personal finance & investments', url:'https://money.wizelife.ai/'},
- {id:'travel', name:'Travel', em:'Wize', color:'#06b6d4', desc:'Flight AI with hidden-city & virtual interlining', url:'https://travel.wizelife.ai/'},
- {id:'tax', name:'Tax', em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries', url:'https://tax.wizelife.ai/'},
- {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Health information AI · nutrition & vitals', url:'https://health.wizelife.ai/'},
- {id:'deal', name:'Deal', em:'Wize', color:'#8b5cf6', desc:'Real-estate ROI & tax analyzer', url:'https://deal.wizelife.ai/'},
+ {id:'fitbite', name:'Bite', em:'Fit', color:'#f97316', desc:'Sport & nutrition AI', url:'https://fitbite.wizelife.ai/'},
+ // WL-HIDDEN 2026-10-11 {id:'travel', name:'Travel', em:'Wize', color:'#06b6d4', desc:'Flight AI with hidden-city & virtual interlining', url:'https://travel.wizelife.ai/'},
+ // WL-HIDDEN 2026-10-11 {id:'tax', name:'Tax', em:'Wize', color:'#f59e0b', desc:'Relocation & exit-tax advisor · 26 countries', url:'https://tax.wizelife.ai/'},
+ // WL-HIDDEN 2026-10-11 {id:'health', name:'Health', em:'Wize', color:'#ec4899', desc:'Health information AI · nutrition & vitals', url:'https://health.wizelife.ai/'},
+ // WL-HIDDEN 2026-10-11 {id:'deal', name:'Deal', em:'Wize', color:'#8b5cf6', desc:'Real-estate ROI & tax analyzer', url:'https://deal.wizelife.ai/'},
 ];
 
 // Render tabs
@@ -1477,16 +1549,16 @@ glow.style.background = TOOLS[0].color;
 
 // ── LIVE FEED ──
 const feeds = [
- {dot:'#10b981', t:'WizeMoney', m:'Portfolio up <strong>+2.4%</strong> this week'},
- {dot:'#06b6d4', t:'WizeTravel', m:'TLV → NYC dropped to <strong>$370</strong>'},
- {dot:'#f59e0b', t:'WizeTax', m:'Portugal NHR saves <strong>$40,800</strong>'},
- {dot:'#ec4899', t:'WizeHealth', m:'LDL trending down · <strong>−14%</strong>'},
- {dot:'#8b5cf6', t:'WizeDeal', m:'São Paulo flat · deal score <strong>A</strong>'},
- {dot:'#10b981', t:'WizeMoney', m:'Pension rebalanced · saved <strong>₪1,240 / yr</strong>'},
- {dot:'#06b6d4', t:'WizeTravel', m:'Hidden-city ticket found <strong>− 43%</strong>'},
- {dot:'#f59e0b', t:'WizeTax', m:'Exit tax simulation complete'},
- {dot:'#ec4899', t:'WizeHealth', m:'Deep sleep +22 min last night'},
- {dot:'#8b5cf6', t:'WizeDeal', m:'3 properties flagged below comps'},
+ // WL-HIDDEN 2026-10-11 {dot:'#10b981', t:'WizeMoney', m:'Portfolio up <strong>+2.4%</strong> this week'},
+ // WL-HIDDEN 2026-10-11 {dot:'#06b6d4', t:'WizeTravel', m:'TLV → NYC dropped to <strong>$370</strong>'},
+ // WL-HIDDEN 2026-10-11 {dot:'#f59e0b', t:'WizeTax', m:'Portugal NHR saves <strong>$40,800</strong>'},
+ // WL-HIDDEN 2026-10-11 {dot:'#ec4899', t:'WizeHealth', m:'LDL trending down · <strong>−14%</strong>'},
+ // WL-HIDDEN 2026-10-11 {dot:'#8b5cf6', t:'WizeDeal', m:'São Paulo flat · deal score <strong>A</strong>'},
+ // WL-HIDDEN 2026-10-11 {dot:'#10b981', t:'WizeMoney', m:'Pension rebalanced · saved <strong>₪1,240 / yr</strong>'},
+ // WL-HIDDEN 2026-10-11 {dot:'#06b6d4', t:'WizeTravel', m:'Hidden-city ticket found <strong>− 43%</strong>'},
+ // WL-HIDDEN 2026-10-11 {dot:'#f59e0b', t:'WizeTax', m:'Exit tax simulation complete'},
+ // WL-HIDDEN 2026-10-11 {dot:'#ec4899', t:'WizeHealth', m:'Deep sleep +22 min last night'},
+ // WL-HIDDEN 2026-10-11 {dot:'#8b5cf6', t:'WizeDeal', m:'3 properties flagged below comps'},
 ];
 const feedChip = f => `<div class="feed-chip"><span class="dot" style="background:${f.dot};box-shadow:0 0 6px ${f.dot}"></span><strong>${f.t}</strong> · ${f.m}</div>`;
 document.getElementById('feedRow').innerHTML = feeds.map(feedChip).join('') + feeds.map(feedChip).join('');
@@ -1657,13 +1729,15 @@ updateCalc();
 
 // ── FAQ ──
 const faqs=[
- {q:"Is WizeLife really free?", a:"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/mo) for more answers and unlocked features, or go YOLO ($9.99/mo) for 40 AI answers/day across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."},
- {q:"Do I need a separate account for each tool?", a:"No — one WizeLife account works across all 5 tools. Sign in once, use everything."},
- {q:"How is WizeTax different from a regular tax calculator?", a:"WizeTax uses AI trained on tax law across 26 countries, with real exit-tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable context to discuss with your tax advisor."},
- {q:"Can WizeTravel actually save me money?", a:"Yes. WizeTravel finds hidden-city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."},
- {q:"What markets does WizeDeal cover?", a:"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental-yield benchmarks."},
+ // WL-HIDDEN 2026-10-11 {q:"Is WizeLife really free?", a:"Yes. You get 3–5 AI answers per day per tool, forever free. No credit card, no trial period. Upgrade to Pro ($4.99/mo) for more answers and unlocked features, or go YOLO ($9.99/mo) for 40 AI answers/day across every tool — plus multi-tool admin: manage all 5 apps (WizeMoney, WizeTax, WizeHealth, WizeTravel, WizeDeal) from one dashboard."},
+ {q:"Is WizeLife really free?", a:"Yes. You can start free — no credit card, no trial period."},
+ // WL-HIDDEN 2026-10-11 {q:"Do I need a separate account for each tool?", a:"No — one WizeLife account works across all 5 tools. Sign in once, use everything."},
+ {q:"Do I need a separate account for each tool?", a:"No — one WizeLife account works across both tools (WizeMoney and FitBite). Sign in once, use both."},
+ // WL-HIDDEN 2026-10-11 {q:"How is WizeTax different from a regular tax calculator?", a:"WizeTax uses AI trained on tax law across 26 countries, with real exit-tax scenarios, relocation comparisons, and a letter generator. It's not just numbers — it gives you actionable context to discuss with your tax advisor."},
+ // WL-HIDDEN 2026-10-11 {q:"Can WizeTravel actually save me money?", a:"Yes. WizeTravel finds hidden-city tickets, positioning routes (fly via hub for cheaper), and virtual interlining across low-cost carriers — routes that traditional booking sites completely miss."},
+ // WL-HIDDEN 2026-10-11 {q:"What markets does WizeDeal cover?", a:"Brazil, Israel, and the US. Each market has deep AI knowledge of local taxes (ITBI, Mas Rechisha, transfer taxes), mortgage products, and rental-yield benchmarks."},
  {q:"Is my data secure?", a:"All data is stored in your personal Firebase account. Each user can only see their own data. We never sell or share user data. HSTS and Cloudflare WAF protect all traffic."},
- {q:"Can I cancel anytime?", a:"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."},
+ // WL-HIDDEN 2026-10-11 {q:"Can I cancel anytime?", a:"Yes. No contracts, no cancellation fees. Cancel from your dashboard at any time and you'll keep Pro access until the end of your billing period."},
 ];
 document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
 <div class="faq-item" data-i="${i}">
@@ -1707,9 +1781,9 @@ const WIZE_TR = {
  en: {
  navProducts:'Products', navPricing:'Pricing', navFaq:'FAQ',
  navSignin:'Sign in', navCta:'Get started free',
- heroBadge:'5 AI tools · one account · live now',
+ heroBadge:'2 AI tools · one account · live now',
  h1a:'Make every', h1b:'smart decision', h1c:'with AI.',
- heroSub:'5 AI tools, one login: <strong>money</strong>, <strong>tax</strong>, <strong>travel</strong>, <strong>health</strong> &amp; <strong>real estate</strong> — each a purpose-built AI tool for life\'s biggest decisions.',
+ heroSub:'2 AI tools, one login: <strong>personal finance</strong> &amp; <strong>sport &amp; nutrition</strong> — each a purpose-built AI tool, not a generic chatbot.',
  planDescFree:'To try one tool — no card needed.',
  planDescPro:'For your main tool — all 5 fully unlocked.',
  planDescYolo:'For your whole life — every tool, every day.',
@@ -1717,7 +1791,7 @@ const WIZE_TR = {
  yoloAnchor:'Replaces <s>$15–40/mo</s> of separate apps',
  heroBtn:'Get started free →', heroBtn2:'Explore the suite ↓',
  feedLabel:'Live from the suite',
- trustLabel0:'AI tools in one suite', trustLabel1:'To get started', trustLabel2:'Countries in WizeTax', trustLabel3:'Real-estate markets',
+ trustLabel0:'AI tools in one suite', trustLabel1:'To get started', trustLabel2:'Languages', trustLabel3:'Real-estate markets',
  suiteEye:'The suite', suiteTitle:'One account.\nEvery smart decision.', suiteSub:'Each tool is purpose-built AI — not a generic chatbot. Click any tool to see a live preview.',
  aiEye:'Quick demo · 5 sample questions', aiTitle:'Talk to WizeAI.\nLive, right here.', aiSub:'Five sample answers. For answers tailored to YOUR money, flights & tax — unlock the full advisor with YOLO.',
  aiWelcome:'Hi 👋 I\'m WizeAI. Ask me about investing, a flight deal, tax moves, a blood test, or a property listing — or tap a suggestion below.',
@@ -1729,9 +1803,9 @@ const WIZE_TR = {
  testiEye:'What people say', testiTitle:'Real users. Real savings.', testiSub:'Feedback from people using WizeLife across three continents.',
  pricingEye:'Pricing', pricingTitle:'Simple, honest pricing.', pricingSub:'Start free. Upgrade when you need more. No credit card required.',
  faqEye:'FAQ', faqTitle:'Common questions.', faqSub:'Everything you need to know before getting started.',
- ctaEye:'Start today', ctaTitle:'Ready to live smarter?', ctaDesc:'Join people making smarter decisions with AI. Free to start, upgrade when you want.',
+ ctaEye:'Start today', ctaTitle:'Ready to live smarter?', ctaDesc:'Join people making smarter decisions with AI. Free to start.',
  ctaBtn:'Create free account →', ctaBtn2:'Explore tools',
- footerDesc:'Five AI tools for every important decision in your life. Built with love, everywhere.',
+ footerDesc:'AI tools for money and nutrition. Built with love, everywhere.',
  footerProducts:'Products', footerAccount:'Account', footerInfo:'Info',
  footerSignin:'Sign in', footerSignup:'Sign up free', footerPricing:'Pricing',
  footerContact:'Contact', footerPrivacy:'Privacy Policy', footerTerms:'Terms of Service',
@@ -1755,7 +1829,7 @@ const WIZE_TR = {
  navSignin:'Entrar', navCta:'Começar Grátis',
  heroBadge:'Sua vantagem injusta.',
  h1a:'Tome cada', h1b:'decisão inteligente', h1c:'com IA.',
- heroSub:'5 ferramentas de IA, um login: <strong>dinheiro</strong>, <strong>impostos</strong>, <strong>viagens</strong>, <strong>saúde</strong> e <strong>imóveis</strong> — cada uma uma ferramenta de IA feita sob medida para as maiores decisões da vida.',
+ heroSub:'2 ferramentas de IA, um só login: <strong>finanças pessoais</strong> e <strong>esporte e nutrição</strong> — cada uma criada para um propósito, não um chatbot genérico.',
  planDescFree:'Para testar uma ferramenta — sem cartão.',
  planDescPro:'Para sua ferramenta principal — as 5 desbloqueadas.',
  planDescYolo:'Para a vida toda — cada ferramenta, todos os dias.',
@@ -1763,7 +1837,7 @@ const WIZE_TR = {
  yoloAnchor:'Substitui <s>$15–40/mês</s> de apps separados',
  heroBtn:'Comece grátis →', heroBtn2:'Explorar a suíte ↓',
  feedLabel:'Ao vivo na suíte',
- trustLabel0:'Ferramentas de IA em uma suíte', trustLabel1:'Para começar', trustLabel2:'Países no WizeTax', trustLabel3:'Mercados imobiliários',
+ trustLabel0:'Ferramentas de IA em uma suíte', trustLabel1:'Para começar', trustLabel2:'Idiomas', trustLabel3:'Mercados imobiliários',
  suiteEye:'A suíte', suiteTitle:'Uma conta.\nCada decisão inteligente.', suiteSub:'Cada ferramenta é uma IA especializada — não um chatbot genérico. Clique em qualquer ferramenta para ver uma prévia ao vivo.',
  aiEye:'Demo rápida · 5 perguntas de exemplo', aiTitle:'Fale com o WizeAI.\nAo vivo, aqui mesmo.', aiSub:'Cinco respostas de exemplo. Para respostas adaptadas ao SEU dinheiro, voos e impostos — desbloqueie o consultor completo com YOLO.',
  aiWelcome:'Olá 👋 Sou o WizeAI. Pergunte-me sobre investimentos, promoções de voos, planejamento fiscal, exames de sangue ou um imóvel — ou toque em uma sugestão abaixo.',
@@ -1775,9 +1849,9 @@ const WIZE_TR = {
  testiEye:'O que dizem as pessoas', testiTitle:'Usuários reais. Economias reais.', testiSub:'Feedback de pessoas que usam o WizeLife em três continentes.',
  pricingEye:'Preços', pricingTitle:'Preços simples e honestos.', pricingSub:'Comece de graça. Faça upgrade quando precisar. Sem cartão de crédito.',
  faqEye:'FAQ', faqTitle:'Perguntas frequentes.', faqSub:'Tudo que você precisa saber antes de começar.',
- ctaEye:'Comece hoje', ctaTitle:'Pronto para viver de forma mais inteligente?', ctaDesc:'Junte-se a pessoas que tomam decisões mais inteligentes com IA. Grátis para começar, faça upgrade quando quiser.',
+ ctaEye:'Comece hoje', ctaTitle:'Pronto para viver de forma mais inteligente?', ctaDesc:'Junte-se a quem toma decisões mais inteligentes com IA. Grátis para começar.',
  ctaBtn:'Criar conta gratuita →', ctaBtn2:'Explorar ferramentas',
- footerDesc:'Cinco ferramentas de IA para cada decisão importante da sua vida. Feito com amor, em todo lugar.',
+ footerDesc:'Ferramentas de IA para dinheiro e nutrição. Feito com amor, em todo lugar.',
  footerProducts:'Produtos', footerAccount:'Conta', footerInfo:'Informações',
  footerSignin:'Entrar', footerSignup:'Cadastrar grátis', footerPricing:'Preços',
  footerContact:'Contato', footerPrivacy:'Política de Privacidade', footerTerms:'Termos de Serviço',
@@ -1801,7 +1875,7 @@ const WIZE_TR = {
  navSignin:'Iniciar sesión', navCta:'Comenzar Gratis',
  heroBadge:'Tu ventaja injusta.',
  h1a:'Toma cada', h1b:'decisión inteligente', h1c:'con IA.',
- heroSub:'5 herramientas de IA, un inicio de sesión: <strong>dinero</strong>, <strong>impuestos</strong>, <strong>viajes</strong>, <strong>salud</strong> e <strong>inmuebles</strong> — cada una una herramienta de IA hecha a medida para las grandes decisiones de la vida.',
+ heroSub:'2 herramientas de IA, un solo acceso: <strong>finanzas personales</strong> y <strong>deporte y nutrición</strong> — cada una creada para un propósito, no un chatbot genérico.',
  planDescFree:'Para probar una herramienta — sin tarjeta.',
  planDescPro:'Para tu herramienta principal — las 5 desbloqueadas.',
  planDescYolo:'Para toda tu vida — cada herramienta, cada día.',
@@ -1809,7 +1883,7 @@ const WIZE_TR = {
  yoloAnchor:'Reemplaza <s>$15–40/mes</s> de apps separadas',
  heroBtn:'Empieza gratis →', heroBtn2:'Explorar la suite ↓',
  feedLabel:'En vivo desde la suite',
- trustLabel0:'Herramientas de IA en una suite', trustLabel1:'Para comenzar', trustLabel2:'Países en WizeTax', trustLabel3:'Mercados inmobiliarios',
+ trustLabel0:'Herramientas de IA en una suite', trustLabel1:'Para comenzar', trustLabel2:'Idiomas', trustLabel3:'Mercados inmobiliarios',
  suiteEye:'La suite', suiteTitle:'Una cuenta.\nCada decisión inteligente.', suiteSub:'Cada herramienta es IA de propósito específico — no un chatbot genérico. Haz clic en cualquier herramienta para ver una vista previa en vivo.',
  aiEye:'Demo rápida · 5 preguntas de ejemplo', aiTitle:'Habla con WizeAI.\nEn vivo, aquí mismo.', aiSub:'Cinco respuestas de ejemplo. Para respuestas adaptadas a TU dinero, vuelos e impuestos — desbloquea el asesor completo con YOLO.',
  aiWelcome:'Hola 👋 Soy WizeAI. Pregúntame sobre inversiones, ofertas de vuelos, planificación fiscal, análisis de sangre o una propiedad — o toca una sugerencia abajo.',
@@ -1821,9 +1895,9 @@ const WIZE_TR = {
  testiEye:'Lo que dicen las personas', testiTitle:'Usuarios reales. Ahorros reales.', testiSub:'Opiniones de personas que usan WizeLife en tres continentes.',
  pricingEye:'Precios', pricingTitle:'Precios simples y honestos.', pricingSub:'Empieza gratis. Actualiza cuando necesites más. Sin tarjeta de crédito.',
  faqEye:'FAQ', faqTitle:'Preguntas frecuentes.', faqSub:'Todo lo que necesitas saber antes de comenzar.',
- ctaEye:'Empieza hoy', ctaTitle:'¿Listo para vivir con más inteligencia?', ctaDesc:'Únete a personas que toman decisiones más inteligentes con IA. Gratis para empezar, actualiza cuando quieras.',
+ ctaEye:'Empieza hoy', ctaTitle:'¿Listo para vivir con más inteligencia?', ctaDesc:'Únete a quienes toman mejores decisiones con IA. Gratis para empezar.',
  ctaBtn:'Crear cuenta gratuita →', ctaBtn2:'Explorar herramientas',
- footerDesc:'Cinco herramientas de IA para cada decisión importante de tu vida. Hecho con amor, en todas partes.',
+ footerDesc:'Herramientas de IA para dinero y nutrición. Hecho con amor, en todas partes.',
  footerProducts:'Productos', footerAccount:'Cuenta', footerInfo:'Información',
  footerSignin:'Iniciar sesión', footerSignup:'Registrarse gratis', footerPricing:'Precios',
  footerContact:'Contacto', footerPrivacy:'Política de Privacidad', footerTerms:'Términos de Servicio',
@@ -1847,7 +1921,7 @@ const WIZE_TR = {
  navSignin:'כניסה', navCta:'התחל בחינם',
  heroBadge:'היתרון הלא הוגן שלך.',
  h1a:'קבל כל', h1b:'החלטה חכמה', h1c:'עם AI.',
- heroSub:'5 כלי AI, התחברות אחת: <strong>כסף</strong>, <strong>מיסים</strong>, <strong>טיולים</strong>, <strong>בריאות</strong> ו<strong>נדל"ן</strong> — כל אחד כלי AI ייעודי להחלטות הגדולות בחיים.',
+ heroSub:'2 כלי AI, כניסה אחת: <strong>כספים אישיים</strong> ו<strong>ספורט ותזונה</strong> — כל אחד כלי AI ייעודי, לא צ\'אטבוט כללי.',
  planDescFree:'להתנסות בכלי אחד — בלי כרטיס אשראי.',
  planDescPro:'לכלי המרכזי שלך — כל ה-5 נפתחים במלואם.',
  planDescYolo:'לכל החיים — כל הכלים, כל יום.',
@@ -1855,7 +1929,7 @@ const WIZE_TR = {
  yoloAnchor:'מחליף <s>$15–40 לחודש</s> של אפליקציות נפרדות',
  heroBtn:'התחל בחינם ←', heroBtn2:'גלה את הכלים ↓',
  feedLabel:'שידור חי מהחבילה',
- trustLabel0:'כלי AI בחבילה אחת', trustLabel1:'להתחלה', trustLabel2:'מדינות ב-WizeTax', trustLabel3:'שווקי נדל"ן',
+ trustLabel0:'כלי AI בחבילה אחת', trustLabel1:'להתחלה', trustLabel2:'שפות', trustLabel3:'שווקי נדל"ן',
  suiteEye:'החבילה', suiteTitle:'חשבון אחד.\nכל החלטה חכמה.', suiteSub:'כל כלי הוא AI ייעודי — לא צ\'אטבוט גנרי. לחץ על כל כלי לצפייה בתצוגה מקדימה חיה.',
  aiEye:'דמו מהיר · 5 שאלות לדוגמה', aiTitle:'דבר עם WizeAI.\nחי, כאן ועכשיו.', aiSub:'חמש תשובות לדוגמה. לתשובות מותאמות לכסף, לטיסות ולמיסים שלך — קח YOLO ליועץ המלא.',
  aiWelcome:'היי 👋 אני WizeAI. שאל אותי על השקעות, עסקאות טיסה, תכנון מס, בדיקת דם, או נכס — או לחץ על הצעה למטה.',
@@ -1867,9 +1941,9 @@ const WIZE_TR = {
  testiEye:'מה אומרים המשתמשים', testiTitle:'משתמשים אמיתיים. חיסכון אמיתי.', testiSub:'משוב מאנשים שמשתמשים ב-WizeLife בשלוש יבשות.',
  pricingEye:'מחירים', pricingTitle:'מחירים פשוטים וישרים.', pricingSub:'התחל בחינם. שדרג כשתצטרך. ללא כרטיס אשראי.',
  faqEye:'שאלות נפוצות', faqTitle:'שאלות נפוצות.', faqSub:'כל מה שצריך לדעת לפני שמתחילים.',
- ctaEye:'התחל היום', ctaTitle:'מוכן לחיות יותר חכם?', ctaDesc:'הצטרף לאנשים שמקבלים החלטות חכמות יותר עם AI. חינם להתחלה, שדרג מתי שרוצה.',
+ ctaEye:'התחל היום', ctaTitle:'מוכן לחיות יותר חכם?', ctaDesc:'הצטרף לאנשים שמקבלים החלטות חכמות יותר עם AI. חינם להתחלה.',
  ctaBtn:'צור חשבון חינמי ←', ctaBtn2:'גלה את הכלים',
- footerDesc:'חמישה כלי AI לכל החלטה חשובה בחיים. נבנה עם אהבה, מכל מקום.',
+ footerDesc:'כלי AI לכסף ולתזונה. נבנה באהבה, בכל מקום.',
  footerProducts:'מוצרים', footerAccount:'חשבון', footerInfo:'מידע',
  footerSignin:'כניסה', footerSignup:'הרשמה חינמית', footerPricing:'מחירים',
  footerContact:'צור קשר', footerPrivacy:'מדיניות פרטיות', footerTerms:'תנאי שירות',
@@ -1891,23 +1965,27 @@ const WIZE_TR = {
 };
 
 const WIZE_FAQ_PT = [
- {q:"O WizeLife é realmente gratuito?", a:"Sim. Você obtém 3–5 respostas de IA por dia por ferramenta, para sempre gratuito. Sem cartão de crédito, sem período de teste. Faça upgrade para o Pro ($4,99/mês) para mais respostas e recursos desbloqueados, ou vá YOLO ($9,99/mês) para 40 respostas IA/dia em todas as ferramentas."},
- {q:"Preciso de uma conta separada para cada ferramenta?", a:"Não — uma conta WizeLife funciona em todas as 5 ferramentas. Entre uma vez, use tudo."},
- {q:"Como o WizeTax difere de uma calculadora de impostos comum?", a:"O WizeTax usa IA treinada em legislação tributária de 26 países, com cenários reais de imposto de saída, comparações de realocação e um gerador de cartas. Não são apenas números — é contexto prático para discutir com seu consultor fiscal."},
- {q:"O WizeTravel realmente pode me economizar dinheiro?", a:"Sim. O WizeTravel encontra passagens hidden-city, rotas de posicionamento (voe por um hub mais barato) e interlining virtual entre companhias de baixo custo — rotas que sites tradicionais de reserva perdem completamente."},
- {q:"Quais mercados o WizeDeal cobre?", a:"Brasil, Israel e EUA. Cada mercado tem conhecimento profundo de impostos locais (ITBI, taxas de transferência), produtos hipotecários e benchmarks de rentabilidade de aluguel."},
+ // WL-HIDDEN 2026-10-11 {q:"O WizeLife é realmente gratuito?", a:"Sim. Você obtém 3–5 respostas de IA por dia por ferramenta, para sempre gratuito. Sem cartão de crédito, sem período de teste. Faça upgrade para o Pro ($4,99/mês) para mais respostas e recursos desbloqueados, ou vá YOLO ($9,99/mês) para 40 respostas IA/dia em todas as ferramentas."},
+ {q:"O WizeLife é realmente gratuito?", a:"Sim. Você pode começar de graça — sem cartão de crédito e sem período de teste."},
+ // WL-HIDDEN 2026-10-11 {q:"Preciso de uma conta separada para cada ferramenta?", a:"Não — uma conta WizeLife funciona em todas as 5 ferramentas. Entre uma vez, use tudo."},
+ {q:"Preciso de uma conta separada para cada ferramenta?", a:"Não — uma conta WizeLife funciona nas duas ferramentas (WizeMoney e FitBite). Entre uma vez e use as duas."},
+ // WL-HIDDEN 2026-10-11 {q:"Como o WizeTax difere de uma calculadora de impostos comum?", a:"O WizeTax usa IA treinada em legislação tributária de 26 países, com cenários reais de imposto de saída, comparações de realocação e um gerador de cartas. Não são apenas números — é contexto prático para discutir com seu consultor fiscal."},
+ // WL-HIDDEN 2026-10-11 {q:"O WizeTravel realmente pode me economizar dinheiro?", a:"Sim. O WizeTravel encontra passagens hidden-city, rotas de posicionamento (voe por um hub mais barato) e interlining virtual entre companhias de baixo custo — rotas que sites tradicionais de reserva perdem completamente."},
+ // WL-HIDDEN 2026-10-11 {q:"Quais mercados o WizeDeal cobre?", a:"Brasil, Israel e EUA. Cada mercado tem conhecimento profundo de impostos locais (ITBI, taxas de transferência), produtos hipotecários e benchmarks de rentabilidade de aluguel."},
  {q:"Meus dados estão seguros?", a:"Todos os dados são armazenados na sua conta pessoal do Firebase. Cada usuário pode ver apenas seus próprios dados. Nunca vendemos ou compartilhamos dados de usuários. HSTS e Cloudflare WAF protegem todo o tráfego."},
- {q:"Posso cancelar a qualquer momento?", a:"Sim. Sem contratos, sem taxas de cancelamento. Cancele pelo seu painel a qualquer momento e manterá acesso Pro até o final do período de faturamento."},
+ // WL-HIDDEN 2026-10-11 {q:"Posso cancelar a qualquer momento?", a:"Sim. Sem contratos, sem taxas de cancelamento. Cancele pelo seu painel a qualquer momento e manterá acesso Pro até o final do período de faturamento."},
 ];
 
 const WIZE_FAQ_ES = [
- {q:"¿WizeLife es realmente gratuito?", a:"Sí. Obtienes 3–5 respuestas de IA al día por herramienta, gratis para siempre. Sin tarjeta de crédito, sin período de prueba. Actualiza a Pro ($4.99/mes) para más respuestas y funciones desbloqueadas, o pasa a YOLO ($9.99/mes) para 40 respuestas IA/día en todas las herramientas."},
- {q:"¿Necesito una cuenta separada para cada herramienta?", a:"No — una cuenta WizeLife funciona en las 5 herramientas. Inicia sesión una vez, usa todo."},
- {q:"¿En qué se diferencia WizeTax de una calculadora de impuestos normal?", a:"WizeTax usa IA entrenada en legislación fiscal de 26 países, con escenarios reales de impuesto de salida, comparaciones de reubicación y un generador de cartas. No son solo números — es contexto práctico para comentar con tu asesor fiscal."},
- {q:"¿WizeTravel realmente puede ahorrarme dinero?", a:"Sí. WizeTravel encuentra vuelos hidden-city, rutas de posicionamiento (vuela por un hub más barato) e interlining virtual entre aerolíneas de bajo costo — rutas que los sitios de reserva tradicionales pasan por alto."},
- {q:"¿Qué mercados cubre WizeDeal?", a:"España, Israel y EE. UU. Cada mercado tiene conocimiento profundo de impuestos locales (ITP, tasas de transferencia), productos hipotecarios y benchmarks de rentabilidad de alquiler."},
+ // WL-HIDDEN 2026-10-11 {q:"¿WizeLife es realmente gratuito?", a:"Sí. Obtienes 3–5 respuestas de IA al día por herramienta, gratis para siempre. Sin tarjeta de crédito, sin período de prueba. Actualiza a Pro ($4.99/mes) para más respuestas y funciones desbloqueadas, o pasa a YOLO ($9.99/mes) para 40 respuestas IA/día en todas las herramientas."},
+ {q:"¿WizeLife es realmente gratuito?", a:"Sí. Puedes empezar gratis — sin tarjeta de crédito y sin periodo de prueba."},
+ // WL-HIDDEN 2026-10-11 {q:"¿Necesito una cuenta separada para cada herramienta?", a:"No — una cuenta WizeLife funciona en las 5 herramientas. Inicia sesión una vez, usa todo."},
+ {q:"¿Necesito una cuenta separada para cada herramienta?", a:"No — una cuenta WizeLife funciona en las dos herramientas (WizeMoney y FitBite). Inicia sesión una vez y usa ambas."},
+ // WL-HIDDEN 2026-10-11 {q:"¿En qué se diferencia WizeTax de una calculadora de impuestos normal?", a:"WizeTax usa IA entrenada en legislación fiscal de 26 países, con escenarios reales de impuesto de salida, comparaciones de reubicación y un generador de cartas. No son solo números — es contexto práctico para comentar con tu asesor fiscal."},
+ // WL-HIDDEN 2026-10-11 {q:"¿WizeTravel realmente puede ahorrarme dinero?", a:"Sí. WizeTravel encuentra vuelos hidden-city, rutas de posicionamiento (vuela por un hub más barato) e interlining virtual entre aerolíneas de bajo costo — rutas que los sitios de reserva tradicionales pasan por alto."},
+ // WL-HIDDEN 2026-10-11 {q:"¿Qué mercados cubre WizeDeal?", a:"España, Israel y EE. UU. Cada mercado tiene conocimiento profundo de impuestos locales (ITP, tasas de transferencia), productos hipotecarios y benchmarks de rentabilidad de alquiler."},
  {q:"¿Mis datos están seguros?", a:"Todos los datos se almacenan en tu cuenta personal de Firebase. Cada usuario solo puede ver sus propios datos. Nunca vendemos ni compartimos datos de usuarios. HSTS y Cloudflare WAF protegen todo el tráfico."},
- {q:"¿Puedo cancelar en cualquier momento?", a:"Sí. Sin contratos, sin tarifas de cancelación. Cancela desde tu panel en cualquier momento y mantendrás acceso Pro hasta el final del período de facturación."},
+ // WL-HIDDEN 2026-10-11 {q:"¿Puedo cancelar en cualquier momento?", a:"Sí. Sin contratos, sin tarifas de cancelación. Cancela desde tu panel en cualquier momento y mantendrás acceso Pro hasta el final del período de facturación."},
 ];
 
 function _detectLandingLang(){
@@ -1998,23 +2076,30 @@ function applyLandingLang(){
 
 
  // Suite section
- const eyes = document.querySelectorAll('.sec-eyebrow');
- const titles = document.querySelectorAll('.sec-title');
- const subs = document.querySelectorAll('.sec-sub');
- // sec indices: 0=suite, 1=ai, 2=calc, 3=compare, 4=testi, 5=pricing, 6=faq
- const secData = [
- [t.suiteEye, t.suiteTitle.replace('\n','<br>'), t.suiteSub],
- [t.aiEye, t.aiTitle.replace('\n','<br>'), t.aiSub],
- [t.calcEye, t.calcTitle, t.calcSub],
- [t.compareEye, t.compareTitle, t.compareSub],
- [t.testiEye, t.testiTitle, t.testiSub],
- [t.pricingEye, t.pricingTitle, t.pricingSub],
- [t.faqEye, t.faqTitle, t.faqSub],
- ];
- secData.forEach(([eye,title,sub],i)=>{
- if(eyes[i]) eyes[i].textContent = eye;
- if(titles[i]) titles[i].innerHTML = title;
- if(subs[i]) subs[i].textContent = sub;
+ // WL-HIDDEN 2026-10-11 const eyes = document.querySelectorAll('.sec-eyebrow');
+ // WL-HIDDEN 2026-10-11 const titles = document.querySelectorAll('.sec-title');
+ // WL-HIDDEN 2026-10-11 const subs = document.querySelectorAll('.sec-sub');
+ // WL-HIDDEN 2026-10-11 // sec indices: 0=suite, 1=ai, 2=calc, 3=compare, 4=testi, 5=pricing, 6=faq
+ // WL-HIDDEN 2026-10-11 const secData = [
+ // WL-HIDDEN 2026-10-11 [t.suiteEye, t.suiteTitle.replace('\n','<br>'), t.suiteSub],
+ // WL-HIDDEN 2026-10-11 [t.aiEye, t.aiTitle.replace('\n','<br>'), t.aiSub],
+ // WL-HIDDEN 2026-10-11 [t.calcEye, t.calcTitle, t.calcSub],
+ // WL-HIDDEN 2026-10-11 [t.compareEye, t.compareTitle, t.compareSub],
+ // WL-HIDDEN 2026-10-11 [t.testiEye, t.testiTitle, t.testiSub],
+ // WL-HIDDEN 2026-10-11 [t.pricingEye, t.pricingTitle, t.pricingSub],
+ // WL-HIDDEN 2026-10-11 [t.faqEye, t.faqTitle, t.faqSub],
+ // WL-HIDDEN 2026-10-11 ];
+ // WL-HIDDEN 2026-10-11 secData.forEach(([eye,title,sub],i)=>{
+ // WL-HIDDEN 2026-10-11 if(eyes[i]) eyes[i].textContent = eye;
+ // WL-HIDDEN 2026-10-11 if(titles[i]) titles[i].innerHTML = title;
+ // WL-HIDDEN 2026-10-11 if(subs[i]) subs[i].textContent = sub;
+ // WL-HIDDEN 2026-10-11 });
+ // WL-HIDDEN 2026-10-11: the old index-based mapping above breaks once sections are removed (FAQ got the AI-demo heading).
+ // Section-scoped version — only the sections that are still on the page. Restore the old block together with the sections.
+ [['#products', t.suiteEye, t.suiteTitle.replace('\n','<br>'), t.suiteSub], ['#faq', t.faqEye, t.faqTitle, t.faqSub]].forEach(function(r){
+  var root = document.querySelector(r[0]); if(!root) return;
+  var e = root.querySelector('.sec-eyebrow'), ti = root.querySelector('.sec-title'), su = root.querySelector('.sec-sub');
+  if(e) e.textContent = r[1]; if(ti) ti.innerHTML = r[2]; if(su) su.textContent = r[3];
  });
 
  // Illustrative AI-output badge in the WizeTax suite panel (labeled, not advice)
@@ -2080,18 +2165,24 @@ function applyLandingLang(){
  const fDisc = document.querySelector('.footer-disclaimer');
  if(fDisc && t.landingDisclaimer) fDisc.textContent = t.landingDisclaimer;
 
+ // New (2026-10-11) strings are keyed in WL_TR as wl2_*; apply them here (the landing page has no generic data-i18n applier).
+ (function(){ var d = window.WL_TR && window.WL_TR[_wl_lang];
+  if(!d) return;
+  document.querySelectorAll('[data-i18n^="wl2_"]').forEach(function(el){ var k = el.getAttribute('data-i18n'); if(d[k]) el.textContent = d[k]; }); })();
  // AI suggestions — re-render from the rotating pool in the new active lang.
  if (typeof window.__renderAiPrompts === 'function') window.__renderAiPrompts();
 
  // FAQ — re-render by language
  const WIZE_FAQ_HE = [
- {q:"האם WizeLife באמת חינמי?", a:"כן. קבל 3–5 תשובות AI ביום לכל כלי, חינם לתמיד. ללא כרטיס אשראי, ללא תקופת ניסיון. שדרג ל-Pro ($4.99/חודש) לתשובות נוספות ותכונות מלאות, או עבור ל-YOLO ($9.99/חודש) ל40 תשובות AI ביום בכל כלי."},
- {q:"האם צריך חשבון נפרד לכל כלי?", a:"לא — חשבון WizeLife אחד עובד על כל 5 הכלים. כנס פעם אחת, השתמש בכל."},
- {q:"במה WizeTax שונה ממחשבון מס רגיל?", a:"WizeTax משתמש ב-AI שאומן על חקיקת מס של 26 מדינות, כולל תרחישי מס יציאה, השוואות העתקת מגורים ויצירת מכתבים. לא רק מספרים — עצות פרקטיות."},
- {q:"האם WizeTravel יכול באמת לחסוך לי כסף?", a:"כן. WizeTravel מוצא טיסות hidden-city, מסלולי positioning וinterlining וירטואלי בין חברות low-cost — מסלולים שאתרי הזמנה רגילים מפספסים לחלוטין."},
- {q:"אילו שווקים WizeDeal מכסה?", a:"ישראל, ברזיל וארה\"ב. לכל שוק יש ידע עמוק במיסים מקומיים, מוצרי משכנתא ותשואות שכירות."},
+ // WL-HIDDEN 2026-10-11 {q:"האם WizeLife באמת חינמי?", a:"כן. קבל 3–5 תשובות AI ביום לכל כלי, חינם לתמיד. ללא כרטיס אשראי, ללא תקופת ניסיון. שדרג ל-Pro ($4.99/חודש) לתשובות נוספות ותכונות מלאות, או עבור ל-YOLO ($9.99/חודש) ל40 תשובות AI ביום בכל כלי."},
+ {q:"האם WizeLife באמת חינמי?", a:"כן. אפשר להתחיל בחינם — ללא כרטיס אשראי וללא תקופת ניסיון."},
+ // WL-HIDDEN 2026-10-11 {q:"האם צריך חשבון נפרד לכל כלי?", a:"לא — חשבון WizeLife אחד עובד על כל 5 הכלים. כנס פעם אחת, השתמש בכל."},
+ {q:"האם צריך חשבון נפרד לכל כלי?", a:"לא — חשבון WizeLife אחד עובד בשני הכלים (WizeMoney ו-FitBite). כנס פעם אחת, השתמש בשניהם."},
+ // WL-HIDDEN 2026-10-11 {q:"במה WizeTax שונה ממחשבון מס רגיל?", a:"WizeTax משתמש ב-AI שאומן על חקיקת מס של 26 מדינות, כולל תרחישי מס יציאה, השוואות העתקת מגורים ויצירת מכתבים. לא רק מספרים — עצות פרקטיות."},
+ // WL-HIDDEN 2026-10-11 {q:"האם WizeTravel יכול באמת לחסוך לי כסף?", a:"כן. WizeTravel מוצא טיסות hidden-city, מסלולי positioning וinterlining וירטואלי בין חברות low-cost — מסלולים שאתרי הזמנה רגילים מפספסים לחלוטין."},
+ // WL-HIDDEN 2026-10-11 {q:"אילו שווקים WizeDeal מכסה?", a:"ישראל, ברזיל וארה\"ב. לכל שוק יש ידע עמוק במיסים מקומיים, מוצרי משכנתא ותשואות שכירות."},
  {q:"האם הנתונים שלי מאובטחים?", a:"כל הנתונים מאוחסנים בחשבון Firebase האישי שלך. כל משתמש יכול לראות רק את הנתונים שלו. לעולם לא מוכרים או משתפים נתוני משתמשים."},
- {q:"האם אפשר לבטל בכל עת?", a:"כן. ללא חוזים, ללא עמלות ביטול. בטל דרך הלוח בקרה בכל עת ותשמור גישה Pro עד סוף תקופת החיוב."},
+ // WL-HIDDEN 2026-10-11 {q:"האם אפשר לבטל בכל עת?", a:"כן. ללא חוזים, ללא עמלות ביטול. בטל דרך הלוח בקרה בכל עת ותשמור גישה Pro עד סוף תקופת החיוב."},
  ];
  const faqData = _wl_lang === 'pt' ? WIZE_FAQ_PT : _wl_lang === 'es' ? WIZE_FAQ_ES : _wl_lang === 'he' ? WIZE_FAQ_HE : faqs;
  document.getElementById('faqList').innerHTML = faqData.map((f,i)=>`
@@ -2322,7 +2413,7 @@ document.querySelectorAll('.trust-num[data-count]').forEach(el => {
  setInterval(function(){ if (document.visibilityState === 'visible') TARGETS.forEach(ping); }, 30 * 1000);
 })();
 </script>
-<script src="/js/wl-landing-i18n.js?v=2026062301" defer></script><script src="/js/wl-text-i18n.js?v=1" defer></script>
+<script src="/js/wl-landing-i18n.js?v=2026101101" defer></script><script src="/js/wl-text-i18n.js?v=1" defer></script>
 <!-- Funnel: log the landing-page visit (top of funnel). -->
 <script src="/js/wize-track-beacon.js?v=2026061701" defer></script>
 <script>try { window.WizeTrack && WizeTrack.init('wizelife'); } catch (e) {}</script>
