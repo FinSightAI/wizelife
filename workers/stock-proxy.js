@@ -22,12 +22,15 @@ const ALLOWED_HOSTS = new Set([
   'fred.stlouisfed.org', // FinSight Market Internals (HY spread, yield curve, VIX closes) — FRED tarpits Vercel IPs
 ]);
 
-// Browser origins we want to send back as Access-Control-Allow-Origin.
-// Anything not in this list still gets a working preflight (`*`), but
-// authenticated/CORS-credentialed requests will be rejected by the browser.
+// Browser origins allowed to read responses (Access-Control-Allow-Origin).
+// Any other browser origin gets NO ACAO header, so the browser blocks the read
+// (previously fell back to `*`, which let any website use this proxy).
+// Server-to-server callers (FinSight Terminal, tax backend) send no Origin and
+// are unaffected — CORS only applies to browsers.
 const ALLOWED_ORIGINS = new Set([
   'https://wizelife.ai',
   'https://www.wizelife.ai',
+  'https://money.wizelife.ai', // WizeMoney js/stock-api.js calls this proxy from the browser
   'https://finsightai.github.io',
   'http://localhost:3000',
   'http://localhost:5173',
@@ -36,9 +39,9 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 function corsHeaders(origin) {
-  const allow = origin && ALLOWED_ORIGINS.has(origin) ? origin : '*';
+  const allowed = origin && ALLOWED_ORIGINS.has(origin);
   return {
-    'Access-Control-Allow-Origin': allow,
+    ...(allowed ? { 'Access-Control-Allow-Origin': origin } : {}),
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
