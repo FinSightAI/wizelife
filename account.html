@@ -30,7 +30,7 @@
 <meta charset="utf-8"/>
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- Full CSP (frame-ancestors is ignored in <meta> — clickjacking needs a Cloudflare header). -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com https://gainer-eight.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://www.google.com https://lh3.googleusercontent.com data:; connect-src 'self' https://www.google.com https://www.gstatic.com https://*.wizelife.ai https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://wizetravel-backend-3ol2retcla-uc.a.run.app https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://gainer-eight.vercel.app; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com https://www.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://apis.google.com https://*.firebaseapp.com https://www.gstatic.com https://cdn.jsdelivr.net https://browser.sentry-cdn.com https://gainer-eight.vercel.app https://catch.wizelife.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' https://www.gstatic.com https://www.google.com https://lh3.googleusercontent.com data:; connect-src 'self' https://www.google.com https://www.gstatic.com https://*.wizelife.ai https://us-central1-finzilla-7f1f9.cloudfunctions.net https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com https://wizehealth-3ol2retcla-uc.a.run.app https://wizetax-backend-3ol2retcla-uc.a.run.app https://wizetravel-backend-3ol2retcla-uc.a.run.app https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://gainer-eight.vercel.app https://catch.wizelife.ai; frame-src https://accounts.google.com https://*.firebaseapp.com https://www.google.com https://www.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com;">
 <meta name="robots" content="noindex,nofollow">
 <link href="/manifest.json" rel="manifest"/>
 <meta content="#6366f1" name="theme-color"/>
@@ -279,7 +279,7 @@
 <meta name="wl-sentry-dsn" content="">
 <meta name="wl-sentry-app" content="wizelife">
 <script>window.WIZE_APP='wizelife';</script>
-<script src="/js/wize-error-tracker.js?v=2026062202"></script>
+<script src="/js/wize-error-tracker.js?v=2026102901"></script>
 <script src="/js/wize-consent.js?v=2026062501"></script>
 <script src="/js/wize-sentry.js?v=2026061201" defer></script>
 <script src="/js/wize-attribution.js?v=2026061201" defer></script>
@@ -1234,6 +1234,6 @@ window.WL_TR = {"he": {"plan_free": "חינם", "upgrade_pro": "שדרג ל-Pro"
   if (document.readyState !== 'loading') handoff(); else document.addEventListener('DOMContentLoaded', handoff);
 })();
 </script>
-<script src="https://gainer-eight.vercel.app/g.js" data-tenant="wizelife" defer></script>
+<script src="https://catch.wizelife.ai/g.js" onerror="this.onerror=null;this.src='https://gainer-eight.vercel.app/g.js'" data-tenant="wizelife" defer></script>
 </body>
 </html>

@@ -128,7 +128,16 @@
     loaded = true;
     ["track","chat"].forEach(function(n){
       var s=document.createElement("script");
-      s.src="https://gainer-eight.vercel.app/"+n+".js";
+      s.src="https://catch.wizelife.ai/"+n+".js";
+      // A script element never re-fetches when its src changes: on failure inject a NEW element once.
+      s.onerror=function(){
+        s.onerror=null;
+        var f=document.createElement("script");
+        f.src="https://gainer-eight.vercel.app/"+n+".js";
+        f.setAttribute("data-tenant","wizelife");
+        f.defer=true;
+        document.head.appendChild(f);
+      };
       s.setAttribute("data-tenant","wizelife");
       s.defer=true;
       document.head.appendChild(s);
