@@ -9,11 +9,9 @@ name: Daily QA — All Apps
 # merges both reports and posts a single issue comment.
 
 on:
-  schedule:
-    # 03:00 UTC = 06:00 Israel during IDT (Mar-Oct) / 05:00 during IST (winter).
-    # GitHub Actions cron is UTC-only and doesn't observe DST, so winter runs
-    # arrive an hour earlier than nominal — acceptable for a pre-launch QA cron.
-    - cron: '0 3 * * *'
+  # Schedule disabled 2026-11-11: most apps are hidden/paused and each run signed up
+  # a fresh qa+<ts>@wizelife.ai user in prod (welcome mail to the owner). Re-enable by
+  # restoring:  schedule:\n    - cron: '0 3 * * *'
   workflow_dispatch: {}
 
 jobs:
